@@ -20,15 +20,11 @@ namespace Engine
                     int windowHeight = 640,
                     int textureSamples = 4
             );
-
             ~WindowManager() = default;
 
             int startWindow();
-
             void setWindowDimensions(int width, int height);
-
             GLFWwindow* getWindow() { return m_gameWindow; };
-
             std::pair<int, int> getWindowDimensions() { return m_windowDimensions; };
 
         private:
