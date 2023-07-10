@@ -1,7 +1,12 @@
 
 #include <iostream>
+#include "src/classes/engine/WindowManager.h"
 
 int main()
 {
-    std::cout << "Exited" << std::endl;
+    Engine::WindowManager WindowManager = Engine::WindowManager();
+
+    int exitCode = WindowManager.startWindow();
+
+    std::cout << "Exited with code " << exitCode << std::endl;
 }
