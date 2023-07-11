@@ -1,17 +1,16 @@
 
 #include "RenderManager.h"
 #include "loadShader.h"
+#include "VirtualObject.h"
 
 namespace Engine {
 
     ObjectData::ObjectData(
-            int matrixID,
             GLuint vertexBuffer,
             std::vector<glm::vec3> vertexData,
             std::vector<glm::vec3> vertexNormals
     )
-    : m_matrixID(matrixID)
-    , m_vertexBuffer(vertexBuffer)
+    : m_vertexBuffer(vertexBuffer)
     , m_vertexData(std::move(vertexData))
     , m_vertexNormals(std::move(vertexNormals))
     {
@@ -37,7 +36,7 @@ namespace Engine {
         return 0;
     }
 
-    std::shared_ptr<ObjectData> RenderManager::registerObject(ShaderType shader, const std::string& filePath)
+    std::shared_ptr<ObjectData> RenderManager::registerObject(const std::string& filePath)
     {
         for ( auto& object : m_objectList )
         {
@@ -46,8 +45,6 @@ namespace Engine {
                 return object.second;
             }
         }
-        //TODO: rewrite this
-        /*
 
         std::vector<glm::vec3> vertexData, vertexNormals;
         std::vector<glm::vec2> textureData;
@@ -55,39 +52,35 @@ namespace Engine {
         //fileLoader::loadFileOBJ(filePath, vertexData, textureData, vertexNormals);
 
         GLuint vertexBuffer = createVBO(vertexData);
-        const int matrixId = int(getUniform(shader, "MVP"));
-        const int objId = int(m_shaderList.size());
 
-        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(objId, shader, matrixId, vertexBuffer, 0, vertexData, vertexNormals);
+        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(vertexBuffer, vertexData, vertexNormals);
 
         m_objectList.emplace_back(filePath, newObject);
 
-        return newObject; */
+        return newObject;
     }
 
-    void RenderManager::deregisterObject(int objectId)
+    void RenderManager::deregisterObject(const std::shared_ptr<ObjectData>& obj)
     {
-        //TODO: rewrite this
-        /*
-        if (objectId < m_objectList.size()) {
-            return;
+        for(auto& tempObj : m_objectList)
+        {
+            if( tempObj.second == obj )
+            {
+                GLuint buffer[1] = {obj->m_vertexBuffer};
+                glDeleteBuffers(1, buffer);
+
+                m_objectList.erase(std::remove(m_objectList.begin(), m_objectList.end(), tempObj), m_objectList.end());
+            }
         }
-
-        auto& obj = m_objectList[objectId].second;
-        GLuint buffer[2] = {obj->m_vertexBuffer, obj->m_colorBuffer};
-
-        glDeleteBuffers(2, buffer);
-
-        m_objectList.erase(m_objectList.begin() + objectId); */
     }
 
-    void RenderManager::renderVertices(ObjectData* object, glm::mat4 mvp)
+    void RenderManager::renderVertices(int obj)
     {
-        //TODO: rewrite this
+        //TODO: rewrite this mess
         /*
         for ( auto& shader : m_shaderList)
         {
-            if ( shader.first == object->m_shader)
+            if ( shader.first == obj->m_shader)
                 glUseProgram(shader.second);
         }
 
@@ -126,7 +119,7 @@ namespace Engine {
         // Drawing the object
         glDrawArrays(GL_TRIANGLES, 0, object->getVertexCount() / 3); // Start at vertex 0 -> 3 Vertices -> 1 Triangle
         glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1); */
+        glDisableVertexAttribArray(1);  */
     }
 
     GLuint RenderManager::createVBO(std::vector<glm::vec3> &data)
