@@ -1,6 +1,8 @@
 
 #include "VirtualObject.h"
 
+#include "RenderManager.h"
+
 namespace Engine
 {
     VirtualObject::VirtualObject(std::shared_ptr<ObjectData>& objectData)
@@ -12,9 +14,9 @@ namespace Engine
     {
     }
 
-    void VirtualObject::setShader(ShaderType shader, RenderManager& renderManager)
+    void VirtualObject::setShader(ShaderType shader, RenderManager* renderManager)
     {
         m_shader = shader;
-        m_matrixId = renderManager.getUniform(shader, "MVP");
+        m_matrixId = renderManager->getUniform(shader, "MVP");
     }
 }

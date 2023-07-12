@@ -1,56 +1,37 @@
 #pragma once
 
-#include <cstdlib>
+#include "VirtualObject.h"
+#include "ObjectHelper.h"
+
 #include <string>
-#include <cstdlib>
 #include <vector>
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Engine
 {
 
-    enum ShaderType
-    {
-        solidColor, solidTexture, undefined
-    };
-
-    struct ObjectData
-    {
-        ObjectData(
-                GLuint vertexBuffer,
-                std::vector<glm::vec3> vertexData,
-                std::vector<glm::vec3> vertexNormals
-        );
-
-        GLuint m_vertexBuffer;
-        std::vector<glm::vec3> m_vertexData;
-        std::vector<glm::vec3> m_vertexNormals;
-
-        int getVertexCount() const { return int(m_vertexData.size()); };
-    };
-
     class RenderManager
     {
         public:
-            RenderManager() = default;
+            RenderManager();
             ~RenderManager() = default;
 
             std::shared_ptr<ObjectData> registerObject(const std::string& filePath);
             void deregisterObject(const std::shared_ptr<ObjectData>& obj);
+            //TODO: Add a "clear all objects" function
             GLuint getUniform(ShaderType shader, const std::string& uniformName);
             std::vector<std::pair<ShaderType, GLuint>> getShader() { return m_shaderList; };
+            void renderVertices(VirtualObject* object, const glm::mat4& mvp);
             std::vector<std::pair<std::string, std::shared_ptr<ObjectData>>> getObjects() { return m_objectList; };
-            void renderVertices(int obj); //TODO: ??
 
             static GLuint createVBO(std::vector<glm::vec3>& data);
             static GLuint createVBO(std::vector<glm::vec4>& data);
 
         private:
-            void loadShader();
 
+            //TODO: turn these into a map
             std::vector<std::pair<ShaderType, GLuint>> m_shaderList;
             std::vector<std::pair<std::string, std::shared_ptr<ObjectData>>> m_objectList;
     };

@@ -7,6 +7,7 @@ namespace Engine
             , m_windowDimensions(std::pair<int, int>(windowWidth, windowHeight))
             , m_textureSamples(textureSamples)
             , m_windowTitle(std::move(windowTitle))
+            , m_engineManager(nullptr)
     {
     }
 
@@ -56,11 +57,11 @@ namespace Engine
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
-        //engineManager* EngineManager = engineManager::getEngineManager();
+        m_engineManager = new EngineManager();
 
         do
         {
-            //EngineManager->renderUpdate();
+            m_engineManager->engineUpdate();
 
             glfwSwapBuffers(m_gameWindow);
             glfwPollEvents();

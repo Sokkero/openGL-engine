@@ -1,8 +1,8 @@
 #pragma once
 
+#include "EngineManager.h"
+
 #include <string>
-#include <vector>
-#include <iostream>
 
 #include <GL/glew.h>
 #include <glm/vec2.hpp>
@@ -28,6 +28,7 @@ namespace Engine
             std::pair<int, int> getWindowDimensions() { return m_windowDimensions; };
 
         private:
+            EngineManager* m_engineManager;
             GLFWwindow* m_gameWindow;
             std::pair<int, int> m_windowDimensions;
             int m_textureSamples;

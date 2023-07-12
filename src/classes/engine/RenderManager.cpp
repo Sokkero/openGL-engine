@@ -1,22 +1,14 @@
 
 #include "RenderManager.h"
+
 #include "loadShader.h"
-#include "VirtualObject.h"
+
+#include <iostream>
 
 namespace Engine {
 
-    ObjectData::ObjectData(
-            GLuint vertexBuffer,
-            std::vector<glm::vec3> vertexData,
-            std::vector<glm::vec3> vertexNormals
-    )
-    : m_vertexBuffer(vertexBuffer)
-    , m_vertexData(std::move(vertexData))
-    , m_vertexNormals(std::move(vertexNormals))
+    RenderManager::RenderManager()
     {
-    }
-
-    void RenderManager::loadShader() {
         GLuint tempShaderID;
 
         tempShaderID = LoadShaders( "resources/shader/simpleVertexShader.vert", "resources/shader/simpleFragmentShader.frag" );
@@ -24,6 +16,7 @@ namespace Engine {
 
         tempShaderID = LoadShaders( "resources/shader/simpleVertexShader.vert", "resources/shader/simpleFragmentShader.frag" );
         m_shaderList.emplace_back(ShaderType::solidTexture, tempShaderID);
+        std::cout << "test" << std::endl;
     }
 
     GLuint RenderManager::getUniform(ShaderType type, const std::string& uniformName)
@@ -74,22 +67,36 @@ namespace Engine {
         }
     }
 
-    void RenderManager::renderVertices(int obj)
+    void RenderManager::renderVertices(VirtualObject* object, const glm::mat4& mvp)
     {
-        //TODO: rewrite this mess
-        /*
+        if(object->getShader() == ShaderType::undefined)
+        {
+            fprintf(stderr, "Object has its shader undefined");
+            return;
+        }
+
+        bool foundShader = false;
         for ( auto& shader : m_shaderList)
         {
-            if ( shader.first == obj->m_shader)
+            if ( shader.first == object->getShader())
+            {
                 glUseProgram(shader.second);
+                foundShader = true;
+            }
+        }
+
+        if(!foundShader)
+        {
+            fprintf(stderr, "Couldn't find shader for object, shader in question: %s", ShaderTypeToString(object->getShader()).c_str());
+            return;
         }
 
         // Send our transformation to the currently bound rendering, in the "MVP" uniform
         // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
-        glUniformMatrix4fv(object->m_matrixID, 1, GL_FALSE, &mvp[0][0]);
+        glUniformMatrix4fv(int(object->getMatrixId()), 1, GL_FALSE, &mvp[0][0]);
 
         glEnableVertexAttribArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, object->m_vertexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer);
         glVertexAttribPointer(
                 0,             // No particular reason for 0, but must match the layout in the rendering
                 3,             // Size
@@ -99,10 +106,10 @@ namespace Engine {
                 (void*)nullptr // Array buffer offset
         );
 
-        switch (object->m_shader) {
+        switch (object->getShader()) {
             case ShaderType::solidColor:
                 glEnableVertexAttribArray(1);
-                glBindBuffer(GL_ARRAY_BUFFER, object->m_colorBuffer);
+                glBindBuffer(GL_ARRAY_BUFFER, object->getTextureBuffer());
                 glVertexAttribPointer(
                         1,             // No particular reason for 1, but must match the layout in the rendering
                         4,             // Size
@@ -117,9 +124,9 @@ namespace Engine {
         }
 
         // Drawing the object
-        glDrawArrays(GL_TRIANGLES, 0, object->getVertexCount() / 3); // Start at vertex 0 -> 3 Vertices -> 1 Triangle
+        glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount() / 3); // Start at vertex 0 -> 3 Vertices -> 1 Triangle
         glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);  */
+        glDisableVertexAttribArray(1);
     }
 
     GLuint RenderManager::createVBO(std::vector<glm::vec3> &data)

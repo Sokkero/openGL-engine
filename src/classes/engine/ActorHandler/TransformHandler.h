@@ -18,6 +18,7 @@ namespace Engine
 
             glm::vec4 getPosition() const { return m_modelMatrix[3]; };
             glm::mat4 getModelMatrix() const { return m_modelMatrix; };
+            void setModelMatrix(glm::mat4 matrix) { m_modelMatrix = matrix; };
 
         protected:
             glm::mat4 m_modelMatrix;

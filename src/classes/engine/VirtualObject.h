@@ -1,18 +1,15 @@
 #pragma once
 
-#include <cstdlib>
-#include <stdio.h>
-#include <vector>
+#include "ActorHandler/TransformHandler.h"
+#include "ObjectHelper.h"
+
+#include <memory>
 
 #include <GL/glew.h>
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-
-#include "RenderManager.h"
-#include "ActorHandler/TransformHandler.h"
 
 namespace Engine
 {
+    class RenderManager;
 
     class VirtualObject : public TransformHandler
     {
@@ -24,10 +21,11 @@ namespace Engine
             std::shared_ptr<ObjectData> getObjectData() const { return m_objectData; };
             ShaderType getShader() const { return m_shader; };
             GLuint getTextureBuffer() const { return m_textureBuffer; };
+            GLuint getMatrixId() const { return m_matrixId; };
 
             void setTint(glm::vec4 tint) { m_tint = tint; };
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
-            void setShader(ShaderType shader, RenderManager& renderManager);
+            void setShader(ShaderType shader, RenderManager* renderManager);
 
 
         private:
