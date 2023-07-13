@@ -14,7 +14,7 @@ namespace Engine
     class VirtualObject : public TransformHandler
     {
         public:
-            explicit VirtualObject(std::shared_ptr<ObjectData>& objectData);
+            explicit VirtualObject(std::shared_ptr<ObjectData> objectData);
             ~VirtualObject() = default;
 
             glm::vec4 getTint() const { return m_tint; };

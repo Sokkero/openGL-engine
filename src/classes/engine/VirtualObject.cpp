@@ -1,12 +1,14 @@
 
 #include "VirtualObject.h"
 
+#include <utility>
+
 #include "RenderManager.h"
 
 namespace Engine
 {
-    VirtualObject::VirtualObject(std::shared_ptr<ObjectData>& objectData)
-    : m_objectData(objectData)
+    VirtualObject::VirtualObject(std::shared_ptr<ObjectData> objectData)
+    : m_objectData(std::move(objectData))
     , m_shader(ShaderType::undefined)
     , m_textureBuffer(0)
     , m_tint(glm::vec4(0.f, 0.f, 0.f, 0.f))

@@ -18,7 +18,7 @@ namespace Engine
             RenderManager();
             ~RenderManager() = default;
 
-            std::shared_ptr<ObjectData> registerObject(const std::string& filePath);
+            std::shared_ptr<ObjectData> registerObject(const char* filePath);
             void deregisterObject(const std::shared_ptr<ObjectData>& obj);
             //TODO: Add a "clear all objects" function
             GLuint getUniform(ShaderType shader, const std::string& uniformName);

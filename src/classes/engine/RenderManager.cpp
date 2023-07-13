@@ -2,6 +2,7 @@
 #include "RenderManager.h"
 
 #include "loadShader.h"
+#include "FileLoading.h"
 
 #include <iostream>
 
@@ -29,7 +30,7 @@ namespace Engine {
         return 0;
     }
 
-    std::shared_ptr<ObjectData> RenderManager::registerObject(const std::string& filePath)
+    std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
     {
         for ( auto& object : m_objectList )
         {
@@ -42,7 +43,7 @@ namespace Engine {
         std::vector<glm::vec3> vertexData, vertexNormals;
         std::vector<glm::vec2> textureData;
 
-        //fileLoader::loadFileOBJ(filePath, vertexData, textureData, vertexNormals);
+        loadFileOBJ(filePath, vertexData, textureData, vertexNormals);
 
         GLuint vertexBuffer = createVBO(vertexData);
 
@@ -124,7 +125,7 @@ namespace Engine {
         }
 
         // Drawing the object
-        glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount() / 3); // Start at vertex 0 -> 3 Vertices -> 1 Triangle
+        glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
     }
