@@ -15,6 +15,7 @@ namespace Engine
     struct ObjectData
     {
         ObjectData(
+                std::string filePath,
                 GLuint vertexBuffer,
                 std::vector<glm::vec3> vertexData,
                 std::vector<glm::vec3> vertexNormals
@@ -22,9 +23,11 @@ namespace Engine
                 : m_vertexBuffer(vertexBuffer)
                 , m_vertexData(std::move(vertexData))
                 , m_vertexNormals(std::move(vertexNormals))
+                , m_filePath(filePath)
         {
         }
 
+        std::string m_filePath;
         GLuint m_vertexBuffer;
         std::vector<glm::vec3> m_vertexData;
         std::vector<glm::vec3> m_vertexNormals;

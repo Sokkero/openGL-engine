@@ -13,10 +13,10 @@ namespace Engine {
         GLuint tempShaderID;
 
         tempShaderID = LoadShaders( "resources/shader/simpleVertexShader.vert", "resources/shader/simpleFragmentShader.frag" );
-        m_shaderList.emplace_back(ShaderType::solidColor, tempShaderID);
+        m_shaderList[ShaderType::solidColor] = tempShaderID;
 
         tempShaderID = LoadShaders( "resources/shader/simpleVertexShader.vert", "resources/shader/simpleFragmentShader.frag" );
-        m_shaderList.emplace_back(ShaderType::solidTexture, tempShaderID);
+        m_shaderList[ShaderType::solidTexture] = tempShaderID;
         std::cout << "test" << std::endl;
     }
 
@@ -47,24 +47,44 @@ namespace Engine {
 
         GLuint vertexBuffer = createVBO(vertexData);
 
-        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(vertexBuffer, vertexData, vertexNormals);
+        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(filePath, vertexBuffer, vertexData, vertexNormals);
 
-        m_objectList.emplace_back(filePath, newObject);
+        m_objectList[filePath] = newObject;
 
         return newObject;
     }
 
-    void RenderManager::deregisterObject(const std::shared_ptr<ObjectData>& obj)
+    void RenderManager::deregisterObject(std::shared_ptr<ObjectData>& obj)
     {
         for(auto& tempObj : m_objectList)
         {
             if( tempObj.second == obj )
             {
-                GLuint buffer[1] = {obj->m_vertexBuffer};
-                glDeleteBuffers(1, buffer);
-
-                m_objectList.erase(std::remove(m_objectList.begin(), m_objectList.end(), tempObj), m_objectList.end());
+                deleteObject(tempObj.second, true);
+                obj = nullptr;
+                return;
             }
+        }
+    }
+
+    void RenderManager::clearObjects()
+    {
+        for(auto& tempObj : m_objectList)
+        {
+            deleteObject(tempObj.second, false);
+        }
+        m_objectList.clear();
+    }
+
+    void RenderManager::deleteObject(std::shared_ptr<ObjectData>& obj, const bool clearFromMap)
+    {
+        GLuint buffer[1] = {obj->m_vertexBuffer};
+        glDeleteBuffers(1, buffer);
+
+        if(clearFromMap)
+        {
+            m_objectList.erase(m_objectList.find(obj->m_filePath));
+            obj = nullptr;
         }
     }
 

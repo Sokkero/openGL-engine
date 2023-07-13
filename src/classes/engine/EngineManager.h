@@ -6,6 +6,8 @@
 
 #include <vector>
 
+#include <GLFW/glfw3.h>
+
 namespace Engine
 {
 
@@ -21,8 +23,7 @@ namespace Engine
             void clearScene();
 
             CameraModel* getCamera() const { return m_camera; };
-            //TODO: Add this back
-            //double getDeltaTime() { return glfwGetTime() - m_lastTimestamp; };
+            double getDeltaTime() { return glfwGetTime() - m_lastFrameTimestamp; };
         private:
             std::vector<VirtualObject*> m_sceneObjects;
             CameraModel* m_camera;
