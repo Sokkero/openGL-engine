@@ -55,7 +55,7 @@ namespace Engine
         m_lastFrameTimestamp = glfwGetTime();
     }
 
-    void EngineManager::engineUpdate()
+    void EngineManager::engineDraw()
     {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear the screen
 

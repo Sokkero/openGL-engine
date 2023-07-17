@@ -17,7 +17,7 @@ namespace Engine
             EngineManager();
             ~EngineManager() = default;
 
-            void engineUpdate();
+            void engineDraw();
             void addObjectToScene(VirtualObject* obj);
             void removeObjectFromScene(VirtualObject* obj);
             void clearScene();

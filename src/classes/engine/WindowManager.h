@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EngineManager.h"
+#include "UserEventManager.h"
 
 #include <string>
 
@@ -30,6 +31,7 @@ namespace Engine
         private:
             EngineManager* m_engineManager;
             GLFWwindow* m_gameWindow;
+            UserEventManager* m_userEventManager;
             std::pair<int, int> m_windowDimensions;
             int m_textureSamples;
             std::string m_windowTitle;
