@@ -1,6 +1,7 @@
 
 #include "RenderManager.h"
 
+#include "ActorHandler/GeometryHandler.h"
 #include "loadShader.h"
 #include "FileLoading.h"
 
@@ -88,7 +89,7 @@ namespace Engine {
         }
     }
 
-    void RenderManager::renderVertices(VirtualObject* object, const glm::mat4& mvp)
+    void RenderManager::renderVertices(GeometryHandler* object, const glm::mat4& mvp)
     {
         if(object->getShader() == ShaderType::undefined)
         {
@@ -141,6 +142,7 @@ namespace Engine {
                 );
                 break;
             case ShaderType::solidTexture:
+            case ShaderType::undefined:
                 break;
         }
 

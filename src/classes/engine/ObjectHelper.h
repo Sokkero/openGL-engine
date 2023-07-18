@@ -4,6 +4,7 @@
 #include <string>
 
 #include <GL/glew.h>
+#include <glm/vec3.hpp>
 
 namespace Engine
 {

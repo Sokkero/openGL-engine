@@ -61,10 +61,10 @@ namespace Engine
         }
 
         //For debugging purposes
-        /*
-        for (const auto& userEvent : userEvents) {
+
+        for (const auto& userEvent : m_userEvents) {
             std::cout << "Key " << userEvent.first << ": " << userEvent.second << std::endl;
         }
-        */
+
     }
 }

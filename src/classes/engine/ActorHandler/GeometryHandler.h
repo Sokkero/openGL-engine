@@ -1,21 +1,29 @@
 #pragma once
 
-#include "ActorHandler/TransformHandler.h"
-#include "ObjectHelper.h"
+#include "../ObjectHelper.h"
+#include "../RenderManager.h"
 
 #include <memory>
 
 #include <GL/glew.h>
+#include <glm/vec4.hpp>
+#include <utility>
 
 namespace Engine
 {
-    class RenderManager;
 
-    class VirtualObject : public TransformHandler
+    class GeometryHandler
     {
         public:
-            explicit VirtualObject(std::shared_ptr<ObjectData> objectData);
-            ~VirtualObject() = default;
+            explicit GeometryHandler()
+                    : m_objectData(nullptr)
+                    , m_shader(ShaderType::undefined)
+                    , m_textureBuffer(0)
+                    , m_tint(glm::vec4(0.f, 0.f, 0.f, 0.f))
+                    , m_matrixId(0)
+            {
+            }
+            ~GeometryHandler() = default;
 
             glm::vec4 getTint() const { return m_tint; };
             std::shared_ptr<ObjectData> getObjectData() const { return m_objectData; };
@@ -23,9 +31,14 @@ namespace Engine
             GLuint getTextureBuffer() const { return m_textureBuffer; };
             GLuint getMatrixId() const { return m_matrixId; };
 
+            void setObjectData(std::shared_ptr<ObjectData> objData) { m_objectData = std::move(objData); };
             void setTint(glm::vec4 tint) { m_tint = tint; };
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
-            void setShader(ShaderType shader, RenderManager* renderManager);
+            void setShader(ShaderType shader, RenderManager* renderManager)
+            {
+                m_shader = shader;
+                m_matrixId = renderManager->getUniform(shader, "MVP");
+            }
 
 
         private:
