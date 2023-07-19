@@ -1,14 +1,18 @@
 #pragma once
 
-#include "../engine/ActorHandler/BasicActor.h"
+#include "../engine/ActorHandler/BasicNode.h"
 
-class SceneOrigin : public Engine::BasicActor
+namespace Engine { class EngineManager; }
+
+class SceneOrigin : public Engine::BasicNode
 {
     public:
         SceneOrigin() = default;
         ~SceneOrigin() = default;
     private:
+        Engine::EngineManager* m_engineManager;
         void start() override;
+
 
 };
 

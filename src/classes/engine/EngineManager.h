@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-    class BasicActor;
+    class BasicNode;
     class RenderManager;
     class CameraModel;
 
@@ -16,17 +16,18 @@ namespace Engine
 
             void engineUpdate();
             void engineDraw();
-            void addObjectToScene(BasicActor* obj);
-            void removeObjectFromScene(BasicActor* obj);
-            void clearScene();
+
+            void drawNode(BasicNode* node);
+
+            void setScene(std::shared_ptr<BasicNode> sceneNode);
+            std::shared_ptr<BasicNode> getScene() const { return m_sceneNode; };
 
             CameraModel* getCamera() const { return m_camera; };
+            RenderManager* getRenderManager() const { return m_renderManager; };
             void setDeltaTime();
             float getDeltaTime();
         private:
-            //TODO: This should hold a shared pointer to the Scene Origin and that
-            // should hold a vector to its children, and they for theirs and so on
-            std::vector<BasicActor*> m_sceneObjects;
+            std::shared_ptr<BasicNode> m_sceneNode;
             //TODO: make this a shared_ptr to a CameraHandler that is somewhere in the scenegraph
             CameraModel* m_camera;
             double m_lastFrameTimestamp;

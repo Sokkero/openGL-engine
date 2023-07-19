@@ -1,6 +1,7 @@
 #include "WindowManager.h"
 
-#include "ActorHandler/BasicActor.h"
+#include "ActorHandler/BasicNode.h"
+#include "CameraModel.h"
 #include "UserEventManager.h"
 #include "EngineManager.h"
 
@@ -62,10 +63,13 @@ namespace Engine
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
-        BasicActor::setWindowManager(this);
+        BasicNode::setWindowManager(this);
 
         m_userEventManager = UserEventManager::getUserEventManager();
         m_engineManager = new EngineManager();
+
+        m_engineManager->getScene()->start();
+        m_engineManager->getCamera()->start();
 
         do
         {

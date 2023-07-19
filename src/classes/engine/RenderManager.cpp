@@ -10,6 +10,8 @@
 namespace Engine {
 
     RenderManager::RenderManager()
+    : m_objectList(std::map<std::string, std::shared_ptr<ObjectData>>())
+    , m_shaderList(std::map<ShaderType, GLuint>())
     {
         GLuint tempShaderID;
 
