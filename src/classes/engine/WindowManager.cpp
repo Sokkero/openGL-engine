@@ -58,17 +58,17 @@ namespace Engine
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
-        m_engineManager = new EngineManager();
         m_userEventManager = UserEventManager::getUserEventManager();
+        m_engineManager = new EngineManager();
 
         do
         {
+            m_userEventManager->updateEvents(m_gameWindow);
+            m_engineManager->engineUpdate();
             m_engineManager->engineDraw();
 
             glfwSwapBuffers(m_gameWindow);
             glfwPollEvents();
-
-            m_userEventManager->updateEvents(m_gameWindow);
         }
         while (glfwGetKey(m_gameWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(m_gameWindow) == 0);
 

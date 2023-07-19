@@ -19,8 +19,9 @@ namespace Engine
             EngineManager();
             ~EngineManager() = default;
 
+            void engineUpdate();
             void engineDraw();
-            void addObjectToScene(BasicActor* obj) { m_sceneObjects.push_back(obj); };
+            void addObjectToScene(BasicActor* obj);
             void removeObjectFromScene(BasicActor* obj);
             void clearScene();
 

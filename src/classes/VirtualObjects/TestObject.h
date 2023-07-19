@@ -12,4 +12,6 @@ class TestObject : public BasicActor, public TransformHandler, public GeometryHa
         TestObject() = default;
         ~TestObject() = default;
     private:
+        void start() override;
+        void update() override;
 };

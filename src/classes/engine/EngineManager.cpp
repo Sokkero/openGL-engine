@@ -59,6 +59,16 @@ namespace Engine
         glClearColor(.7f, .7f, .7f, .0f);
 
         m_lastFrameTimestamp = glfwGetTime();
+        m_camera->start();
+    }
+
+    void EngineManager::engineUpdate()
+    {
+        m_camera->update();
+        for (auto* object : m_sceneObjects)
+        {
+            object->update();
+        }
     }
 
     void EngineManager::engineDraw()
@@ -76,6 +86,12 @@ namespace Engine
                 m_renderManager->renderVertices(geometry, mvp);
             }
         }
+    }
+
+    void EngineManager::addObjectToScene(BasicActor* obj)
+    {
+        m_sceneObjects.push_back(obj);
+        obj->start();
     }
 
     void EngineManager::clearScene()
