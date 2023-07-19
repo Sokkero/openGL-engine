@@ -33,7 +33,6 @@ namespace Engine
             g_color_buffer_data.emplace_back(.6f, .2f, .2f, 1.f);
         }
 
-        //m_renderManager->registerObject("resources/objects/cube.obj")
         auto* newObject1 = new TestObject();
         newObject1->setObjectData(m_renderManager->registerObject("resources/objects/cube.obj"));
         newObject1->setShader(ShaderType::solidColor, m_renderManager);
@@ -116,6 +115,11 @@ namespace Engine
             }
             i++;
         }
+    }
+
+    void EngineManager::setDeltaTime()
+    {
+        m_lastFrameTimestamp = glfwGetTime();
     }
 
     float EngineManager::getDeltaTime()

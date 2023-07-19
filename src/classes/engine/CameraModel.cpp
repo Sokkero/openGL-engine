@@ -1,10 +1,6 @@
 
 #include "CameraModel.h"
 
-#include "UserEventManager.h"
-#include "WindowManager.h"
-#include "EngineManager.h"
-
 #include <iostream>
 
 namespace Engine
@@ -26,13 +22,14 @@ namespace Engine
 
     void CameraModel::update()
     {
+        std::cout << getWindowManager()->getEngine()->getDeltaTime() * 100.f << std::endl;
         if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_W) > 0)
         {
-            moveObj((getForward() * getWindowManager()->getEngine()->getDeltaTime()) * 0.1f);
+            moveObj((getForward() * getWindowManager()->getEngine()->getDeltaTime()) * 300.f);
         }
         else if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_S) > 0)
         {
-            moveObj((getBackwards() * getWindowManager()->getEngine()->getDeltaTime()) * 0.1f);
+            moveObj((getBackwards() * getWindowManager()->getEngine()->getDeltaTime()) * 300.f);
         }
     }
 

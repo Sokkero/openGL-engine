@@ -75,6 +75,8 @@ namespace Engine
 
             glfwSwapBuffers(m_gameWindow);
             glfwPollEvents();
+
+            m_engineManager->setDeltaTime();
         }
         while (m_userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(m_gameWindow) == 0);
 

@@ -10,8 +10,6 @@ namespace Engine
 
     class EngineManager
     {
-            //TODO: Template the functions and figure out how to deal with the vector here
-            // Use Interface or common class they inherit from
         public:
             EngineManager();
             ~EngineManager() = default;
@@ -23,9 +21,13 @@ namespace Engine
             void clearScene();
 
             CameraModel* getCamera() const { return m_camera; };
+            void setDeltaTime();
             float getDeltaTime();
         private:
+            //TODO: This should hold a shared pointer to the Scene Origin and that
+            // should hold a vector to its children, and they for theirs and so on
             std::vector<BasicActor*> m_sceneObjects;
+            //TODO: make this a shared_ptr to a CameraHandler that is somewhere in the scenegraph
             CameraModel* m_camera;
             double m_lastFrameTimestamp;
             int m_totalFramesLastSecond;

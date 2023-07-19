@@ -5,6 +5,7 @@
 
 namespace Engine
 {
+    //TODO: this should be an ActorHandler
     class CameraModel : public BasicActor, public TransformHandler
     {
         public:
