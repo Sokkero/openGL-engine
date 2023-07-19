@@ -8,7 +8,7 @@
 
 namespace Engine
 {
-    enum ShaderType
+    enum class ShaderType
     {
         solidColor, solidTexture, undefined
     };
@@ -36,7 +36,7 @@ namespace Engine
         int getVertexCount() const { return int(m_vertexData.size()); };
     };
 
-    static std::string ShaderTypeToString(ShaderType type)
+    inline std::string ShaderTypeToString(ShaderType type)
     {
         switch (type) {
             case ShaderType::solidColor:
