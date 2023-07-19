@@ -2,10 +2,10 @@
 #include "EngineManager.h"
 
 #include "../VirtualObjects/TestObject.h"
+#include "CameraModel.h"
+#include "RenderManager.h"
 
-#include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/gtc/matrix_transform.hpp>
 
 namespace Engine
 {
@@ -116,5 +116,10 @@ namespace Engine
             }
             i++;
         }
+    }
+
+    float EngineManager::getDeltaTime()
+    {
+        return glfwGetTime() - m_lastFrameTimestamp;
     }
 }

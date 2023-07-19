@@ -1,6 +1,8 @@
 #include "WindowManager.h"
 
 #include "ActorHandler/BasicActor.h"
+#include "UserEventManager.h"
+#include "EngineManager.h"
 
 namespace Engine
 {

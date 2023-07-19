@@ -1,15 +1,12 @@
 #pragma once
 
-#include "RenderManager.h"
-#include "CameraModel.h"
-
 #include <vector>
-
-#include <GLFW/glfw3.h>
 
 namespace Engine
 {
     class BasicActor;
+    class RenderManager;
+    class CameraModel;
 
     class EngineManager
     {
@@ -26,7 +23,7 @@ namespace Engine
             void clearScene();
 
             CameraModel* getCamera() const { return m_camera; };
-            double getDeltaTime() { return glfwGetTime() - m_lastFrameTimestamp; };
+            float getDeltaTime();
         private:
             std::vector<BasicActor*> m_sceneObjects;
             CameraModel* m_camera;

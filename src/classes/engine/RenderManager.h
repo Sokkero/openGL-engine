@@ -6,7 +6,6 @@
 #include <vector>
 #include <map>
 
-#include <GL/glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Engine

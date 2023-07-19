@@ -3,6 +3,7 @@
 
 #include "UserEventManager.h"
 #include "WindowManager.h"
+#include "EngineManager.h"
 
 #include <iostream>
 

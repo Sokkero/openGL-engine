@@ -1,12 +1,8 @@
 #pragma once
 
-#include "EngineManager.h"
-#include "UserEventManager.h"
-
 #include <string>
 
 #include <GL/glew.h>
-#include <glm/vec2.hpp>
 #include <GLFW/glfw3.h>
 
 namespace Engine
