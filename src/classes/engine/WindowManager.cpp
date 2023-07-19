@@ -1,5 +1,7 @@
 #include "WindowManager.h"
 
+#include "ActorHandler/BasicActor.h"
+
 namespace Engine
 {
     WindowManager::WindowManager(std::string windowTitle, int windowWidth, int windowHeight, int textureSamples)
@@ -58,6 +60,8 @@ namespace Engine
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
+        BasicActor::setWindowManager(this);
+
         m_userEventManager = UserEventManager::getUserEventManager();
         m_engineManager = new EngineManager();
 
@@ -70,7 +74,7 @@ namespace Engine
             glfwSwapBuffers(m_gameWindow);
             glfwPollEvents();
         }
-        while (glfwGetKey(m_gameWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(m_gameWindow) == 0);
+        while (m_userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(m_gameWindow) == 0);
 
         return 0;
     }

@@ -5,7 +5,6 @@
 
 namespace Engine
 {
-
     class CameraModel : public BasicActor, public TransformHandler
     {
         public:
@@ -24,6 +23,7 @@ namespace Engine
             void setZFar(float zFar);
 
         private:
+            void update() override;
             void updateProjectionMatrix();
 
             glm::mat4 m_projectionMatrix;

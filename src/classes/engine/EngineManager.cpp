@@ -64,7 +64,7 @@ namespace Engine
 
     void EngineManager::engineUpdate()
     {
-        m_camera->update();
+        dynamic_cast<BasicActor*>(m_camera)->update();
         for (auto* object : m_sceneObjects)
         {
             object->update();

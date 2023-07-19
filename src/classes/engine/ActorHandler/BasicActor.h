@@ -2,6 +2,8 @@
 
 namespace Engine
 {
+    class WindowManager;
+
     class BasicActor
     {
         public:
@@ -10,5 +12,10 @@ namespace Engine
 
             virtual void start() {};
             virtual void update() {};
+
+            static void setWindowManager(WindowManager* newWindowManager) { windowManager = newWindowManager; };
+        private:
+            static WindowManager* windowManager;
     };
+    inline WindowManager* BasicActor::windowManager = nullptr;
 }

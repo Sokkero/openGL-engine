@@ -1,6 +1,10 @@
 
 #include "CameraModel.h"
 
+#include "UserEventManager.h"
+
+#include <iostream>
+
 namespace Engine
 {
     CameraModel::CameraModel()
@@ -16,6 +20,11 @@ namespace Engine
                 m_zNear,
                 m_zFar
         );
+    }
+
+    void CameraModel::update()
+    {
+        std::cout << "awd" << std::endl;
     }
 
     void CameraModel::updateProjectionMatrix()
