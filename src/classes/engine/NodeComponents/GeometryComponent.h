@@ -12,10 +12,10 @@
 namespace Engine
 {
 
-    class GeometryHandler
+    class GeometryComponent
     {
         public:
-            explicit GeometryHandler()
+            explicit GeometryComponent()
                     : m_objectData(nullptr)
                     , m_shader(ShaderType::undefined)
                     , m_textureBuffer(0)
@@ -23,7 +23,7 @@ namespace Engine
                     , m_matrixId(0)
             {
             }
-            ~GeometryHandler() = default;
+            ~GeometryComponent() = default;
 
             glm::vec4 getTint() const { return m_tint; };
             std::shared_ptr<ObjectData> getObjectData() const { return m_objectData; };

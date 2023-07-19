@@ -4,7 +4,7 @@
 #include "../VirtualObjects/SceneOrigin.h"
 #include "CameraModel.h"
 #include "RenderManager.h"
-#include "ActorHandler/GeometryHandler.h"
+#include "NodeComponents/GeometryComponent.h"
 
 #include <GLFW/glfw3.h>
 
@@ -59,8 +59,8 @@ namespace Engine
 
     void EngineManager::drawNode(BasicNode* node)
     {
-        const auto& transform = dynamic_cast<TransformHandler*>(node);
-        const auto& geometry = dynamic_cast<GeometryHandler*>(node);
+        const auto& transform = dynamic_cast<TransformComponent*>(node);
+        const auto& geometry = dynamic_cast<GeometryComponent*>(node);
         if(transform && geometry)
         {
             // MVP = Projection * View * Model (Matrix calculations are the other way around)

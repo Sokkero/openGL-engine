@@ -28,11 +28,11 @@ namespace Engine
     {
         if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_W) > 0)
         {
-            moveObj((getForward() * getWindowManager()->getEngine()->getDeltaTime()) * 300.f);
+            moveObj((getForward() * getWindowManager()->getEngine()->getDeltaTime()) * 500.f);
         }
         else if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_S) > 0)
         {
-            moveObj((getBackwards() * getWindowManager()->getEngine()->getDeltaTime()) * 300.f);
+            moveObj((getBackwards() * getWindowManager()->getEngine()->getDeltaTime()) * 500.f);
         }
     }
 

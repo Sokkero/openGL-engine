@@ -1,12 +1,12 @@
 #pragma once
 
-#include "ActorHandler/BasicNode.h"
-#include "ActorHandler/TransformHandler.h"
+#include "NodeComponents/BasicNode.h"
+#include "NodeComponents/TransformComponent.h"
 
 namespace Engine
 {
-    //TODO: this should be an ActorHandler
-    class CameraModel : public BasicNode, public TransformHandler
+    //TODO: this should be an NodeComponents
+    class CameraModel : public BasicNode, public TransformComponent
     {
         public:
             CameraModel();

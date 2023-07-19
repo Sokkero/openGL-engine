@@ -7,11 +7,11 @@
 namespace Engine
 {
 
-    class TransformHandler
+    class TransformComponent
     {
         public:
-            TransformHandler() : m_modelMatrix(glm::mat4(1.f)) {};
-            ~TransformHandler() = default;
+            TransformComponent() : m_modelMatrix(glm::mat4(1.f)) {};
+            ~TransformComponent() = default;
 
             void setPosition(glm::vec3 pos) { m_modelMatrix[3] = glm::vec4(pos, 1.f); };
             void setScale(glm::vec3 scale) { glm::scale(m_modelMatrix, scale); m_scale = scale; };

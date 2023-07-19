@@ -10,7 +10,7 @@
 
 namespace Engine
 {
-    class GeometryHandler;
+    class GeometryComponent;
     class RenderManager
     {
         public:
@@ -22,7 +22,7 @@ namespace Engine
             void clearObjects();
             GLuint getUniform(ShaderType shader, const std::string& uniformName);
             std::map<ShaderType, GLuint> getShader() { return m_shaderList; };
-            void renderVertices(GeometryHandler* object, const glm::mat4& mvp);
+            void renderVertices(GeometryComponent* object, const glm::mat4& mvp);
             std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
 
             static GLuint createVBO(std::vector<glm::vec3>& data);

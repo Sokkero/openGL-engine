@@ -1,7 +1,7 @@
 
 #include "RenderManager.h"
 
-#include "ActorHandler/GeometryHandler.h"
+#include "NodeComponents/GeometryComponent.h"
 #include "loadShader.h"
 #include "FileLoading.h"
 
@@ -91,7 +91,7 @@ namespace Engine {
         }
     }
 
-    void RenderManager::renderVertices(GeometryHandler* object, const glm::mat4& mvp)
+    void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
     {
         if(object->getShader() == ShaderType::undefined)
         {

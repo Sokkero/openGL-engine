@@ -1,6 +1,6 @@
 #include "WindowManager.h"
 
-#include "ActorHandler/BasicNode.h"
+#include "NodeComponents/BasicNode.h"
 #include "CameraModel.h"
 #include "UserEventManager.h"
 #include "EngineManager.h"

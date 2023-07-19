@@ -1,12 +1,12 @@
 #pragma once
 
-#include "../engine/ActorHandler/BasicNode.h"
-#include "../engine/ActorHandler/TransformHandler.h"
-#include "../engine/ActorHandler/GeometryHandler.h"
+#include "../engine/NodeComponents/BasicNode.h"
+#include "../engine/NodeComponents/TransformComponent.h"
+#include "../engine/NodeComponents/GeometryComponent.h"
 
 using namespace Engine;
 
-class TestObject : public BasicNode, public TransformHandler, public GeometryHandler
+class TestObject : public BasicNode, public TransformComponent, public GeometryComponent
 {
     public:
         TestObject() = default;

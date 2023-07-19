@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../engine/ActorHandler/BasicNode.h"
+#include "../engine/NodeComponents/BasicNode.h"
 
 namespace Engine { class EngineManager; }
 
