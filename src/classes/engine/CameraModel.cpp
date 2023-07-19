@@ -2,6 +2,7 @@
 #include "CameraModel.h"
 
 #include "UserEventManager.h"
+#include "WindowManager.h"
 
 #include <iostream>
 
@@ -24,7 +25,10 @@ namespace Engine
 
     void CameraModel::update()
     {
-        std::cout << "awd" << std::endl;
+        if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_W) > 0)
+        {
+            moveObj(getForward() * 0.1f);
+        }
     }
 
     void CameraModel::updateProjectionMatrix()

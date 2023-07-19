@@ -11,6 +11,8 @@
 
 namespace Engine
 {
+    class EngineManager;
+    class UserEventManager;
 
     class WindowManager
     {
@@ -27,6 +29,9 @@ namespace Engine
             void setWindowDimensions(int width, int height);
             GLFWwindow* getWindow() { return m_gameWindow; };
             std::pair<int, int> getWindowDimensions() { return m_windowDimensions; };
+
+            EngineManager* getEngine() { return m_engineManager; };
+            UserEventManager* getUserEventManager() { return m_userEventManager; };
 
         private:
             EngineManager* m_engineManager;

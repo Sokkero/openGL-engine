@@ -14,6 +14,7 @@ namespace Engine
             virtual void update() {};
 
             static void setWindowManager(WindowManager* newWindowManager) { windowManager = newWindowManager; };
+            static WindowManager* getWindowManager() { return windowManager; };
         private:
             static WindowManager* windowManager;
     };
