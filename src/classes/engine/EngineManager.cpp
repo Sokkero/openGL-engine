@@ -2,16 +2,19 @@
 #include "EngineManager.h"
 
 #include "../VirtualObjects/SceneOrigin.h"
-#include "CameraModel.h"
+#include "NodeComponents/CameraComponent.h"
 #include "RenderManager.h"
 #include "NodeComponents/GeometryComponent.h"
+#include "NodeComponents/TransformComponent.h"
+
+#include <iostream>
 
 #include <GLFW/glfw3.h>
 
 namespace Engine
 {
     EngineManager::EngineManager()
-    : m_sceneNode(std::shared_ptr<BasicNode>(nullptr))
+    : m_sceneNode(nullptr)
     , m_camera(nullptr)
     , m_lastFrameTimestamp(0)
     , m_totalFramesLastSecond(0)
@@ -30,13 +33,6 @@ namespace Engine
 
         m_sceneNode = std::make_shared<SceneOrigin>();
 
-        m_camera = new CameraModel();
-        m_camera->setModelMatrix(glm::lookAt(
-                glm::vec3(0,10,15), // Camera is at (x,y,z), in World Space
-                glm::vec3(0,0,0), // looks at (x,y,z)
-                glm::vec3(0,1,0)  // Camera rotation (set to (0,1,0) to look right side up)
-        ));
-
         glClearColor(.7f, .7f, .7f, .0f);
 
         m_lastFrameTimestamp = glfwGetTime();
@@ -44,7 +40,6 @@ namespace Engine
 
     void EngineManager::engineUpdate()
     {
-        dynamic_cast<BasicNode*>(m_camera)->update();
         const auto func = [] (BasicNode* node) { node->update(); };
 
         getScene()->callOnAllNodes(func);
@@ -52,9 +47,15 @@ namespace Engine
 
     void EngineManager::engineDraw()
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear the screen
-
-        getScene()->callOnAllNodes(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
+        if(m_camera)
+        {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear the screen
+            getScene()->callOnAllNodes(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
+        }
+        else
+        {
+            fprintf(stderr, "No camera...\n");
+        }
     }
 
     void EngineManager::drawNode(BasicNode* node)

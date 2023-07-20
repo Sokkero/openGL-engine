@@ -6,7 +6,7 @@ namespace Engine
 {
     class BasicNode;
     class RenderManager;
-    class CameraModel;
+    class CameraComponent;
 
     class EngineManager
     {
@@ -22,14 +22,16 @@ namespace Engine
             void setScene(std::shared_ptr<BasicNode> sceneNode);
             std::shared_ptr<BasicNode> getScene() const { return m_sceneNode; };
 
-            CameraModel* getCamera() const { return m_camera; };
+            void setCamera(std::shared_ptr<CameraComponent> camera) { m_camera = std::move(camera); };
+            std::shared_ptr<CameraComponent> getCamera() const { return m_camera; };
+
             RenderManager* getRenderManager() const { return m_renderManager; };
             void setDeltaTime();
             float getDeltaTime();
         private:
             std::shared_ptr<BasicNode> m_sceneNode;
             //TODO: make this a shared_ptr to a CameraHandler that is somewhere in the scenegraph
-            CameraModel* m_camera;
+            std::shared_ptr<CameraComponent> m_camera;
             double m_lastFrameTimestamp;
             int m_totalFramesLastSecond;
             RenderManager* m_renderManager;

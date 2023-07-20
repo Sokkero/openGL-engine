@@ -5,10 +5,15 @@
 #include "../engine/UserEventManager.h"
 #include "../engine/EngineManager.h"
 #include "TestObject.h"
+#include "CameraActor.h"
 
 void SceneOrigin::start()
 {
     m_engineManager = getWindowManager()->getEngine();
+
+    std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
+    addAsChild(camera);
+    m_engineManager->setCamera(camera);
 
     std::vector<glm::vec4>  g_color_buffer_data;
     for (int v = 0; v < 12*3 ; v++){

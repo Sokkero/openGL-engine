@@ -1,16 +1,16 @@
 #pragma once
 
-#include "NodeComponents/BasicNode.h"
-#include "NodeComponents/TransformComponent.h"
+#include "TransformComponent.h"
+
+#include <glm/ext/matrix_float4x4.hpp>
 
 namespace Engine
 {
-    //TODO: this should be an NodeComponents
-    class CameraModel : public BasicNode, public TransformComponent
+    class CameraComponent : public TransformComponent
     {
         public:
-            CameraModel();
-            ~CameraModel() = default;
+            CameraComponent();
+            ~CameraComponent() = default;
 
             glm::mat4 getProjectionMatrix() const { return m_projectionMatrix; };
             float getFov() const { return m_fov; };
@@ -24,7 +24,6 @@ namespace Engine
             void setZFar(float zFar);
 
         private:
-            void update() override;
             void updateProjectionMatrix();
 
             glm::mat4 m_projectionMatrix;

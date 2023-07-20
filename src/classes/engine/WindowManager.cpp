@@ -1,7 +1,7 @@
 #include "WindowManager.h"
 
 #include "NodeComponents/BasicNode.h"
-#include "CameraModel.h"
+#include "NodeComponents/CameraComponent.h"
 #include "UserEventManager.h"
 #include "EngineManager.h"
 
@@ -69,7 +69,6 @@ namespace Engine
         m_engineManager = new EngineManager();
 
         m_engineManager->getScene()->start();
-        m_engineManager->getCamera()->start();
 
         do
         {

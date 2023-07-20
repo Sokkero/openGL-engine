@@ -19,6 +19,8 @@ namespace Engine
     {
         m_childNodes.emplace_back(node);
         node->setParent(std::make_shared<BasicNode>(*this));
+
+        node->start();
     }
 
     void BasicNode::removeFromParent(std::shared_ptr<BasicNode> node)
