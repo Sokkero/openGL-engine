@@ -30,7 +30,6 @@ namespace Engine
             float getDeltaTime();
         private:
             std::shared_ptr<BasicNode> m_sceneNode;
-            //TODO: make this a shared_ptr to a CameraHandler that is somewhere in the scenegraph
             std::shared_ptr<CameraComponent> m_camera;
             double m_lastFrameTimestamp;
             int m_totalFramesLastSecond;
