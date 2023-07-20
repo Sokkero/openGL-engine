@@ -31,6 +31,8 @@ namespace Engine
         private:
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
+            double m_deltaTime;
+            double m_currentFrameTimestamp;
             double m_lastFrameTimestamp;
             int m_totalFramesLastSecond;
             RenderManager* m_renderManager;

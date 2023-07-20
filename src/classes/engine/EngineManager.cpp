@@ -78,11 +78,13 @@ namespace Engine
 
     void EngineManager::setDeltaTime()
     {
-        m_lastFrameTimestamp = glfwGetTime();
+        m_currentFrameTimestamp = glfwGetTime();
+        m_deltaTime = m_currentFrameTimestamp - m_lastFrameTimestamp;
+        m_lastFrameTimestamp = m_currentFrameTimestamp;
     }
 
     float EngineManager::getDeltaTime()
     {
-        return glfwGetTime() - m_lastFrameTimestamp;
+        return m_deltaTime;
     }
 }
