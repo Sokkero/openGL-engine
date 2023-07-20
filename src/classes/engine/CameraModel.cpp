@@ -28,11 +28,27 @@ namespace Engine
     {
         if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_W) > 0)
         {
-            moveObj((getForward() * getWindowManager()->getEngine()->getDeltaTime()) * 500.f);
+            moveObj((getForward() * getWindowManager()->getEngine()->getDeltaTime()) * 2000.f);
         }
         else if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_S) > 0)
         {
-            moveObj((getBackwards() * getWindowManager()->getEngine()->getDeltaTime()) * 500.f);
+            moveObj((getBackwards() * getWindowManager()->getEngine()->getDeltaTime()) * 2000.f);
+        }
+        else if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_A) > 0)
+        {
+            moveObj((getLeft() * getWindowManager()->getEngine()->getDeltaTime()) * 2000.f);
+        }
+        else if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_D) > 0)
+        {
+            moveObj((getRight() * getWindowManager()->getEngine()->getDeltaTime()) * 2000.f);
+        }
+        else if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_E) > 0)
+        {
+            moveObj((getUp() * getWindowManager()->getEngine()->getDeltaTime()) * 2000.f);
+        }
+        else if(getWindowManager()->getUserEventManager()->getUserEvent(GLFW_KEY_Q) > 0)
+        {
+            moveObj((getDown() * getWindowManager()->getEngine()->getDeltaTime()) * 2000.f);
         }
     }
 
