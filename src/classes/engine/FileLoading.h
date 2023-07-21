@@ -156,6 +156,7 @@ namespace Engine
         return true;
     }
 
+    //TODO: make it possible to use textures
     static const bool loadFileDDS(
             char* filePath,
             std::vector<glm::vec3>& vertices,

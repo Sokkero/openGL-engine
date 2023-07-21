@@ -4,6 +4,7 @@
 
 namespace Engine { class EngineManager; }
 
+//TODO: Maybe make SceneOrigin a component in the future?
 class SceneOrigin : public Engine::BasicNode
 {
     public:

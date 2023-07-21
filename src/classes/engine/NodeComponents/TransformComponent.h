@@ -25,9 +25,11 @@ namespace Engine
             glm::vec3 getDown() { return glm::normalize(glm::vec3(m_modelMatrix[0][1], m_modelMatrix[1][1], m_modelMatrix[2][1])); };
             glm::vec3 getUp() { return -glm::normalize(glm::vec3(m_modelMatrix[0][1], m_modelMatrix[1][1], m_modelMatrix[2][1])); };
 
+            //TODO: create getGlobalX functions
             glm::vec4 getLocalPosition() const { return m_modelMatrix[3]; };
+            //TODO: apply scale to rendering
             glm::vec3 getLocalScale() const { return m_scale; };
-            glm::mat4 getModelMatrix() const { return m_modelMatrix; };
+            glm::mat4 getLocalModelMatrix() const { return m_modelMatrix; };
             void setModelMatrix(glm::mat4 matrix) { m_modelMatrix = matrix; };
 
         protected:
