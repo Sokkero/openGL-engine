@@ -5,7 +5,7 @@
 
 namespace Engine { class EngineManager; class UserEventManager; }
 
-class CameraActor : public Engine::BasicNode, public Engine::CameraComponent
+class CameraActor : public Engine::CameraComponent
 {
     public:
         CameraActor() = default;

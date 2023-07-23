@@ -29,20 +29,25 @@ namespace Engine
         node->setParent(nullptr);
     }
 
-    void BasicNode::removeAllChildNodes()
+    std::vector<std::shared_ptr<BasicNode>> BasicNode::removeAllChildNodes()
+    {
+        return std::move(m_childNodes);
+    }
+
+    void BasicNode::deleteAllChildNodes()
     {
         for(const auto& childNode : m_childNodes)
         {
-            childNode->removeAllChildNodes();
+            childNode->deleteAllChildNodes();
         }
         m_childNodes.clear();
     }
 
-    void BasicNode::callOnAllNodes(const std::function<void(BasicNode*)>& func)
+    void BasicNode::callOnAllChildren(const std::function<void(BasicNode*)>& func)
     {
         for(const auto& childNode : m_childNodes)
         {
-            childNode->callOnAllNodes(func);
+            childNode->callOnAllChildren(func);
         }
         func(this);
     }

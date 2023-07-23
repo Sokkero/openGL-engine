@@ -42,7 +42,7 @@ namespace Engine
     {
         const auto func = [] (BasicNode* node) { node->update(); };
 
-        getScene()->callOnAllNodes(func);
+        getScene()->callOnAllChildren(func);
     }
 
     void EngineManager::engineDraw()
@@ -50,7 +50,7 @@ namespace Engine
         if(m_camera)
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear the screen
-            getScene()->callOnAllNodes(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
+            getScene()->callOnAllChildren(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
         }
         else
         {
@@ -65,7 +65,7 @@ namespace Engine
         if(transform && geometry)
         {
             // MVP = Projection * View * Model (Matrix calculations are the other way around)
-            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getModelMatrix() * transform->getModelMatrix();
+            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getLocalModelMatrix() * transform->getLocalModelMatrix();
             m_renderManager->renderVertices(geometry, mvp);
         }
     }

@@ -1,12 +1,13 @@
 #pragma once
 
+#include "BasicNode.h"
 #include "TransformComponent.h"
 
 #include <glm/ext/matrix_float4x4.hpp>
 
 namespace Engine
 {
-    class CameraComponent : public TransformComponent
+    class CameraComponent : virtual public BasicNode, virtual public TransformComponent
     {
         public:
             CameraComponent();

@@ -2,6 +2,7 @@
 
 #include "../ObjectHelper.h"
 #include "../RenderManager.h"
+#include "BasicNode.h"
 
 #include <memory>
 
@@ -12,7 +13,7 @@
 namespace Engine
 {
 
-    class GeometryComponent
+    class GeometryComponent : virtual public BasicNode
     {
         public:
             explicit GeometryComponent()

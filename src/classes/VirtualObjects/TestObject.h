@@ -6,7 +6,7 @@
 
 using namespace Engine;
 
-class TestObject : public BasicNode, public TransformComponent, public GeometryComponent
+class TestObject : public TransformComponent, public GeometryComponent
 {
     public:
         TestObject() = default;

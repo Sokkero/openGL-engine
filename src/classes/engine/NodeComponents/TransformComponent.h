@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BasicNode.h"
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -7,7 +9,7 @@
 namespace Engine
 {
 
-    class TransformComponent
+    class TransformComponent : virtual public BasicNode
     {
         public:
             TransformComponent() : m_modelMatrix(glm::mat4(1.f)) {};

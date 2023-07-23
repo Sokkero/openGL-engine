@@ -12,6 +12,7 @@ void SceneOrigin::start()
     m_engineManager = getWindowManager()->getEngine();
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
+    camera->setPosition(glm::vec3(0.f, 0.f, -15.f));
     addAsChild(camera);
     m_engineManager->setCamera(camera);
 
