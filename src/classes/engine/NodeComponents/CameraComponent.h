@@ -7,7 +7,7 @@
 
 namespace Engine
 {
-    class CameraComponent : virtual public BasicNode, virtual public TransformComponent
+    class CameraComponent : virtual public BasicNode
     {
         public:
             CameraComponent();

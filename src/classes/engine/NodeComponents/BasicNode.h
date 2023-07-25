@@ -1,12 +1,15 @@
 #pragma once
 
+#include "TransformComponent.h"
+
 #include <vector>
+#include <string>
 
 namespace Engine
 {
     class WindowManager;
 
-    class BasicNode
+    class BasicNode : virtual public TransformComponent
     {
         public:
             BasicNode() = default;
@@ -14,6 +17,9 @@ namespace Engine
 
             virtual void start() {};
             virtual void update() {};
+
+            void setName(std::string name) { m_name = name; };
+            std::string getName() const { return m_name; };
 
             void addAsChild(std::shared_ptr<BasicNode> node);
             void removeFromParent(std::shared_ptr<BasicNode> node);
@@ -31,6 +37,7 @@ namespace Engine
             static void setWindowManager(WindowManager* newWindowManager) { windowManager = newWindowManager; };
             static WindowManager* getWindowManager() { return windowManager; };
         private:
+            std::string m_name;
             std::shared_ptr<BasicNode> m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
 

@@ -9,10 +9,12 @@
 
 void SceneOrigin::start()
 {
+    setName("origin");
     m_engineManager = getWindowManager()->getEngine();
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     camera->setPosition(glm::vec3(0.f, 0.f, -15.f));
+    camera->setName("camera");
     addAsChild(camera);
     m_engineManager->setCamera(camera);
 
@@ -27,6 +29,7 @@ void SceneOrigin::start()
     node1->setPosition(glm::vec3(5, 0, 0));
     node1->setTextureBuffer(m_engineManager->getRenderManager()->createVBO(g_color_buffer_data));
     node1->setScale(glm::vec3(1.f, 1.f, 1.f));
+    node1->setName("obj1");
     addAsChild(node1);
 
     std::shared_ptr<TestObject> node2 = std::make_shared<TestObject>();
@@ -35,5 +38,6 @@ void SceneOrigin::start()
     node2->setPosition(glm::vec3(-5, 0, 0));
     node2->setTextureBuffer(m_engineManager->getRenderManager()->createVBO(g_color_buffer_data));
     node2->setScale(glm::vec3(0.1f, 0.1f, 0.1f));
-    addAsChild(node2);
+    node2->setName("obj2");
+    node1->addAsChild(node2);
 }
