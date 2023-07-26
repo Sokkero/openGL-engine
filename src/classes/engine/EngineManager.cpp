@@ -60,12 +60,11 @@ namespace Engine
 
     void EngineManager::drawNode(BasicNode* node)
     {
-        const auto& transform = dynamic_cast<TransformComponent*>(node);
         const auto& geometry = dynamic_cast<GeometryComponent*>(node);
-        if(transform && geometry)
+        if(geometry)
         {
             // MVP = Projection * View * Model (Matrix calculations are the other way around)
-            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getLocalModelMatrix() * transform->getLocalModelMatrix();
+            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getLocalModelMatrix() * node->getGlobalModelMatrix();
             m_renderManager->renderVertices(geometry, mvp);
         }
     }

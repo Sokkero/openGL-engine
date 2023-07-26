@@ -34,6 +34,10 @@ namespace Engine
             void deleteAllChildNodes();
             void callOnAllChildren(const std::function<void(BasicNode*)>& func);
 
+            glm::mat4 getGlobalModelMatrix() const;
+            glm::vec4 getGlobalPosition() const;
+            glm::vec3 getGlobalScale() const;
+
             static void setWindowManager(WindowManager* newWindowManager) { windowManager = newWindowManager; };
             static WindowManager* getWindowManager() { return windowManager; };
         private:

@@ -51,4 +51,29 @@ namespace Engine
         }
         func(this);
     }
+
+    glm::mat4 BasicNode::getGlobalModelMatrix() const
+    {
+        if(m_parentNode)
+        {
+            return getLocalModelMatrix() * m_parentNode->getLocalModelMatrix();
+        }
+        return getLocalModelMatrix();
+    }
+
+    glm::vec4 BasicNode::getGlobalPosition() const
+    {
+        return getGlobalModelMatrix()[3];
+    }
+
+    glm::vec3 BasicNode::getGlobalScale() const
+    {
+        glm::vec3 scale;
+        const auto& matrix = getGlobalModelMatrix();
+        scale.x = glm::length(glm::vec3(matrix[0][0], matrix[0][1], matrix[0][2]));
+        scale.y = glm::length(glm::vec3(matrix[1][0], matrix[1][1], matrix[1][2]));
+        scale.z = glm::length(glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]));
+        return scale;
+
+    }
 }

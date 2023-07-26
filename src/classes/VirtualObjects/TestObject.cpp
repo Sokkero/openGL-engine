@@ -10,5 +10,6 @@ void TestObject::start()
 
 void TestObject::update()
 {
-    //std::cout << "Update" << std::endl;
+    //const auto& pos = getGlobalScale();
+    //std::cout <<  getName() << " | x: " << pos.x << " | y: " << pos.y << " | z: " << pos.z << std::endl;
 }
