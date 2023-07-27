@@ -26,13 +26,13 @@ namespace Engine
             GLFWwindow* getWindow() { return m_gameWindow; };
             std::pair<int, int> getWindowDimensions() { return m_windowDimensions; };
 
-            EngineManager* getEngine() { return m_engineManager; };
-            UserEventManager* getUserEventManager() { return m_userEventManager; };
+            std::shared_ptr<EngineManager> getEngine() { return m_engineManager; };
+            std::shared_ptr<UserEventManager> getUserEventManager() { return m_userEventManager; };
 
         private:
-            EngineManager* m_engineManager;
             GLFWwindow* m_gameWindow;
-            UserEventManager* m_userEventManager;
+            std::shared_ptr<EngineManager> m_engineManager;
+            std::shared_ptr<UserEventManager> m_userEventManager;
             std::pair<int, int> m_windowDimensions;
             int m_textureSamples;
             std::string m_windowTitle;

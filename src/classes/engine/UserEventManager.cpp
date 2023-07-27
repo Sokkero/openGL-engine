@@ -6,13 +6,13 @@
 
 namespace Engine
 {
-    UserEventManager* UserEventManager::m_instance = nullptr;
+    std::shared_ptr<UserEventManager> UserEventManager::m_instance = nullptr;
 
-    UserEventManager* UserEventManager::getUserEventManager()
+    std::shared_ptr<UserEventManager> UserEventManager::getUserEventManager()
     {
         if (m_instance == nullptr)
         {
-            m_instance = new UserEventManager();
+            m_instance = std::make_shared<UserEventManager>(UserEventManager());
         }
 
         return m_instance;

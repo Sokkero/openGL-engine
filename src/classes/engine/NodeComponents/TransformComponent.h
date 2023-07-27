@@ -27,6 +27,7 @@ namespace Engine
             void setPosition(glm::vec3 pos) { m_modelMatrix[3] = glm::vec4(pos, 1.f); };
 
             // TODO: Scaling also scales its global position, no clue how to fix for now
+            //  Maybe separate pos, rot and scale and combine them whenever needed?
             glm::vec3 getScale() const
             {
                 glm::vec3 scale;

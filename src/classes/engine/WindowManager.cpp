@@ -65,8 +65,8 @@ namespace Engine
 
         BasicNode::setWindowManager(this);
 
-        m_userEventManager = UserEventManager::getUserEventManager();
-        m_engineManager = new EngineManager();
+        m_userEventManager =  UserEventManager::getUserEventManager();
+        m_engineManager = std::make_shared<EngineManager>(EngineManager());
 
         m_engineManager->getScene()->start();
 

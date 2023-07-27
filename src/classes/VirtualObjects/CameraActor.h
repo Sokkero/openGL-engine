@@ -14,6 +14,6 @@ class CameraActor : public Engine::CameraComponent
         void start() override;
         void update() override;
 
-        Engine::EngineManager* m_engineManager;
-        Engine::UserEventManager* m_userEventManager;
+        std::shared_ptr<Engine::EngineManager> m_engineManager;
+        std::shared_ptr<Engine::UserEventManager> m_userEventManager;
 };
