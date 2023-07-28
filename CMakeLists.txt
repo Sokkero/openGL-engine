@@ -1,10 +1,8 @@
 cmake_minimum_required(VERSION 3.24)
 
-set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(PROJECT_NAME "openGLTutorial")
-set(SHADER_DIR ${CMAKE_BINARY_DIR}/src/shaders)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=undefined -g")
 
 project(${PROJECT_NAME})
@@ -15,7 +13,7 @@ if(EXISTS ${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
     include(${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
     conan_basic_setup()
 else()
-    message(WARNING "The file conanbuildinfo.cmake doesn't exist, you have to run ./build.sh first")
+    message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run ./build.sh first")
 endif()
 
 FILE(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)

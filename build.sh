@@ -1,4 +1,3 @@
-cd cmake-build-debug/
-rm -rf conanBuild/
-mkdir conanBuild && cd conanBuild
-conan install ../.. --build=missing --settings=build_type=Debug
+rm -rf cmake-build-debug/
+mkdir -p cmake-build-debug/conanBuild && cd cmake-build-debug/conanBuild
+conan install ../.. --build=missing
