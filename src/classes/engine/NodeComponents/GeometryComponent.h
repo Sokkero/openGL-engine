@@ -37,6 +37,11 @@ namespace Engine
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
             void setShader(ShaderType shader, RenderManager* renderManager)
             {
+                if(shader == ShaderType::solidTexture && m_objectData->m_vertexUvs.empty())
+                {
+                    fprintf(stderr, "Object of shaderType solidTexture has no UV data...\n");
+                    shader = ShaderType::solidColor;
+                }
                 m_shader = shader;
                 m_matrixId = renderManager->getUniform(shader, "MVP");
             }

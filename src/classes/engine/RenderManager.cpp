@@ -15,10 +15,10 @@ namespace Engine {
     {
         GLuint tempShaderID;
 
-        tempShaderID = LoadShaders( "resources/shader/simpleVertexShader.vert", "resources/shader/simpleFragmentShader.frag" );
+        tempShaderID = LoadShaders( "resources/shader/solidColor.vert", "resources/shader/solidColor.frag" );
         m_shaderList[ShaderType::solidColor] = tempShaderID;
 
-        tempShaderID = LoadShaders( "resources/shader/simpleVertexShader.vert", "resources/shader/simpleFragmentShader.frag" );
+        tempShaderID = LoadShaders( "resources/shader/solidTexture.vert", "resources/shader/solidTexture.frag" );
         m_shaderList[ShaderType::solidTexture] = tempShaderID;
         std::cout << "test" << std::endl;
     }
@@ -44,13 +44,16 @@ namespace Engine {
         }
 
         std::vector<glm::vec3> vertexData, vertexNormals;
-        std::vector<glm::vec2> textureData;
+        std::vector<glm::vec2> uvData;
 
-        loadFileOBJ(filePath, vertexData, textureData, vertexNormals);
+        loadFileOBJ(filePath, vertexData, uvData, vertexNormals);
+
+        uvData = {{0.000059f, 1.0f - 0.000004f}, {0.000103f, 1.0f - 0.336048f}, {0.335973f, 1.0f - 0.335903f}, {1.000023f, 1.0f - 0.000013f}, {0.667979f, 1.0f - 0.335851f}, {0.999958f, 1.0f - 0.336064f}, {0.667979f, 1.0f - 0.335851f}, {0.336024f, 1.0f - 0.671877f}, {0.667969f, 1.0f - 0.671889f}, {1.000023f, 1.0f - 0.000013f}, {0.668104f, 1.0f - 0.000013f}, {0.667979f, 1.0f - 0.335851f}, {0.000059f, 1.0f - 0.000004f}, {0.335973f, 1.0f - 0.335903f}, {0.336098f, 1.0f - 0.000071f}, {0.667979f, 1.0f - 0.335851f}, {0.335973f, 1.0f - 0.335903f}, {0.336024f, 1.0f - 0.671877f}, {1.000004f, 1.0f - 0.671847f}, {0.999958f, 1.0f - 0.336064f}, {0.667979f, 1.0f - 0.335851f}, {0.668104f, 1.0f - 0.000013f}, {0.335973f, 1.0f - 0.335903f}, {0.667979f, 1.0f - 0.335851f}, {0.335973f, 1.0f - 0.335903f}, {0.668104f, 1.0f - 0.000013f}, {0.336098f, 1.0f - 0.000071f}, {0.000103f, 1.0f - 0.336048f}, {0.000004f, 1.0f - 0.671870f}, {0.336024f, 1.0f - 0.671877f}, {0.000103f, 1.0f - 0.336048f}, {0.336024f, 1.0f - 0.671877f}, {0.335973f, 1.0f - 0.335903f}, {0.667969f, 1.0f - 0.671889f}, {1.000004f, 1.0f - 0.671847f}, {0.667979f, 1.0f - 0.335851f}};
 
         GLuint vertexBuffer = createVBO(vertexData);
+        GLuint uvBuffer = createVBO(uvData);
 
-        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(filePath, vertexBuffer, vertexData, vertexNormals);
+        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, vertexData, uvData, vertexNormals);
 
         m_objectList[filePath] = newObject;
 
@@ -59,36 +62,83 @@ namespace Engine {
 
     void RenderManager::deregisterObject(std::shared_ptr<ObjectData>& obj)
     {
-        for(auto& tempObj : m_objectList)
-        {
-            if( tempObj.second == obj )
+        std::erase_if(m_objectList, [&obj](const auto& elem) {
+            const bool shouldRemove = elem.second == obj;
+            if(shouldRemove)
             {
-                deleteObject(tempObj.second, true);
-                obj = nullptr;
-                return;
+                GLuint buffer[1] = {obj->m_vertexBuffer};
+                glDeleteBuffers(1, buffer);
             }
-        }
+            return shouldRemove;
+        });
     }
 
     void RenderManager::clearObjects()
     {
-        for(auto& tempObj : m_objectList)
+        for(auto& obj : m_objectList)
         {
-            deleteObject(tempObj.second, false);
+            GLuint buffer[1] = {obj.second->m_vertexBuffer};
+            glDeleteBuffers(1, buffer);
         }
         m_objectList.clear();
     }
 
-    void RenderManager::deleteObject(std::shared_ptr<ObjectData>& obj, const bool clearFromMap)
+    GLuint RenderManager::registerTexture(const char* filePath)
     {
-        GLuint buffer[1] = {obj->m_vertexBuffer};
-        glDeleteBuffers(1, buffer);
-
-        if(clearFromMap)
+        for ( auto& object : m_textureList )
         {
-            m_objectList.erase(m_objectList.find(obj->m_filePath));
-            obj = nullptr;
+            if ( object.first == filePath )
+            {
+                return object.second;
+            }
         }
+        unsigned int width, height;
+        unsigned char* data;
+
+        loadFileBMP(filePath, width, height, data);
+
+        // TODO: read up what all of this does in more detail
+        // Create one OpenGL texture
+        GLuint textureID;
+        glGenTextures(1, &textureID);
+
+        // "Bind" the newly created texture : all future texture functions will modify this texture
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        // Give the image to OpenGL
+        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+
+        // OpenGL has now copied the data. Free our own version
+        delete [] data;
+
+        // Poor filtering...
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+        // Nice trilinear filtering ...
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        // ... which requires mipmaps. Generate them automatically.
+        glGenerateMipmap(GL_TEXTURE_2D);
+
+        // Return the ID of the texture we just created
+        m_textureList[filePath] = textureID;
+        return textureID;
+    }
+
+    void RenderManager::deregisterTexture(GLuint tex)
+    {
+        std::erase_if(m_textureList, [&tex](const auto& elem) {
+            const bool shouldRemove = elem.second == tex;
+            if(shouldRemove)
+            {
+                GLuint buffer[1] = {tex};
+                glDeleteBuffers(1, buffer);
+            }
+            return shouldRemove;
+        });
     }
 
     void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
@@ -122,7 +172,7 @@ namespace Engine {
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer);
         glVertexAttribPointer(
-                0,             // No particular reason for 0, but must match the layout in the rendering
+                0,             // No particular reason for 0, but must match the enabled VertexAttribArray
                 3,             // Size
                 GL_FLOAT,      // Type
                 GL_FALSE,      // Normalized?
@@ -135,7 +185,7 @@ namespace Engine {
                 glEnableVertexAttribArray(1);
                 glBindBuffer(GL_ARRAY_BUFFER, object->getTextureBuffer());
                 glVertexAttribPointer(
-                        1,             // No particular reason for 1, but must match the layout in the rendering
+                        1,             // No particular reason for 1, but must match the enabled VertexAttribArray
                         4,             // Size
                         GL_FLOAT,      // Type
                         GL_FALSE,      // Normalized?
@@ -144,6 +194,21 @@ namespace Engine {
                 );
                 break;
             case ShaderType::solidTexture:
+                glActiveTexture(GL_TEXTURE0);
+                glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); // Correct?
+                glUniform1i(int(getUniform(ShaderType::solidTexture, "textureSampler")), 0);
+
+                glEnableVertexAttribArray(1);
+                glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_uvBuffer);
+                glVertexAttribPointer(
+                        1,                                // attribute. No particular reason for 1, but must match the enabled VertexAttribArray
+                        2,                                // size : U+V => 2
+                        GL_FLOAT,                         // type
+                        GL_FALSE,                         // normalized?
+                        0,                                // stride
+                        (void*) nullptr                   // array buffer offset
+                );
+                break;
             case ShaderType::undefined:
                 break;
         }
@@ -152,37 +217,5 @@ namespace Engine {
         glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
-    }
-
-    GLuint RenderManager::createVBO(std::vector<glm::vec3> &data)
-    {
-        int dataSize = data.size() * sizeof(glm::vec3);
-
-        // Identify the vertex buffer
-        GLuint vbo;
-        // Generate a buffer with our identifier
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-        // Give vertices to OpenGL
-        glBufferData(GL_ARRAY_BUFFER, dataSize, &data[0], GL_STATIC_DRAW);
-
-        return vbo;
-    }
-
-    GLuint RenderManager::createVBO(std::vector<glm::vec4> &data)
-    {
-        int dataSize = data.size() * sizeof(glm::vec4);
-
-        // Identify the vertex buffer
-        GLuint vbo;
-        // Generate a buffer with our identifier
-        glGenBuffers(1, &vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-        // Give vertices to OpenGL
-        glBufferData(GL_ARRAY_BUFFER, dataSize, &data[0], GL_STATIC_DRAW);
-
-        return vbo;
     }
 }

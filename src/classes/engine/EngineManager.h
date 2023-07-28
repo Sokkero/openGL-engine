@@ -28,14 +28,18 @@ namespace Engine
             RenderManager* getRenderManager() const { return m_renderManager; };
             void setDeltaTime();
             float getDeltaTime();
+
+            void printFps();
         private:
+            RenderManager* m_renderManager;
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
+
             double m_deltaTime;
             double m_currentFrameTimestamp;
             double m_lastFrameTimestamp;
-            int m_totalFramesLastSecond;
-            RenderManager* m_renderManager;
+            double m_lastFpsPrint;
+            int m_frames;
     };
 
 }

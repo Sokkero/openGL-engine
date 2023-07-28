@@ -17,7 +17,10 @@ namespace Engine
     : m_sceneNode(nullptr)
     , m_camera(nullptr)
     , m_lastFrameTimestamp(0)
-    , m_totalFramesLastSecond(0)
+    , m_deltaTime(0)
+    , m_lastFpsPrint(0)
+    , m_currentFrameTimestamp(0)
+    , m_frames(0)
     , m_renderManager(nullptr)
     {
         m_renderManager = new RenderManager();
@@ -40,6 +43,7 @@ namespace Engine
 
     void EngineManager::engineUpdate()
     {
+        printFps();
         const auto func = [] (BasicNode* node) { node->update(); };
 
         getScene()->callOnAllChildren(func);
@@ -85,5 +89,16 @@ namespace Engine
     float EngineManager::getDeltaTime()
     {
         return m_deltaTime;
+    }
+
+    void EngineManager::printFps()
+    {
+        m_frames++;
+        if(m_currentFrameTimestamp - m_lastFpsPrint >= 1)
+        {
+            printf("%d Fps\n", m_frames);
+            m_frames = 0;
+            m_lastFpsPrint = m_currentFrameTimestamp;
+        }
     }
 }

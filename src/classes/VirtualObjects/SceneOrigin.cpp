@@ -30,9 +30,9 @@ void SceneOrigin::start()
 
     std::shared_ptr<TestObject> node1 = std::make_shared<TestObject>();
     node1->setObjectData(m_engineManager->getRenderManager()->registerObject("resources/objects/cube.obj"));
-    node1->setShader(ShaderType::solidColor, m_engineManager->getRenderManager());
+    node1->setShader(ShaderType::solidTexture, m_engineManager->getRenderManager());
     node1->setPosition(glm::vec3(5, 0, 0));
-    node1->setTextureBuffer(m_engineManager->getRenderManager()->createVBO(g_color_buffer_data1));
+    node1->setTextureBuffer(m_engineManager->getRenderManager()->registerTexture("resources/textures/uvtemplate.bmp"));
     //node1->setScale(glm::vec3(1.f, 1.f, 1.f));
     node1->setName("obj1");
     addAsChild(node1);
@@ -44,5 +44,5 @@ void SceneOrigin::start()
     //node2->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
     node2->setTextureBuffer(m_engineManager->getRenderManager()->createVBO(g_color_buffer_data2));
     node2->setName("obj2");
-    node1->addAsChild(node2);
+    //node1->addAsChild(node2);
 }

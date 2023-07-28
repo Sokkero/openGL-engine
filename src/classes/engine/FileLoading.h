@@ -75,7 +75,7 @@ namespace Engine
                 {
                     matches = sscanf(
                             line,
-                            "f %d//%d %d//%d %d//%d",
+                            "f %i//%i %i//%i %i//%i",
                             &vertexIndex[0],
                             &normalIndex[0],
                             &vertexIndex[1],
@@ -87,17 +87,17 @@ namespace Engine
                     {
                         matches = sscanf(
                                 line,
-                                "f %d/%d %d/%d %d/%d",
+                                "f %i/%i %i/%i %i/%i",
                                 &vertexIndex[0],
                                 &uvIndex[0],
                                 &vertexIndex[1],
-                                &uvIndex[0],
+                                &uvIndex[1],
                                 &vertexIndex[2],
-                                &uvIndex[0]
+                                &uvIndex[2]
                         );
                         if (matches != 6)
                         {
-                            matches = sscanf(line, "f %d %d %d", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2]);
+                            sscanf(line, "f %i %i %i", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2]);
                             vertexIndices.push_back(vertexIndex[0]);
                             vertexIndices.push_back(vertexIndex[1]);
                             vertexIndices.push_back(vertexIndex[2]);
@@ -169,5 +169,74 @@ namespace Engine
             std::vector<glm::vec2>& uvs,
             std::vector<glm::vec3>& normals
     );
-    static const GLuint loadFileBMP(char* filePath);
+    static const void loadFileBMP(const char* filePath, unsigned int& width, unsigned int& height, unsigned char*& data)
+    {
+        // Data read from the header of the BMP file
+        unsigned char header[54];
+        unsigned int dataPos;
+        unsigned int imageSize;
+
+        // Open the file
+        FILE * file = fopen(filePath,"rb");
+        if (!file)
+        {
+            printf("Impossible to open the file !\n");
+            return;
+        }
+
+        // Read the header, i.e. the 54 first bytes
+
+        // If less than 54 bytes are read, problem
+        if (fread(header, 1, 54, file)!=54)
+        {
+            printf("Not a correct BMP file\n");
+            fclose(file);
+            return;
+        }
+        // A BMP files always begins with "BM"
+        if (header[0]!='B' || header[1]!='M')
+        {
+            printf("Not a correct BMP file\n");
+            fclose(file);
+            return;
+        }
+        // Make sure this is a 24bpp file
+        if (*(int*)&(header[0x1E])!=0 )
+        {
+            printf("Not a correct BMP file\n");
+            fclose(file);
+            return;
+        }
+        if (*(int*)&(header[0x1C])!=24)
+        {
+            printf("Not a correct BMP file\n");
+            fclose(file);
+            return;
+        }
+        
+        // Read the information about the image
+        dataPos = *(int*)&(header[0x0A]);
+        imageSize = *(int*)&(header[0x22]);
+        width = *(int*)&(header[0x12]);
+        height = *(int*)&(header[0x16]);
+
+        // Some BMP files are misformatted, guess missing information
+        if (imageSize==0)
+        {
+            imageSize = width * height * 3; // 3 : one byte for each Red, Green and Blue component
+        }
+        if (dataPos==0)
+        {
+            dataPos = 54; // The BMP header is done that way
+        }
+
+        // Create a buffer
+        data = new unsigned char [imageSize];
+
+        // Read the actual data from the file into the buffer
+        fread(data,1,imageSize,file);
+
+        // Everything is in memory now, the file can be closed.
+        fclose (file);
+    };
 }

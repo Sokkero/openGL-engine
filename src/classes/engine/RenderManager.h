@@ -20,19 +20,40 @@ namespace Engine
             std::shared_ptr<ObjectData> registerObject(const char* filePath);
             void deregisterObject(std::shared_ptr<ObjectData>& obj);
             void clearObjects();
+
+            GLuint registerTexture(const char* filePath);
+            void deregisterTexture(GLuint tex);
+            void clearTextures();
+
             GLuint getUniform(ShaderType shader, const std::string& uniformName);
+
             std::map<ShaderType, GLuint> getShader() { return m_shaderList; };
+
             void renderVertices(GeometryComponent* object, const glm::mat4& mvp);
+
             std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
 
-            static GLuint createVBO(std::vector<glm::vec3>& data);
-            static GLuint createVBO(std::vector<glm::vec4>& data);
+            template <typename T>
+            static GLuint createVBO(std::vector<T>& data)
+            {
+                int dataSize = data.size() * sizeof(T);
+
+                // Identify the vertex buffer
+                GLuint vbo;
+                // Generate a buffer with our identifier
+                glGenBuffers(1, &vbo);
+                glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+                // Give vertices to OpenGL
+                glBufferData(GL_ARRAY_BUFFER, dataSize, &data[0], GL_STATIC_DRAW);
+
+                return vbo;
+            };
 
         private:
-            void deleteObject(std::shared_ptr<ObjectData>& obj, const bool clearFromMap);
-
             std::map<ShaderType, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
+            std::map<std::string, GLuint> m_textureList;
     };
 
 }
