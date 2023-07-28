@@ -68,7 +68,7 @@ namespace Engine
         if(geometry)
         {
             // MVP = Projection * View * Model (Matrix calculations are the other way around)
-            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getLocalModelMatrix() * node->getGlobalModelMatrix();
+            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getGlobalModelMatrix() * node->getGlobalModelMatrix();
             m_renderManager->renderVertices(geometry, mvp);
         }
     }

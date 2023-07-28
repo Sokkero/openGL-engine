@@ -213,7 +213,7 @@ namespace Engine
             fclose(file);
             return;
         }
-        
+
         // Read the information about the image
         dataPos = *(int*)&(header[0x0A]);
         imageSize = *(int*)&(header[0x22]);
