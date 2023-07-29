@@ -23,10 +23,13 @@ namespace Engine
 
             int startWindow();
             void setWindowDimensions(int width, int height);
+
             GLFWwindow* getWindow() { return m_gameWindow; };
+
             std::pair<int, int> getWindowDimensions() { return m_windowDimensions; };
 
             std::shared_ptr<EngineManager> getEngine() { return m_engineManager; };
+
             std::shared_ptr<UserEventManager> getUserEventManager() { return m_userEventManager; };
 
         private:
@@ -37,4 +40,4 @@ namespace Engine
             int m_textureSamples;
             std::string m_windowTitle;
     };
-}
+} // namespace Engine

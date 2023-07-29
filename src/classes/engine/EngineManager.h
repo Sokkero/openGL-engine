@@ -20,16 +20,20 @@ namespace Engine
             void drawNode(BasicNode* node);
 
             void setScene(std::shared_ptr<BasicNode> sceneNode);
+
             std::shared_ptr<BasicNode> getScene() const { return m_sceneNode; };
 
             void setCamera(std::shared_ptr<CameraComponent> camera) { m_camera = std::move(camera); };
+
             std::shared_ptr<CameraComponent> getCamera() const { return m_camera; };
 
             RenderManager* getRenderManager() const { return m_renderManager; };
+
             void setDeltaTime();
             float getDeltaTime();
 
             void printFps();
+
         private:
             RenderManager* m_renderManager;
             std::shared_ptr<BasicNode> m_sceneNode;
@@ -42,4 +46,4 @@ namespace Engine
             int m_frames;
     };
 
-}
+} // namespace Engine

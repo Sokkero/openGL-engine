@@ -5,28 +5,18 @@
 namespace Engine
 {
     CameraComponent::CameraComponent()
-    : m_projectionMatrix(glm::mat4())
-    , m_fov (45.f)
-    , m_aspectRatio((float)1024 / (float)640)
-    , m_zNear(.1f)
-    , m_zFar(100.f)
+        : m_projectionMatrix(glm::mat4())
+        , m_fov(45.f)
+        , m_aspectRatio((float)1024 / (float)640)
+        , m_zNear(.1f)
+        , m_zFar(100.f)
     {
-        m_projectionMatrix = glm::perspective(
-                glm::radians(m_fov),
-                m_aspectRatio,
-                m_zNear,
-                m_zFar
-        );
+        m_projectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_zNear, m_zFar);
     }
 
     void CameraComponent::updateProjectionMatrix()
     {
-        m_projectionMatrix = glm::perspective(
-                glm::radians(m_fov),
-                m_aspectRatio,
-                m_zNear,
-                m_zFar
-        );
+        m_projectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_zNear, m_zFar);
     }
 
     void CameraComponent::setFov(float fov)
@@ -52,4 +42,4 @@ namespace Engine
         m_zFar = zFar;
         updateProjectionMatrix();
     }
-}
+} // namespace Engine

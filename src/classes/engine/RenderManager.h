@@ -2,15 +2,16 @@
 
 #include "ObjectHelper.h"
 
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
 
 #include <glm/gtc/matrix_transform.hpp>
 
 namespace Engine
 {
     class GeometryComponent;
+
     class RenderManager
     {
         public:
@@ -33,7 +34,7 @@ namespace Engine
 
             std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
 
-            template <typename T>
+            template<typename T>
             static GLuint createVBO(std::vector<T>& data)
             {
                 int dataSize = data.size() * sizeof(T);
@@ -56,4 +57,4 @@ namespace Engine
             std::map<std::string, GLuint> m_textureList;
     };
 
-}
+} // namespace Engine

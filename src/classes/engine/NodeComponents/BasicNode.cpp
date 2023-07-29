@@ -23,7 +23,7 @@ namespace Engine
         node->setParent(std::make_shared<BasicNode>(*this));
 
         node->start();
-        std::cout << "Object [" << node->getName() <<"] initialised" << std::endl;
+        std::cout << "Object [" << node->getName() << "] initialised" << std::endl;
     }
 
     void BasicNode::removeFromParent(std::shared_ptr<BasicNode> node)
@@ -39,19 +39,13 @@ namespace Engine
 
     void BasicNode::deleteAllChildNodes()
     {
-        for(const auto& childNode : m_childNodes)
-        {
-            childNode->deleteAllChildNodes();
-        }
+        for(const auto& childNode : m_childNodes) { childNode->deleteAllChildNodes(); }
         m_childNodes.clear();
     }
 
     void BasicNode::callOnAllChildren(const std::function<void(BasicNode*)>& func)
     {
-        for(const auto& childNode : m_childNodes)
-        {
-            childNode->callOnAllChildren(func);
-        }
+        for(const auto& childNode : m_childNodes) { childNode->callOnAllChildren(func); }
         func(this);
     }
 
@@ -64,10 +58,7 @@ namespace Engine
         return getLocalModelMatrix();
     }
 
-    glm::vec4 BasicNode::getGlobalPosition() const
-    {
-        return getGlobalModelMatrix()[3];
-    }
+    glm::vec4 BasicNode::getGlobalPosition() const { return getGlobalModelMatrix()[3]; }
 
     glm::vec3 BasicNode::getGlobalScale() const
     {
@@ -77,6 +68,5 @@ namespace Engine
         scale.y = glm::length(glm::vec3(matrix[1][0], matrix[1][1], matrix[1][2]));
         scale.z = glm::length(glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]));
         return scale;
-
     }
-}
+} // namespace Engine

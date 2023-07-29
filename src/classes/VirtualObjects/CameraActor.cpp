@@ -1,8 +1,8 @@
 #include "CameraActor.h"
 
-#include "../engine/WindowManager.h"
 #include "../engine/EngineManager.h"
 #include "../engine/UserEventManager.h"
+#include "../engine/WindowManager.h"
 
 #include <iostream>
 
@@ -17,22 +17,22 @@ void CameraActor::update()
     if(m_userEventManager->getUserEvent(GLFW_KEY_W) > 0)
     {
         getParentNode()->rotateObj(getParentNode()->getLeft(), m_engineManager->getDeltaTime() * 100);
-        //moveObj((getForward() * m_engineManager->getDeltaTime()) * 10.f);
+        // moveObj((getForward() * m_engineManager->getDeltaTime()) * 10.f);
     }
     else if(m_userEventManager->getUserEvent(GLFW_KEY_S) > 0)
     {
         getParentNode()->rotateObj(getParentNode()->getRight(), m_engineManager->getDeltaTime() * 100);
-        //moveObj((getBackwards() * m_engineManager->getDeltaTime()) * 10.f);
+        // moveObj((getBackwards() * m_engineManager->getDeltaTime()) * 10.f);
     }
     else if(m_userEventManager->getUserEvent(GLFW_KEY_A) > 0)
     {
         getParentNode()->rotateObj(getParentNode()->getDown(), m_engineManager->getDeltaTime() * 100);
-        //moveObj((getLeft() * m_engineManager->getDeltaTime()) * 10.f);
+        // moveObj((getLeft() * m_engineManager->getDeltaTime()) * 10.f);
     }
     else if(m_userEventManager->getUserEvent(GLFW_KEY_D) > 0)
     {
         getParentNode()->rotateObj(getParentNode()->getUp(), m_engineManager->getDeltaTime() * 100);
-        //moveObj((getRight() * m_engineManager->getDeltaTime()) * 10.f);
+        // moveObj((getRight() * m_engineManager->getDeltaTime()) * 10.f);
     }
     else if(m_userEventManager->getUserEvent(GLFW_KEY_E) > 0)
     {

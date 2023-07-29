@@ -10,7 +10,7 @@ namespace Engine
 
     std::shared_ptr<UserEventManager> UserEventManager::getUserEventManager()
     {
-        if (m_instance == nullptr)
+        if(m_instance == nullptr)
         {
             m_instance = std::make_shared<UserEventManager>(UserEventManager());
         }
@@ -31,7 +31,7 @@ namespace Engine
     void UserEventManager::updateEvents(GLFWwindow* window)
     {
         std::vector<GLFW_KEY> keysToRemove;
-        for (auto& userEvent : m_userEvents)
+        for(auto& userEvent : m_userEvents)
         {
             if(userEvent.second == GLFW_RELEASE)
             {
@@ -47,24 +47,21 @@ namespace Engine
             }
         }
 
-        for(const auto& key : keysToRemove)
-        {
-            m_userEvents.erase(key);
-        }
+        for(const auto& key : keysToRemove) { m_userEvents.erase(key); }
 
-        for (int key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; ++key)
+        for(int key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; ++key)
         {
-            if (m_userEvents.find(key) == m_userEvents.end() && glfwGetKey(window, key) != GLFW_RELEASE)
+            if(m_userEvents.find(key) == m_userEvents.end() && glfwGetKey(window, key) != GLFW_RELEASE)
             {
                 m_userEvents[key] = glfwGetKey(window, key);
             }
         }
 
-        //For debugging purposes
-/*
-        for (const auto& userEvent : m_userEvents) {
-            std::cout << "Key " << userEvent.first << ": " << userEvent.second << std::endl;
-        }
-*/
+        // For debugging purposes
+        /*
+                for (const auto& userEvent : m_userEvents) {
+                    std::cout << "Key " << userEvent.first << ": " << userEvent.second << std::endl;
+                }
+        */
     }
-}
+} // namespace Engine

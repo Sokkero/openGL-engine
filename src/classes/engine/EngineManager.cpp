@@ -3,9 +3,9 @@
 
 #include "../VirtualObjects/SceneOrigin.h"
 #include "NodeComponents/CameraComponent.h"
-#include "RenderManager.h"
 #include "NodeComponents/GeometryComponent.h"
 #include "NodeComponents/TransformComponent.h"
+#include "RenderManager.h"
 
 #include <iostream>
 
@@ -14,14 +14,14 @@
 namespace Engine
 {
     EngineManager::EngineManager()
-    : m_sceneNode(nullptr)
-    , m_camera(nullptr)
-    , m_lastFrameTimestamp(0)
-    , m_deltaTime(0)
-    , m_lastFpsPrint(0)
-    , m_currentFrameTimestamp(0)
-    , m_frames(0)
-    , m_renderManager(nullptr)
+        : m_sceneNode(nullptr)
+        , m_camera(nullptr)
+        , m_lastFrameTimestamp(0)
+        , m_deltaTime(0)
+        , m_lastFpsPrint(0)
+        , m_currentFrameTimestamp(0)
+        , m_frames(0)
+        , m_renderManager(nullptr)
     {
         m_renderManager = new RenderManager();
 
@@ -44,7 +44,7 @@ namespace Engine
     void EngineManager::engineUpdate()
     {
         printFps();
-        const auto func = [] (BasicNode* node) { node->update(); };
+        const auto func = [](BasicNode* node) { node->update(); };
 
         getScene()->callOnAllChildren(func);
     }
@@ -53,7 +53,7 @@ namespace Engine
     {
         if(m_camera)
         {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); //Clear the screen
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
             getScene()->callOnAllChildren(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
         }
         else
@@ -68,7 +68,8 @@ namespace Engine
         if(geometry)
         {
             // MVP = Projection * View * Model (Matrix calculations are the other way around)
-            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getGlobalModelMatrix() * node->getGlobalModelMatrix();
+            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getGlobalModelMatrix() *
+                    node->getGlobalModelMatrix();
             m_renderManager->renderVertices(geometry, mvp);
         }
     }
@@ -86,10 +87,7 @@ namespace Engine
         m_lastFrameTimestamp = m_currentFrameTimestamp;
     }
 
-    float EngineManager::getDeltaTime()
-    {
-        return m_deltaTime;
-    }
+    float EngineManager::getDeltaTime() { return m_deltaTime; }
 
     void EngineManager::printFps()
     {
@@ -101,4 +99,4 @@ namespace Engine
             m_lastFpsPrint = m_currentFrameTimestamp;
         }
     }
-}
+} // namespace Engine

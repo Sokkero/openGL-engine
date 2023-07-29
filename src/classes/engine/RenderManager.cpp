@@ -1,32 +1,33 @@
 
 #include "RenderManager.h"
 
+#include "FileLoading.h"
 #include "NodeComponents/GeometryComponent.h"
 #include "loadShader.h"
-#include "FileLoading.h"
 
 #include <iostream>
 
-namespace Engine {
+namespace Engine
+{
 
     RenderManager::RenderManager()
-    : m_objectList(std::map<std::string, std::shared_ptr<ObjectData>>())
-    , m_shaderList(std::map<ShaderType, GLuint>())
+        : m_objectList(std::map<std::string, std::shared_ptr<ObjectData>>())
+        , m_shaderList(std::map<ShaderType, GLuint>())
     {
         GLuint tempShaderID;
 
-        tempShaderID = LoadShaders( "resources/shader/solidColor.vert", "resources/shader/solidColor.frag" );
+        tempShaderID = LoadShaders("resources/shader/solidColor.vert", "resources/shader/solidColor.frag");
         m_shaderList[ShaderType::solidColor] = tempShaderID;
 
-        tempShaderID = LoadShaders( "resources/shader/solidTexture.vert", "resources/shader/solidTexture.frag" );
+        tempShaderID = LoadShaders("resources/shader/solidTexture.vert", "resources/shader/solidTexture.frag");
         m_shaderList[ShaderType::solidTexture] = tempShaderID;
     }
 
     GLuint RenderManager::getUniform(ShaderType type, const std::string& uniformName)
     {
-        for ( auto& shader : m_shaderList )
+        for(auto& shader : m_shaderList)
         {
-            if ( shader.first == type)
+            if(shader.first == type)
                 return glGetUniformLocation(shader.second, uniformName.c_str());
         }
         return 0;
@@ -34,9 +35,9 @@ namespace Engine {
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
     {
-        for ( auto& object : m_objectList )
+        for(auto& object : m_objectList)
         {
-            if ( object.first == filePath )
+            if(object.first == filePath)
             {
                 return object.second;
             }
@@ -53,7 +54,8 @@ namespace Engine {
         GLuint vertexBuffer = createVBO(vertexData);
         GLuint uvBuffer = createVBO(uvData);
 
-        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, vertexData, uvData, vertexNormals);
+        std::shared_ptr<ObjectData> newObject =
+                std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, vertexData, uvData, vertexNormals);
 
         m_objectList[filePath] = newObject;
 
@@ -62,22 +64,26 @@ namespace Engine {
 
     void RenderManager::deregisterObject(std::shared_ptr<ObjectData>& obj)
     {
-        std::erase_if(m_objectList, [&obj](const auto& elem) {
-            const bool shouldRemove = elem.second == obj;
-            if(shouldRemove)
-            {
-                GLuint buffer[1] = {obj->m_vertexBuffer};
-                glDeleteBuffers(1, buffer);
-            }
-            return shouldRemove;
-        });
+        std::erase_if(
+                m_objectList,
+                [&obj](const auto& elem)
+                {
+                    const bool shouldRemove = elem.second == obj;
+                    if(shouldRemove)
+                    {
+                        GLuint buffer[1] = { obj->m_vertexBuffer };
+                        glDeleteBuffers(1, buffer);
+                    }
+                    return shouldRemove;
+                }
+        );
     }
 
     void RenderManager::clearObjects()
     {
         for(auto& obj : m_objectList)
         {
-            GLuint buffer[1] = {obj.second->m_vertexBuffer};
+            GLuint buffer[1] = { obj.second->m_vertexBuffer };
             glDeleteBuffers(1, buffer);
         }
         m_objectList.clear();
@@ -85,9 +91,9 @@ namespace Engine {
 
     GLuint RenderManager::registerTexture(const char* filePath)
     {
-        for ( auto& object : m_textureList )
+        for(auto& object : m_textureList)
         {
-            if ( object.first == filePath )
+            if(object.first == filePath)
             {
                 return object.second;
             }
@@ -109,14 +115,14 @@ namespace Engine {
         glBindTexture(GL_TEXTURE_2D, textureID);
 
         // Give the image to OpenGL
-        glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
         // OpenGL has now copied the data. Free our own version
-        delete [] data;
+        delete[] data;
 
         // Poor filtering...
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        //glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
         // Nice trilinear filtering ...
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -133,15 +139,19 @@ namespace Engine {
 
     void RenderManager::deregisterTexture(GLuint tex)
     {
-        std::erase_if(m_textureList, [&tex](const auto& elem) {
-            const bool shouldRemove = elem.second == tex;
-            if(shouldRemove)
-            {
-                GLuint buffer[1] = {tex};
-                glDeleteBuffers(1, buffer);
-            }
-            return shouldRemove;
-        });
+        std::erase_if(
+                m_textureList,
+                [&tex](const auto& elem)
+                {
+                    const bool shouldRemove = elem.second == tex;
+                    if(shouldRemove)
+                    {
+                        GLuint buffer[1] = { tex };
+                        glDeleteBuffers(1, buffer);
+                    }
+                    return shouldRemove;
+                }
+        );
     }
 
     void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
@@ -153,9 +163,9 @@ namespace Engine {
         }
 
         bool foundShader = false;
-        for ( auto& shader : m_shaderList)
+        for(auto& shader : m_shaderList)
         {
-            if ( shader.first == object->getShader())
+            if(shader.first == object->getShader())
             {
                 glUseProgram(shader.second);
                 foundShader = true;
@@ -164,12 +174,15 @@ namespace Engine {
 
         if(!foundShader)
         {
-            fprintf(stderr, "Couldn't find shader for object, shader in question: %s", ShaderTypeToString(object->getShader()).c_str());
+            fprintf(stderr,
+                    "Couldn't find shader for object, shader in question: %s",
+                    ShaderTypeToString(object->getShader()).c_str());
             return;
         }
 
         // Send our transformation to the currently bound rendering, in the "MVP" uniform
-        // This is done in the main loop since each model will have a different MVP matrix (At least for the M part)
+        // This is done in the main loop since each model will have a different MVP matrix (At least for the M
+        // part)
         glUniformMatrix4fv(int(object->getMatrixId()), 1, GL_FALSE, &mvp[0][0]);
 
         glEnableVertexAttribArray(0);
@@ -183,17 +196,18 @@ namespace Engine {
                 (void*)nullptr // Array buffer offset
         );
 
-        switch (object->getShader()) {
+        switch(object->getShader())
+        {
             case ShaderType::solidColor:
                 glEnableVertexAttribArray(1);
                 glBindBuffer(GL_ARRAY_BUFFER, object->getTextureBuffer());
                 glVertexAttribPointer(
-                        1,             // No particular reason for 1, but must match the enabled VertexAttribArray
-                        4,             // Size
-                        GL_FLOAT,      // Type
-                        GL_FALSE,      // Normalized?
-                        0,             // Stride
-                        (void*) nullptr // Array buffer offset
+                        1,        // No particular reason for 1, but must match the enabled VertexAttribArray
+                        4,        // Size
+                        GL_FLOAT, // Type
+                        GL_FALSE, // Normalized?
+                        0,        // Stride
+                        (void*)nullptr // Array buffer offset
                 );
                 break;
             case ShaderType::solidTexture:
@@ -204,16 +218,16 @@ namespace Engine {
                 glEnableVertexAttribArray(1);
                 glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_uvBuffer);
                 glVertexAttribPointer(
-                        1,                                // attribute. No particular reason for 1, but must match the enabled VertexAttribArray
-                        2,                                // size : U+V => 2
-                        GL_FLOAT,                         // type
-                        GL_FALSE,                         // normalized?
-                        0,                                // stride
-                        (void*) nullptr                   // array buffer offset
+                        1,             // attribute. No particular reason for 1, but must match the enabled
+                                       // VertexAttribArray
+                        2,             // size : U+V => 2
+                        GL_FLOAT,      // type
+                        GL_FALSE,      // normalized?
+                        0,             // stride
+                        (void*)nullptr // array buffer offset
                 );
                 break;
-            case ShaderType::undefined:
-                break;
+            case ShaderType::undefined: break;
         }
 
         // Drawing the object
@@ -221,4 +235,4 @@ namespace Engine {
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
     }
-}
+} // namespace Engine
