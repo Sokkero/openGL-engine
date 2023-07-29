@@ -12,7 +12,7 @@ namespace Engine
     {
         if(pos >= m_childNodes.size())
         {
-            return {nullptr};
+            return nullptr;
         }
         return m_childNodes[pos];
     }
