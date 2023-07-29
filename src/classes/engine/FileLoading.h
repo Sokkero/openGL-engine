@@ -1,13 +1,14 @@
 #pragma once
 
-#include <vector>
-
 #include <glm/glm.hpp>
 #include <GL/glew.h>
 
+#include <vector>
+#include <iostream>
+
 namespace Engine
 {
-    static bool loadFileOBJ(
+    static const bool loadFileOBJ(
             const char* filePath,
             std::vector<glm::vec3>& vertices,
             std::vector<glm::vec2>& uvs,
@@ -21,7 +22,7 @@ namespace Engine
         FILE* file = fopen(filePath, "r");
         if (file == nullptr)
         {
-            printf("Impossible to open the file !\n");
+            std::cout << "Couldn't open file [" << filePath << "]" << std::endl;
             return false;
         }
 
@@ -169,7 +170,7 @@ namespace Engine
             std::vector<glm::vec2>& uvs,
             std::vector<glm::vec3>& normals
     );
-    static const void loadFileBMP(const char* filePath, unsigned int& width, unsigned int& height, unsigned char*& data)
+    static const bool loadFileBMP(const char* filePath, unsigned int& width, unsigned int& height, unsigned char*& data)
     {
         // Data read from the header of the BMP file
         unsigned char header[54];
@@ -180,8 +181,8 @@ namespace Engine
         FILE * file = fopen(filePath,"rb");
         if (!file)
         {
-            printf("Impossible to open the file !\n");
-            return;
+            std::cout << "Couldn't open file [" << filePath << "]" << std::endl;
+            return false;
         }
 
         // Read the header, i.e. the 54 first bytes
@@ -189,29 +190,29 @@ namespace Engine
         // If less than 54 bytes are read, problem
         if (fread(header, 1, 54, file)!=54)
         {
-            printf("Not a correct BMP file\n");
+            std::cout << "BMP file is not correct [" << filePath << "]" <<std::endl;
             fclose(file);
-            return;
+            return false;
         }
         // A BMP files always begins with "BM"
         if (header[0]!='B' || header[1]!='M')
         {
-            printf("Not a correct BMP file\n");
+            std::cout << "BMP file is not correct [" << filePath << "]" <<std::endl;
             fclose(file);
-            return;
+            return false;
         }
         // Make sure this is a 24bpp file
         if (*(int*)&(header[0x1E])!=0 )
         {
-            printf("Not a correct BMP file\n");
+            std::cout << "BMP file is not correct [" << filePath << "]" <<std::endl;
             fclose(file);
-            return;
+            return false;
         }
         if (*(int*)&(header[0x1C])!=24)
         {
-            printf("Not a correct BMP file\n");
+            std::cout << "BMP file is not correct [" << filePath << "]" <<std::endl;
             fclose(file);
-            return;
+            return false;
         }
 
         // Read the information about the image
@@ -238,5 +239,7 @@ namespace Engine
 
         // Everything is in memory now, the file can be closed.
         fclose (file);
+
+        return true;
     };
 }

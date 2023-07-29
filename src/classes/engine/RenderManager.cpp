@@ -20,7 +20,6 @@ namespace Engine {
 
         tempShaderID = LoadShaders( "resources/shader/solidTexture.vert", "resources/shader/solidTexture.frag" );
         m_shaderList[ShaderType::solidTexture] = tempShaderID;
-        std::cout << "test" << std::endl;
     }
 
     GLuint RenderManager::getUniform(ShaderType type, const std::string& uniformName)
@@ -46,9 +45,10 @@ namespace Engine {
         std::vector<glm::vec3> vertexData, vertexNormals;
         std::vector<glm::vec2> uvData;
 
-        loadFileOBJ(filePath, vertexData, uvData, vertexNormals);
-
-        uvData = {{0.000059f, 1.0f - 0.000004f}, {0.000103f, 1.0f - 0.336048f}, {0.335973f, 1.0f - 0.335903f}, {1.000023f, 1.0f - 0.000013f}, {0.667979f, 1.0f - 0.335851f}, {0.999958f, 1.0f - 0.336064f}, {0.667979f, 1.0f - 0.335851f}, {0.336024f, 1.0f - 0.671877f}, {0.667969f, 1.0f - 0.671889f}, {1.000023f, 1.0f - 0.000013f}, {0.668104f, 1.0f - 0.000013f}, {0.667979f, 1.0f - 0.335851f}, {0.000059f, 1.0f - 0.000004f}, {0.335973f, 1.0f - 0.335903f}, {0.336098f, 1.0f - 0.000071f}, {0.667979f, 1.0f - 0.335851f}, {0.335973f, 1.0f - 0.335903f}, {0.336024f, 1.0f - 0.671877f}, {1.000004f, 1.0f - 0.671847f}, {0.999958f, 1.0f - 0.336064f}, {0.667979f, 1.0f - 0.335851f}, {0.668104f, 1.0f - 0.000013f}, {0.335973f, 1.0f - 0.335903f}, {0.667979f, 1.0f - 0.335851f}, {0.335973f, 1.0f - 0.335903f}, {0.668104f, 1.0f - 0.000013f}, {0.336098f, 1.0f - 0.000071f}, {0.000103f, 1.0f - 0.336048f}, {0.000004f, 1.0f - 0.671870f}, {0.336024f, 1.0f - 0.671877f}, {0.000103f, 1.0f - 0.336048f}, {0.336024f, 1.0f - 0.671877f}, {0.335973f, 1.0f - 0.335903f}, {0.667969f, 1.0f - 0.671889f}, {1.000004f, 1.0f - 0.671847f}, {0.667979f, 1.0f - 0.335851f}};
+        if(!loadFileOBJ(filePath, vertexData, uvData, vertexNormals))
+        {
+            return nullptr;
+        }
 
         GLuint vertexBuffer = createVBO(vertexData);
         GLuint uvBuffer = createVBO(uvData);
@@ -95,7 +95,10 @@ namespace Engine {
         unsigned int width, height;
         unsigned char* data;
 
-        loadFileBMP(filePath, width, height, data);
+        if(!loadFileBMP(filePath, width, height, data))
+        {
+            return -1;
+        }
 
         // TODO: read up what all of this does in more detail
         // Create one OpenGL texture

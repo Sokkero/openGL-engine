@@ -5,7 +5,6 @@
 
 void TestObject::start()
 {
-    std::cout << "Object initialised" << std::endl;
 }
 
 void TestObject::update()

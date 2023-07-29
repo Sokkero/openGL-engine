@@ -2,6 +2,8 @@
 
 #include "../WindowManager.h"
 
+#include <iostream>
+
 namespace Engine
 {
     WindowManager* BasicNode::windowManager = nullptr;
@@ -21,6 +23,7 @@ namespace Engine
         node->setParent(std::make_shared<BasicNode>(*this));
 
         node->start();
+        std::cout << "Object [" << node->getName() <<"] initialised" << std::endl;
     }
 
     void BasicNode::removeFromParent(std::shared_ptr<BasicNode> node)
