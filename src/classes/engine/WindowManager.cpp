@@ -70,7 +70,8 @@ namespace Engine
 
         m_engineManager->getScene()->start();
 
-        do {
+        do
+        {
             m_userEventManager->updateEvents(m_gameWindow);
             m_engineManager->engineUpdate();
             m_engineManager->engineDraw();

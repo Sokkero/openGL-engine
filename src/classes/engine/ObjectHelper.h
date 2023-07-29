@@ -49,9 +49,12 @@ namespace Engine
     {
         switch(type)
         {
-            case ShaderType::solidColor: return "solidColor";
-            case ShaderType::solidTexture: return "solidTexture";
-            case ShaderType::undefined: return "undefined";
+            case ShaderType::solidColor:
+                return "solidColor";
+            case ShaderType::solidTexture:
+                return "solidTexture";
+            case ShaderType::undefined:
+                return "undefined";
         }
     }
 } // namespace Engine

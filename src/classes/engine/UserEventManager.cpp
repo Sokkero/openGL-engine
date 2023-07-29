@@ -47,7 +47,10 @@ namespace Engine
             }
         }
 
-        for(const auto& key : keysToRemove) { m_userEvents.erase(key); }
+        for(const auto& key : keysToRemove)
+        {
+            m_userEvents.erase(key);
+        }
 
         for(int key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; ++key)
         {

@@ -67,43 +67,40 @@ namespace Engine
             else if(strcmp(firstWord, "f") == 0)
             {
                 unsigned int vertexIndex[3], uvIndex[3], normalIndex[3];
-                int matches = sscanf(
-                        line,
-                        "f %d/%d/%d %d/%d/%d %d/%d/%d",
-                        &vertexIndex[0],
-                        &uvIndex[0],
-                        &normalIndex[0],
-                        &vertexIndex[1],
-                        &uvIndex[1],
-                        &normalIndex[1],
-                        &vertexIndex[2],
-                        &uvIndex[2],
-                        &normalIndex[2]
-                );
+                int matches =
+                        sscanf(line,
+                               "f %d/%d/%d %d/%d/%d %d/%d/%d",
+                               &vertexIndex[0],
+                               &uvIndex[0],
+                               &normalIndex[0],
+                               &vertexIndex[1],
+                               &uvIndex[1],
+                               &normalIndex[1],
+                               &vertexIndex[2],
+                               &uvIndex[2],
+                               &normalIndex[2]);
                 if(matches != 9)
                 {
-                    matches = sscanf(
-                            line,
-                            "f %i//%i %i//%i %i//%i",
-                            &vertexIndex[0],
-                            &normalIndex[0],
-                            &vertexIndex[1],
-                            &normalIndex[0],
-                            &vertexIndex[2],
-                            &normalIndex[0]
-                    );
+                    matches =
+                            sscanf(line,
+                                   "f %i//%i %i//%i %i//%i",
+                                   &vertexIndex[0],
+                                   &normalIndex[0],
+                                   &vertexIndex[1],
+                                   &normalIndex[0],
+                                   &vertexIndex[2],
+                                   &normalIndex[0]);
                     if(matches != 6)
                     {
-                        matches = sscanf(
-                                line,
-                                "f %i/%i %i/%i %i/%i",
-                                &vertexIndex[0],
-                                &uvIndex[0],
-                                &vertexIndex[1],
-                                &uvIndex[1],
-                                &vertexIndex[2],
-                                &uvIndex[2]
-                        );
+                        matches =
+                                sscanf(line,
+                                       "f %i/%i %i/%i %i/%i",
+                                       &vertexIndex[0],
+                                       &uvIndex[0],
+                                       &vertexIndex[1],
+                                       &uvIndex[1],
+                                       &vertexIndex[2],
+                                       &uvIndex[2]);
                         if(matches != 6)
                         {
                             sscanf(line, "f %i %i %i", &vertexIndex[0], &vertexIndex[1], &vertexIndex[2]);
@@ -175,10 +172,8 @@ namespace Engine
         fp = fopen(filePath, "rb");
         if(fp == NULL)
         {
-            printf(
-                    "%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n",
-                    filePath
-            );
+            printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n",
+                   filePath);
             getchar();
             return -1;
         }
@@ -195,18 +190,17 @@ namespace Engine
         /* get the surface desc */
         fread(&header, 124, 1, fp);
 
-        unsigned int height = *(unsigned int*) &(header[8]);
-        unsigned int width = *(unsigned int*) &(header[12]);
-        unsigned int linearSize = *(unsigned int*) &(header[16]);
-        unsigned int mipMapCount = *(unsigned int*) &(header[24]);
-        unsigned int fourCC = *(unsigned int*) &(header[80]);
-
+        unsigned int height = *(unsigned int*)&(header[8]);
+        unsigned int width = *(unsigned int*)&(header[12]);
+        unsigned int linearSize = *(unsigned int*)&(header[16]);
+        unsigned int mipMapCount = *(unsigned int*)&(header[24]);
+        unsigned int fourCC = *(unsigned int*)&(header[80]);
 
         unsigned char* buffer;
         unsigned int bufsize;
         /* how big is it going to be including all mipmaps? */
         bufsize = mipMapCount > 1 ? linearSize * 2 : linearSize;
-        buffer = (unsigned char*) malloc(bufsize * sizeof(unsigned char));
+        buffer = (unsigned char*)malloc(bufsize * sizeof(unsigned char));
         fread(buffer, 1, bufsize, fp);
         /* close the file pointer */
         fclose(fp);
@@ -244,18 +238,21 @@ namespace Engine
         for(unsigned int level = 0; level < mipMapCount && (width || height); ++level)
         {
             unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
-            glCompressedTexImage2D(
-                    GL_TEXTURE_2D, level, format, width, height, 0, size, buffer + offset
-            );
+            glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 0, size, buffer + offset);
 
             offset += size;
             width /= 2;
             height /= 2;
 
             // Deal with Non-Power-Of-Two textures. This code is not included in the webpage to reduce clutter.
-            if(width < 1) { width = 1; }
-            if(height < 1) { height = 1; }
-
+            if(width < 1)
+            {
+                width = 1;
+            }
+            if(height < 1)
+            {
+                height = 1;
+            }
         }
 
         free(buffer);
@@ -304,13 +301,13 @@ namespace Engine
             return -1;
         }
         // Make sure this is a 24bpp file
-        if(*(int*) &(header[0x1E]) != 0)
+        if(*(int*)&(header[0x1E]) != 0)
         {
             std::cout << "BMP file is not correct [" << filePath << "]" << std::endl;
             fclose(file);
             return -1;
         }
-        if(*(int*) &(header[0x1C]) != 24)
+        if(*(int*)&(header[0x1C]) != 24)
         {
             std::cout << "BMP file is not correct [" << filePath << "]" << std::endl;
             fclose(file);
@@ -318,10 +315,10 @@ namespace Engine
         }
 
         // Read the information about the image
-        dataPos = *(int*) &(header[0x0A]);
-        imageSize = *(int*) &(header[0x22]);
-        width = *(int*) &(header[0x12]);
-        height = *(int*) &(header[0x16]);
+        dataPos = *(int*)&(header[0x0A]);
+        imageSize = *(int*)&(header[0x22]);
+        width = *(int*)&(header[0x12]);
+        height = *(int*)&(header[0x16]);
 
         // Some BMP files are misformatted, guess missing information
         if(imageSize == 0)

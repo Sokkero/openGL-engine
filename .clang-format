@@ -15,12 +15,12 @@ AllowAllConstructorInitializersOnNextLine: false
 AlignTrailingComments: true
 AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: true
-AllowShortBlocksOnASingleLine: Always
-AllowShortCaseLabelsOnASingleLine: true
+AllowShortBlocksOnASingleLine: Never
+AllowShortCaseLabelsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: All
-AllowShortIfStatementsOnASingleLine: Never
+AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLambdasOnASingleLine: All
-AllowShortLoopsOnASingleLine: true
+AllowShortLoopsOnASingleLine: false
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
 AlwaysBreakTemplateDeclarations: Yes
@@ -101,7 +101,7 @@ PenaltyBreakFirstLessLess: 99999999
 PenaltyBreakOpenParenthesis: 0 
 PenaltyBreakString: 99999999 
 PenaltyBreakTemplateDeclaration: 10 
-PenaltyExcessCharacter: 10 
+PenaltyExcessCharacter: 5
 PenaltyReturnTypeOnItsOwnLine: 99999999 
 PenaltyIndentedWhitespace: 0 
 PointerAlignment: Left

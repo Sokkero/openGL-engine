@@ -29,7 +29,9 @@ namespace Engine
         for(auto& shader : m_shaderList)
         {
             if(shader.first == type)
+            {
                 return glGetUniformLocation(shader.second, uniformName.c_str());
+            }
         }
         return 0;
     }
@@ -220,7 +222,8 @@ namespace Engine
                         (void*)nullptr // array buffer offset
                 );
                 break;
-            case ShaderType::undefined: break;
+            case ShaderType::undefined:
+                break;
         }
 
         // Drawing the object

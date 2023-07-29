@@ -39,13 +39,19 @@ namespace Engine
 
     void BasicNode::deleteAllChildNodes()
     {
-        for(const auto& childNode : m_childNodes) { childNode->deleteAllChildNodes(); }
+        for(const auto& childNode : m_childNodes)
+        {
+            childNode->deleteAllChildNodes();
+        }
         m_childNodes.clear();
     }
 
     void BasicNode::callOnAllChildren(const std::function<void(BasicNode*)>& func)
     {
-        for(const auto& childNode : m_childNodes) { childNode->callOnAllChildren(func); }
+        for(const auto& childNode : m_childNodes)
+        {
+            childNode->callOnAllChildren(func);
+        }
         func(this);
     }
 
