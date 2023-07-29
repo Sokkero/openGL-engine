@@ -1,1 +1,1 @@
-clang-format -i --verbose --style=file:.clang-format src/**/*.cpp src/**/*.h
+find ./src -name '*.h' | xargs clang-format -i --verbose --style=file:.clang-format && find ./src -name '*.cpp' | xargs clang-format -i --verbose --style=file:.clang-format
