@@ -31,7 +31,7 @@ void SceneOrigin::start()
     node1->setShader(ShaderType::solidTexture, m_engineManager->getRenderManager());
     node1->setPosition(glm::vec3(0, 0, 0));
     node1->setTextureBuffer(
-            m_engineManager->getRenderManager()->registerTexture("resources/textures/uvtemplate.bmp")
+            m_engineManager->getRenderManager()->registerTexture("resources/textures/uvDice.DDS")
     );
     node1->setName("obj1");
     addAsChild(node1);

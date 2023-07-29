@@ -6,6 +6,7 @@
 #include "loadShader.h"
 
 #include <iostream>
+#include <string>
 
 namespace Engine
 {
@@ -91,6 +92,14 @@ namespace Engine
 
     GLuint RenderManager::registerTexture(const char* filePath)
     {
+        std::string filePathString = std::string(filePath);
+        size_t dotIndex = filePathString.find_last_of('.');
+        if(dotIndex == std::string::npos)
+        {
+            std::cout << "Texture path " << filePath << " broken" << std::endl;
+            return -1;
+        }
+
         for(auto& object : m_textureList)
         {
             if(object.first == filePath)
@@ -98,43 +107,27 @@ namespace Engine
                 return object.second;
             }
         }
-        unsigned int width, height;
-        unsigned char* data;
 
-        if(!loadFileBMP(filePath, width, height, data))
+        std::string fileExtension = filePathString.substr(dotIndex + 1);
+        if(fileExtension == "bmp" || fileExtension == "BMP")
         {
-            return -1;
+            GLuint textureId = loadFileBMP(filePath);
+            m_textureList[filePath] = textureId;
+            return textureId;
+        }
+        else if(fileExtension == "dds" || fileExtension == "DDS")
+        {
+            GLuint textureId = loadFileDDS(filePath);
+            m_textureList[filePath] = textureId;
+            return textureId;
+        }
+        else if(fileExtension == "tga" || fileExtension == "TGA")
+        {
+            // TODO: make it possible to use TGA texture files
         }
 
-        // TODO: read up what all of this does in more detail
-        // Create one OpenGL texture
-        GLuint textureID;
-        glGenTextures(1, &textureID);
-
-        // "Bind" the newly created texture : all future texture functions will modify this texture
-        glBindTexture(GL_TEXTURE_2D, textureID);
-
-        // Give the image to OpenGL
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
-
-        // OpenGL has now copied the data. Free our own version
-        delete[] data;
-
-        // Poor filtering...
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-
-        // Nice trilinear filtering ...
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-        // ... which requires mipmaps. Generate them automatically.
-        glGenerateMipmap(GL_TEXTURE_2D);
-
-        // Return the ID of the texture we just created
-        m_textureList[filePath] = textureID;
-        return textureID;
+        std::cout << "Texture extension of " << filePath << " not valid" << std::endl;
+        return -1;
     }
 
     void RenderManager::deregisterTexture(GLuint tex)
