@@ -1,0 +1,1 @@
+clang-format -i --verbose --style=file:.clang-format src/**/*.cpp src/**/*.h
