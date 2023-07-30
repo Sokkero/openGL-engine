@@ -2,7 +2,6 @@
 #include "SceneOrigin.h"
 
 #include "../engine/EngineManager.h"
-#include "../engine/NodeComponents/BasicNode.h"
 #include "../engine/UserEventManager.h"
 #include "../engine/WindowManager.h"
 #include "CameraActor.h"
@@ -30,10 +29,10 @@ void SceneOrigin::start()
     }
 
     std::shared_ptr<TestObject> node1 = std::make_shared<TestObject>();
-    node1->setObjectData(m_engineManager->getRenderManager()->registerObject("resources/objects/cube.obj"));
+    node1->setObjectData(m_engineManager->getRenderManager()->registerObject("resources/objects/tree.obj"));
     node1->setShader(ShaderType::solidTexture, m_engineManager->getRenderManager());
     node1->setPosition(glm::vec3(0, 0, 0));
-    node1->setTextureBuffer(m_engineManager->getRenderManager()->registerTexture("resources/textures/uvDice.DDS"));
+    node1->setTextureBuffer(m_engineManager->getRenderManager()->registerTexture("resources/textures/treeTexture.bmp"));
     node1->setName("obj1");
     addAsChild(node1);
 
