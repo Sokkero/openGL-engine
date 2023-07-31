@@ -316,7 +316,7 @@ namespace Engine
 
         // Read the information about the image
         dataPos = *(int*)&(header[0x0A]);
-        imageSize = *(int*)&(header[0x22]);
+        imageSize = *(int*)&(header[0x22]) * 3;
         width = *(int*)&(header[0x12]);
         height = *(int*)&(header[0x16]);
 
@@ -334,6 +334,7 @@ namespace Engine
         data = new unsigned char[imageSize];
 
         // Read the actual data from the file into the buffer
+        fseek(file, dataPos, SEEK_SET);
         fread(data, 1, imageSize, file);
 
         // Everything is in memory now, the file can be closed.
