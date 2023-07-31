@@ -18,6 +18,12 @@ namespace Engine
             RenderManager();
             ~RenderManager() = default;
 
+            struct AmbientLight
+            {
+                    glm::vec3 color = glm::vec3(1.f, 1.f, 1.f);
+                    float intensity = .1f;
+            };
+
             std::shared_ptr<ObjectData> registerObject(const char* filePath);
             void deregisterObject(std::shared_ptr<ObjectData>& obj);
             void clearObjects();
@@ -33,6 +39,8 @@ namespace Engine
             void renderVertices(GeometryComponent* object, const glm::mat4& mvp);
 
             std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
+
+            AmbientLight& getAmbientLight() { return m_ambientLight; };
 
             template<typename T>
             static GLuint createVBO(std::vector<T>& data)
@@ -52,6 +60,7 @@ namespace Engine
             };
 
         private:
+            AmbientLight m_ambientLight;
             std::map<ShaderType, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;

@@ -14,6 +14,8 @@ namespace Engine
     RenderManager::RenderManager()
         : m_objectList(std::map<std::string, std::shared_ptr<ObjectData>>())
         , m_shaderList(std::map<ShaderType, GLuint>())
+        , m_textureList(std::map<std::string, GLuint>())
+        , m_ambientLight(AmbientLight())
     {
         GLuint tempShaderID;
 
@@ -211,22 +213,30 @@ namespace Engine
                 );
                 break;
             case ShaderType::solidTexture:
-                glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); //
-                glUniform1i(int(getUniform(ShaderType::solidTexture, "textureSampler")), 0);
+                {
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); //
+                    glUniform1i(int(getUniform(ShaderType::solidTexture, "textureSampler")), 0);
 
-                glEnableVertexAttribArray(1);
-                glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_uvBuffer);
-                glVertexAttribPointer(
-                        1,             // attribute. No particular reason for 1, but must match the enabled
-                                       // VertexAttribArray
-                        2,             // size : U+V => 2
-                        GL_FLOAT,      // type
-                        GL_FALSE,      // normalized?
-                        0,             // stride
-                        (void*)nullptr // array buffer offset
-                );
-                break;
+                    glEnableVertexAttribArray(1);
+                    glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_uvBuffer);
+                    glVertexAttribPointer(
+                            1, // attribute. No particular reason for 1, but must match the enabled
+                            // VertexAttribArray
+                            2,             // size : U+V => 2
+                            GL_FLOAT,      // type
+                            GL_FALSE,      // normalized?
+                            0,             // stride
+                            (void*)nullptr // array buffer offset
+                    );
+
+                    AmbientLight ambient = getAmbientLight();
+                    int color = int(getUniform(ShaderType::solidTexture, "ambientLight.lightColor"));
+                    int intensity = int(getUniform(ShaderType::solidTexture, "ambientLight.intensity"));
+                    glUniform3f(color, ambient.color.x, ambient.color.y, ambient.color.z);
+                    glUniform1f(intensity, ambient.intensity);
+                    break;
+                }
             case ShaderType::undefined:
                 break;
         }

@@ -36,7 +36,7 @@ namespace Engine
 
         m_sceneNode = std::make_shared<SceneOrigin>();
 
-        glClearColor(.7f, .7f, .7f, .0f);
+        glClearColor(.0f, .0f, .0f, .0f);
 
         m_lastFrameTimestamp = glfwGetTime();
     }
