@@ -20,7 +20,7 @@ namespace Engine
                 : m_objectData(nullptr)
                 , m_shader(ShaderType::undefined)
                 , m_textureBuffer(0)
-                , m_tint(glm::vec4(0.f, 0.f, 0.f, 0.f))
+                , m_tint(glm::vec4(1.f, 1.f, 1.f, 1.f))
                 , m_matrixId(0)
             {
             }

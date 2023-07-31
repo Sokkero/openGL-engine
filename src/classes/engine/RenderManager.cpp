@@ -33,7 +33,7 @@ namespace Engine
                 return glGetUniformLocation(shader.second, uniformName.c_str());
             }
         }
-        return 0;
+        return -1;
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
@@ -151,6 +151,7 @@ namespace Engine
 
     void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
     {
+        // TODO: rewrite this since its not at all optimal
         if(object->getShader() == ShaderType::undefined)
         {
             fprintf(stderr, "Object has its shader undefined");
@@ -191,6 +192,10 @@ namespace Engine
                 (void*)nullptr // Array buffer offset
         );
 
+        int tintUniform = getUniform(object->getShader(), "tintColor");
+        const glm::vec4 tint = object->getTint();
+        glUniform4f(tintUniform, tint.x, tint.y, tint.z, tint.w);
+
         switch(object->getShader())
         {
             case ShaderType::solidColor:
@@ -207,7 +212,7 @@ namespace Engine
                 break;
             case ShaderType::solidTexture:
                 glActiveTexture(GL_TEXTURE0);
-                glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); // Correct?
+                glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); //
                 glUniform1i(int(getUniform(ShaderType::solidTexture, "textureSampler")), 0);
 
                 glEnableVertexAttribArray(1);
