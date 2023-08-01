@@ -151,6 +151,16 @@ namespace Engine
         );
     }
 
+    void RenderManager::clearTextures()
+    {
+        for(auto& obj : m_textureList)
+        {
+            GLuint buffer[1] = { obj.second };
+            glDeleteBuffers(1, buffer);
+        }
+        m_objectList.clear();
+    }
+
     void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
     {
         // TODO: rewrite this since its not at all optimal

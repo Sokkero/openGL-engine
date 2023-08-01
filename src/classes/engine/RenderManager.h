@@ -21,7 +21,7 @@ namespace Engine
             struct AmbientLight
             {
                     glm::vec3 color = glm::vec3(1.f, 1.f, 1.f);
-                    float intensity = .1f;
+                    float intensity = .5f;
             };
 
             std::shared_ptr<ObjectData> registerObject(const char* filePath);
