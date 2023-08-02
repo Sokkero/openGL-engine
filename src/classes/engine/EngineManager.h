@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <glm/vec4.hpp>
 
 namespace Engine
 {
@@ -14,23 +15,25 @@ namespace Engine
             EngineManager();
             ~EngineManager() = default;
 
+            bool engineStart();
             void engineUpdate();
             void engineDraw();
 
             void drawNode(BasicNode* node);
 
             void setScene(std::shared_ptr<BasicNode> sceneNode);
-
             std::shared_ptr<BasicNode> getScene() const { return m_sceneNode; };
 
-            void setCamera(std::shared_ptr<CameraComponent> camera) { m_camera = std::move(camera); };
-
             std::shared_ptr<CameraComponent> getCamera() const { return m_camera; };
+            void setCamera(std::shared_ptr<CameraComponent> camera) { m_camera = std::move(camera); };
 
             RenderManager* getRenderManager() const { return m_renderManager; };
 
             void setDeltaTime();
             float getDeltaTime();
+
+            void setClearColor(glm::vec4 color) { m_clearColor = color; };
+            glm::vec4 getClearColor() const { return m_clearColor; };
 
             void printFps();
 
@@ -44,6 +47,7 @@ namespace Engine
             double m_lastFrameTimestamp;
             double m_lastFpsPrint;
             int m_frames;
+            glm::vec4 m_clearColor;
     };
 
 } // namespace Engine

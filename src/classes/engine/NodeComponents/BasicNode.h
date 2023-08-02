@@ -8,6 +8,8 @@
 namespace Engine
 {
     class WindowManager;
+    class EngineManager;
+    class UserEventManager;
 
     class BasicNode : virtual public TransformComponent
     {
@@ -43,18 +45,22 @@ namespace Engine
             glm::vec4 getGlobalPosition() const;
             glm::vec3 getGlobalScale() const;
 
-            static void setWindowManager(WindowManager* newWindowManager)
-            {
-                windowManager = newWindowManager;
-            };
+            static void setWindowManager(std::shared_ptr<WindowManager> newWindowManager){WINDOW_MANAGER = newWindowManager;};
+            static std::shared_ptr<WindowManager> getWindowManager() { return WINDOW_MANAGER; };
 
-            static WindowManager* getWindowManager() { return windowManager; };
+            static void setEngineManager(std::shared_ptr<EngineManager> newEngineManager){ENGINE_MANAGER = newEngineManager;};
+            static std::shared_ptr<EngineManager> getEngineManager() { return ENGINE_MANAGER; };
+
+            static void setUserEventManager(std::shared_ptr<UserEventManager> newUserEventManager){USER_EVENT_MANAGER = newUserEventManager;};
+            static std::shared_ptr<UserEventManager> getUserEventManager() { return USER_EVENT_MANAGER; };
 
         private:
             std::string m_name;
             std::shared_ptr<BasicNode> m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
 
-            static WindowManager* windowManager;
+            static std::shared_ptr<WindowManager> WINDOW_MANAGER;
+            static std::shared_ptr<EngineManager> ENGINE_MANAGER;
+            static std::shared_ptr<UserEventManager> USER_EVENT_MANAGER;
     };
 } // namespace Engine

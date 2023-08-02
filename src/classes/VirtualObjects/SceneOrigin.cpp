@@ -10,7 +10,6 @@
 void SceneOrigin::start()
 {
     setName("origin");
-    m_engineManager = getWindowManager()->getEngine();
 
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
@@ -20,7 +19,7 @@ void SceneOrigin::start()
     camera->setPosition(glm::vec3(0.f, 0.f, -15.f));
     camera->setName("camera");
     cameraHolder->addAsChild(camera);
-    m_engineManager->setCamera(camera);
+    getEngineManager()->setCamera(camera);
 
     std::vector<glm::vec4> g_color_buffer_data;
     for(int v = 0; v < 12 * 3; v++)
@@ -29,10 +28,10 @@ void SceneOrigin::start()
     }
 
     std::shared_ptr<TestObject> node1 = std::make_shared<TestObject>();
-    node1->setObjectData(m_engineManager->getRenderManager()->registerObject("resources/objects/tree.obj"));
-    node1->setShader(ShaderType::solidTexture, m_engineManager->getRenderManager());
+    node1->setObjectData(getEngineManager()->getRenderManager()->registerObject("resources/objects/tree.obj"));
+    node1->setShader(ShaderType::solidTexture, getEngineManager()->getRenderManager());
     node1->setPosition(glm::vec3(0, 0, 0));
-    node1->setTextureBuffer(m_engineManager->getRenderManager()->registerTexture("resources/textures/treeTexture.bmp"
+    node1->setTextureBuffer(getEngineManager()->getRenderManager()->registerTexture("resources/textures/treeTexture.bmp"
     ));
     node1->setName("obj1");
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));

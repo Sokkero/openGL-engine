@@ -7,13 +7,11 @@
 
 namespace Engine
 {
-    WindowManager::WindowManager(std::string windowTitle, int windowWidth, int windowHeight, int textureSamples)
+    WindowManager::WindowManager()
         : m_gameWindow(nullptr)
-        , m_windowDimensions(std::pair<int, int>(windowWidth, windowHeight))
-        , m_textureSamples(textureSamples)
-        , m_windowTitle(std::move(windowTitle))
-        , m_engineManager(nullptr)
-        , m_userEventManager(nullptr)
+        , m_windowDimensions(std::pair<int, int>(1024, 640))
+        , m_textureSamples(4)
+        , m_windowTitle("My little Engine")
     {
     }
 
@@ -23,14 +21,14 @@ namespace Engine
         glfwSetWindowSize(m_gameWindow, width, height);
     }
 
-    int WindowManager::startWindow()
+    bool WindowManager::startWindow()
     {
         // Initialise GLFW
         glewExperimental = true; // Needed for core profile
         if(!glfwInit())
         {
             fprintf(stderr, "Failed to initialize GLFW!\n");
-            return -1;
+            return false;
         }
 
         glfwWindowHint(GLFW_SAMPLES, m_textureSamples); // Anti-Aliasing
@@ -50,7 +48,7 @@ namespace Engine
         {
             fprintf(stderr, "Failed to open GLFW window...\n");
             glfwTerminate();
-            return -1;
+            return false;
         }
 
         glfwMakeContextCurrent(m_gameWindow); // Initiate GLEW
@@ -58,31 +56,11 @@ namespace Engine
         if(glewInit() != GLEW_OK)
         {
             fprintf(stderr, "Failed to initialize GLEW...\n");
-            return -1;
+            return false;
         }
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
-        BasicNode::setWindowManager(this);
-
-        m_userEventManager = UserEventManager::getUserEventManager();
-        m_engineManager = std::make_shared<EngineManager>(EngineManager());
-
-        m_engineManager->getScene()->start();
-
-        do
-        {
-            m_userEventManager->updateEvents(m_gameWindow);
-            m_engineManager->engineUpdate();
-            m_engineManager->engineDraw();
-
-            glfwSwapBuffers(m_gameWindow);
-            glfwPollEvents();
-
-            m_engineManager->setDeltaTime();
-        } while(m_userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-                glfwWindowShouldClose(m_gameWindow) == 0);
-
-        return 0;
+        return true;
     }
 } // namespace Engine

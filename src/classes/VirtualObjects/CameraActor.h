@@ -18,7 +18,4 @@ class CameraActor : public Engine::CameraComponent
     private:
         void start() override;
         void update() override;
-
-        std::shared_ptr<Engine::EngineManager> m_engineManager;
-        std::shared_ptr<Engine::UserEventManager> m_userEventManager;
 };

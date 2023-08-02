@@ -1,12 +1,12 @@
 #include "BasicNode.h"
 
-#include "../WindowManager.h"
-
 #include <iostream>
 
 namespace Engine
 {
-    WindowManager* BasicNode::windowManager = nullptr;
+    std::shared_ptr<WindowManager> BasicNode::WINDOW_MANAGER = nullptr;
+    std::shared_ptr<EngineManager> BasicNode::ENGINE_MANAGER = nullptr;
+    std::shared_ptr<UserEventManager> BasicNode::USER_EVENT_MANAGER = nullptr;
 
     std::shared_ptr<BasicNode> BasicNode::getChildNode(int pos) const
     {

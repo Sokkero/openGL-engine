@@ -6,18 +6,6 @@
 
 namespace Engine
 {
-    std::shared_ptr<UserEventManager> UserEventManager::m_instance = nullptr;
-
-    std::shared_ptr<UserEventManager> UserEventManager::getUserEventManager()
-    {
-        if(m_instance == nullptr)
-        {
-            m_instance = std::make_shared<UserEventManager>(UserEventManager());
-        }
-
-        return m_instance;
-    }
-
     UserEventManager::GLFW_ACTION UserEventManager::getUserEvent(GLFW_KEY key)
     {
         if(m_userEvents.find(key) == m_userEvents.end())

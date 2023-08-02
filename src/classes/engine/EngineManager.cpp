@@ -22,7 +22,18 @@ namespace Engine
         , m_currentFrameTimestamp(0)
         , m_frames(0)
         , m_renderManager(nullptr)
+        , m_clearColor(glm::vec4(.0f, .0f, .0f, .0f))
+    {}
+
+    bool EngineManager::engineStart()
     {
+        if(!getScene())
+        {
+            std::cout << "No scene origin node" << std::endl;
+            return false;
+        }
+
+        // TODO: make shared
         m_renderManager = new RenderManager();
 
         GLuint VertexArrayID;
@@ -34,11 +45,13 @@ namespace Engine
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS);
 
-        m_sceneNode = std::make_shared<SceneOrigin>();
-
-        glClearColor(.0f, .0f, .0f, .0f);
+        glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
 
         m_lastFrameTimestamp = glfwGetTime();
+
+        m_sceneNode->start();
+
+        return true;
     }
 
     void EngineManager::engineUpdate()
@@ -76,7 +89,7 @@ namespace Engine
 
     void EngineManager::setScene(std::shared_ptr<BasicNode> sceneNode)
     {
-        m_sceneNode->removeAllChildNodes();
+        if(m_sceneNode) { m_sceneNode->removeAllChildNodes(); }
         m_sceneNode = sceneNode;
     }
 

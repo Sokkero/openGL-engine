@@ -10,7 +10,7 @@ namespace Engine
     class UserEventManager
     {
         public:
-            static std::shared_ptr<UserEventManager> getUserEventManager();
+            UserEventManager() = default;
             ~UserEventManager() = default;
 
             using GLFW_KEY = int;
@@ -25,9 +25,6 @@ namespace Engine
             GLFW_ACTION getUserEvent(GLFW_KEY key);
 
         private:
-            UserEventManager() = default;
-            static std::shared_ptr<UserEventManager> m_instance;
-
             std::map<GLFW_KEY, GLFW_ACTION> m_userEvents;
     };
 } // namespace Engine

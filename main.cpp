@@ -1,13 +1,14 @@
 
-#include "src/classes/engine/WindowManager.h"
+#include "src/classes/engine/GameInterface.h"
 
-#include <iostream>
+#include "src/classes/VirtualObjects/SceneOrigin.h"
 
 int main()
 {
-    Engine::WindowManager* WindowManager = new Engine::WindowManager();
+    std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
+    std::shared_ptr<SceneOrigin> startNode = std::make_shared<SceneOrigin>();
 
-    int exitCode = WindowManager->startWindow();
+    game->getEngineManager()->setScene(startNode);
 
-    std::cout << "Exited with code " << exitCode << std::endl;
+    return game->startGame();
 }

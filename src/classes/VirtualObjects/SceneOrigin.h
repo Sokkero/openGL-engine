@@ -15,7 +15,5 @@ class SceneOrigin : public Engine::BasicNode
         ~SceneOrigin() = default;
 
     private:
-        std::shared_ptr<Engine::EngineManager> m_engineManager;
-
         void start() override;
 };
