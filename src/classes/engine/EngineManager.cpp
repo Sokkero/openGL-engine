@@ -33,8 +33,7 @@ namespace Engine
             return false;
         }
 
-        // TODO: make shared
-        m_renderManager = new RenderManager();
+        m_renderManager = std::make_shared<RenderManager>();
 
         GLuint VertexArrayID;
         glGenVertexArrays(1, &VertexArrayID);

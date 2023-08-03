@@ -43,7 +43,7 @@ namespace Engine
 
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
 
-            void setShader(ShaderType shader, RenderManager* renderManager)
+            void setShader(ShaderType shader, std::shared_ptr<RenderManager> renderManager)
             {
                 if(shader == ShaderType::solidTexture && m_objectData->m_vertexUvs.empty())
                 {

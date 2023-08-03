@@ -1,8 +1,8 @@
 #pragma once
 
 // Most of this stuff is from the openGL tutorial
-// Todo: exchange all of this for a file loading library
 //  It was cool to do this myself but nor very practical or reliable
+// So use a library like SOIL & assimp in the future
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>

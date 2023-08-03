@@ -27,7 +27,7 @@ namespace Engine
             std::shared_ptr<CameraComponent> getCamera() const { return m_camera; };
             void setCamera(std::shared_ptr<CameraComponent> camera) { m_camera = std::move(camera); };
 
-            RenderManager* getRenderManager() const { return m_renderManager; };
+            std::shared_ptr<RenderManager> getRenderManager() const { return m_renderManager; };
 
             void setDeltaTime();
             float getDeltaTime();
@@ -38,7 +38,7 @@ namespace Engine
             void printFps();
 
         private:
-            RenderManager* m_renderManager;
+            std::shared_ptr<RenderManager> m_renderManager;
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
 
