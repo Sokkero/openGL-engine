@@ -26,18 +26,6 @@ namespace Engine
         m_shaderList[ShaderType::solidTexture] = tempShaderID;
     }
 
-    GLuint RenderManager::getUniform(ShaderType type, const std::string& uniformName)
-    {
-        for(auto& shader : m_shaderList)
-        {
-            if(shader.first == type)
-            {
-                return glGetUniformLocation(shader.second, uniformName.c_str());
-            }
-        }
-        return -1;
-    }
-
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
     {
         for(auto& object : m_objectList)
@@ -163,24 +151,14 @@ namespace Engine
 
     void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
     {
-        // TODO: rewrite this since its not at all optimal
         if(object->getShader() == ShaderType::undefined)
         {
             fprintf(stderr, "Object has its shader undefined");
             return;
         }
 
-        bool foundShader = false;
-        for(auto& shader : m_shaderList)
-        {
-            if(shader.first == object->getShader())
-            {
-                glUseProgram(shader.second);
-                foundShader = true;
-            }
-        }
-
-        if(!foundShader)
+        const auto& it = m_shaderList.find(object->getShader());
+        if(it == m_shaderList.end())
         {
             fprintf(stderr,
                     "Couldn't find shader for object, shader in question: %s",
@@ -188,10 +166,13 @@ namespace Engine
             return;
         }
 
+        const auto& shader = it->second;
+        glUseProgram(shader);
+
         // Send our transformation to the currently bound rendering, in the "MVP" uniform
         // This is done in the main loop since each model will have a different MVP matrix (At least for the M
         // part)
-        glUniformMatrix4fv(int(object->getMatrixId()), 1, GL_FALSE, &mvp[0][0]);
+        glUniformMatrix4fv(glGetUniformLocation(shader, "MVP"), 1, GL_FALSE, &mvp[0][0]);
 
         glEnableVertexAttribArray(0);
         glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer);
@@ -204,9 +185,8 @@ namespace Engine
                 (void*)nullptr // Array buffer offset
         );
 
-        int tintUniform = getUniform(object->getShader(), "tintColor");
         const glm::vec4 tint = object->getTint();
-        glUniform4f(tintUniform, tint.x, tint.y, tint.z, tint.w);
+        glUniform4f(glGetUniformLocation(shader, "tintColor"), tint.x, tint.y, tint.z, tint.w);
 
         switch(object->getShader())
         {
@@ -226,7 +206,7 @@ namespace Engine
                 {
                     glActiveTexture(GL_TEXTURE0);
                     glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); //
-                    glUniform1i(int(getUniform(ShaderType::solidTexture, "textureSampler")), 0);
+                    glUniform1i(glGetUniformLocation(shader, "textureSampler"), 0);
 
                     glEnableVertexAttribArray(1);
                     glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_uvBuffer);
@@ -241,10 +221,8 @@ namespace Engine
                     );
 
                     AmbientLight ambient = getAmbientLight();
-                    int color = int(getUniform(ShaderType::solidTexture, "ambientLight.lightColor"));
-                    int intensity = int(getUniform(ShaderType::solidTexture, "ambientLight.intensity"));
-                    glUniform3f(color, ambient.color.x, ambient.color.y, ambient.color.z);
-                    glUniform1f(intensity, ambient.intensity);
+                    glUniform3f(glGetUniformLocation(shader, "ambientLight.lightColor"), ambient.color.x, ambient.color.y, ambient.color.z);
+                    glUniform1f(glGetUniformLocation(shader, "ambientLight.intensity"), ambient.intensity);
                     break;
                 }
             case ShaderType::undefined:

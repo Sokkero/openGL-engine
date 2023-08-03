@@ -39,12 +39,13 @@ void SceneOrigin::start()
 
     /*
     std::shared_ptr<TestObject> node2 = std::make_shared<TestObject>();
-    node2->setObjectData(m_engineManager->getRenderManager()->registerObject("resources/objects/cube.obj"));
-    node2->setShader(ShaderType::solidColor, m_engineManager->getRenderManager());
-    node2->setPosition(glm::vec3(-10, 0, 0));
-    node2->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-    node2->setTextureBuffer(m_engineManager->getRenderManager()->createVBO(g_color_buffer_data));
+    node2->setObjectData(getEngineManager()->getRenderManager()->registerObject("resources/objects/tree.obj"));
+    node2->setShader(ShaderType::solidTexture, getEngineManager()->getRenderManager());
+    node2->setPosition(glm::vec3(-5.f, 0, 0));
+    node2->setTextureBuffer(getEngineManager()->getRenderManager()->registerTexture("resources/textures/treeTexture.bmp"
+    ));
     node2->setName("obj2");
+    // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
     node1->addAsChild(node2);
-    */
+     */
 }
