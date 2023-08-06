@@ -4,6 +4,7 @@
 #include "FileLoading.h"
 #include "NodeComponents/GeometryComponent.h"
 #include "loadShader.h"
+#include "LightingHelper.h"
 
 #include <iostream>
 #include <string>
@@ -15,7 +16,7 @@ namespace Engine
         : m_objectList(std::map<std::string, std::shared_ptr<ObjectData>>())
         , m_shaderList(std::map<ShaderType, GLuint>())
         , m_textureList(std::map<std::string, GLuint>())
-        , m_ambientLight(AmbientLight())
+        , m_ambientLight(nullptr)
     {
         GLuint tempShaderID;
 
@@ -24,6 +25,10 @@ namespace Engine
 
         tempShaderID = LoadShaders("resources/shader/solidTexture.vert", "resources/shader/solidTexture.frag");
         m_shaderList[ShaderType::solidTexture] = tempShaderID;
+
+        m_ambientLight = std::make_unique<AmbientLight>(getShader());
+        m_ambientLight->intensity = 0.8f;
+        m_ambientLight->UpdateUbo();
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
@@ -219,10 +224,6 @@ namespace Engine
                             0,             // stride
                             (void*)nullptr // array buffer offset
                     );
-
-                    AmbientLight ambient = getAmbientLight();
-                    glUniform3f(glGetUniformLocation(shader, "ambientLight.lightColor"), ambient.color.x, ambient.color.y, ambient.color.z);
-                    glUniform1f(glGetUniformLocation(shader, "ambientLight.intensity"), ambient.intensity);
                     break;
                 }
             case ShaderType::undefined:

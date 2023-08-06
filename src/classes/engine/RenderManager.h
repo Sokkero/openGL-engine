@@ -11,18 +11,14 @@
 namespace Engine
 {
     class GeometryComponent;
+    class DiffuseLight;
+    class AmbientLight;
 
     class RenderManager
     {
         public:
             RenderManager();
             ~RenderManager() = default;
-
-            struct AmbientLight
-            {
-                    glm::vec3 color = glm::vec3(1.f, 1.f, 1.f);
-                    float intensity = .5f;
-            };
 
             std::shared_ptr<ObjectData> registerObject(const char* filePath);
             void deregisterObject(std::shared_ptr<ObjectData>& obj);
@@ -32,15 +28,18 @@ namespace Engine
             void deregisterTexture(GLuint tex);
             void clearTextures();
 
-            GLuint getUniform(ShaderType shader, const std::string& uniformName);
-
             std::map<ShaderType, GLuint> getShader() { return m_shaderList; };
 
             void renderVertices(GeometryComponent* object, const glm::mat4& mvp);
 
             std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
 
-            AmbientLight& getAmbientLight() { return m_ambientLight; };
+            std::unique_ptr<AmbientLight>& getAmbientLight() { return m_ambientLight; };
+
+            std::vector<std::shared_ptr<DiffuseLight>> getDiffuseLights() const { return m_diffuseLights; };
+            void addDiffuseLight(std::shared_ptr<DiffuseLight> light) { m_diffuseLights.emplace_back(light); };
+            void removeDiffuseLight(std::shared_ptr<DiffuseLight> light) { m_diffuseLights.erase(std::remove(m_diffuseLights.begin(), m_diffuseLights.end(), light), m_diffuseLights.end()); };
+            void clearDiffuseLights() { m_diffuseLights.clear(); };
 
             template<typename T>
             static GLuint createVBO(std::vector<T>& data)
@@ -60,7 +59,8 @@ namespace Engine
             };
 
         private:
-            AmbientLight m_ambientLight;
+            std::unique_ptr<AmbientLight> m_ambientLight;
+            std::vector<std::shared_ptr<DiffuseLight>> m_diffuseLights;
             std::map<ShaderType, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;

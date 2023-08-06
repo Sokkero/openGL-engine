@@ -6,6 +6,7 @@
 #include "NodeComponents/GeometryComponent.h"
 #include "NodeComponents/TransformComponent.h"
 #include "RenderManager.h"
+#include "LightingHelper.h"
 
 #include <iostream>
 

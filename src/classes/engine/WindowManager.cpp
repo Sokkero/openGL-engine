@@ -5,6 +5,8 @@
 #include "NodeComponents/CameraComponent.h"
 #include "UserEventManager.h"
 
+#include <iostream>
+
 namespace Engine
 {
     WindowManager::WindowManager()
@@ -60,6 +62,8 @@ namespace Engine
         }
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
+
+        std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
 
         return true;
     }
