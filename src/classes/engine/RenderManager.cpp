@@ -17,6 +17,7 @@ namespace Engine
         , m_shaderList(std::map<ShaderType, GLuint>())
         , m_textureList(std::map<std::string, GLuint>())
         , m_ambientLight(nullptr)
+        , m_diffuseLight(nullptr)
     {
         GLuint tempShaderID;
 
@@ -27,6 +28,7 @@ namespace Engine
         m_shaderList[ShaderType::solidTexture] = tempShaderID;
 
         m_ambientLight = std::make_unique<AmbientLight>(getShader());
+        m_diffuseLight = std::make_unique<DiffuseLight>(getShader());
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
@@ -49,9 +51,10 @@ namespace Engine
 
         GLuint vertexBuffer = createVBO(vertexData);
         GLuint uvBuffer = createVBO(uvData);
+        GLuint normalBuffer = createVBO(vertexNormals);
 
         std::shared_ptr<ObjectData> newObject =
-                std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, vertexData, uvData, vertexNormals);
+                std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, normalBuffer, vertexData, uvData, vertexNormals);
 
         m_objectList[filePath] = newObject;
 
@@ -222,6 +225,18 @@ namespace Engine
                             0,             // stride
                             (void*)nullptr // array buffer offset
                     );
+
+                    glEnableVertexAttribArray(2);
+                    glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer);
+                    glVertexAttribPointer(
+                            2, // attribute. No particular reason for 1, but must match the enabled
+                            // VertexAttribArray
+                            3,             // size
+                            GL_FLOAT,      // type
+                            GL_FALSE,      // normalized?
+                            0,             // stride
+                            (void*)nullptr // array buffer offset
+                    );
                     break;
                 }
             case ShaderType::undefined:
@@ -232,5 +247,6 @@ namespace Engine
         glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());
         glDisableVertexAttribArray(0);
         glDisableVertexAttribArray(1);
+        glDisableVertexAttribArray(2);
     }
 } // namespace Engine

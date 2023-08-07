@@ -22,12 +22,14 @@ namespace Engine
                     std::string filePath,
                     GLuint vertexBuffer,
                     GLuint uvBuffer,
+                    GLuint normalBuffer,
                     std::vector<glm::vec3> vertexData,
                     std::vector<glm::vec2> vertexUvs,
                     std::vector<glm::vec3> vertexNormals
             )
                 : m_vertexBuffer(vertexBuffer)
                 , m_uvBuffer(uvBuffer)
+                , m_normalBuffer(normalBuffer)
                 , m_vertexData(std::move(vertexData))
                 , m_vertexUvs(std::move(vertexUvs))
                 , m_vertexNormals(std::move(vertexNormals))
@@ -38,6 +40,7 @@ namespace Engine
             std::string m_filePath;
             GLuint m_vertexBuffer;
             GLuint m_uvBuffer;
+            GLuint m_normalBuffer;
             std::vector<glm::vec3> m_vertexData;
             std::vector<glm::vec2> m_vertexUvs;
             std::vector<glm::vec3> m_vertexNormals;

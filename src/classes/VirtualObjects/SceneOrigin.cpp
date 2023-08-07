@@ -13,7 +13,7 @@ void SceneOrigin::start()
     setName("origin");
 
     const auto& renderManager = getEngineManager()->getRenderManager();
-    renderManager->getAmbientLight()->SetIntensity(.2f);
+    renderManager->getAmbientLight()->setIntensity(.2f);
 
     /*
     const auto& sceneLight = std::make_shared<DiffuseLight>(renderManager->getShader());

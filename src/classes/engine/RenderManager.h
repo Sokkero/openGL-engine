@@ -36,10 +36,7 @@ namespace Engine
 
             std::unique_ptr<AmbientLight>& getAmbientLight() { return m_ambientLight; };
 
-            std::vector<std::shared_ptr<DiffuseLight>> getDiffuseLights() const { return m_diffuseLights; };
-            void addDiffuseLight(std::shared_ptr<DiffuseLight> light) { m_diffuseLights.emplace_back(light); };
-            void removeDiffuseLight(std::shared_ptr<DiffuseLight> light) { m_diffuseLights.erase(std::remove(m_diffuseLights.begin(), m_diffuseLights.end(), light), m_diffuseLights.end()); };
-            void clearDiffuseLights() { m_diffuseLights.clear(); };
+            std::unique_ptr<DiffuseLight>& getDiffuseLight() { return m_diffuseLight; };
 
             template<typename T>
             static GLuint createVBO(std::vector<T>& data)
@@ -60,7 +57,7 @@ namespace Engine
 
         private:
             std::unique_ptr<AmbientLight> m_ambientLight;
-            std::vector<std::shared_ptr<DiffuseLight>> m_diffuseLights;
+            std::unique_ptr<DiffuseLight> m_diffuseLight;
             std::map<ShaderType, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;

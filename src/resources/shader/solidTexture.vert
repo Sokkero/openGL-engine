@@ -10,6 +10,7 @@ uniform mat4 MVP;
 
 // Output data ; will be interpolated for each fragment.
 out vec2 UV;
+out vec3 normal;
 
 void main()
 {
@@ -18,4 +19,5 @@ void main()
 
     // UV of the vertex. No special space for this one.
     UV = vertexUV;
+    normal = vertexNormal;
 }
