@@ -13,12 +13,13 @@ void SceneOrigin::start()
     setName("origin");
 
     const auto& renderManager = getEngineManager()->getRenderManager();
+    renderManager->getAmbientLight()->SetIntensity(.2f);
 
-    renderManager->getAmbientLight()->intensity = .5f;
-
-    const auto& sceneLight = std::make_shared<DiffuseLight>();
+    /*
+    const auto& sceneLight = std::make_shared<DiffuseLight>(renderManager->getShader());
     sceneLight->intensity = 1.f;
     renderManager->addDiffuseLight(sceneLight);
+    */
 
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");

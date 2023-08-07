@@ -11,7 +11,16 @@ layout(std140) uniform AmbientLightBlock
 {
     vec3 lightColor;
     float intensity;
+    int uboIndex;
 };
+
+layout(std140) uniform DiffuseLightBlock
+{
+    vec3 lightDir;
+    vec3 lightColor;
+    float intensity;
+    int uboIndex;
+} diffuseLights[];
 
 // Ouput data
 out vec4 color;

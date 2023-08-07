@@ -27,8 +27,6 @@ namespace Engine
         m_shaderList[ShaderType::solidTexture] = tempShaderID;
 
         m_ambientLight = std::make_unique<AmbientLight>(getShader());
-        m_ambientLight->intensity = 0.8f;
-        m_ambientLight->UpdateUbo();
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
