@@ -6,9 +6,7 @@
 
 #include <iostream>
 
-void CameraActor::start()
-{
-}
+void CameraActor::start() {}
 
 void CameraActor::update()
 {

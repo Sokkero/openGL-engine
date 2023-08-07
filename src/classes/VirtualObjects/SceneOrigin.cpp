@@ -2,9 +2,9 @@
 #include "SceneOrigin.h"
 
 #include "../engine/EngineManager.h"
+#include "../engine/LightingHelper.h"
 #include "../engine/UserEventManager.h"
 #include "../engine/WindowManager.h"
-#include "../engine/LightingHelper.h"
 #include "CameraActor.h"
 #include "TestObject.h"
 

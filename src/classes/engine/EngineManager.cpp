@@ -2,11 +2,11 @@
 #include "EngineManager.h"
 
 #include "../VirtualObjects/SceneOrigin.h"
+#include "LightingHelper.h"
 #include "NodeComponents/CameraComponent.h"
 #include "NodeComponents/GeometryComponent.h"
 #include "NodeComponents/TransformComponent.h"
 #include "RenderManager.h"
-#include "LightingHelper.h"
 
 #include <iostream>
 
@@ -24,7 +24,8 @@ namespace Engine
         , m_frames(0)
         , m_renderManager(nullptr)
         , m_clearColor(glm::vec4(1.0f, .0f, .0f, .0f))
-    {}
+    {
+    }
 
     bool EngineManager::engineStart()
     {
@@ -89,7 +90,10 @@ namespace Engine
 
     void EngineManager::setScene(std::shared_ptr<BasicNode> sceneNode)
     {
-        if(m_sceneNode) { m_sceneNode->removeAllChildNodes(); }
+        if(m_sceneNode)
+        {
+            m_sceneNode->removeAllChildNodes();
+        }
         m_sceneNode = sceneNode;
     }
 

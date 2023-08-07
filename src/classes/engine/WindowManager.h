@@ -18,16 +18,20 @@ namespace Engine
             ~WindowManager() = default;
 
             bool startWindow();
+
             GLFWwindow* getWindow() { return m_gameWindow; };
 
             std::pair<int, int> getWindowDimensions() { return m_windowDimensions; };
+
             void setWindowDimensions(int width, int height);
 
             int getTextureSamples() const { return m_textureSamples; };
-            void setTextureSamples(int samples) { m_textureSamples = samples;}
+
+            void setTextureSamples(int samples) { m_textureSamples = samples; }
 
             std::string getWindowTitle() const { return m_windowTitle; };
-            void setWindowTitle( std::string name) { m_windowTitle = std::move(name); };
+
+            void setWindowTitle(std::string name) { m_windowTitle = std::move(name); };
 
         private:
             GLFWwindow* m_gameWindow;

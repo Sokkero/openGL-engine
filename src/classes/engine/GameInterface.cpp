@@ -5,7 +5,10 @@
 
 namespace Engine
 {
-    GameInterface::GameInterface() : m_engineManager(nullptr), m_windowManager(nullptr), m_userEventManager(nullptr)
+    GameInterface::GameInterface()
+        : m_engineManager(nullptr)
+        , m_windowManager(nullptr)
+        , m_userEventManager(nullptr)
     {
         m_windowManager = std::make_shared<WindowManager>();
         m_engineManager = std::make_shared<EngineManager>();
@@ -39,4 +42,4 @@ namespace Engine
 
         return 0;
     }
-} // Engine
+} // namespace Engine

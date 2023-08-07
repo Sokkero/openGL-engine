@@ -2,8 +2,8 @@
 
 #include "ObjectHelper.h"
 
-#include <map>
 #include <glm/gtc/matrix_transform.hpp>
+#include <map>
 
 namespace Engine
 {
@@ -23,7 +23,12 @@ namespace Engine
         }
     }
 
-    inline void SetupUbo(GLuint& ubo, const unsigned int& size, const std::map<ShaderType, GLuint>& shaderMap, const GLuint& shaderPoint)
+    inline void SetupUbo(
+            GLuint& ubo,
+            const unsigned int& size,
+            const std::map<ShaderType, GLuint>& shaderMap,
+            const GLuint& shaderPoint
+    )
     {
         glGenBuffers(1, &ubo);
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
@@ -57,6 +62,7 @@ namespace Engine
             };
 
             glm::vec3 getColor() const { return m_color; };
+
             void setColor(glm::vec3 color)
             {
                 m_color = color;
@@ -64,6 +70,7 @@ namespace Engine
             };
 
             float getIntensity() const { return m_intensity; };
+
             void setIntensity(float intensity)
             {
                 m_intensity = intensity;
@@ -91,6 +98,7 @@ namespace Engine
             };
 
             bool getUseDiffuse() const { return m_useDiffuse; };
+
             void setDir(bool useDiffuse)
             {
                 m_useDiffuse = useDiffuse;
@@ -98,6 +106,7 @@ namespace Engine
             };
 
             glm::vec3 getDir() const { return m_dir; };
+
             void setDir(glm::vec3 dir)
             {
                 m_dir = dir;
@@ -105,6 +114,7 @@ namespace Engine
             };
 
             glm::vec3 getColor() const { return m_color; };
+
             void setColor(glm::vec3 color)
             {
                 m_color = color;
@@ -112,6 +122,7 @@ namespace Engine
             };
 
             float getIntensity() const { return m_intensity; };
+
             void setIntensity(float intensity)
             {
                 m_intensity = intensity;
@@ -127,4 +138,4 @@ namespace Engine
             float m_intensity = 1.0f;
             GLuint m_ubo;
     };
-}
+} // namespace Engine

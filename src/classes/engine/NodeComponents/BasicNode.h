@@ -45,13 +45,25 @@ namespace Engine
             glm::vec4 getGlobalPosition() const;
             glm::vec3 getGlobalScale() const;
 
-            static void setWindowManager(std::shared_ptr<WindowManager> newWindowManager){WINDOW_MANAGER = newWindowManager;};
+            static void setWindowManager(std::shared_ptr<WindowManager> newWindowManager)
+            {
+                WINDOW_MANAGER = newWindowManager;
+            };
+
             static std::shared_ptr<WindowManager> getWindowManager() { return WINDOW_MANAGER; };
 
-            static void setEngineManager(std::shared_ptr<EngineManager> newEngineManager){ENGINE_MANAGER = newEngineManager;};
+            static void setEngineManager(std::shared_ptr<EngineManager> newEngineManager)
+            {
+                ENGINE_MANAGER = newEngineManager;
+            };
+
             static std::shared_ptr<EngineManager> getEngineManager() { return ENGINE_MANAGER; };
 
-            static void setUserEventManager(std::shared_ptr<UserEventManager> newUserEventManager){USER_EVENT_MANAGER = newUserEventManager;};
+            static void setUserEventManager(std::shared_ptr<UserEventManager> newUserEventManager)
+            {
+                USER_EVENT_MANAGER = newUserEventManager;
+            };
+
             static std::shared_ptr<UserEventManager> getUserEventManager() { return USER_EVENT_MANAGER; };
 
         private:

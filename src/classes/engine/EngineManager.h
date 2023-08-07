@@ -1,7 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <glm/vec4.hpp>
+#include <vector>
 
 namespace Engine
 {
@@ -22,9 +22,11 @@ namespace Engine
             void drawNode(BasicNode* node);
 
             void setScene(std::shared_ptr<BasicNode> sceneNode);
+
             std::shared_ptr<BasicNode> getScene() const { return m_sceneNode; };
 
             std::shared_ptr<CameraComponent> getCamera() const { return m_camera; };
+
             void setCamera(std::shared_ptr<CameraComponent> camera) { m_camera = std::move(camera); };
 
             std::shared_ptr<RenderManager> getRenderManager() const { return m_renderManager; };
@@ -33,6 +35,7 @@ namespace Engine
             float getDeltaTime();
 
             void setClearColor(glm::vec4 color) { m_clearColor = color; };
+
             glm::vec4 getClearColor() const { return m_clearColor; };
 
             void printFps();
