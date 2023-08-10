@@ -25,6 +25,7 @@ namespace Engine
         , m_renderManager(nullptr)
         , m_clearColor(glm::vec4(0.f, .0f, .0f, .0f))
     {
+        m_renderManager = std::make_shared<RenderManager>();
     }
 
     bool EngineManager::engineStart()
@@ -34,8 +35,6 @@ namespace Engine
             std::cout << "No scene origin node" << std::endl;
             return false;
         }
-
-        m_renderManager = std::make_shared<RenderManager>();
 
         GLuint VertexArrayID;
         glGenVertexArrays(1, &VertexArrayID);

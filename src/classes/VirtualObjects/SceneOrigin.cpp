@@ -10,17 +10,6 @@
 
 void SceneOrigin::start()
 {
-    setName("origin");
-
-    const auto& renderManager = getEngineManager()->getRenderManager();
-    renderManager->getAmbientLight()->setIntensity(.2f);
-
-    /*
-    const auto& sceneLight = std::make_shared<DiffuseLight>(renderManager->getShader());
-    sceneLight->intensity = 1.f;
-    renderManager->addDiffuseLight(sceneLight);
-    */
-
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
     addAsChild(cameraHolder);
@@ -31,11 +20,7 @@ void SceneOrigin::start()
     cameraHolder->addAsChild(camera);
     getEngineManager()->setCamera(camera);
 
-    std::vector<glm::vec4> g_color_buffer_data;
-    for(int v = 0; v < 12 * 3; v++)
-    {
-        g_color_buffer_data.emplace_back(.55f, .2f, .2f, 1.f);
-    }
+    const auto& renderManager = getEngineManager()->getRenderManager();
 
     std::shared_ptr<TestObject> node1 = std::make_shared<TestObject>();
     node1->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
@@ -43,7 +28,7 @@ void SceneOrigin::start()
     node1->setPosition(glm::vec3(0, 0, 0));
     node1->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     node1->setName("obj1");
-    // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
+    //node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
     addAsChild(node1);
 
     /*

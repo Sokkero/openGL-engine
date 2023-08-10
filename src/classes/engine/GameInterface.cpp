@@ -11,6 +11,8 @@ namespace Engine
         , m_userEventManager(nullptr)
     {
         m_windowManager = std::make_shared<WindowManager>();
+        m_windowManager->startWindow();
+
         m_engineManager = std::make_shared<EngineManager>();
         m_userEventManager = std::make_shared<UserEventManager>();
 
@@ -21,7 +23,6 @@ namespace Engine
 
     int GameInterface::startGame()
     {
-        m_windowManager->startWindow();
         if(!m_engineManager->engineStart())
         {
             return 1;
