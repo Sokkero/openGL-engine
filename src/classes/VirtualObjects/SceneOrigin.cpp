@@ -28,7 +28,7 @@ void SceneOrigin::start()
     node1->setPosition(glm::vec3(0, 0, 0));
     node1->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     node1->setName("obj1");
-    //node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
+    // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
     addAsChild(node1);
 
     /*

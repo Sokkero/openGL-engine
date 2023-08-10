@@ -56,24 +56,15 @@ namespace Engine
 
             bool getUseAmbient() const { return m_useAmbient; };
 
-            void setUseAmbient(bool useAmbient)
-            {
-                m_useAmbient = useAmbient;
-            };
+            void setUseAmbient(bool useAmbient) { m_useAmbient = useAmbient; };
 
             glm::vec3 getColor() const { return m_color; };
 
-            void setColor(glm::vec3 color)
-            {
-                m_color = color;
-            };
+            void setColor(glm::vec3 color) { m_color = color; };
 
             float getIntensity() const { return m_intensity; };
 
-            void setIntensity(float intensity)
-            {
-                m_intensity = intensity;
-            };
+            void setIntensity(float intensity) { m_intensity = intensity; };
 
             GLuint getUbo() const { return m_ubo; };
 
@@ -104,31 +95,19 @@ namespace Engine
 
             bool getUseDiffuse() const { return m_useDiffuse; };
 
-            void setUseDiffuse(bool useDiffuse)
-            {
-                m_useDiffuse = useDiffuse;
-            };
+            void setUseDiffuse(bool useDiffuse) { m_useDiffuse = useDiffuse; };
 
             glm::vec3 getDir() const { return m_dir; };
 
-            void setDir(glm::vec3 dir)
-            {
-                m_dir = dir;
-            };
+            void setDir(glm::vec3 dir) { m_dir = dir; };
 
             glm::vec3 getColor() const { return m_color; };
 
-            void setColor(glm::vec3 color)
-            {
-                m_color = color;
-            };
+            void setColor(glm::vec3 color) { m_color = color; };
 
             float getIntensity() const { return m_intensity; };
 
-            void setIntensity(float intensity)
-            {
-                m_intensity = intensity;
-            };
+            void setIntensity(float intensity) { m_intensity = intensity; };
 
             GLuint getUbo() const { return m_ubo; };
 
