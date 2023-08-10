@@ -23,7 +23,7 @@ namespace Engine
         , m_currentFrameTimestamp(0)
         , m_frames(0)
         , m_renderManager(nullptr)
-        , m_clearColor(glm::vec4(1.0f, .0f, .0f, .0f))
+        , m_clearColor(glm::vec4(0.f, .0f, .0f, .0f))
     {
     }
 

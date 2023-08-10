@@ -10,18 +10,16 @@ uniform vec4 tintColor = vec4(1.0, 1.0, 1.0, 1.0);
 
 layout(std140) uniform AmbientLightBlock
 {
-    vec3 ambientLightColor;
     float ambientIntensity;
-    int ambientUboIndex;
+    vec3 ambientLightColor;
 };
 
 layout(std140) uniform DiffuseLightBlock
 {
     bool useDiffuse;
+    float diffuseIntensity;
     vec3 diffuseLightDir;
     vec3 diffuseLightColor;
-    float diffuseIntensity;
-    int diffuseUboIndex;
 };
 
 // Ouput data
@@ -35,17 +33,12 @@ void main()
 
     if(useDiffuse)
     {
-        diffuseColor = vec4(diffuseIntensity, diffuseIntensity, diffuseIntensity, 1.0);
-        color = vec4(diffuseLightDir, 1.0);
-        return;
-        //float diffuse = max(dot(normalize(normal), normalize(diffuseLightDir)), 0.0);
-        //diffuseColor = vec4(texture(textureSampler, UV).rgb, 1) * vec4(diffuseLightColor, 1.0) * diffuse * diffuseIntensity;
+        float diffuse = max(dot(normalize(normal), normalize(diffuseLightDir)), 0.0);
+        diffuseColor = vec4(texture(textureSampler, UV).rgb, 1) * vec4(diffuseLightColor, 1.0) * diffuse * diffuseIntensity;
     }
     else
     {
-        diffuseColor = vec4(1.0, 1.0, 1.0, 1.0);
-        color = diffuseColor;
-        return;
+        diffuseColor = vec4(0.0, 0.0, 0.0, 0.0);
     }
 
     color = (ambientColor + diffuseColor) * tintColor;

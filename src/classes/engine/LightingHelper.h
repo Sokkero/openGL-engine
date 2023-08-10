@@ -5,6 +5,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <map>
 
+#include <iostream>
+
 namespace Engine
 {
     inline const GLuint AMBIENT_LIGHT_POINT = 0;
@@ -44,21 +46,21 @@ namespace Engine
         glBindBufferBase(GL_UNIFORM_BUFFER, shaderPoint, ubo);
     }
 
-    template<typename T>
-    inline void UpdateUbo(GLuint& ubo, T* data)
-    {
-        glBindBuffer(GL_UNIFORM_BUFFER, ubo);
-        glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(T), data);
-        glBindBuffer(GL_UNIFORM_BUFFER, 0);
-    }
-
     struct AmbientLight
     {
         public:
             AmbientLight(const std::map<ShaderType, GLuint>& shaderMap)
             {
-                SetupUbo(m_ubo, sizeof(AmbientLight), shaderMap, AMBIENT_LIGHT_POINT);
-                UpdateUbo(m_ubo, this);
+                SetupUbo(m_ubo, m_uboSize, shaderMap, AMBIENT_LIGHT_POINT);
+                UpdateUbo();
+            };
+
+            bool getUseAmbient() const { return m_useAmbient; };
+
+            void setUseAmbient(bool useAmbient)
+            {
+                m_useAmbient = useAmbient;
+                UpdateUbo();
             };
 
             glm::vec3 getColor() const { return m_color; };
@@ -66,7 +68,7 @@ namespace Engine
             void setColor(glm::vec3 color)
             {
                 m_color = color;
-                UpdateUbo(m_ubo, this);
+                UpdateUbo();
             };
 
             float getIntensity() const { return m_intensity; };
@@ -74,14 +76,25 @@ namespace Engine
             void setIntensity(float intensity)
             {
                 m_intensity = intensity;
-                UpdateUbo(m_ubo, this);
+                UpdateUbo();
             };
 
             GLuint getUbo() const { return m_ubo; };
 
         private:
+            void UpdateUbo()
+            {
+                glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &m_useAmbient);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(float), &m_intensity);
+                glBufferSubData(GL_UNIFORM_BUFFER, 16, sizeof(glm::vec3), &m_color);
+                glBindBuffer(GL_UNIFORM_BUFFER, 0);
+            }
+
+            int m_useAmbient = true;
+            float m_intensity = 1.f;
             glm::vec3 m_color = glm::vec3(1.f, 1.f, 1.f);
-            float m_intensity = .0f;
+            const unsigned int m_uboSize = 32;
             GLuint m_ubo;
     };
 
@@ -90,19 +103,16 @@ namespace Engine
         public:
             DiffuseLight(const std::map<ShaderType, GLuint>& shaderMap)
             {
-                const unsigned int& vec3 = sizeof(glm::vec3);
-                const unsigned int& boolean = sizeof(int);
-                const unsigned int& flooat = sizeof(float);
-                SetupUbo(m_ubo, sizeof(DiffuseLight), shaderMap, DIFFUSE_LIGHT_POINT);
-                UpdateUbo(m_ubo, this);
+                SetupUbo(m_ubo, m_uboSize, shaderMap, DIFFUSE_LIGHT_POINT);
+                UpdateUbo();
             };
 
             bool getUseDiffuse() const { return m_useDiffuse; };
 
-            void setDir(bool useDiffuse)
+            void setUseDiffuse(bool useDiffuse)
             {
                 m_useDiffuse = useDiffuse;
-                UpdateUbo(m_ubo, this);
+                UpdateUbo();
             };
 
             glm::vec3 getDir() const { return m_dir; };
@@ -110,7 +120,7 @@ namespace Engine
             void setDir(glm::vec3 dir)
             {
                 m_dir = dir;
-                UpdateUbo(m_ubo, this);
+                UpdateUbo();
             };
 
             glm::vec3 getColor() const { return m_color; };
@@ -118,7 +128,7 @@ namespace Engine
             void setColor(glm::vec3 color)
             {
                 m_color = color;
-                UpdateUbo(m_ubo, this);
+                UpdateUbo();
             };
 
             float getIntensity() const { return m_intensity; };
@@ -126,16 +136,27 @@ namespace Engine
             void setIntensity(float intensity)
             {
                 m_intensity = intensity;
-                UpdateUbo(m_ubo, this);
+                UpdateUbo();
             };
 
             GLuint getUbo() const { return m_ubo; };
 
         private:
-            bool m_useDiffuse = true;
-            glm::vec3 m_dir = glm::vec3(0.f, 1.f, 1.f);
-            glm::vec3 m_color = glm::vec3(1.f, 0.f, 1.f);
-            float m_intensity = 1.0f;
+            void UpdateUbo()
+            {
+                glBindBuffer(GL_UNIFORM_BUFFER, m_ubo);
+                glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(int), &m_useDiffuse);
+                glBufferSubData(GL_UNIFORM_BUFFER, 4, sizeof(float), &m_intensity);
+                glBufferSubData(GL_UNIFORM_BUFFER, 16, sizeof(glm::vec3), &m_dir);
+                glBufferSubData(GL_UNIFORM_BUFFER, 32, sizeof(glm::vec3), &m_color);
+                glBindBuffer(GL_UNIFORM_BUFFER, 0);
+            }
+
+            int m_useDiffuse = false;
+            glm::vec3 m_dir = glm::vec3(1.f, 1.f, 1.f);
+            glm::vec3 m_color = glm::vec3(0.5f, 0.5f, 0.5f);
+            float m_intensity = 1.f;
+            const unsigned int m_uboSize = 52;
             GLuint m_ubo;
     };
 } // namespace Engine
