@@ -14,6 +14,10 @@ namespace Engine
     class DiffuseLight;
     class AmbientLight;
 
+    inline const unsigned int VERTEX_POSITION = 0;
+    inline const unsigned int VERTEX_COLOR = 1;
+    inline const unsigned int VERTEX_NORMAL = 2;
+
     class RenderManager
     {
         public:

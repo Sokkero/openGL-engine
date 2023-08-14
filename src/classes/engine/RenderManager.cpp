@@ -180,7 +180,7 @@ namespace Engine
         // part)
         glUniformMatrix4fv(glGetUniformLocation(shader, "MVP"), 1, GL_FALSE, &mvp[0][0]);
 
-        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(VERTEX_POSITION);
         glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer);
         glVertexAttribPointer(
                 0,             // No particular reason for 0, but must match the enabled VertexAttribArray
@@ -191,13 +191,25 @@ namespace Engine
                 (void*)nullptr // Array buffer offset
         );
 
+        glEnableVertexAttribArray(VERTEX_NORMAL);
+        glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer);
+        glVertexAttribPointer(
+                2, // attribute. No particular reason for 1, but must match the enabled
+                // VertexAttribArray
+                3,             // size
+                GL_FLOAT,      // type
+                GL_FALSE,      // normalized?
+                0,             // stride
+                (void*)nullptr // array buffer offset
+        );
+
         const glm::vec4 tint = object->getTint();
         glUniform4f(glGetUniformLocation(shader, "tintColor"), tint.x, tint.y, tint.z, tint.w);
 
         switch(object->getShader())
         {
             case ShaderType::solidColor:
-                glEnableVertexAttribArray(1);
+                glEnableVertexAttribArray(VERTEX_COLOR);
                 glBindBuffer(GL_ARRAY_BUFFER, object->getTextureBuffer());
                 glVertexAttribPointer(
                         1,        // No particular reason for 1, but must match the enabled VertexAttribArray
@@ -214,24 +226,12 @@ namespace Engine
                     glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); //
                     glUniform1i(glGetUniformLocation(shader, "textureSampler"), 0);
 
-                    glEnableVertexAttribArray(1);
+                    glEnableVertexAttribArray(VERTEX_COLOR);
                     glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_uvBuffer);
                     glVertexAttribPointer(
                             1, // attribute. No particular reason for 1, but must match the enabled
                             // VertexAttribArray
                             2,             // size : U+V => 2
-                            GL_FLOAT,      // type
-                            GL_FALSE,      // normalized?
-                            0,             // stride
-                            (void*)nullptr // array buffer offset
-                    );
-
-                    glEnableVertexAttribArray(2);
-                    glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer);
-                    glVertexAttribPointer(
-                            2, // attribute. No particular reason for 1, but must match the enabled
-                            // VertexAttribArray
-                            3,             // size
                             GL_FLOAT,      // type
                             GL_FALSE,      // normalized?
                             0,             // stride
@@ -245,8 +245,8 @@ namespace Engine
 
         // Drawing the object
         glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());
-        glDisableVertexAttribArray(0);
-        glDisableVertexAttribArray(1);
-        glDisableVertexAttribArray(2);
+        glDisableVertexAttribArray(VERTEX_POSITION);
+        glDisableVertexAttribArray(VERTEX_COLOR);
+        glDisableVertexAttribArray(VERTEX_NORMAL);
     }
 } // namespace Engine
