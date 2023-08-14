@@ -4,6 +4,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec2.hpp>
 
 namespace Engine
 {
@@ -21,8 +22,9 @@ namespace Engine
             void updateEvents(GLFWwindow* window);
 
             const std::map<GLFW_KEY, GLFW_ACTION>& getUserEvents() const { return m_userEvents; };
-
             GLFW_ACTION getUserEvent(GLFW_KEY key);
+
+            glm::vec2 getWasdInput();
 
         private:
             std::map<GLFW_KEY, GLFW_ACTION> m_userEvents;

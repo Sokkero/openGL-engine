@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <glm/geometric.hpp>
 
 namespace Engine
 {
@@ -55,4 +56,28 @@ namespace Engine
                 }
         */
     }
+
+    glm::vec2 UserEventManager::getWasdInput()
+    {
+        glm::vec2 input = glm::vec2(0.f, 0.f);
+
+        if(getUserEvent(GLFW_KEY_W) > 0)
+        {
+            input.y++;
+        }
+        if(getUserEvent(GLFW_KEY_S) > 0)
+        {
+            input.y--;
+        }
+        if(getUserEvent(GLFW_KEY_A) > 0)
+        {
+            input.x--;
+        }
+        if(getUserEvent(GLFW_KEY_D) > 0)
+        {
+            input.x++;
+        }
+
+        return input == glm::vec2() ? input : glm::normalize(input);
+    };
 } // namespace Engine
