@@ -15,6 +15,7 @@ void SceneOrigin::start()
     addAsChild(cameraHolder);
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
+    camera->setZFar(1000.f);
     camera->setPosition(glm::vec3(0.f, 0.f, -15.f));
     camera->setName("camera");
     cameraHolder->addAsChild(camera);
