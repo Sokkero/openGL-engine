@@ -4,7 +4,7 @@
 #include "FileLoading.h"
 #include "LightingHelper.h"
 #include "NodeComponents/GeometryComponent.h"
-#include "loadShader.h"
+#include "ShaderLoader.h"
 
 #include <iostream>
 #include <string>

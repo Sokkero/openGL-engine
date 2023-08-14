@@ -1,4 +1,4 @@
-#include "loadShader.h"
+#include "ShaderLoader.h"
 
 #include <algorithm>
 #include <cstdio>
