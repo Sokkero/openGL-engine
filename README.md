@@ -5,6 +5,7 @@
 - Conan 1.X (1.60.2 recommended)
     - `brew install conan@1 && brew link conan@1`
 - Clang-format (latest LTS recommended)
+- <a href="https://ninja-build.org/">Ninja</a> (latest LTS recommended)
 ### Setup
 1) Run the buildDeps.sh script
 2) Execute the following
