@@ -1,5 +1,9 @@
 # <u><b>OpenGl 3D engine</b></u>
 
+![alt text](https://github.com/Sokkero/openGL-engine/blob/master/src/resources/misc/engine.gif "Logo Title Text 1")
+
+<img src="https://github.com/Sokkero/openGL-engine/blob/master/src/resources/misc/engine.gif" width="600" height="400" />
+
 ## <u>Project Setup</u>
 ### Requirements
 - Conan 1.X (1.60.2 recommended)
