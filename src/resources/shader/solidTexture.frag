@@ -11,6 +11,7 @@ uniform sampler2D textureSampler;
 uniform vec4 tintColor = vec4(1.0, 1.0, 1.0, 1.0);
 layout(std140) uniform AmbientLightBlock
 {
+    bool useAmbient;
     float ambientIntensity;
     vec3 ambientLightColor;
 };
@@ -26,7 +27,15 @@ void main()
 {
     vec4 textureColor = vec4(texture(textureSampler, UV).rgb, 1) * tintColor;
 
-    vec4 ambientColor = textureColor * vec4(ambientLightColor, 1.0) * ambientIntensity;
+    vec4 ambientColor;
+    if(useAmbient)
+    {
+        ambientColor = textureColor * vec4(ambientLightColor, 1.0) * ambientIntensity;
+    }
+    else
+    {
+        ambientColor = vec4(0.0, 0.0, 0.0, 0.0);
+    }
 
     vec4 diffuseColor;
     if(useDiffuse)

@@ -9,15 +9,14 @@ int main()
     std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
 
     auto& ambientLight = game->getEngineManager()->getRenderManager()->getAmbientLight();
-    ambientLight->setIntensity(0.2f);
+    ambientLight->setIntensity(0.1f);
     ambientLight->setColor(glm::vec3(1.f, 1.f, 1.f));
     ambientLight->UpdateUbo();
 
     auto& diffuseLight = game->getEngineManager()->getRenderManager()->getDiffuseLight();
-    diffuseLight->setUseDiffuse(true);
-    diffuseLight->setIntensity(0.8f);
-    diffuseLight->setDir(glm::vec3(1.f, 1.f, 1.f));
-    diffuseLight->setColor(glm::vec3(1.0f, 0.75f, 0.75f));
+    diffuseLight->setIntensity(0.7f);
+    diffuseLight->setDir(glm::vec3(1.f, 0.25f, 1.f));
+    diffuseLight->setColor(glm::vec3(1.0f, 0.7f, 0.7f));
     diffuseLight->UpdateUbo();
 
     std::shared_ptr<SceneOrigin> startNode = std::make_shared<SceneOrigin>();
