@@ -8,7 +8,6 @@ set(PROJECT_NAME "openGLEngine")
 project(${PROJECT_NAME})
 
 find_package(OpenGL REQUIRED)
-find_package(assimp REQUIRED)
 
 if(EXISTS ${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
     include(${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
