@@ -33,9 +33,14 @@ namespace Engine
 
             void setWindowTitle(std::string name) { m_windowTitle = std::move(name); };
 
+            bool getVsync() const { return m_vsync; };
+
+            void setVsync(bool);
+
         private:
             GLFWwindow* m_gameWindow;
             std::pair<int, int> m_windowDimensions;
+            bool m_vsync;
             int m_textureSamples;
             std::string m_windowTitle;
     };

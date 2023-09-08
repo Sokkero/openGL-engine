@@ -23,6 +23,12 @@ namespace Engine
         glfwSetWindowSize(m_gameWindow, width, height);
     }
 
+    void WindowManager::setVsync(bool vsync)
+    {
+        m_vsync = vsync;
+        glfwSwapInterval(m_vsync);
+    }
+
     bool WindowManager::startWindow()
     {
         // Initialise GLFW
