@@ -14,6 +14,7 @@ namespace Engine
         , m_windowDimensions(std::pair<int, int>(1024, 640))
         , m_textureSamples(4)
         , m_windowTitle("My little Engine")
+        , m_vsync(true)
     {
     }
 
