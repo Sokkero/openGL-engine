@@ -13,13 +13,13 @@ void SceneOrigin::start()
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
     cameraHolder->setPosition(glm::vec3(0.f, -0.f, 0.f));
-    addAsChild(cameraHolder);
+    addChild(cameraHolder);
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     camera->setZFar(1000.f);
     camera->setPosition(glm::vec3(0.f, 0.f, -15.f));
     camera->setName("camera");
-    cameraHolder->addAsChild(camera);
+    cameraHolder->addChild(camera);
     getEngineManager()->setCamera(camera);
 
     const auto& renderManager = getEngineManager()->getRenderManager();
@@ -31,7 +31,7 @@ void SceneOrigin::start()
     node1->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     node1->setName("tree");
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
-    addAsChild(node1);
+    addChild(node1);
 
     std::shared_ptr<TestObject> node2 = std::make_shared<TestObject>();
     node2->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
@@ -46,7 +46,7 @@ void SceneOrigin::start()
     node2->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
     node2->setName("cube");
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
-    addAsChild(node2);
+    addChild(node2);
 }
 
 void SceneOrigin::update()

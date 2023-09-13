@@ -17,19 +17,13 @@ namespace Engine
         return m_childNodes[pos];
     }
 
-    void BasicNode::addAsChild(std::shared_ptr<BasicNode> node)
+    void BasicNode::addChild(std::shared_ptr<BasicNode> node)
     {
         m_childNodes.emplace_back(node);
-        node->setParent(std::make_shared<BasicNode>(*this));
+        node->setParent(this);
 
         node->start();
         std::cout << "Object [" << node->getName() << "] initialised" << std::endl;
-    }
-
-    void BasicNode::removeFromParent(std::shared_ptr<BasicNode> node)
-    {
-        m_childNodes.erase(std::remove(m_childNodes.begin(), m_childNodes.end(), node), m_childNodes.end());
-        node->setParent(nullptr);
     }
 
     std::vector<std::shared_ptr<BasicNode>> BasicNode::removeAllChildNodes()

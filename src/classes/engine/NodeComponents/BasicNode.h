@@ -24,12 +24,11 @@ namespace Engine
 
             std::string getName() const { return m_name; };
 
-            void addAsChild(std::shared_ptr<BasicNode> node);
-            void removeFromParent(std::shared_ptr<BasicNode> node);
+            void addChild(std::shared_ptr<BasicNode> node);
 
-            void setParent(std::shared_ptr<BasicNode> node) { m_parentNode = node; };
+            void setParent(BasicNode* node) { m_parentNode = node; };
 
-            std::shared_ptr<BasicNode> getParentNode() const { return m_parentNode; };
+            BasicNode* getParentNode() const { return m_parentNode; };
 
             std::shared_ptr<BasicNode> getChildNode(int pos) const;
 
@@ -68,7 +67,7 @@ namespace Engine
 
         private:
             std::string m_name;
-            std::shared_ptr<BasicNode> m_parentNode;
+            BasicNode* m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
 
             static std::shared_ptr<WindowManager> WINDOW_MANAGER;
