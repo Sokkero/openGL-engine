@@ -28,6 +28,7 @@ namespace Engine
     {
         m_vsync = vsync;
         glfwSwapInterval(m_vsync);
+        std::cout << "Vsync " << (m_vsync ? "on" : "off") << std::endl;
     }
 
     bool WindowManager::startWindow()

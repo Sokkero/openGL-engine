@@ -15,4 +15,5 @@ class SceneOrigin : public Engine::BasicNode
 
     private:
         void start() override;
+        void update() override;
 };

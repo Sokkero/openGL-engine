@@ -48,3 +48,11 @@ void SceneOrigin::start()
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
     addAsChild(node2);
 }
+
+void SceneOrigin::update()
+{
+    if(getUserEventManager()->getUserEvent(GLFW_KEY_V) == GLFW_PRESS)
+    {
+        getWindowManager()->setVsync(!getWindowManager()->getVsync());
+    }
+}
