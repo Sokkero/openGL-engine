@@ -1,12 +1,36 @@
 
 #include "TestObject.h"
 
+#include "../engine/EngineManager.h"
+#include "../engine/UserEventManager.h"
+#include "../engine/WindowManager.h"
+
 #include <iostream>
 
 void TestObject::start() {}
 
 void TestObject::update()
 {
-    // const auto& pos = getGlobalScale();
-    // std::cout <<  getName() << " | x: " << pos.x << " | y: " << pos.y << " | z: " << pos.z << std::endl;
+    /*
+    if(getUserEventManager()->getUserEvent(GLFW_KEY_W) > 0)
+    {
+        getParentNode()->rotateObj(glm::vec3(1.f, 0.f, 0.f), getEngineManager()->getDeltaTime() * 100);
+        // moveObj((getForward() * m_engineManager->getDeltaTime()) * 10.f);
+    }
+    if(getUserEventManager()->getUserEvent(GLFW_KEY_S) > 0)
+    {
+        getParentNode()->rotateObj(glm::vec3(-1.f, 0.f, 0.f), getEngineManager()->getDeltaTime() * 100);
+        // moveObj((getBackwards() * m_engineManager->getDeltaTime()) * 10.f);
+    }
+    if(getUserEventManager()->getUserEvent(GLFW_KEY_A) > 0)
+    {
+        getParentNode()->rotateObj(glm::vec3(0.f, 1.f, 0.f), getEngineManager()->getDeltaTime() * 100);
+        // moveObj((getLeft() * m_engineManager->getDeltaTime()) * 10.f);
+    }
+    if(getUserEventManager()->getUserEvent(GLFW_KEY_D) > 0)
+    {
+        getParentNode()->rotateObj(glm::vec3(0.f, -1.f, 0.f), getEngineManager()->getDeltaTime() * 100);
+        // moveObj((getRight() * m_engineManager->getDeltaTime()) * 10.f);
+    }
+     */
 }

@@ -77,6 +77,14 @@ namespace Engine
 
     void EngineManager::drawNode(BasicNode* node)
     {
+        /*
+        if(node->getName() == "cameraHolder")
+        {
+            auto pos = node->getGlobalPosition();
+            std::cout << "x: " << pos.x << " y: " << pos.y << " z: " << pos.z << std::endl;
+        }
+         */
+
         const auto& geometry = dynamic_cast<GeometryComponent*>(node);
         if(geometry)
         {
