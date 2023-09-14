@@ -1,13 +1,13 @@
 #pragma once
 
-#include <vector>
 #include <iostream>
+#include <vector>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtx/quaternion.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/quaternion.hpp>
 
 namespace Engine
 {
@@ -86,7 +86,6 @@ namespace Engine
                 glm::mat4 posMat = glm::translate(glm::mat4(1.f), m_position);
                 glm::mat4 scaleMat = glm::scale(glm::mat4(1.f), m_scale);
                 glm::mat4 rotMat = glm::toMat4(m_rotation);
-
 
                 m_modelMatrix = posMat * rotMat * scaleMat;
             }

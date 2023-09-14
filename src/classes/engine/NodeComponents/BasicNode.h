@@ -41,6 +41,7 @@ namespace Engine
             void callOnAllChildren(const std::function<void(BasicNode*)>& func);
 
             glm::mat4 getGlobalModelMatrix() const;
+            glm::quat getGlobalRotation() const;
             glm::vec3 getGlobalPosition() const;
             glm::vec3 getGlobalScale() const;
 
