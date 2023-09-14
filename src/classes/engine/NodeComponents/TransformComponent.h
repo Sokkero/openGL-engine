@@ -1,10 +1,13 @@
 #pragma once
 
 #include <vector>
+#include <iostream>
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 namespace Engine
 {
@@ -26,20 +29,25 @@ namespace Engine
                 updateModelMatrix();
             };
 
-            // TODO: create get/set rotation funcs
             void rotateObj(glm::vec3 dirVec, float degrees)
             {
-                m_rotation = glm::rotate(m_rotation, glm::radians(degrees), dirVec);
+                m_rotation *= glm::angleAxis(glm::radians(degrees), dirVec);
                 updateModelMatrix();
             };
 
-            glm::mat4 getLocalModelMatrix() const { return m_modelMatrix; };
+            glm::vec3 getRotation() const { return glm::degrees(glm::eulerAngles(m_rotation)); };
+
+            void setRotation(glm::vec3 rotDegrees)
+            {
+                glm::vec3 eulerRadians = glm::radians(rotDegrees);
+                m_rotation = glm::quat(eulerRadians);
+            };
+
+            glm::mat4 getModelMatrix() const { return m_modelMatrix; };
 
             void setModelMatrix(glm::mat4 matrix) { m_modelMatrix = matrix; };
 
-            glm::vec3 getLocalPosition() const { return m_position; };
-
-            glm::mat4 getLocalRotation() const { return m_rotation; };
+            glm::vec3 getPosition() const { return m_position; };
 
             void setPosition(glm::vec3 pos)
             {
@@ -62,14 +70,16 @@ namespace Engine
 
             glm::vec3 m_position;
             glm::vec3 m_scale;
-            glm::mat4 m_rotation;
+            glm::quat m_rotation;
 
             void updateModelMatrix()
             {
-                auto posMat = glm::translate(glm::mat4(1.f), m_position);
-                auto scaleMat = glm::scale(glm::mat4(1.f), m_scale);
+                glm::mat4 posMat = glm::translate(glm::mat4(1.f), m_position);
+                glm::mat4 scaleMat = glm::scale(glm::mat4(1.f), m_scale);
+                glm::mat4 rotMat = glm::toMat4(m_rotation);
 
-                m_modelMatrix = posMat * m_rotation * scaleMat;
+
+                m_modelMatrix = posMat * rotMat * scaleMat;
             }
     };
 

@@ -53,18 +53,18 @@ namespace Engine
     {
         if(m_parentNode)
         {
-            return m_parentNode->getGlobalModelMatrix() * getLocalModelMatrix();
+            return m_parentNode->getGlobalModelMatrix() * getModelMatrix();
         }
-        return getLocalModelMatrix();
+        return getModelMatrix();
     }
 
     glm::vec3 BasicNode::getGlobalPosition() const
     {
         if(m_parentNode)
         {
-            return getLocalPosition() + m_parentNode->getGlobalPosition();
+            return getPosition() + m_parentNode->getGlobalPosition();
         }
-        return getLocalPosition();
+        return getPosition();
     }
 
     glm::vec3 BasicNode::getGlobalScale() const
