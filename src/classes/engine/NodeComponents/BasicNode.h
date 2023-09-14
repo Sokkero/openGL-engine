@@ -41,7 +41,7 @@ namespace Engine
             void callOnAllChildren(const std::function<void(BasicNode*)>& func);
 
             glm::mat4 getGlobalModelMatrix() const;
-            glm::vec4 getGlobalPosition() const;
+            glm::vec3 getGlobalPosition() const;
             glm::vec3 getGlobalScale() const;
 
             static void setWindowManager(std::shared_ptr<WindowManager> newWindowManager)
@@ -64,6 +64,18 @@ namespace Engine
             };
 
             static std::shared_ptr<UserEventManager> getUserEventManager() { return USER_EVENT_MANAGER; };
+
+            glm::vec3 getForward();
+
+            glm::vec3 getBackwards();
+
+            glm::vec3 getLeft();
+
+            glm::vec3 getRight();
+
+            glm::vec3 getDown();
+
+            glm::vec3 getUp();
 
         private:
             std::string m_name;

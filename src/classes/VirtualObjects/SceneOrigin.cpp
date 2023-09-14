@@ -12,41 +12,44 @@ void SceneOrigin::start()
 {
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
-    cameraHolder->setPosition(glm::vec3(0.f, -0.f, 0.f));
+    cameraHolder->setPosition(glm::vec3(0.f, 0.f, 0.f));
     addChild(cameraHolder);
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     camera->setZFar(1000.f);
-    camera->setPosition(glm::vec3(0.f, 0.f, -15.f));
+    camera->setPosition(glm::vec3(0.f, 0.f, 15.f));
     camera->setName("camera");
     cameraHolder->addChild(camera);
     getEngineManager()->setCamera(camera);
 
     const auto& renderManager = getEngineManager()->getRenderManager();
 
-    std::shared_ptr<TestObject> node1 = std::make_shared<TestObject>();
-    node1->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
-    node1->setShader(ShaderType::solidTexture, renderManager);
-    node1->setPosition(glm::vec3(-3.f, -2.f, 0));
-    node1->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
-    node1->setName("tree");
+    std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
+    treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
+    treeObj->setShader(ShaderType::solidTexture, renderManager);
+    treeObj->setPosition(glm::vec3(-3.f, -2.f, 0));
+    treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
+    treeObj->setName("tree");
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
-    addChild(node1);
+    // addChild(treeObj);
 
-    std::shared_ptr<TestObject> node2 = std::make_shared<TestObject>();
-    node2->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
-    node2->setShader(ShaderType::solidColor, renderManager);
-    node2->setPosition(glm::vec3(3.f, -1.f, 0));
+    std::shared_ptr<TestObject> suzanne = std::make_shared<TestObject>();
+    suzanne->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
+    suzanne->setShader(ShaderType::solidColor, renderManager);
+    suzanne->setPosition(glm::vec3(0.f, 0.f, 0));
+    suzanne->setScale(glm::vec3(1.f));
 
-    std::vector<glm::vec4>  g_color_buffer_data;
-    for (int v = 0; v < node2->getObjectData()->getVertexCount() ; v++){
+    std::vector<glm::vec4> g_color_buffer_data;
+    for(int v = 0; v < suzanne->getObjectData()->getVertexCount(); v++)
+    {
         g_color_buffer_data.emplace_back(1.f, 1.f, 1.f, 1.f);
     }
 
-    node2->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
-    node2->setName("cube");
+    suzanne->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
+    suzanne->setName("cube");
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
-    addChild(node2);
+    addChild(suzanne);
+    suzanne->addChild(treeObj);
 }
 
 void SceneOrigin::update()

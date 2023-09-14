@@ -14,6 +14,7 @@ namespace Engine
     class DiffuseLight;
     class AmbientLight;
 
+    inline const glm::vec3 WORLD_UP = glm::vec3(0.f, 1.f, 0.f);
     inline const unsigned int VERTEX_POSITION = 0;
     inline const unsigned int VERTEX_COLOR = 1;
     inline const unsigned int VERTEX_NORMAL = 2;

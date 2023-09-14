@@ -22,6 +22,7 @@ namespace Engine
             void updateEvents(GLFWwindow* window);
 
             const std::map<GLFW_KEY, GLFW_ACTION>& getUserEvents() const { return m_userEvents; };
+
             GLFW_ACTION getUserEvent(GLFW_KEY key);
 
             glm::vec2 getWasdInput();

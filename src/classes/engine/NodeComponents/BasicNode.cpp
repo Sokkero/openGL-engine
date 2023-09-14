@@ -53,12 +53,19 @@ namespace Engine
     {
         if(m_parentNode)
         {
-            return getLocalModelMatrix() * m_parentNode->getLocalModelMatrix();
+            return m_parentNode->getGlobalModelMatrix() * getLocalModelMatrix();
         }
         return getLocalModelMatrix();
     }
 
-    glm::vec4 BasicNode::getGlobalPosition() const { return getGlobalModelMatrix()[3]; }
+    glm::vec3 BasicNode::getGlobalPosition() const
+    {
+        if(m_parentNode)
+        {
+            return getLocalPosition() + m_parentNode->getGlobalPosition();
+        }
+        return getLocalPosition();
+    }
 
     glm::vec3 BasicNode::getGlobalScale() const
     {
@@ -69,4 +76,40 @@ namespace Engine
         scale.z = glm::length(glm::vec3(matrix[2][0], matrix[2][1], matrix[2][2]));
         return scale;
     }
+
+    glm::vec3 BasicNode::getForward()
+    {
+        glm::mat4 globalMat = getGlobalModelMatrix();
+        return glm::normalize(glm::vec3(globalMat[0][2], globalMat[1][2], globalMat[2][2]));
+    };
+
+    glm::vec3 BasicNode::getBackwards()
+    {
+        glm::mat4 globalMat = getGlobalModelMatrix();
+        return -glm::normalize(glm::vec3(globalMat[0][2], globalMat[1][2], globalMat[2][2]));
+    };
+
+    glm::vec3 BasicNode::getLeft()
+    {
+        glm::mat4 globalMat = getGlobalModelMatrix();
+        return glm::normalize(glm::vec3(globalMat[0][0], globalMat[1][0], globalMat[2][0]));
+    };
+
+    glm::vec3 BasicNode::getRight()
+    {
+        glm::mat4 globalMat = getGlobalModelMatrix();
+        return -glm::normalize(glm::vec3(globalMat[0][0], globalMat[1][0], globalMat[2][0]));
+    };
+
+    glm::vec3 BasicNode::getDown()
+    {
+        glm::mat4 globalMat = getGlobalModelMatrix();
+        return glm::normalize(glm::vec3(globalMat[0][1], globalMat[1][1], globalMat[2][1]));
+    };
+
+    glm::vec3 BasicNode::getUp()
+    {
+        glm::mat4 globalMat = getGlobalModelMatrix();
+        return -glm::normalize(glm::vec3(m_modelMatrix[0][1], m_modelMatrix[1][1], m_modelMatrix[2][1]));
+    };
 } // namespace Engine

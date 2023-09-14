@@ -1,5 +1,7 @@
 #include "CameraComponent.h"
 
+#include "../RenderManager.h"
+
 #include <glm/ext/matrix_clip_space.hpp>
 
 namespace Engine
@@ -11,7 +13,12 @@ namespace Engine
         , m_zNear(.1f)
         , m_zFar(100.f)
     {
-        m_projectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_zNear, m_zFar);
+        updateProjectionMatrix();
+    }
+
+    glm::mat4 CameraComponent::getViewMatrix()
+    {
+        return glm::lookAt(glm::vec3(getGlobalModelMatrix()[3]), getForward(), WORLD_UP);
     }
 
     void CameraComponent::updateProjectionMatrix()

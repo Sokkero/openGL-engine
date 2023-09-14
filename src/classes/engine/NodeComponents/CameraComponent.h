@@ -15,6 +15,8 @@ namespace Engine
 
             glm::mat4 getProjectionMatrix() const { return m_projectionMatrix; };
 
+            glm::mat4 getViewMatrix();
+
             float getFov() const { return m_fov; };
 
             float getAspectRatio() const { return m_aspectRatio; };

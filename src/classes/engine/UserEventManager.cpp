@@ -1,9 +1,9 @@
 
 #include "UserEventManager.h"
 
+#include <glm/geometric.hpp>
 #include <iostream>
 #include <vector>
-#include <glm/geometric.hpp>
 
 namespace Engine
 {
