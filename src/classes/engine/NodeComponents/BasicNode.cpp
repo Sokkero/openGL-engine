@@ -60,11 +60,8 @@ namespace Engine
 
     glm::vec3 BasicNode::getGlobalPosition() const
     {
-        if(m_parentNode)
-        {
-            return getPosition() + m_parentNode->getGlobalPosition();
-        }
-        return getPosition();
+        glm::mat4 matrix = getGlobalModelMatrix();
+        return matrix[3];
     }
 
     glm::vec3 BasicNode::getGlobalScale() const
@@ -79,37 +76,31 @@ namespace Engine
 
     glm::vec3 BasicNode::getForward()
     {
-        glm::mat4 globalMat = getGlobalModelMatrix();
-        return glm::normalize(glm::vec3(globalMat[0][2], globalMat[1][2], globalMat[2][2]));
+        return glm::normalize(glm::rotate(getRotationQuat(), glm::vec3(0.0f, 0.0f, -1.0f)));
     };
 
     glm::vec3 BasicNode::getBackwards()
     {
-        glm::mat4 globalMat = getGlobalModelMatrix();
-        return -glm::normalize(glm::vec3(globalMat[0][2], globalMat[1][2], globalMat[2][2]));
+        return glm::normalize(glm::rotate(getRotationQuat(), glm::vec3(0.0f, 0.0f, 1.0f)));
     };
 
     glm::vec3 BasicNode::getLeft()
     {
-        glm::mat4 globalMat = getGlobalModelMatrix();
-        return glm::normalize(glm::vec3(globalMat[0][0], globalMat[1][0], globalMat[2][0]));
+        return glm::normalize(glm::rotate(getRotationQuat(), glm::vec3(-1.0f, 0.0f, 0.0f)));
     };
 
     glm::vec3 BasicNode::getRight()
     {
-        glm::mat4 globalMat = getGlobalModelMatrix();
-        return -glm::normalize(glm::vec3(globalMat[0][0], globalMat[1][0], globalMat[2][0]));
+        return glm::normalize(glm::rotate(getRotationQuat(), glm::vec3(1.0f, 0.0f, 0.0f)));
     };
 
     glm::vec3 BasicNode::getDown()
     {
-        glm::mat4 globalMat = getGlobalModelMatrix();
-        return glm::normalize(glm::vec3(globalMat[0][1], globalMat[1][1], globalMat[2][1]));
+        return glm::normalize(glm::rotate(getRotationQuat(), glm::vec3(0.0f, -1.0f, 0.0f)));
     };
 
     glm::vec3 BasicNode::getUp()
     {
-        glm::mat4 globalMat = getGlobalModelMatrix();
-        return -glm::normalize(glm::vec3(m_modelMatrix[0][1], m_modelMatrix[1][1], m_modelMatrix[2][1]));
+        return glm::normalize(glm::rotate(getRotationQuat(), glm::vec3(0.0f, 1.0f, 0.0f)));
     };
 } // namespace Engine

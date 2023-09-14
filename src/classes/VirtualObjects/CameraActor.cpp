@@ -12,22 +12,22 @@ void CameraActor::update()
 {
     if(getUserEventManager()->getUserEvent(GLFW_KEY_W) > 0)
     {
-        getParentNode()->rotateObj(getParentNode()->getLeft(), getEngineManager()->getDeltaTime() * 100);
+        getParentNode()->rotateObj(getRight(), getEngineManager()->getDeltaTime() * 100);
         // moveObj((getForward() * m_engineManager->getDeltaTime()) * 10.f);
     }
     if(getUserEventManager()->getUserEvent(GLFW_KEY_S) > 0)
     {
-        getParentNode()->rotateObj(getParentNode()->getRight(), getEngineManager()->getDeltaTime() * 100);
+        getParentNode()->rotateObj(getLeft(), getEngineManager()->getDeltaTime() * 100);
         // moveObj((getBackwards() * m_engineManager->getDeltaTime()) * 10.f);
     }
     if(getUserEventManager()->getUserEvent(GLFW_KEY_A) > 0)
     {
-        getParentNode()->rotateObj(getParentNode()->getDown(), getEngineManager()->getDeltaTime() * 100);
+        getParentNode()->rotateObj(getUp(), getEngineManager()->getDeltaTime() * 100);
         // moveObj((getLeft() * m_engineManager->getDeltaTime()) * 10.f);
     }
     if(getUserEventManager()->getUserEvent(GLFW_KEY_D) > 0)
     {
-        getParentNode()->rotateObj(getParentNode()->getUp(), getEngineManager()->getDeltaTime() * 100);
+        getParentNode()->rotateObj(getDown(), getEngineManager()->getDeltaTime() * 100);
         // moveObj((getRight() * m_engineManager->getDeltaTime()) * 10.f);
     }
     if(getUserEventManager()->getUserEvent(GLFW_KEY_E) > 0)

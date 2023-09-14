@@ -41,13 +41,22 @@ namespace Engine
             {
                 glm::vec3 eulerRadians = glm::radians(rotDegrees);
                 m_rotation = glm::quat(eulerRadians);
+                updateModelMatrix();
+            };
+
+            glm::quat getRotationQuat() const { return m_rotation; };
+
+            void setRotationQuat(glm::quat quat)
+            {
+                m_rotation = quat;
+                updateModelMatrix();
             };
 
             glm::mat4 getModelMatrix() const { return m_modelMatrix; };
 
             void setModelMatrix(glm::mat4 matrix) { m_modelMatrix = matrix; };
 
-            glm::vec3 getPosition() const { return m_position; };
+            glm::vec3 getPosition() const { return m_modelMatrix[3]; };
 
             void setPosition(glm::vec3 pos)
             {
