@@ -10,6 +10,8 @@
 
 void SceneOrigin::start()
 {
+    // Rotations work as intended but are used in a shitty way in the CameraActor.cpp controller
+
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
     cameraHolder->setPosition(glm::vec3(0.f, 0.f, 0.f));
@@ -27,29 +29,29 @@ void SceneOrigin::start()
     std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
     treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
     treeObj->setShader(ShaderType::solidTexture, renderManager);
-    treeObj->setPosition(glm::vec3(0.f, 0.f, 0));
+    treeObj->setPosition(glm::vec3(0.f, 0.f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
     addChild(treeObj);
-    //treeObj->addChild(camera);
+    // treeObj->addChild(camera);
 
-    std::shared_ptr<TestObject> suzanne = std::make_shared<TestObject>();
-    suzanne->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
-    suzanne->setShader(ShaderType::solidColor, renderManager);
-    suzanne->setPosition(glm::vec3(5.f, 0.f, 0));
-    suzanne->setScale(glm::vec3(1.f));
+    std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
+    suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
+    suzanneObj->setShader(ShaderType::solidColor, renderManager);
+    suzanneObj->setPosition(glm::vec3(3.f, 0.f, 0.f));
+    suzanneObj->setScale(glm::vec3(1.f));
 
     std::vector<glm::vec4> g_color_buffer_data;
-    for(int v = 0; v < suzanne->getObjectData()->getVertexCount(); v++)
+    for(int v = 0; v < suzanneObj->getObjectData()->getVertexCount(); v++)
     {
         g_color_buffer_data.emplace_back(1.f, 1.f, 1.f, 1.f);
     }
 
-    suzanne->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
-    suzanne->setName("suzanne");
+    suzanneObj->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
+    suzanneObj->setName("suzanne");
     // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
-    addChild(suzanne);
+    addChild(suzanneObj);
     //suzanne->addChild(treeObj);
 }
 
