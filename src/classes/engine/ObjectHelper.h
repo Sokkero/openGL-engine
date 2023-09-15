@@ -9,13 +9,6 @@
 
 namespace Engine
 {
-    enum class ShaderType
-    {
-        solidColor,
-        solidTexture,
-        undefined
-    };
-
     struct ObjectData
     {
             ObjectData(
@@ -47,17 +40,4 @@ namespace Engine
 
             int getVertexCount() const { return int(m_vertexData.size()); };
     };
-
-    inline std::string ShaderTypeToString(ShaderType type)
-    {
-        switch(type)
-        {
-            case ShaderType::solidColor:
-                return "solidColor";
-            case ShaderType::solidTexture:
-                return "solidTexture";
-            case ShaderType::undefined:
-                return "undefined";
-        }
-    }
 } // namespace Engine

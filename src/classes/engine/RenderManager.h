@@ -33,7 +33,18 @@ namespace Engine
             void deregisterTexture(GLuint tex);
             void clearTextures();
 
-            std::map<ShaderType, GLuint> getShader() { return m_shaderList; };
+            /**
+             * Shader has to consist of one .frag & one .vert shader files
+             *
+             * @param shaderPath full file path, without extension
+             * @param shaderName The name the shader should be given
+             * @return pair of the loaded shader name & ID
+             */
+            std::pair<std::string, GLuint> registerShader(std::string shaderPath, std::string shaderName);
+            void deregisterShader(std::string shaderName = std::string(), GLuint shaderId = -1);
+            void clearShader();
+
+            std::map<std::string, GLuint> getShader() const { return m_shaderList; };
 
             void renderVertices(GeometryComponent* object, const glm::mat4& mvp);
 
@@ -63,9 +74,11 @@ namespace Engine
         private:
             std::unique_ptr<AmbientLight> m_ambientLight;
             std::unique_ptr<DiffuseLight> m_diffuseLight;
-            std::map<ShaderType, GLuint> m_shaderList;
+            std::map<std::string, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;
+
+            void deleteShader(GLuint shaderId);
     };
 
 } // namespace Engine

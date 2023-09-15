@@ -25,34 +25,34 @@ namespace Engine
         }
     }
 
-    inline void SetupUbo(
-            GLuint& ubo,
-            const unsigned int& size,
-            const std::map<ShaderType, GLuint>& shaderMap,
-            const GLuint& shaderPoint
-    )
+    inline void SetupUbo(GLuint& ubo, const unsigned int& size, const GLuint& shaderPoint)
     {
         glGenBuffers(1, &ubo);
         glBindBuffer(GL_UNIFORM_BUFFER, ubo);
         glBufferData(GL_UNIFORM_BUFFER, size, nullptr, GL_STATIC_DRAW);
         glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-        for(const auto& shader : shaderMap)
-        {
-            unsigned int index = glGetUniformBlockIndex(shader.second, ShaderPointToString(shaderPoint));
-            glUniformBlockBinding(shader.second, index, shaderPoint);
-        }
-
         glBindBufferBase(GL_UNIFORM_BUFFER, shaderPoint, ubo);
     }
 
+    inline void BindBlock(const std::pair<std::string, GLuint>& shader, const GLuint& shaderPoint)
+    {
+        unsigned int index = glGetUniformBlockIndex(shader.second, ShaderPointToString(shaderPoint));
+        glUniformBlockBinding(shader.second, index, shaderPoint);
+    }
+
+    // TODO: Create base struct for lighting that the otheres inherit from
     struct AmbientLight
     {
         public:
-            AmbientLight(const std::map<ShaderType, GLuint>& shaderMap)
+            AmbientLight()
             {
-                SetupUbo(m_ubo, m_uboSize, shaderMap, AMBIENT_LIGHT_POINT);
+                SetupUbo(m_ubo, m_uboSize, AMBIENT_LIGHT_POINT);
                 UpdateUbo();
+            };
+
+            void setupShader(std::pair<std::string, GLuint>& shader)
+            {
+                BindBlock(shader, AMBIENT_LIGHT_POINT);
             };
 
             bool getUseAmbient() const { return m_useAmbient; };
@@ -89,10 +89,15 @@ namespace Engine
     struct DiffuseLight
     {
         public:
-            DiffuseLight(const std::map<ShaderType, GLuint>& shaderMap)
+            DiffuseLight()
             {
-                SetupUbo(m_ubo, m_uboSize, shaderMap, DIFFUSE_LIGHT_POINT);
+                SetupUbo(m_ubo, m_uboSize, DIFFUSE_LIGHT_POINT);
                 UpdateUbo();
+            };
+
+            void setupShader(std::pair<std::string, GLuint>& shader)
+            {
+                BindBlock(shader, DIFFUSE_LIGHT_POINT);
             };
 
             bool getUseDiffuse() const { return m_useDiffuse; };

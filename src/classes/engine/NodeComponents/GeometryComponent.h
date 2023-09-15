@@ -18,7 +18,7 @@ namespace Engine
         public:
             explicit GeometryComponent()
                 : m_objectData(nullptr)
-                , m_shader(ShaderType::undefined)
+                , m_shader(std::string())
                 , m_textureBuffer(0)
                 , m_tint(glm::vec4(1.f, 1.f, 1.f, 1.f))
             {
@@ -30,7 +30,7 @@ namespace Engine
 
             std::shared_ptr<ObjectData> getObjectData() const { return m_objectData; };
 
-            ShaderType getShader() const { return m_shader; };
+            std::string getShader() const { return m_shader; };
 
             GLuint getTextureBuffer() const { return m_textureBuffer; };
 
@@ -40,14 +40,14 @@ namespace Engine
 
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
 
-            void setShader(ShaderType shader, std::shared_ptr<RenderManager> renderManager)
+            void setShader(std::string shader, std::shared_ptr<RenderManager> renderManager)
             {
                 m_shader = shader;
             }
 
         private:
             std::shared_ptr<ObjectData> m_objectData;
-            ShaderType m_shader;
+            std::string m_shader;
             GLuint m_textureBuffer;
             glm::vec4 m_tint;
     };
