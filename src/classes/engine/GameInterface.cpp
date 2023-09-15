@@ -1,7 +1,7 @@
 
 #include "GameInterface.h"
 
-#include "NodeComponents/BasicNode.h"
+#include "../NodeComponents/BasicNode.h"
 
 namespace Engine
 {

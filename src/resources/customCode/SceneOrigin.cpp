@@ -1,10 +1,10 @@
 
 #include "SceneOrigin.h"
 
-#include "../engine/EngineManager.h"
-#include "../engine/LightingHelper.h"
-#include "../engine/UserEventManager.h"
-#include "../engine/WindowManager.h"
+#include "../../classes/engine/EngineManager.h"
+#include "../../classes/engine/UserEventManager.h"
+#include "../../classes/engine/WindowManager.h"
+#include "../../classes/helper/LightingHelper.h"
 #include "CameraActor.h"
 #include "TestObject.h"
 

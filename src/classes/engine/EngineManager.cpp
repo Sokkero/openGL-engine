@@ -1,11 +1,11 @@
 
 #include "EngineManager.h"
 
-#include "../VirtualObjects/SceneOrigin.h"
-#include "LightingHelper.h"
-#include "NodeComponents/CameraComponent.h"
-#include "NodeComponents/GeometryComponent.h"
-#include "NodeComponents/TransformComponent.h"
+#include "../../resources/customCode/SceneOrigin.h"
+#include "../helper/LightingHelper.h"
+#include "../nodeComponents/CameraComponent.h"
+#include "../nodeComponents/GeometryComponent.h"
+#include "../nodeComponents/TransformComponent.h"
 #include "RenderManager.h"
 
 #include <iostream>

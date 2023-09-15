@@ -1,8 +1,8 @@
 
 #include "src/classes/engine/GameInterface.h"
 #include "src/classes/engine/RenderManager.h"
-#include "src/classes/engine/LightingHelper.h"
-#include "src/classes/VirtualObjects/SceneOrigin.h"
+#include "src/classes/helper/LightingHelper.h"
+#include "src/resources/customCode/SceneOrigin.h"
 
 int main()
 {

@@ -1,9 +1,9 @@
 
 #include "TestObject.h"
 
-#include "../engine/EngineManager.h"
-#include "../engine/UserEventManager.h"
-#include "../engine/WindowManager.h"
+#include "../../classes/engine/EngineManager.h"
+#include "../../classes/engine/UserEventManager.h"
+#include "../../classes/engine/WindowManager.h"
 
 #include <iostream>
 

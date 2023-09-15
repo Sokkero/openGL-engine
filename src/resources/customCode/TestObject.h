@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../engine/NodeComponents/BasicNode.h"
-#include "../engine/NodeComponents/GeometryComponent.h"
-#include "../engine/NodeComponents/TransformComponent.h"
+#include "../../classes/nodeComponents/BasicNode.h"
+#include "../../classes/nodeComponents/GeometryComponent.h"
+#include "../../classes/nodeComponents/TransformComponent.h"
 
 using namespace Engine;
 

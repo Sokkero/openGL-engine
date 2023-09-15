@@ -1,9 +1,9 @@
 
 #include "RenderManager.h"
 
-#include "FileLoading.h"
-#include "LightingHelper.h"
-#include "NodeComponents/GeometryComponent.h"
+#include "../NodeComponents/GeometryComponent.h"
+#include "../helper/FileLoading.h"
+#include "../helper/LightingHelper.h"
 #include "ShaderLoader.h"
 
 #include <iostream>
