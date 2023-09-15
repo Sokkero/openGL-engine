@@ -6,6 +6,8 @@
 
 int main()
 {
+    // This file is for showcasing how the engine can be used and in no way optimized
+
     std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
 
     game->getEngineManager()->getRenderManager()->registerShader("resources/shader/solidColor", "solidColor");
