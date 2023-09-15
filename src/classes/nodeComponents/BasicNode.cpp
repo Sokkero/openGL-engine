@@ -8,6 +8,8 @@ namespace Engine
     std::shared_ptr<EngineManager> BasicNode::ENGINE_MANAGER = nullptr;
     std::shared_ptr<UserEventManager> BasicNode::USER_EVENT_MANAGER = nullptr;
 
+    BasicNode::BasicNode() : m_parentNode(nullptr) {}
+
     std::shared_ptr<BasicNode> BasicNode::getChildNode(int pos) const
     {
         if(pos >= m_childNodes.size())
@@ -17,7 +19,7 @@ namespace Engine
         return m_childNodes[pos];
     }
 
-    void BasicNode::addChild(std::shared_ptr<BasicNode> node)
+    void BasicNode::addChild(const std::shared_ptr<BasicNode>& node)
     {
         m_childNodes.emplace_back(node);
         node->setParent(this);
@@ -83,33 +85,33 @@ namespace Engine
         return scale;
     }
 
-    glm::vec3 BasicNode::getForward()
+    glm::vec3 BasicNode::getForward() const
     {
         return glm::normalize(glm::rotate(getGlobalRotation(), glm::vec3(0.0f, 0.0f, -1.0f)));
-    };
+    }
 
-    glm::vec3 BasicNode::getBackwards()
+    glm::vec3 BasicNode::getBackwards() const
     {
         return glm::normalize(glm::rotate(getGlobalRotation(), glm::vec3(0.0f, 0.0f, 1.0f)));
-    };
+    }
 
-    glm::vec3 BasicNode::getLeft()
+    glm::vec3 BasicNode::getLeft() const
     {
         return glm::normalize(glm::rotate(getGlobalRotation(), glm::vec3(-1.0f, 0.0f, 0.0f)));
-    };
+    }
 
-    glm::vec3 BasicNode::getRight()
+    glm::vec3 BasicNode::getRight() const
     {
         return glm::normalize(glm::rotate(getGlobalRotation(), glm::vec3(1.0f, 0.0f, 0.0f)));
-    };
+    }
 
-    glm::vec3 BasicNode::getDown()
+    glm::vec3 BasicNode::getDown() const
     {
         return glm::normalize(glm::rotate(getGlobalRotation(), glm::vec3(0.0f, -1.0f, 0.0f)));
-    };
+    }
 
-    glm::vec3 BasicNode::getUp()
+    glm::vec3 BasicNode::getUp() const
     {
         return glm::normalize(glm::rotate(getGlobalRotation(), glm::vec3(0.0f, 1.0f, 0.0f)));
-    };
+    }
 } // namespace Engine

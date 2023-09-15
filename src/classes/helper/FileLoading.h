@@ -16,7 +16,7 @@
 
 namespace Engine
 {
-    static const bool loadFileOBJ(
+    static bool loadFileOBJ(
             const char* filePath,
             std::vector<glm::vec3>& vertices,
             std::vector<glm::vec2>& uvs,
@@ -162,7 +162,7 @@ namespace Engine
         return true;
     }
 
-    static const GLuint loadFileDDS(const char* filePath)
+    static GLuint loadFileDDS(const char* filePath)
     {
         unsigned char header[124];
 
@@ -170,7 +170,7 @@ namespace Engine
 
         /* try to open the file */
         fp = fopen(filePath, "rb");
-        if(fp == NULL)
+        if(fp == nullptr)
         {
             printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n",
                    filePath);
@@ -205,7 +205,6 @@ namespace Engine
         /* close the file pointer */
         fclose(fp);
 
-        unsigned int components = (fourCC == FOURCC_DXT1) ? 3 : 4;
         unsigned int format;
         switch(fourCC)
         {
@@ -238,7 +237,16 @@ namespace Engine
         for(unsigned int level = 0; level < mipMapCount && (width || height); ++level)
         {
             unsigned int size = ((width + 3) / 4) * ((height + 3) / 4) * blockSize;
-            glCompressedTexImage2D(GL_TEXTURE_2D, level, format, width, height, 0, size, buffer + offset);
+            glCompressedTexImage2D(
+                    GL_TEXTURE_2D,
+                    GLint(level),
+                    format,
+                    GLsizei(width),
+                    GLsizei(height),
+                    0,
+                    GLsizei(size),
+                    buffer + offset
+            );
 
             offset += size;
             width /= 2;
@@ -258,16 +266,18 @@ namespace Engine
         free(buffer);
 
         return textureID;
-    };
+    }
 
+    /*
     static const GLuint loadFileTGA(
             char* filePath,
             std::vector<glm::vec3>& vertices,
             std::vector<glm::vec2>& uvs,
             std::vector<glm::vec3>& normals
     );
+     */
 
-    static const GLuint loadFileBMP(const char* filePath)
+    static GLuint loadFileBMP(const char* filePath)
     {
         // Data read from the header of the BMP file
         unsigned int width, height;
@@ -349,7 +359,7 @@ namespace Engine
         glBindTexture(GL_TEXTURE_2D, textureID);
 
         // Give the image to OpenGL
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, GLsizei(width), GLsizei(height), 0, GL_BGR, GL_UNSIGNED_BYTE, data);
 
         // OpenGL has now copied the data. Free our own version
         delete[] data;
@@ -368,5 +378,5 @@ namespace Engine
 
         // Return the ID of the texture we just created
         return textureID;
-    };
+    }
 } // namespace Engine

@@ -1,6 +1,5 @@
 #include "ShaderLoader.h"
 
-#include <algorithm>
 #include <cstdio>
 #include <fstream>
 #include <iostream>

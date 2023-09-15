@@ -1,6 +1,5 @@
 # Blender 3.6.1
 # www.blender.org
-mtllib tree.mtl
 o Stump
 v 0.870199 -3.000000 -0.591655
 v 0.542532 -3.000000 -1.049606

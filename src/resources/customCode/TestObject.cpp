@@ -5,8 +5,6 @@
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
 
-#include <iostream>
-
 void TestObject::start() {}
 
 void TestObject::update()

@@ -1,9 +1,6 @@
 #include "WindowManager.h"
 
-#include "../NodeComponents/BasicNode.h"
-#include "../NodeComponents/CameraComponent.h"
 #include "EngineManager.h"
-#include "UserEventManager.h"
 
 #include <iostream>
 

@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <utility>
 
 namespace Engine
 {
@@ -147,10 +148,10 @@ namespace Engine
         m_objectList.clear();
     }
 
-    std::pair<std::string, GLuint> RenderManager::registerShader(std::string shaderPath, std::string shaderName)
+    std::pair<std::string, GLuint> RenderManager::registerShader(const std::string& shaderPath, std::string shaderName)
     {
         std::pair<std::string, GLuint> tempShader;
-        tempShader.first = shaderName;
+        tempShader.first = std::move(shaderName);
         tempShader.second = LoadShaders((shaderPath + ".vert").c_str(), (shaderPath + ".frag").c_str());
 
         m_ambientLight->setupShader(tempShader);
@@ -170,7 +171,7 @@ namespace Engine
 
         std::erase_if(
                 m_shaderList,
-                [&shaderName, &shaderId, this](const auto& elem)
+                [&shaderName, &shaderId](const auto& elem)
                 {
                     const bool shouldRemove = elem.first == shaderName || elem.second == shaderId;
                     if(shouldRemove)
@@ -192,30 +193,6 @@ namespace Engine
         m_shaderList.clear();
 
         std::cout << "Detached & deleted all shader" << std::endl;
-    }
-
-    void RenderManager::deleteShader(GLuint programId)
-    {
-        GLint numShaders;
-        glGetProgramiv(programId, GL_ATTACHED_SHADERS, &numShaders);
-
-        // Create an array to store the shader object IDs
-        GLuint* shaderIds = new GLuint[numShaders];
-
-        // Get the attached shader objects
-        glGetAttachedShaders(programId, numShaders, nullptr, shaderIds);
-
-        // Detach and delete the shader objects if needed
-        for(int i = 0; i < numShaders; ++i)
-        {
-            GLuint shaderId = shaderIds[i];
-            glDetachShader(programId, shaderId);
-            glDeleteShader(shaderId);
-        }
-
-        // Finally, delete the program
-        glDeleteProgram(programId);
-        delete[](shaderIds);
     }
 
     void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)

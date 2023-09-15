@@ -79,5 +79,5 @@ namespace Engine
         }
 
         return input == glm::vec2() ? input : glm::normalize(input);
-    };
+    }
 } // namespace Engine

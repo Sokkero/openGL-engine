@@ -3,6 +3,7 @@
 #include "TransformComponent.h"
 
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Engine
@@ -14,17 +15,17 @@ namespace Engine
     class BasicNode : virtual public TransformComponent
     {
         public:
-            BasicNode() = default;
+            BasicNode();
             virtual ~BasicNode() = default;
 
             virtual void start() {};
             virtual void update() {};
 
-            void setName(std::string name) { m_name = name; };
+            void setName(std::string name) { m_name = std::move(name); };
 
             std::string getName() const { return m_name; };
 
-            void addChild(std::shared_ptr<BasicNode> node);
+            void addChild(const std::shared_ptr<BasicNode>& node);
 
             void setParent(BasicNode* node) { m_parentNode = node; };
 
@@ -47,36 +48,36 @@ namespace Engine
 
             static void setWindowManager(std::shared_ptr<WindowManager> newWindowManager)
             {
-                WINDOW_MANAGER = newWindowManager;
+                WINDOW_MANAGER = std::move(newWindowManager);
             };
 
             static std::shared_ptr<WindowManager> getWindowManager() { return WINDOW_MANAGER; };
 
             static void setEngineManager(std::shared_ptr<EngineManager> newEngineManager)
             {
-                ENGINE_MANAGER = newEngineManager;
+                ENGINE_MANAGER = std::move(newEngineManager);
             };
 
             static std::shared_ptr<EngineManager> getEngineManager() { return ENGINE_MANAGER; };
 
             static void setUserEventManager(std::shared_ptr<UserEventManager> newUserEventManager)
             {
-                USER_EVENT_MANAGER = newUserEventManager;
+                USER_EVENT_MANAGER = std::move(newUserEventManager);
             };
 
             static std::shared_ptr<UserEventManager> getUserEventManager() { return USER_EVENT_MANAGER; };
 
-            glm::vec3 getForward();
+            glm::vec3 getForward() const;
 
-            glm::vec3 getBackwards();
+            glm::vec3 getBackwards() const;
 
-            glm::vec3 getLeft();
+            glm::vec3 getLeft() const;
 
-            glm::vec3 getRight();
+            glm::vec3 getRight() const;
 
-            glm::vec3 getDown();
+            glm::vec3 getDown() const;
 
-            glm::vec3 getUp();
+            glm::vec3 getUp() const;
 
         private:
             std::string m_name;

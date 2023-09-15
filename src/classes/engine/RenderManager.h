@@ -40,7 +40,7 @@ namespace Engine
              * @param shaderName The name the shader should be given
              * @return pair of the loaded shader name & ID
              */
-            std::pair<std::string, GLuint> registerShader(std::string shaderPath, std::string shaderName);
+            std::pair<std::string, GLuint> registerShader(const std::string& shaderPath, std::string shaderName);
             void deregisterShader(std::string shaderName = std::string(), GLuint shaderId = -1);
             void clearShader();
 
@@ -78,7 +78,29 @@ namespace Engine
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;
 
-            void deleteShader(GLuint shaderId);
+            static void deleteShader(GLuint programId)
+            {
+                GLint numShaders;
+                glGetProgramiv(programId, GL_ATTACHED_SHADERS, &numShaders);
+
+                // Create an array to store the shader object IDs
+                GLuint* shaderIds = new GLuint[numShaders];
+
+                // Get the attached shader objects
+                glGetAttachedShaders(programId, numShaders, nullptr, shaderIds);
+
+                // Detach and delete the shader objects if needed
+                for(int i = 0; i < numShaders; ++i)
+                {
+                    GLuint shaderId = shaderIds[i];
+                    glDetachShader(programId, shaderId);
+                    glDeleteShader(shaderId);
+                }
+
+                // Finally, delete the program
+                glDeleteProgram(programId);
+                delete[](shaderIds);
+            };
     };
 
 } // namespace Engine

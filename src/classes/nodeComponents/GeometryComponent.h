@@ -40,10 +40,7 @@ namespace Engine
 
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
 
-            void setShader(std::string shader, std::shared_ptr<RenderManager> renderManager)
-            {
-                m_shader = shader;
-            }
+            void setShader(std::string shader) { m_shader = std::move(shader); }
 
         private:
             std::shared_ptr<ObjectData> m_objectData;

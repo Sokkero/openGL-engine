@@ -1,6 +1,6 @@
 # <u><b>OpenGl 3D engine</b></u>
 
-<img src="https://github.com/Sokkero/openGL-engine/blob/master/src/resources/misc/engine.gif" />
+<img src="https://github.com/Sokkero/openGL-engine/blob/master/src/resources/misc/engine.gif"  alt="Engine showcase"/>
 
 ## <u>Project Setup</u>
 ### Requirements

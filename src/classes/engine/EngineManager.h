@@ -32,7 +32,7 @@ namespace Engine
             std::shared_ptr<RenderManager> getRenderManager() const { return m_renderManager; };
 
             void setDeltaTime();
-            float getDeltaTime();
+            float getDeltaTime() const;
 
             void setClearColor(glm::vec4 color) { m_clearColor = color; };
 

@@ -28,7 +28,7 @@ void SceneOrigin::start()
 
     std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
     treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
-    treeObj->setShader("solidTexture", renderManager);
+    treeObj->setShader("solidTexture");
     treeObj->setPosition(glm::vec3(0.f, 0.f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
@@ -38,7 +38,7 @@ void SceneOrigin::start()
 
     std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
     suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
-    suzanneObj->setShader("solidColor", renderManager);
+    suzanneObj->setShader("solidColor");
     suzanneObj->setPosition(glm::vec3(3.f, 0.f, 0.f));
     suzanneObj->setScale(glm::vec3(1.f));
 

@@ -4,8 +4,6 @@
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
 
-#include <iostream>
-
 void CameraActor::start() {}
 
 void CameraActor::update()

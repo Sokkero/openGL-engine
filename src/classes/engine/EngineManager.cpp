@@ -5,10 +5,10 @@
 #include "../helper/LightingHelper.h"
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
-#include "../nodeComponents/TransformComponent.h"
 #include "RenderManager.h"
 
 #include <iostream>
+#include <utility>
 
 #include <GLFW/glfw3.h>
 
@@ -101,7 +101,7 @@ namespace Engine
         {
             m_sceneNode->removeAllChildNodes();
         }
-        m_sceneNode = sceneNode;
+        m_sceneNode = std::move(sceneNode);
     }
 
     void EngineManager::setDeltaTime()
@@ -111,7 +111,7 @@ namespace Engine
         m_lastFrameTimestamp = m_currentFrameTimestamp;
     }
 
-    float EngineManager::getDeltaTime() { return m_deltaTime; }
+    float EngineManager::getDeltaTime() const { return float(m_deltaTime); }
 
     void EngineManager::printFps()
     {
