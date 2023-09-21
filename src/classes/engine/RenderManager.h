@@ -38,7 +38,7 @@ namespace Engine
              *
              * @param shaderPath full file path, without extension
              * @param shaderName The name the shader should be given
-             * @return pair of the loaded shader name & ID
+             * @return std::pair<std::string, GLuint> the loaded shaders name & ID
              */
             std::pair<std::string, GLuint> registerShader(const std::string& shaderPath, std::string shaderName);
             void deregisterShader(std::string shaderName = std::string(), GLuint shaderId = -1);

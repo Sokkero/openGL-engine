@@ -10,6 +10,8 @@ int main()
 
 #ifdef DEBUG
     std::cout << "DEBUG MODE" << std::endl;
+#else
+    std::cout << "PROD MODE" << std::endl;
 #endif
 
     std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
