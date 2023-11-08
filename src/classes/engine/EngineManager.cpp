@@ -1,7 +1,6 @@
 
 #include "EngineManager.h"
 
-#include "../../resources/customCode/SceneOrigin.h"
 #include "../helper/LightingHelper.h"
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
