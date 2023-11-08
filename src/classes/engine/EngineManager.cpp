@@ -24,6 +24,7 @@ namespace Engine
         , m_frames(0)
         , m_renderManager(nullptr)
         , m_clearColor(glm::vec4(0.f, .0f, .0f, .0f))
+        , m_noCameraWarning(true)
     {
         m_renderManager = std::make_shared<RenderManager>();
     }
@@ -64,14 +65,14 @@ namespace Engine
 
     void EngineManager::engineDraw()
     {
-        if(m_camera)
+        if(!m_camera && m_noCameraWarning)
         {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
-            getScene()->callOnAllChildren(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
+            fprintf(stderr, "No camera...\n");
         }
         else
         {
-            fprintf(stderr, "No camera...\n");
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
+            getScene()->callOnAllChildren(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
         }
     }
 

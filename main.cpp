@@ -41,5 +41,7 @@ int main()
 
     game->getWindowManager()->setVsync(true);
 
+    game->getEngineManager()->setNoCameraWarning(false);
+
     return game->startGame();
 }
