@@ -240,6 +240,7 @@ namespace Engine
                 (void*)nullptr // Array buffer offset
         );
 
+        /*
         glEnableVertexAttribArray(VERTEX_NORMAL);
         glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer);
         glVertexAttribPointer(
@@ -250,6 +251,7 @@ namespace Engine
                 0,             // stride
                 (void*)nullptr // array buffer offset
         );
+         */
 
         GLint uniformLoc = glGetUniformLocation(shader, "tintColor");
         if(uniformLoc != -1)

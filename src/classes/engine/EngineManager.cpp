@@ -64,7 +64,7 @@ namespace Engine
 
     void EngineManager::engineDraw()
     {
-        if(!m_camera && m_noCameraWarning)
+        if(!m_camera)
         {
             fprintf(stderr, "No camera...\n");
         }

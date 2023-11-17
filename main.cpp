@@ -16,8 +16,17 @@ int main()
 
     std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
 
-    /*
     game->getEngineManager()->getRenderManager()->registerShader("resources/shader/solidColor", "solidColor");
+    auto& ambientLighting = game->getEngineManager()->getRenderManager()->getAmbientLight();
+    ambientLighting->setUseAmbient(true);
+    ambientLighting->setIntensity(1.0);
+    ambientLighting->setColor(glm::vec3(1.0f));
+    ambientLighting->UpdateUbo();
+
+    auto& diffuseLighting = game->getEngineManager()->getRenderManager()->getDiffuseLight();
+    diffuseLighting->setUseDiffuse(false);
+    diffuseLighting->UpdateUbo();
+    /*
     game->getEngineManager()->getRenderManager()->registerShader("resources/shader/solidTexture", "solidTexture");
 
     game->getEngineManager()->getRenderManager()->clearShader();

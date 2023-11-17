@@ -23,6 +23,12 @@ layout(std140) uniform DiffuseLightBlock
 
 void main()
 {
+    if(!useAmbient && !useDiffuse)
+    {
+        color = fragmentColor;
+        return;
+    }
+
     vec4 ambientColor;
     if(useAmbient)
     {
