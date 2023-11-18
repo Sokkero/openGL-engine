@@ -16,7 +16,6 @@ int main()
 
     std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
 
-    game->getEngineManager()->getRenderManager()->registerShader("resources/shader/solidColor", "solidColor");
     auto& ambientLighting = game->getEngineManager()->getRenderManager()->getAmbientLight();
     ambientLighting->setUseAmbient(true);
     ambientLighting->setIntensity(1.0);

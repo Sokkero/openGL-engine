@@ -11,6 +11,8 @@
 
 void MandelbrotScene::start()
 {
+    getEngineManager()->getRenderManager()->registerShader("resources/shader/mandelbrot", "mandelbrot");
+
     const auto& renderManager = getEngineManager()->getRenderManager();
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
@@ -22,7 +24,7 @@ void MandelbrotScene::start()
 
     std::shared_ptr<Engine::GeometryComponent> planeObj = std::make_shared<Engine::GeometryComponent>();
     planeObj->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
-    planeObj->setShader("solidColor");
+    planeObj->setShader("mandelbrot");
     planeObj->setPosition(glm::vec3(0.f, 0.f, 0.f));
     planeObj->setName("tree");
 
