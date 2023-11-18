@@ -3,7 +3,7 @@
 // Ouput data
 out vec4 color;
 
-uniform int itr = 100;
+uniform int itr = 300;
 uniform float zoom = 500;
 uniform vec2 screenSize = vec2(1024, 640);
 uniform vec2 offset = vec2(1.5, 0.6);

@@ -23,7 +23,6 @@ namespace Engine
         , m_frames(0)
         , m_renderManager(nullptr)
         , m_clearColor(glm::vec4(0.f, .0f, .0f, .0f))
-        , m_noCameraWarning(true)
     {
         m_renderManager = std::make_shared<RenderManager>();
     }

@@ -29,8 +29,6 @@ namespace Engine
 
             void setCamera(std::shared_ptr<CameraComponent> camera) { m_camera = std::move(camera); };
 
-            void setNoCameraWarning(bool showWarning) { m_noCameraWarning = showWarning; };
-
             std::shared_ptr<RenderManager> getRenderManager() const { return m_renderManager; };
 
             void setDeltaTime();
@@ -52,7 +50,6 @@ namespace Engine
             double m_lastFrameTimestamp;
             double m_lastFpsPrint;
             int m_frames;
-            bool m_noCameraWarning;
             glm::vec4 m_clearColor;
     };
 

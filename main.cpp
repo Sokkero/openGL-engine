@@ -15,6 +15,7 @@ int main()
 #endif
 
     std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
+    game->getWindowManager()->setVsync(false);
 
     auto& ambientLighting = game->getEngineManager()->getRenderManager()->getAmbientLight();
     ambientLighting->setUseAmbient(true);
@@ -48,10 +49,6 @@ int main()
     std::shared_ptr<MandelbrotScene> startNode = std::make_shared<MandelbrotScene>();
     startNode->setName("Scene Origin");
     game->getEngineManager()->setScene(startNode);
-
-    game->getWindowManager()->setVsync(true);
-
-    game->getEngineManager()->setNoCameraWarning(false);
 
     return game->startGame();
 }
