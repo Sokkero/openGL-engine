@@ -1,6 +1,6 @@
 #include "CameraComponent.h"
 
-#include "../engine/RenderManager.h"
+#include "../engine/rendering/RenderManager.h"
 
 #include <glm/ext/matrix_clip_space.hpp>
 

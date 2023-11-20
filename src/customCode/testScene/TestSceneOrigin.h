@@ -7,11 +7,11 @@ namespace Engine
     class EngineManager;
 }
 
-class SceneOrigin : public Engine::BasicNode
+class TestSceneOrigin : public Engine::BasicNode
 {
     public:
-        SceneOrigin() = default;
-        ~SceneOrigin() = default;
+        TestSceneOrigin() = default;
+        ~TestSceneOrigin() = default;
 
     private:
         void start() override;

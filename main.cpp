@@ -1,8 +1,8 @@
 
 #include "src/classes/engine/GameInterface.h"
-#include "src/classes/engine/RenderManager.h"
+#include "src/classes/engine/rendering/RenderManager.h"
 #include "src/classes/helper/LightingHelper.h"
-#include "src/resources/customCode/SceneOrigin.h"
+#include "src/customCode/testScene/TestSceneOrigin.h"
 
 int main()
 {
@@ -35,7 +35,7 @@ int main()
     diffuseLight->setColor(glm::vec3(1.0f, 0.7f, 0.7f));
     diffuseLight->UpdateUbo();
 
-    std::shared_ptr<SceneOrigin> startNode = std::make_shared<SceneOrigin>();
+    std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
     startNode->setName("Scene Origin");
     game->getEngineManager()->setScene(startNode);
 
