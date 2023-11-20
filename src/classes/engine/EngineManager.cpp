@@ -1,11 +1,11 @@
 
 #include "EngineManager.h"
 
-#include "../../resources/customCode/SceneOrigin.h"
+#include "../../customCode/testScene/TestSceneOrigin.h"
 #include "../helper/LightingHelper.h"
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
-#include "RenderManager.h"
+#include "rendering/RenderManager.h"
 
 #include <iostream>
 #include <utility>

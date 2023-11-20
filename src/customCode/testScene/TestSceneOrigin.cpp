@@ -1,5 +1,5 @@
 
-#include "SceneOrigin.h"
+#include "TestSceneOrigin.h"
 
 #include "../../classes/engine/EngineManager.h"
 #include "../../classes/engine/UserEventManager.h"
@@ -8,7 +8,7 @@
 #include "CameraActor.h"
 #include "TestObject.h"
 
-void SceneOrigin::start()
+void TestSceneOrigin::start()
 {
     // Rotations work as intended but are used in a shitty way in the CameraActor.cpp controller
 
@@ -55,7 +55,7 @@ void SceneOrigin::start()
     // suzanne->addChild(treeObj);
 }
 
-void SceneOrigin::update()
+void TestSceneOrigin::update()
 {
     if(getUserEventManager()->getUserEvent(GLFW_KEY_V) == GLFW_PRESS)
     {
