@@ -31,11 +31,19 @@ namespace Engine
 
             virtual void UpdateUbo() = 0;
 
-            template <typename T>
-            void LoadData(T data, int byteOffset) {
+            template<typename T>
+            void LoadVariable(std::pair<T, int> dataWithOffset)
+            {
                 glBindBuffer(GL_UNIFORM_BUFFER, m_uboId);
-                glBufferSubData(GL_UNIFORM_BUFFER, byteOffset, sizeof(T), &data);
+                glBufferSubData(GL_UNIFORM_BUFFER, dataWithOffset.second, sizeof(T), &dataWithOffset.first);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
+            }
+
+            template<typename T, typename... Args>
+            void LoadData(std::pair<T, int> dataWithOffset, Args... args)
+            {
+                LoadVariable(dataWithOffset);
+                LoadData(std::forward<Args>(args)...);
             }
 
             void setBindingPoint(std::pair<char*, GLuint> point) { m_bindingPoint = point; }
@@ -44,13 +52,13 @@ namespace Engine
 
             void setSize(GLuint size) { m_size = size; }
 
-            GLuint getSize() { return m_size; }
+            GLuint getSize() const { return m_size; }
 
-            GLuint getId() { return m_uboId; }
+            GLuint getId() const { return m_uboId; }
 
         private:
             std::pair<char*, GLuint> m_bindingPoint;
-            GLuint m_size;
+            GLuint m_size = 0;
             GLuint m_uboId = -1;
     };
 } // namespace Engine

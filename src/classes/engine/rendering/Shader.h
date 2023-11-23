@@ -1,38 +1,44 @@
 #pragma once
 
-#include <utility>
-
 #include "../../nodeComponents/GeometryComponent.h"
+#include "RenderManager.h"
 #include "UboBlock.h"
+#include <utility>
 
 namespace Engine
 {
+    inline const unsigned int GLOBAL_VERTEX_POSITION = 0;
+    inline const unsigned int GLOBAL_VERTEX_COLOR = 1;
+    inline const unsigned int GLOBAL_VERTEX_NORMAL = 2;
+
     class Shader
     {
         public:
             Shader() = default;
             ~Shader() = default;
 
+            void registerShader(RenderManager& renderManager, const std::string& shaderPath, const std::string& shaderName)
+            {
+                m_shaderIdentifier = renderManager.registerShader(shaderPath, shaderName);
+            };
+
             virtual void renderVertices(GeometryComponent* object, const glm::mat4& mvp) = 0;
 
-            virtual std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
+            std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 
-            virtual void setShaderIdentifier(std::pair<std::string, GLuint> shaderId)
-            {
-                m_shaderIdentifier = std::move(shaderId);
-            }
+            std::map<std::string, GLint> getAllActiveUniforms() { return m_activeUniforms; }
 
-            virtual std::map<std::string, GLuint> getAllActiveUniforms() { return m_activeUniforms; }
-
-            virtual void addActiveUniform(const char* uniform)
+            void addActiveUniform(const char* uniform)
             {
                 const GLuint index = glGetUniformLocation(m_shaderIdentifier.second, uniform);
 
-                if(index == GL_INVALID_VALUE) {
+                if(index == GL_INVALID_VALUE)
+                {
                     fprintf(stderr, "Uniform index not found! Shader invalid");
                     return;
                 }
-                else if(index == GL_INVALID_OPERATION) {
+                else if(index == GL_INVALID_OPERATION)
+                {
                     fprintf(stderr, "Uniform index not found! Linking failed");
                     return;
                 }
@@ -40,7 +46,7 @@ namespace Engine
                 m_activeUniforms.emplace(uniform, index);
             }
 
-            virtual GLuint getActiveUniform(const std::string& uniform)
+            GLint getActiveUniform(const std::string& uniform)
             {
                 const auto& uniformPosition = m_activeUniforms[uniform];
 
@@ -52,15 +58,17 @@ namespace Engine
                 return uniformPosition;
             }
 
-            virtual void removeActiveUniform(const std::string& uniform) { m_activeUniforms.erase(uniform); }
+            void removeActiveUniform(const std::string& uniform) { m_activeUniforms.erase(uniform); }
 
-            virtual std::vector<std::shared_ptr<UboBlock>> getBoundUbos() { return m_boundUbos; }
+            std::vector<std::shared_ptr<UboBlock>> getBoundUbos() { return m_boundUbos; }
 
-            virtual void bindUbo(const std::shared_ptr<UboBlock>& ubo)
+            void bindUbo(const std::shared_ptr<UboBlock>& ubo)
             {
-                unsigned int index = glGetUniformBlockIndex(m_shaderIdentifier.second, ubo->getBindingPoint().first);
+                unsigned int index =
+                        glGetUniformBlockIndex(m_shaderIdentifier.second, ubo->getBindingPoint().first);
 
-                if(index == GL_INVALID_INDEX) {
+                if(index == GL_INVALID_INDEX)
+                {
                     fprintf(stderr, "Ubo index not found!");
                     return;
                 }
@@ -70,17 +78,50 @@ namespace Engine
                 m_boundUbos.push_back(ubo);
             }
 
-            virtual void removeBoundUbo(const std::shared_ptr<UboBlock>& ubo)
+            void removeBoundUbo(const std::shared_ptr<UboBlock>& ubo)
             {
-                m_boundUbos.erase(
-                        std::remove(m_boundUbos.begin(), m_boundUbos.end(), ubo),
-                        m_boundUbos.end()
-                );
+                m_boundUbos.erase(std::remove(m_boundUbos.begin(), m_boundUbos.end(), ubo), m_boundUbos.end());
+            }
+
+            void bindTexture(
+                    GLuint attribId,
+                    GLenum targetType,
+                    GLuint bufferId,
+                    int size,
+                    GLenum dataType,
+                    bool normalized,
+                    int stride,
+                    GLenum textureType,
+                    GLenum textureTargetType,
+                    GLuint textureBufferId,
+                    GLint textureSamplerUniformId
+            )
+            {
+                glActiveTexture(textureType);
+                glBindTexture(textureTargetType, textureBufferId);
+                glUniform1i(textureSamplerUniformId, 0);
+
+                bindVertexData(attribId, targetType, bufferId, size, dataType, normalized, stride);
+            }
+
+            void bindVertexData(
+                    GLuint attribId,
+                    GLenum targetType,
+                    GLuint bufferId,
+                    int size,
+                    GLenum dataType,
+                    bool normalized,
+                    int stride
+            )
+            {
+                glEnableVertexAttribArray(attribId);
+                glBindBuffer(targetType, bufferId);
+                glVertexAttribPointer(attribId, size, dataType, normalized, stride, (void*)nullptr);
             }
 
         private:
             std::pair<std::string, GLuint> m_shaderIdentifier;
-            std::map<std::string, GLuint> m_activeUniforms;
+            std::map<std::string, GLint> m_activeUniforms;
             std::vector<std::shared_ptr<UboBlock>> m_boundUbos;
     };
 } // namespace Engine

@@ -57,6 +57,11 @@ namespace Engine
             template<typename T>
             static GLuint createVBO(std::vector<T>& data)
             {
+                if(!data)
+                {
+                    return -1;
+                }
+
                 int dataSize = data.size() * sizeof(T);
 
                 // Identify the vertex buffer
@@ -84,7 +89,7 @@ namespace Engine
                 glGetProgramiv(programId, GL_ATTACHED_SHADERS, &numShaders);
 
                 // Create an array to store the shader object IDs
-                GLuint* shaderIds = new GLuint[numShaders];
+                auto* shaderIds = new GLuint[numShaders];
 
                 // Get the attached shader objects
                 glGetAttachedShaders(programId, numShaders, nullptr, shaderIds);
