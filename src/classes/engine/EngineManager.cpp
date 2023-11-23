@@ -6,6 +6,7 @@
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
 #include "rendering/RenderManager.h"
+#include "rendering/Shader.h"
 
 #include <iostream>
 #include <utility>
@@ -91,7 +92,7 @@ namespace Engine
             // MVP = Projection * View * Model (Matrix calculations are the other way around)
             glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getViewMatrix() *
                     node->getGlobalModelMatrix();
-            m_renderManager->renderVertices(geometry, mvp);
+            geometry->getShader()->renderVertices(geometry, mvp);
         }
     }
 

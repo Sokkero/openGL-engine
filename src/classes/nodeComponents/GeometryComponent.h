@@ -12,13 +12,14 @@
 
 namespace Engine
 {
+    class Shader;
 
     class GeometryComponent : virtual public BasicNode
     {
         public:
             explicit GeometryComponent()
                 : m_objectData(nullptr)
-                , m_shader(std::string())
+                , m_shader(nullptr)
                 , m_textureBuffer(0)
                 , m_tint(glm::vec4(1.f, 1.f, 1.f, 1.f))
             {
@@ -30,7 +31,7 @@ namespace Engine
 
             std::shared_ptr<ObjectData> getObjectData() const { return m_objectData; };
 
-            std::string getShader() const { return m_shader; };
+            std::shared_ptr<Shader> getShader() const { return m_shader; };
 
             GLuint getTextureBuffer() const { return m_textureBuffer; };
 
@@ -40,11 +41,11 @@ namespace Engine
 
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
 
-            void setShader(std::string shader) { m_shader = std::move(shader); }
+            void setShader(std::shared_ptr<Shader> shader) { m_shader = std::move(shader); }
 
         private:
             std::shared_ptr<ObjectData> m_objectData;
-            std::string m_shader;
+            std::shared_ptr<Shader> m_shader;
             GLuint m_textureBuffer;
             glm::vec4 m_tint;
     };

@@ -1,17 +1,18 @@
 
-#include "SolidColorShader.h"
+#include "SolidTextureShader.h"
 
 using namespace Engine;
 
-SolidColorShader::SolidColorShader(const std::shared_ptr<RenderManager>& renderManager)
+SolidTextureShader::SolidTextureShader(const std::shared_ptr<RenderManager>& renderManager)
 {
-    registerShader(renderManager, "resources/shader/solidColor", "solidColor");
+    registerShader(renderManager, "resources/shader/solidTexture", "solidTexture");
 
     addActiveUniform("MVP");
     addActiveUniform("tintColor");
+    addActiveUniform("textureSampler");
 }
 
-void SolidColorShader::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
+void SolidTextureShader::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {
@@ -42,7 +43,20 @@ void SolidColorShader::renderVertices(GeometryComponent* object, const glm::mat4
 
     bindVertexData(GLOBAL_VERTEX_POSITION, GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer, 3, GL_FLOAT, false, 0);
     bindVertexData(GLOBAL_VERTEX_NORMAL, GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer, 3, GL_FLOAT, false, 0);
-    bindVertexData(GLOBAL_VERTEX_COLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
+
+    bindTexture(
+            GLOBAL_VERTEX_COLOR,
+            GL_ARRAY_BUFFER,
+            object->getObjectData()->m_uvBuffer,
+            2,
+            GL_FLOAT,
+            false,
+            0,
+            GL_TEXTURE0,
+            GL_TEXTURE_2D,
+            object->getTextureBuffer(),
+            getActiveUniform("textureSampler")
+    );
 
     // Drawing the object
     glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());

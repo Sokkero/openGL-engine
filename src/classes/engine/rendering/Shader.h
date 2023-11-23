@@ -15,11 +15,39 @@ namespace Engine
     {
         public:
             Shader() = default;
-            ~Shader() = default;
 
-            void registerShader(RenderManager& renderManager, const std::string& shaderPath, const std::string& shaderName)
+            ~Shader()
             {
-                m_shaderIdentifier = renderManager.registerShader(shaderPath, shaderName);
+                // TODO: cehck if this is the correct way to handle expired programms
+                GLint numShaders;
+                glGetProgramiv(m_shaderIdentifier.second, GL_ATTACHED_SHADERS, &numShaders);
+
+                // Create an array to store the shader object IDs
+                auto* shaderIds = new GLuint[numShaders];
+
+                // Get the attached shader objects
+                glGetAttachedShaders(m_shaderIdentifier.second, numShaders, nullptr, shaderIds);
+
+                // Detach and delete the shader objects if needed
+                for(int i = 0; i < numShaders; ++i)
+                {
+                    GLuint shaderId = shaderIds[i];
+                    glDetachShader(m_shaderIdentifier.second, shaderId);
+                    glDeleteShader(shaderId);
+                }
+
+                // Finally, delete the program
+                glDeleteProgram(m_shaderIdentifier.second);
+                delete[](shaderIds);
+            };
+
+            void registerShader(
+                    const std::shared_ptr<RenderManager>& renderManager,
+                    const std::string& shaderPath,
+                    const std::string& shaderName
+            )
+            {
+                m_shaderIdentifier = renderManager->registerShader(shaderPath, shaderName);
             };
 
             virtual void renderVertices(GeometryComponent* object, const glm::mat4& mvp) = 0;

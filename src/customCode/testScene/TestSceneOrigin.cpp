@@ -5,13 +5,13 @@
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
 #include "../../classes/helper/LightingHelper.h"
+#include "../../resources/shader/SolidColorShader.h"
+#include "../../resources/shader/SolidTextureShader.h"
 #include "CameraActor.h"
 #include "TestObject.h"
 
 void TestSceneOrigin::start()
 {
-    // Rotations work as intended but are used in a shitty way in the CameraActor.cpp controller
-
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
     cameraHolder->setPosition(glm::vec3(0.f, 0.f, 0.f));
@@ -28,7 +28,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
     treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
-    treeObj->setShader("solidTexture");
+    treeObj->setShader(std::make_shared<SolidTextureShader>(renderManager));
     treeObj->setPosition(glm::vec3(0.f, 0.f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
@@ -38,7 +38,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
     suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
-    suzanneObj->setShader("solidColor");
+    suzanneObj->setShader(std::make_shared<SolidColorShader>(renderManager));
     suzanneObj->setPosition(glm::vec3(3.f, 0.f, 0.f));
     suzanneObj->setScale(glm::vec3(1.f));
 

@@ -22,7 +22,9 @@ include_directories(
 )
 
 FILE(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${RES_FILES} main.cpp)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${RES_FILES} main.cpp
+        src/resources/shader/SolidTextureShader.cpp
+        src/resources/shader/SolidTextureShader.h)
 
 # Copy src/resources -> bin/resources
 file(COPY ${CMAKE_SOURCE_DIR}/src/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)

@@ -4,6 +4,7 @@
 #include "../../helper/FileLoading.h"
 #include "../../helper/LightingHelper.h"
 #include "../../nodeComponents/GeometryComponent.h"
+#include "Shader.h"
 #include "ShaderLoader.h"
 
 #include <iostream>
@@ -42,9 +43,9 @@ namespace Engine
             return nullptr;
         }
 
-        GLuint vertexBuffer = createVBO(vertexData);
-        GLuint uvBuffer = createVBO(uvData);
-        GLuint normalBuffer = createVBO(vertexNormals);
+        GLuint vertexBuffer = !vertexData.empty() ? createVBO(vertexData) : -1;
+        GLuint uvBuffer = !uvData.empty() ? createVBO(uvData) : -1;
+        GLuint normalBuffer = !vertexNormals.empty() ? createVBO(vertexNormals) : -1;
 
         std::shared_ptr<ObjectData> newObject =
                 std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, normalBuffer, vertexData, uvData, vertexNormals);
@@ -150,16 +151,22 @@ namespace Engine
 
     std::pair<std::string, GLuint> RenderManager::registerShader(const std::string& shaderPath, std::string shaderName)
     {
-        std::pair<std::string, GLuint> tempShader;
-        tempShader.first = std::move(shaderName);
-        tempShader.second = LoadShaders((shaderPath + ".vert").c_str(), (shaderPath + ".frag").c_str());
+        if(m_shaderList.contains(shaderName))
+        {
+            auto shader = m_shaderList.find(shaderName);
+            return *shader;
+        }
 
-        m_ambientLight->setupShader(tempShader);
-        m_diffuseLight->setupShader(tempShader);
+        std::pair<std::string, GLuint> newShader;
+        newShader.first = std::move(shaderName);
+        newShader.second = LoadShaders((shaderPath + ".vert").c_str(), (shaderPath + ".frag").c_str());
 
-        m_shaderList[tempShader.first] = tempShader.second;
+        m_ambientLight->setupShader(newShader);
+        m_diffuseLight->setupShader(newShader);
 
-        return tempShader;
+        m_shaderList.emplace(newShader);
+
+        return newShader;
     }
 
     void RenderManager::deregisterShader(std::string shaderName /* = "" */, GLuint shaderId /* = -1 */)
@@ -172,128 +179,7 @@ namespace Engine
         std::erase_if(
                 m_shaderList,
                 [&shaderName, &shaderId](const auto& elem)
-                {
-                    const bool shouldRemove = elem.first == shaderName || elem.second == shaderId;
-                    if(shouldRemove)
-                    {
-                        std::cout << "Detached & deleted shader " << elem.first << std::endl;
-                        deleteShader(elem.second);
-                    }
-                    return shouldRemove;
-                }
+                { return elem.first == shaderName || elem.second == shaderId; }
         );
-    }
-
-    void RenderManager::clearShader()
-    {
-        for(auto& elem : m_shaderList)
-        {
-            deleteShader(elem.second);
-        }
-        m_shaderList.clear();
-
-        std::cout << "Detached & deleted all shader" << std::endl;
-    }
-
-    void RenderManager::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
-    {
-        if(object->getShader().empty())
-        {
-            fprintf(stderr, "Object shader undefined");
-            return;
-        }
-
-        const auto& it = m_shaderList.find(object->getShader());
-        if(it == m_shaderList.end())
-        {
-            fprintf(stderr,
-                    "Couldn't find shader for object, shader in question: %s",
-                    object->getShader().c_str());
-            return;
-        }
-
-        if(!object->getObjectData()->m_vertexBuffer)
-        {
-            fprintf(stderr, "Object is missing vertices!");
-            return;
-        }
-
-        if(!object->getObjectData()->m_normalBuffer)
-        {
-            fprintf(stderr, "Object is missing vertex normals!");
-            return;
-        }
-
-        const auto& shader = it->second;
-        glUseProgram(shader);
-
-        glUniformMatrix4fv(glGetUniformLocation(shader, "MVP"), 1, GL_FALSE, &mvp[0][0]);
-
-        glEnableVertexAttribArray(VERTEX_POSITION);
-        glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer);
-        glVertexAttribPointer(
-                VERTEX_POSITION,
-                3,             // Size
-                GL_FLOAT,      // Type
-                GL_FALSE,      // Normalized?
-                0,             // Stride
-                (void*)nullptr // Array buffer offset
-        );
-
-        glEnableVertexAttribArray(VERTEX_NORMAL);
-        glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer);
-        glVertexAttribPointer(
-                VERTEX_NORMAL,
-                3,             // size
-                GL_FLOAT,      // type
-                GL_FALSE,      // normalized?
-                0,             // stride
-                (void*)nullptr // array buffer offset
-        );
-
-        GLint uniformLoc = glGetUniformLocation(shader, "tintColor");
-        if(uniformLoc != -1)
-        {
-            const glm::vec4 tint = object->getTint();
-            glUniform4f(uniformLoc, tint.x, tint.y, tint.z, tint.w);
-        }
-
-        uniformLoc = glGetUniformLocation(shader, "textureSampler");
-        if(uniformLoc != -1)
-        {
-            glActiveTexture(GL_TEXTURE0);
-            glBindTexture(GL_TEXTURE_2D, object->getTextureBuffer()); //
-            glUniform1i(uniformLoc, 0);
-
-            glEnableVertexAttribArray(VERTEX_COLOR);
-            glBindBuffer(GL_ARRAY_BUFFER, object->getObjectData()->m_uvBuffer);
-            glVertexAttribPointer(
-                    VERTEX_COLOR,
-                    2,             // size : U+V => 2
-                    GL_FLOAT,      // type
-                    GL_FALSE,      // normalized?
-                    0,             // stride
-                    (void*)nullptr // array buffer offset
-            );
-        }
-        else
-        {
-            glEnableVertexAttribArray(VERTEX_COLOR);
-            glBindBuffer(GL_ARRAY_BUFFER, object->getTextureBuffer());
-            glVertexAttribPointer(
-                    VERTEX_COLOR,
-                    4,             // Size
-                    GL_FLOAT,      // Type
-                    GL_FALSE,      // Normalized?
-                    0,             // Stride
-                    (void*)nullptr // Array buffer offset
-            );
-        }
-
-        // Drawing the object
-        glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());
-        glDisableVertexAttribArray(VERTEX_POSITION);
-        glDisableVertexAttribArray(VERTEX_COLOR);
-        glDisableVertexAttribArray(VERTEX_NORMAL);
     }
 } // namespace Engine
