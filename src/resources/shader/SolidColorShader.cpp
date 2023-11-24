@@ -40,13 +40,29 @@ void SolidColorShader::renderVertices(GeometryComponent* object, const glm::mat4
     const glm::vec4 tint = object->getTint();
     glUniform4f(getActiveUniform("tintColor"), tint.x, tint.y, tint.z, tint.w);
 
-    bindVertexData(GLOBAL_VERTEX_POSITION, GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer, 3, GL_FLOAT, false, 0);
-    bindVertexData(GLOBAL_VERTEX_NORMAL, GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer, 3, GL_FLOAT, false, 0);
-    bindVertexData(GLOBAL_VERTEX_COLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
+    bindVertexData(
+            GLOBAL_ATTRIB_INDEX_VERTEXPOSITION,
+            GL_ARRAY_BUFFER,
+            object->getObjectData()->m_vertexBuffer,
+            3,
+            GL_FLOAT,
+            false,
+            0
+    );
+    bindVertexData(
+            GLOBAL_ATTRIB_INDEX_VERTEXNORMAL,
+            GL_ARRAY_BUFFER,
+            object->getObjectData()->m_normalBuffer,
+            3,
+            GL_FLOAT,
+            false,
+            0
+    );
+    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
 
     // Drawing the object
     glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());
-    glDisableVertexAttribArray(GLOBAL_VERTEX_POSITION);
-    glDisableVertexAttribArray(GLOBAL_VERTEX_COLOR);
-    glDisableVertexAttribArray(GLOBAL_VERTEX_NORMAL);
+    glDisableVertexAttribArray(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION);
+    glDisableVertexAttribArray(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR);
+    glDisableVertexAttribArray(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL);
 }

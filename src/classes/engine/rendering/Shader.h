@@ -7,9 +7,9 @@
 
 namespace Engine
 {
-    inline const unsigned int GLOBAL_VERTEX_POSITION = 0;
-    inline const unsigned int GLOBAL_VERTEX_COLOR = 1;
-    inline const unsigned int GLOBAL_VERTEX_NORMAL = 2;
+    inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXPOSITION = 0;
+    inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXCOLOR = 1;
+    inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXNORMAL = 2;
 
     class Shader
     {
