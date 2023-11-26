@@ -19,14 +19,13 @@ endif()
 
 include_directories(
         external/SOIL/
+        external/DearImgui/
 )
 
 FILE(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${RES_FILES} main.cpp
-        src/resources/shader/SolidTextureShader.cpp
-        src/resources/shader/SolidTextureShader.h)
+add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${RES_FILES} main.cpp)
 
 # Copy src/resources -> bin/resources
 file(COPY ${CMAKE_SOURCE_DIR}/src/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
-target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS} ${CMAKE_SOURCE_DIR}/external/assimp/libassimp.5.2.5.dylib)
+target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
