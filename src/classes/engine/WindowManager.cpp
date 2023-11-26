@@ -2,6 +2,9 @@
 
 #include "EngineManager.h"
 
+#include <imgui.h>
+#include <imgui_impl_glfw.h>
+
 #include <iostream>
 
 namespace Engine
@@ -69,6 +72,22 @@ namespace Engine
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
         std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
+
+        // Setup Dear ImGui context
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO();
+        (void)io;
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
+        io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;  // Enable Gamepad Controls
+
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
+        // ImGui::StyleColorsLight();
+
+        // Setup Platform/Renderer backends
+        ImGui_ImplGlfw_InitForOpenGL(m_gameWindow, true);
+        ImGui_ImplOpenGL3_Init("#version 150");
 
         return true;
     }

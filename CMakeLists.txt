@@ -19,11 +19,22 @@ endif()
 
 include_directories(
         external/SOIL/
-        external/DearImgui/
+        external/imgui/
+        external/imgui/backends/
+)
+
+FILE(GLOB IMGUI
+        external/imgui/*.cpp
+        external/imgui/*.h
+        external/imgui/backends/imgui_impl_glfw.h
+        external/imgui/backends/imgui_impl_glfw.cpp
+        external/imgui/backends/imgui_impl_opengl3.h
+        external/imgui/backends/imgui_impl_opengl3.cpp
+        external/imgui/misc/cpp/imgui_stdlib.*
 )
 
 FILE(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
-add_executable(${PROJECT_NAME} ${SOURCE_FILES} ${RES_FILES} main.cpp)
+add_executable(${PROJECT_NAME} ${IMGUI} ${SOURCE_FILES} ${RES_FILES} main.cpp)
 
 # Copy src/resources -> bin/resources
 file(COPY ${CMAKE_SOURCE_DIR}/src/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)

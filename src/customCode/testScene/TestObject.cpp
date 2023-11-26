@@ -7,6 +7,4 @@
 
 void TestObject::start() {}
 
-void TestObject::update()
-{
-}
+void TestObject::update() {}
