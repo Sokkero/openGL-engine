@@ -3,6 +3,7 @@
 #include "UiElement.h"
 
 #include <string>
+#include <utility>
 
 namespace Engine
 {
@@ -33,7 +34,11 @@ namespace Engine
                 ImGui::Checkbox(m_text.c_str(), &m_value);
             }
 
-            void setOnChangeCallback(Callback func) { m_onChangeCallback = func; }
+            void setOnChangeCallback(Callback func) { m_onChangeCallback = std::move(func); }
+
+            std::string getText() const { return m_text; };
+
+            void setText(std::string text) { m_text = text; };
 
         private:
             Callback m_onChangeCallback;

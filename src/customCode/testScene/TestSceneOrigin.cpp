@@ -80,6 +80,9 @@ void TestSceneOrigin::update()
     ImGui::ColorEdit3("clear color", (float*)&myFloat);
 
     if(ImGui::Button("Button")) fprintf(stderr, "Pressed!");
+    if(ImGui::SmallButton("Small Button")) fprintf(stderr, "Pressed!");
+    if(ImGui::ArrowButton(" Arrow Button", ImGuiDir_Right)) fprintf(stderr, "Pressed!");
+
     ImGui::SameLine();
     ImGui::Text("counter = %d", 1);
 

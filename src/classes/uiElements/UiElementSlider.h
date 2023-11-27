@@ -41,13 +41,19 @@ namespace Engine
                 ImGui::SliderScalar("float", m_dataType, &m_value, &m_minimum, &m_maximum);
             }
 
-            float getMinimum() const {return m_minimum;};
+            float getMinimum() const { return m_minimum; };
+
             void setMinimum(float min) { m_minimum = min; };
 
-            float getMaximum() const {return m_maximum;};
+            float getMaximum() const { return m_maximum; };
+
             void setMaximum(float max) { m_maximum = max; };
 
             void setOnChangeCallback(Callback func) { m_onChangeCallback = func; }
+
+            std::string getText() const { return m_text; };
+
+            void setText(std::string text) { m_text = text; };
 
         private:
             ImGuiDataType_ m_dataType;

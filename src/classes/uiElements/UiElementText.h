@@ -21,6 +21,10 @@ namespace Engine
                 ImGui::Text("%s", m_text.c_str());
             }
 
+            std::string getText() const { return m_text; };
+
+            void setText(std::string text) { m_text = text; };
+
         private:
             std::string m_text;
     };

@@ -8,7 +8,9 @@
 
 namespace Engine
 {
-    class UiDebugWindow : protected UiElement, virtual public BasicNode
+    class UiDebugWindow
+        : protected UiElement
+        , virtual public BasicNode
     {
         public:
             UiDebugWindow();
