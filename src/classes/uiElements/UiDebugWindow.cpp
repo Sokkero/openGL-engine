@@ -1,15 +1,15 @@
-#include "DebugUiWindow.h"
+#include "UiDebugWindow.h"
 
 using namespace Engine;
 
-DebugUiWindow::DebugUiWindow()
+UiDebugWindow::UiDebugWindow()
     : m_content(std::vector<std::shared_ptr<UiElement>>())
     , m_windowOpen(true)
     , m_flags(std::vector<ImGuiWindowFlags_>())
 {
 }
 
-void DebugUiWindow::drawUi()
+void UiDebugWindow::drawUi()
 {
     ImGui::Begin(m_windowTitle.c_str());
 

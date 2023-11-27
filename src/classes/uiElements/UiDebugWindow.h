@@ -1,18 +1,17 @@
 #pragma once
 
 #include "UiElement.h"
-#include <imgui.h>
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace Engine
 {
-    class DebugUiWindow : protected UiElement
+    class UiDebugWindow : protected UiElement
     {
         public:
-            DebugUiWindow();
-            ~DebugUiWindow() = default;
+            UiDebugWindow();
+            ~UiDebugWindow() = default;
 
             void drawUi() override;
 
