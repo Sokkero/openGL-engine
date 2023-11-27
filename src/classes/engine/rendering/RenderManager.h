@@ -50,6 +50,9 @@ namespace Engine
 
             std::unique_ptr<DiffuseLight>& getDiffuseLight() { return m_diffuseLight; };
 
+            bool isWireframeMode() const { return m_showWireframe; };
+            void setWireframeMode(bool toggle);
+
             template<typename T>
             static GLuint createVBO(std::vector<T>& data)
             {
@@ -73,6 +76,7 @@ namespace Engine
             std::map<std::string, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;
+            bool m_showWireframe;
     };
 
 } // namespace Engine

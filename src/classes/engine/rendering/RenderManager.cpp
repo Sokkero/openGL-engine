@@ -3,8 +3,6 @@
 
 #include "../../helper/FileLoading.h"
 #include "../../helper/LightingHelper.h"
-#include "../../nodeComponents/GeometryComponent.h"
-#include "Shader.h"
 #include "ShaderLoader.h"
 
 #include <iostream>
@@ -20,6 +18,7 @@ namespace Engine
         , m_textureList(std::map<std::string, GLuint>())
         , m_ambientLight(nullptr)
         , m_diffuseLight(nullptr)
+        , m_showWireframe(false)
     {
         m_ambientLight = std::make_unique<AmbientLight>();
         m_diffuseLight = std::make_unique<DiffuseLight>();
@@ -181,5 +180,16 @@ namespace Engine
                 [&shaderName, &shaderId](const auto& elem)
                 { return elem.first == shaderName || elem.second == shaderId; }
         );
+    }
+
+    void RenderManager::setWireframeMode(bool toggle)
+    {
+        if(toggle == m_showWireframe) {
+            return;
+        }
+
+        glPolygonMode( GL_FRONT_AND_BACK, toggle ? GL_LINE : GL_FILL);
+        m_showWireframe = toggle;
+
     }
 } // namespace Engine
