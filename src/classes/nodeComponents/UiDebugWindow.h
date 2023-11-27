@@ -1,13 +1,14 @@
 #pragma once
 
-#include "UiElement.h"
+#include "../uiElements/UiElement.h"
+#include "BasicNode.h"
 #include <memory>
 #include <string>
 #include <vector>
 
 namespace Engine
 {
-    class UiDebugWindow : protected UiElement
+    class UiDebugWindow : protected UiElement, virtual public BasicNode
     {
         public:
             UiDebugWindow();

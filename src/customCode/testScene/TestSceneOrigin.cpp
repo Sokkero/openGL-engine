@@ -73,7 +73,10 @@ void TestSceneOrigin::update()
     ImGui::Checkbox("Demo Window", &myBool);  // Edit bools storing our window open/close state
     ImGui::Checkbox("Another Window", &myBool);
 
-    ImGui::SliderFloat("float", &myFloat, 0.0f, 1.0f); // Edit 1 float using a slider from 0.0f to 1.0f
+    float my1 = 0.0f;
+    float my2 = 1.0f;
+
+    ImGui::SliderScalar("float", ImGuiDataType_Float, &myFloat, &my1, &my2); // Edit 1 float using a slider from 0.0f to 1.0f
     ImGui::ColorEdit3("clear color", (float*)&myFloat);
 
     if(ImGui::Button("Button")) fprintf(stderr, "Pressed!");
