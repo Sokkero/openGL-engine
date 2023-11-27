@@ -2,6 +2,9 @@
 #include "GameInterface.h"
 
 #include "../nodeComponents/BasicNode.h"
+#include <imgui.h>
+#include <imgui_impl_opengl3.h>
+#include <imgui_impl_glfw.h>
 
 namespace Engine
 {
@@ -30,9 +33,16 @@ namespace Engine
 
         do
         {
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
             m_userEventManager->updateEvents(m_windowManager->getWindow());
             m_engineManager->engineUpdate();
             m_engineManager->engineDraw();
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             glfwSwapBuffers(m_windowManager->getWindow());
             glfwPollEvents();
