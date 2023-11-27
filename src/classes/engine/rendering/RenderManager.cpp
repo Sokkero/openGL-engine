@@ -184,12 +184,12 @@ namespace Engine
 
     void RenderManager::setWireframeMode(bool toggle)
     {
-        if(toggle == m_showWireframe) {
+        if(toggle == m_showWireframe)
+        {
             return;
         }
 
-        glPolygonMode( GL_FRONT_AND_BACK, toggle ? GL_LINE : GL_FILL);
+        glPolygonMode(GL_FRONT_AND_BACK, toggle ? GL_LINE : GL_FILL);
         m_showWireframe = toggle;
-
     }
 } // namespace Engine

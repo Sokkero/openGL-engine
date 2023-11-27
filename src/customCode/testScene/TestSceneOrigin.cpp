@@ -64,16 +64,22 @@ void TestSceneOrigin::update()
         getWindowManager()->setVsync(!getWindowManager()->getVsync());
     }
 
-    ImGui::Begin("Hello, world!");// Create a window called "Hello, world!" and append into it.
+    ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
 
     bool myBool = true;
     float myFloat = 0.f;
 
-    ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-    ImGui::Checkbox("Demo Window", &myBool);      // Edit bools storing our window open/close state
+    ImGui::Text("This is some useful text."); // Display some text (you can use a format strings too)
+    ImGui::Checkbox("Demo Window", &myBool);  // Edit bools storing our window open/close state
     ImGui::Checkbox("Another Window", &myBool);
 
-    ImGui::SliderFloat("float", &myFloat, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+    ImGui::SliderFloat("float", &myFloat, 0.0f, 1.0f); // Edit 1 float using a slider from 0.0f to 1.0f
     ImGui::ColorEdit3("clear color", (float*)&myFloat);
+
+    if(ImGui::Button("Button")) fprintf(stderr, "Pressed!");
+    ImGui::SameLine();
+    ImGui::Text("counter = %d", 1);
+
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f);
     ImGui::End();
 }
