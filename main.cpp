@@ -31,7 +31,5 @@ int main()
     startNode->setName("Scene Origin");
     game->getEngineManager()->setScene(startNode);
 
-    game->getWindowManager()->setVsync(true);
-
     return game->startGame();
 }

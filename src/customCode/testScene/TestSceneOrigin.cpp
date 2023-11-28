@@ -5,6 +5,7 @@
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
 #include "../../classes/helper/LightingHelper.h"
+#include "../../classes/objects/SceneDebugWindow.h"
 #include "../../resources/shader/SolidColorShader.h"
 #include "../../resources/shader/SolidTextureShader.h"
 #include "CameraActor.h"
@@ -14,6 +15,10 @@
 
 void TestSceneOrigin::start()
 {
+    std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::SceneDebugWindow>();
+    debugWindow->setName("debugWindow");
+    addChild(debugWindow);
+
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
     cameraHolder->setPosition(glm::vec3(0.f, 0.f, 0.f));
@@ -57,35 +62,4 @@ void TestSceneOrigin::start()
     // suzanne->addChild(treeObj);
 }
 
-void TestSceneOrigin::update()
-{
-    if(getUserEventManager()->getUserEvent(GLFW_KEY_V) == GLFW_PRESS)
-    {
-        getWindowManager()->setVsync(!getWindowManager()->getVsync());
-    }
-
-    ImGui::Begin("Hello, world!"); // Create a window called "Hello, world!" and append into it.
-
-    bool myBool = true;
-    float myFloat = 0.f;
-
-    ImGui::Text("This is some useful text."); // Display some text (you can use a format strings too)
-    ImGui::Checkbox("Demo Window", &myBool);  // Edit bools storing our window open/close state
-    ImGui::Checkbox("Another Window", &myBool);
-
-    float my1 = 0.0f;
-    float my2 = 1.0f;
-
-    ImGui::SliderScalar("float", ImGuiDataType_Float, &myFloat, &my1, &my2); // Edit 1 float using a slider from 0.0f to 1.0f
-    ImGui::ColorEdit3("clear color", (float*)&myFloat);
-
-    if(ImGui::Button("Button")) fprintf(stderr, "Pressed!");
-    if(ImGui::SmallButton("Small Button")) fprintf(stderr, "Pressed!");
-    if(ImGui::ArrowButton(" Arrow Button", ImGuiDir_Right)) fprintf(stderr, "Pressed!");
-
-    ImGui::SameLine();
-    ImGui::Text("counter = %d", 1);
-
-    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f);
-    ImGui::End();
-}
+void TestSceneOrigin::update() {}

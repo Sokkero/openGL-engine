@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 
-namespace Engine
+namespace Engine::Ui
 {
     enum ButtonType
     {
@@ -14,7 +14,7 @@ namespace Engine
         BTN_TYPE_ARROW = 2
     };
 
-    class UiElementButton : protected UiElement
+    class UiElementButton : public UiElement
     {
         public:
             using Callback = std::function<void()>;
@@ -76,4 +76,4 @@ namespace Engine
             Callback m_onClickCallback;
             std::string m_text;
     };
-} // namespace Engine
+} // namespace Engine::Ui

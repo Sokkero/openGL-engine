@@ -4,10 +4,10 @@
 
 #include <string>
 
-namespace Engine
+namespace Engine::Ui
 {
     template<typename T>
-    class UiElementSlider : protected UiElement
+    class UiElementSlider : public UiElement
     {
         public:
             using Callback = std::function<void(T)>;
@@ -64,4 +64,4 @@ namespace Engine
             float m_minimum;
             float m_maximum;
     };
-} // namespace Engine
+} // namespace Engine::Ui

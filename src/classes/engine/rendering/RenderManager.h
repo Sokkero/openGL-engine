@@ -50,7 +50,7 @@ namespace Engine
 
             std::unique_ptr<DiffuseLight>& getDiffuseLight() { return m_diffuseLight; };
 
-            bool isWireframeMode() const { return m_showWireframe; };
+            bool getWireframeMode() const { return m_showWireframe; };
 
             void setWireframeMode(bool toggle);
 

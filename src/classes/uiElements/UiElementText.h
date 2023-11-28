@@ -3,10 +3,11 @@
 #include "UiElement.h"
 
 #include <string>
+#include <utility>
 
-namespace Engine
+namespace Engine::Ui
 {
-    class UiElementText : protected UiElement
+    class UiElementText : public UiElement
     {
         public:
             UiElementText(std::string text) : m_text(std::move(text)) {};
@@ -18,6 +19,7 @@ namespace Engine
                 {
                     ImGui::SameLine(getXOffset(), getSpacing());
                 }
+
                 ImGui::Text("%s", m_text.c_str());
             }
 
@@ -28,4 +30,4 @@ namespace Engine
         private:
             std::string m_text;
     };
-} // namespace Engine
+} // namespace Engine::Ui

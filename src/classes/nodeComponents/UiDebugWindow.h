@@ -6,14 +6,14 @@
 #include <string>
 #include <vector>
 
-namespace Engine
+namespace Engine::Ui
 {
     class UiDebugWindow
         : protected UiElement
         , virtual public BasicNode
     {
         public:
-            UiDebugWindow();
+            UiDebugWindow(ImGuiWindowFlags flags = ImGuiWindowFlags_None);
             ~UiDebugWindow() = default;
 
             void drawUi() override;
@@ -31,14 +31,11 @@ namespace Engine
 
             void setWindowOpen(bool isWindowOpen) { m_windowOpen = isWindowOpen; };
 
-            std::vector<ImGuiWindowFlags_> getWindowFlags() const { return m_flags; };
+            ImGuiWindowFlags getWindowFlags() const { return m_flags; };
 
-            void addWindowFlag(ImGuiWindowFlags_ flag) { m_flags.emplace_back(flag); };
+            void addWindowFlag(ImGuiWindowFlags flag) { m_flags = m_flags | flag; };
 
-            void removeWindowFlag(ImGuiWindowFlags_ flag)
-            {
-                m_flags.erase(std::remove(m_flags.begin(), m_flags.end(), flag), m_flags.end());
-            }
+            void removeWindowFlag(ImGuiWindowFlags flag) { m_flags = m_flags & (~flag); };
 
             std::string getWindowTitle() const { return m_windowTitle; };
 
@@ -47,7 +44,7 @@ namespace Engine
         private:
             std::vector<std::shared_ptr<UiElement>> m_content;
             bool m_windowOpen;
-            std::vector<ImGuiWindowFlags_> m_flags;
+            ImGuiWindowFlags m_flags;
             std::string m_windowTitle = "Hello, World!";
     };
-} // namespace Engine
+} // namespace Engine::Ui

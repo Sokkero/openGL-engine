@@ -5,6 +5,7 @@
 #include "../helper/LightingHelper.h"
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
+#include "../nodeComponents/UiDebugWindow.h"
 #include "rendering/RenderManager.h"
 #include "rendering/Shader.h"
 
@@ -20,11 +21,12 @@ namespace Engine
         , m_camera(nullptr)
         , m_lastFrameTimestamp(0)
         , m_deltaTime(0)
-        , m_lastFpsPrint(0)
+        , m_lastFpsCalc(0)
         , m_currentFrameTimestamp(0)
         , m_frames(0)
+        , m_fpsCount(0)
         , m_renderManager(nullptr)
-        , m_clearColor(glm::vec4(0.f, .0f, .0f, .0f))
+        , m_clearColor { 0.f, 0.f, 0.f, 0.f }
     {
         m_renderManager = std::make_shared<RenderManager>();
     }
@@ -46,7 +48,7 @@ namespace Engine
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS);
 
-        glClearColor(m_clearColor.x, m_clearColor.y, m_clearColor.z, m_clearColor.w);
+        glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
 
         m_lastFrameTimestamp = glfwGetTime();
 
@@ -57,7 +59,7 @@ namespace Engine
 
     void EngineManager::engineUpdate()
     {
-        printFps();
+        updateFps();
         const auto func = [](BasicNode* node) { node->update(); };
 
         getScene()->callOnAllChildren(func);
@@ -94,6 +96,12 @@ namespace Engine
                     node->getGlobalModelMatrix();
             geometry->getShader()->renderVertices(geometry, mvp);
         }
+
+        const auto& ui = dynamic_cast<Ui::UiDebugWindow*>(node);
+        if(ui)
+        {
+            ui->drawUi();
+        }
     }
 
     void EngineManager::setScene(std::shared_ptr<BasicNode> sceneNode)
@@ -114,14 +122,24 @@ namespace Engine
 
     float EngineManager::getDeltaTime() const { return float(m_deltaTime); }
 
-    void EngineManager::printFps()
+    void EngineManager::updateFps()
     {
         m_frames++;
-        if(m_currentFrameTimestamp - m_lastFpsPrint >= 1)
+        if(m_currentFrameTimestamp - m_lastFpsCalc >= 1)
         {
-            printf("%d Fps\n", m_frames);
+            m_fpsCount = m_frames;
             m_frames = 0;
-            m_lastFpsPrint = m_currentFrameTimestamp;
+            m_lastFpsCalc = m_currentFrameTimestamp;
         }
+    }
+
+    void EngineManager::setClearColor(const float* color)
+    {
+        m_clearColor[0] = color[0];
+        m_clearColor[1] = color[1];
+        m_clearColor[2] = color[2];
+        m_clearColor[3] = color[3];
+
+        glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
     }
 } // namespace Engine

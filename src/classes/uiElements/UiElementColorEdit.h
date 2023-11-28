@@ -5,12 +5,12 @@
 #include <string>
 #include <utility>
 
-namespace Engine
+namespace Engine::Ui
 {
-    class UiElementColorEdit : protected UiElement
+    class UiElementColorEdit : public UiElement
     {
         public:
-            using Callback = std::function<void(float* [4])>;
+            using Callback = std::function<void(float[4])>;
 
             UiElementColorEdit(
                     float startValue[4],
@@ -18,8 +18,8 @@ namespace Engine
                     Callback callbackFunc,
                     ImGuiColorEditFlags flags = ImGuiColorEditFlags_None
             )
-                : m_value(startValue)
-                , m_previousValue(startValue)
+                : m_value { startValue[0], startValue[1], startValue[2], startValue[3] }
+                , m_previousValue { startValue[0], startValue[1], startValue[2], startValue[3] }
                 , m_text(std::move(text))
                 , m_onChangeCallback(std::move(callbackFunc))
                 , m_flags(flags) {};
@@ -39,7 +39,7 @@ namespace Engine
                     ImGui::SameLine(getXOffset(), getSpacing());
                 }
 
-                ImGui::ColorEdit4(m_text.c_str(), *m_value, m_flags);
+                ImGui::ColorEdit4(m_text.c_str(), m_value, m_flags);
             }
 
             void setOnChangeCallback(Callback func) { m_onChangeCallback = std::move(func); }
@@ -54,8 +54,8 @@ namespace Engine
 
         private:
             ImGuiColorEditFlags m_flags;
-            float* m_value[4];
-            float* m_previousValue[4];
+            float m_value[4];
+            float m_previousValue[4];
             Callback m_onChangeCallback;
             std::string m_text;
 
@@ -73,4 +73,4 @@ namespace Engine
                 return false;
             }
     };
-} // namespace Engine
+} // namespace Engine::Ui

@@ -5,9 +5,9 @@
 #include <string>
 #include <utility>
 
-namespace Engine
+namespace Engine::Ui
 {
-    class UiElementRadio : protected UiElement
+    class UiElementRadio : public UiElement
     {
         public:
             using Callback = std::function<void(bool)>;
@@ -46,4 +46,4 @@ namespace Engine
             bool m_previousValue;
             std::string m_text;
     };
-} // namespace Engine
+} // namespace Engine::Ui

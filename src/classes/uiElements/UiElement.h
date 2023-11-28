@@ -4,7 +4,7 @@
 
 #include <utility>
 
-namespace Engine
+namespace Engine::Ui
 {
     class UiElement
     {
@@ -62,4 +62,4 @@ namespace Engine
             float m_xOffset = 0.f;
             float m_spacing = -1.f;
     };
-} // namespace Engine
+} // namespace Engine::Ui
