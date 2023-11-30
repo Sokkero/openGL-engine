@@ -4,6 +4,7 @@
 #include "BasicNode.h"
 #include <memory>
 #include <string>
+#include <utility>
 #include <vector>
 
 namespace Engine::Ui
@@ -13,16 +14,19 @@ namespace Engine::Ui
         , virtual public BasicNode
     {
         public:
-            UiDebugWindow(ImGuiWindowFlags flags = ImGuiWindowFlags_None);
+            explicit UiDebugWindow(ImGuiWindowFlags flags = ImGuiWindowFlags_None);
             ~UiDebugWindow() = default;
 
             void drawUi() override;
 
             std::vector<std::shared_ptr<UiElement>> getContent() const { return m_content; };
 
-            void addContent(std::shared_ptr<UiElement> newContent) { m_content.emplace_back(newContent); };
+            void addContent(const std::shared_ptr<UiElement>& newContent)
+            {
+                m_content.emplace_back(newContent);
+            };
 
-            void removeContent(std::shared_ptr<UiElement> content)
+            void removeContent(const std::shared_ptr<UiElement>& content)
             {
                 m_content.erase(std::remove(m_content.begin(), m_content.end(), content), m_content.end());
             }
@@ -39,7 +43,7 @@ namespace Engine::Ui
 
             std::string getWindowTitle() const { return m_windowTitle; };
 
-            void setWindowTitle(std::string newTitle) { m_windowTitle = newTitle; };
+            void setWindowTitle(std::string title) { m_windowTitle = std::move(title); };
 
         private:
             std::vector<std::shared_ptr<UiElement>> m_content;

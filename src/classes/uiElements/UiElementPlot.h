@@ -10,9 +10,9 @@ namespace Engine::Ui
     class UiElementPlot : public UiElement
     {
         public:
-            UiElementPlot(std::string text, std::vector<float> values = std::vector<float>())
+            explicit UiElementPlot(std::string text, std::vector<float> values = std::vector<float>())
                 : m_text(std::move(text))
-                , m_values(values) {};
+                , m_values(std::move(values)) {};
             ~UiElementPlot() = default;
 
             void drawUi() override
@@ -27,7 +27,7 @@ namespace Engine::Ui
 
             std::string getText() const { return m_text; };
 
-            void setText(std::string text) { m_text = text; };
+            void setText(std::string text) { m_text = std::move(text); };
 
             void addValue(float value) { m_values.emplace_back(value); };
 
@@ -35,7 +35,7 @@ namespace Engine::Ui
 
             std::vector<float> getValues() { return m_values; };
 
-            void setValues(std::vector<float> values) { m_values = values; };
+            void setValues(std::vector<float> values) { m_values = std::move(values); };
 
         private:
             std::vector<float> m_values;

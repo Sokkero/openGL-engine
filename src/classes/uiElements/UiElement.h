@@ -27,7 +27,7 @@ namespace Engine::Ui
             void setSpacing(float spacing) { m_spacing = spacing; };
 
             template<typename T>
-            static ImGuiDataType_ GetDataType(const T data)
+            static ImGuiDataType_ GetDataType(const T)
             {
                 if constexpr(std::is_same_v<T, char>)
                 {

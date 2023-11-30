@@ -3,6 +3,7 @@
 #include "UiElement.h"
 
 #include <string>
+#include <utility>
 
 namespace Engine::Ui
 {
@@ -53,7 +54,7 @@ namespace Engine::Ui
 
             std::string getText() const { return m_text; };
 
-            void setText(std::string text) { m_text = text; };
+            void setText(std::string text) { m_text = std::move(text); };
 
         private:
             ImGuiDataType_ m_dataType;

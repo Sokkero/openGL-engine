@@ -68,7 +68,7 @@ namespace Engine::Ui
 
             std::string getText() const { return m_text; };
 
-            void setText(std::string text) { m_text = text; };
+            void setText(std::string text) { m_text = std::move(text); };
 
         private:
             ButtonType m_buttonType;

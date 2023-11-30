@@ -11,7 +11,7 @@
 
 using namespace Engine::Ui;
 
-SceneDebugWindow::SceneDebugWindow() : m_lastTimeStamp(0)
+SceneDebugWindow::SceneDebugWindow()
 {
     addWindowFlag(ImGuiWindowFlags_AlwaysAutoResize);
 
@@ -55,7 +55,7 @@ void SceneDebugWindow::updateFrameCounter()
         int frames = m_engineManager->getFpsCount();
         std::string fpsText = "FPS: " + std::to_string(frames);
         m_fpsCounter->setText(fpsText);
-        m_fpsCounter->addValue(frames);
+        m_fpsCounter->addValue((float)frames);
 
         float msTime = 1000.f / (float)frames;
         fpsText = "Average ms/frame: " + std::to_string(msTime);

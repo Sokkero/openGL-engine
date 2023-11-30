@@ -54,7 +54,7 @@ namespace Engine
 
             std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 
-            GLint getActiveUniform(const std::string& uniform)
+            GLuint getActiveUniform(const std::string& uniform) const
             {
                 const GLuint index = glGetUniformLocation(m_shaderIdentifier.second, uniform.c_str());
 
@@ -116,7 +116,7 @@ namespace Engine
                 bindVertexData(attribId, targetType, bufferId, size, dataType, normalized, stride);
             }
 
-            void bindVertexData(
+            static void bindVertexData(
                     GLuint attribId,
                     GLenum targetType,
                     GLuint bufferId,

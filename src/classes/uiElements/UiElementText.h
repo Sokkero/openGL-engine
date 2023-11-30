@@ -10,7 +10,7 @@ namespace Engine::Ui
     class UiElementText : public UiElement
     {
         public:
-            UiElementText(std::string text) : m_text(std::move(text)) {};
+            explicit UiElementText(std::string text) : m_text(std::move(text)) {};
             ~UiElementText() = default;
 
             void drawUi() override
@@ -25,7 +25,7 @@ namespace Engine::Ui
 
             std::string getText() const { return m_text; };
 
-            void setText(std::string text) { m_text = text; };
+            void setText(std::string text) { m_text = std::move(text); };
 
         private:
             std::string m_text;
