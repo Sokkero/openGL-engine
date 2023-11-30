@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../engine/rendering/RenderManager.h"
-#include "../helper/ObjectHelper.h"
+#include "../helper/ObjectData.h"
 #include "BasicNode.h"
 
 #include <memory>

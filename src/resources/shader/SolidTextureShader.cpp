@@ -7,9 +7,8 @@ SolidTextureShader::SolidTextureShader(const std::shared_ptr<RenderManager>& ren
 {
     registerShader(renderManager, "resources/shader/solidTexture", "solidTexture");
 
-    addActiveUniform("MVP");
-    addActiveUniform("tintColor");
-    addActiveUniform("textureSampler");
+    bindUbo(renderManager->getAmbientLightUbo());
+    bindUbo(renderManager->getDiffuseLightUbo());
 }
 
 void SolidTextureShader::renderVertices(GeometryComponent* object, const glm::mat4& mvp)

@@ -7,8 +7,8 @@ SolidColorShader::SolidColorShader(const std::shared_ptr<RenderManager>& renderM
 {
     registerShader(renderManager, "resources/shader/solidColor", "solidColor");
 
-    addActiveUniform("MVP");
-    addActiveUniform("tintColor");
+    bindUbo(renderManager->getAmbientLightUbo());
+    bindUbo(renderManager->getDiffuseLightUbo());
 }
 
 void SolidColorShader::renderVertices(GeometryComponent* object, const glm::mat4& mvp)

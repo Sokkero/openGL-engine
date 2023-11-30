@@ -2,8 +2,8 @@
 #include "RenderManager.h"
 
 #include "../../helper/FileLoading.h"
-#include "../../helper/LightingHelper.h"
 #include "ShaderLoader.h"
+#include "lighting/LightingPoints.h"
 
 #include <iostream>
 #include <string>
@@ -16,12 +16,12 @@ namespace Engine
         : m_objectList(std::map<std::string, std::shared_ptr<ObjectData>>())
         , m_shaderList(std::map<std::string, GLuint>())
         , m_textureList(std::map<std::string, GLuint>())
-        , m_ambientLight(nullptr)
-        , m_diffuseLight(nullptr)
+        , m_ambientLightUbo(nullptr)
+        , m_diffuseLightUbo(nullptr)
         , m_showWireframe(false)
     {
-        m_ambientLight = std::make_unique<AmbientLight>();
-        m_diffuseLight = std::make_unique<DiffuseLight>();
+        m_ambientLightUbo = std::make_shared<Lighting::AmbientLightUbo>();
+        m_diffuseLightUbo = std::make_shared<Lighting::DiffuseLightUbo>();
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
@@ -159,9 +159,6 @@ namespace Engine
         std::pair<std::string, GLuint> newShader;
         newShader.first = std::move(shaderName);
         newShader.second = LoadShaders((shaderPath + ".vert").c_str(), (shaderPath + ".frag").c_str());
-
-        m_ambientLight->setupShader(newShader);
-        m_diffuseLight->setupShader(newShader);
 
         m_shaderList.emplace(newShader);
 

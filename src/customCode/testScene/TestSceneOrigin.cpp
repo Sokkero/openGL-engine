@@ -4,7 +4,7 @@
 #include "../../classes/engine/EngineManager.h"
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
-#include "../../classes/helper/LightingHelper.h"
+#include "../../classes/engine/rendering/lighting/LightingPoints.h"
 #include "../../classes/objects/SceneDebugWindow.h"
 #include "../../resources/shader/SolidColorShader.h"
 #include "../../resources/shader/SolidTextureShader.h"
@@ -39,15 +39,16 @@ void TestSceneOrigin::start()
     treeObj->setPosition(glm::vec3(0.f, 0.f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
-    // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
+    treeObj->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
     addChild(treeObj);
-    // treeObj->addChild(camera);
 
     std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
     suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
     suzanneObj->setShader(std::make_shared<SolidColorShader>(renderManager));
+    suzanneObj->getShader()->bindUbo(renderManager->getAmbientLightUbo());
     suzanneObj->setPosition(glm::vec3(3.f, 0.f, 0.f));
     suzanneObj->setScale(glm::vec3(1.f));
+    suzanneObj->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
 
     std::vector<glm::vec4> g_color_buffer_data;
     for(int v = 0; v < suzanneObj->getObjectData()->getVertexCount(); v++)
@@ -57,9 +58,7 @@ void TestSceneOrigin::start()
 
     suzanneObj->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
     suzanneObj->setName("suzanne");
-    // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
     addChild(suzanneObj);
-    // suzanne->addChild(treeObj);
 }
 
 void TestSceneOrigin::update() {}

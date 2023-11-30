@@ -1,7 +1,7 @@
 
 #include "src/classes/engine/GameInterface.h"
 #include "src/classes/engine/rendering/RenderManager.h"
-#include "src/classes/helper/LightingHelper.h"
+#include "src/classes/engine/rendering/lighting/LightingPoints.h"
 #include "src/customCode/testScene/TestSceneOrigin.h"
 
 int main()
@@ -16,12 +16,12 @@ int main()
 
     std::shared_ptr<Engine::GameInterface> game = std::make_shared<Engine::GameInterface>();
 
-    auto& ambientLight = game->getEngineManager()->getRenderManager()->getAmbientLight();
-    ambientLight->setIntensity(0.1f);
+    auto& ambientLight = game->getEngineManager()->getRenderManager()->getAmbientLightUbo();
+    ambientLight->setIntensity(.2f);
     ambientLight->setColor(glm::vec3(1.f, 1.f, 1.f));
     ambientLight->UpdateUbo();
 
-    auto& diffuseLight = game->getEngineManager()->getRenderManager()->getDiffuseLight();
+    auto& diffuseLight = game->getEngineManager()->getRenderManager()->getDiffuseLightUbo();
     diffuseLight->setIntensity(0.7f);
     diffuseLight->setDir(glm::vec3(1.f, 0.25f, 1.f));
     diffuseLight->setColor(glm::vec3(1.0f, 0.7f, 0.7f));

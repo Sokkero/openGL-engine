@@ -1,6 +1,8 @@
 #pragma once
 
-#include "../../helper/ObjectHelper.h"
+#include "../../helper/ObjectData.h"
+#include "lighting/AmbientLightUbo.h"
+#include "lighting/DiffuseLightUbo.h"
 
 #include <map>
 #include <string>
@@ -12,7 +14,6 @@ namespace Engine
 {
     class GeometryComponent;
     class DiffuseLight;
-    class AmbientLight;
     class Shader;
 
     inline const glm::vec3 WORLD_UP = glm::vec3(0.f, 1.f, 0.f);
@@ -46,9 +47,9 @@ namespace Engine
 
             std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
 
-            std::unique_ptr<AmbientLight>& getAmbientLight() { return m_ambientLight; };
+            std::shared_ptr<Lighting::AmbientLightUbo>& getAmbientLightUbo() { return m_ambientLightUbo; };
 
-            std::unique_ptr<DiffuseLight>& getDiffuseLight() { return m_diffuseLight; };
+            std::shared_ptr<Lighting::DiffuseLightUbo>& getDiffuseLightUbo() { return m_diffuseLightUbo; };
 
             bool getWireframeMode() const { return m_showWireframe; };
 
@@ -72,8 +73,8 @@ namespace Engine
             };
 
         private:
-            std::unique_ptr<AmbientLight> m_ambientLight;
-            std::unique_ptr<DiffuseLight> m_diffuseLight;
+            std::shared_ptr<Lighting::AmbientLightUbo> m_ambientLightUbo;
+            std::shared_ptr<Lighting::DiffuseLightUbo> m_diffuseLightUbo;
             std::map<std::string, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;

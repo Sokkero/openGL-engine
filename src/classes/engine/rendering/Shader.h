@@ -54,39 +54,23 @@ namespace Engine
 
             std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 
-            std::map<std::string, GLint> getAllActiveUniforms() { return m_activeUniforms; }
-
-            void addActiveUniform(const char* uniform)
+            GLint getActiveUniform(const std::string& uniform)
             {
-                const GLuint index = glGetUniformLocation(m_shaderIdentifier.second, uniform);
+                const GLuint index = glGetUniformLocation(m_shaderIdentifier.second, uniform.c_str());
 
                 if(index == GL_INVALID_VALUE)
                 {
                     fprintf(stderr, "Uniform index not found! Shader invalid");
-                    return;
+                    return -1;
                 }
                 else if(index == GL_INVALID_OPERATION)
                 {
                     fprintf(stderr, "Uniform index not found! Linking failed");
-                    return;
-                }
-
-                m_activeUniforms.emplace(uniform, index);
-            }
-
-            GLint getActiveUniform(const std::string& uniform)
-            {
-                const auto& uniformPosition = m_activeUniforms[uniform];
-
-                if(!uniformPosition)
-                {
                     return -1;
                 }
 
-                return uniformPosition;
+                return index;
             }
-
-            void removeActiveUniform(const std::string& uniform) { m_activeUniforms.erase(uniform); }
 
             std::vector<std::shared_ptr<UboBlock>> getBoundUbos() { return m_boundUbos; }
 
@@ -149,7 +133,6 @@ namespace Engine
 
         private:
             std::pair<std::string, GLuint> m_shaderIdentifier;
-            std::map<std::string, GLint> m_activeUniforms;
             std::vector<std::shared_ptr<UboBlock>> m_boundUbos;
     };
 } // namespace Engine

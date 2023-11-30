@@ -2,7 +2,6 @@
 #include "EngineManager.h"
 
 #include "../../customCode/testScene/TestSceneOrigin.h"
-#include "../helper/LightingHelper.h"
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
 #include "../nodeComponents/UiDebugWindow.h"
