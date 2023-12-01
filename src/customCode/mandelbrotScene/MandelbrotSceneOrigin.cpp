@@ -7,7 +7,6 @@
 #include "../../classes/nodeComponents/CameraComponent.h"
 #include "../../classes/objects/SceneDebugWindow.h"
 #include "../../resources/shader/MandelbrotShader.h"
-#include "../../resources/shader/SolidColorShader.h"
 #include "MandelbrotDebugWindow.h"
 #include "MandelbrotUbo.h"
 
@@ -24,7 +23,7 @@ void MandelbrotSceneOrigin::start()
 
     std::shared_ptr<Engine::CameraComponent> camera = std::make_shared<Engine::CameraComponent>();
     camera->setZFar(1000.f);
-    camera->setPosition(glm::vec3(0.f, 0.f, 2.f));
+    camera->setPosition(glm::vec3(0.f, 0.f, 1.f));
     camera->setName("camera");
     addChild(camera);
     getEngineManager()->setCamera(camera);

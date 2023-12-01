@@ -4,14 +4,11 @@
 #include "../../classes/engine/EngineManager.h"
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
-#include "../../classes/engine/rendering/lighting/LightingPoints.h"
 #include "../../classes/objects/SceneDebugWindow.h"
 #include "../../resources/shader/SolidColorShader.h"
 #include "../../resources/shader/SolidTextureShader.h"
 #include "CameraActor.h"
 #include "TestObject.h"
-
-#include <imgui.h>
 
 void TestSceneOrigin::start()
 {

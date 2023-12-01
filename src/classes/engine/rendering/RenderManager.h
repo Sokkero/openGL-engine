@@ -13,7 +13,6 @@
 namespace Engine
 {
     class GeometryComponent;
-    class DiffuseLight;
     class Shader;
 
     inline const glm::vec3 WORLD_UP = glm::vec3(0.f, 1.f, 0.f);

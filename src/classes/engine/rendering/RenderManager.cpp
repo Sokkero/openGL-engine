@@ -3,7 +3,6 @@
 
 #include "../../helper/FileLoading.h"
 #include "ShaderLoader.h"
-#include "lighting/LightingPoints.h"
 
 #include <iostream>
 #include <string>
