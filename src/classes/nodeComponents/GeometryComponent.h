@@ -27,7 +27,7 @@ namespace Engine
 
             ~GeometryComponent() = default;
 
-            glm::vec4 getTint() const { return m_tint; };
+            glm::vec3 getTint() const { return m_tint; };
 
             std::shared_ptr<ObjectData> getObjectData() const { return m_objectData; };
 
@@ -37,7 +37,7 @@ namespace Engine
 
             void setObjectData(std::shared_ptr<ObjectData> objData) { m_objectData = std::move(objData); };
 
-            void setTint(glm::vec4 tint) { m_tint = tint; };
+            void setTint(glm::vec3 tint) { m_tint = tint; };
 
             void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
 
@@ -47,7 +47,7 @@ namespace Engine
             std::shared_ptr<ObjectData> m_objectData;
             std::shared_ptr<Shader> m_shader;
             GLuint m_textureBuffer;
-            glm::vec4 m_tint;
+            glm::vec3 m_tint;
     };
 
 } // namespace Engine

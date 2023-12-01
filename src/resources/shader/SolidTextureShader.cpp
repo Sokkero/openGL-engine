@@ -37,8 +37,8 @@ void SolidTextureShader::renderVertices(GeometryComponent* object, const glm::ma
     glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);
 
     // Load tint value into uniform
-    const glm::vec4 tint = object->getTint();
-    glUniform4f(getActiveUniform("tintColor"), tint.x, tint.y, tint.z, tint.w);
+    const glm::vec3 tint = object->getTint();
+    glUniform4f(getActiveUniform("tintColor"), tint.x, tint.y, tint.z, 1.f);
 
     bindVertexData(
             GLOBAL_ATTRIB_INDEX_VERTEXPOSITION,
