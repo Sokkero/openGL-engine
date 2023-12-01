@@ -13,13 +13,13 @@ namespace Engine::Ui
         public:
             using Callback = std::function<void(T)>;
 
-            UiElementSlider(T startValue, float min, float max, std::string text, Callback callbackFunc)
+            UiElementSlider(T startValue, T min, T max, std::string text, Callback callbackFunc)
                 : m_value(startValue)
                 , m_previousValue(startValue)
                 , m_text(std::move(text))
                 , m_onChangeCallback(std::move(callbackFunc))
-                , m_maximum(min)
-                , m_minimum(max)
+                , m_maximum(max)
+                , m_minimum(min)
                 , m_dataType(ImGuiDataType_COUNT)
             {
                 m_dataType = GetDataType(startValue);
@@ -39,7 +39,7 @@ namespace Engine::Ui
                 {
                     ImGui::SameLine(getXOffset(), getSpacing());
                 }
-                ImGui::SliderScalar("float", m_dataType, &m_value, &m_minimum, &m_maximum);
+                ImGui::SliderScalar(m_text.c_str(), m_dataType, &m_value, &m_minimum, &m_maximum);
             }
 
             float getMinimum() const { return m_minimum; };
@@ -62,7 +62,7 @@ namespace Engine::Ui
             T m_value;
             T m_previousValue;
             std::string m_text;
-            float m_minimum;
-            float m_maximum;
+            T m_minimum;
+            T m_maximum;
     };
 } // namespace Engine::Ui

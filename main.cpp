@@ -1,8 +1,8 @@
 
 #include "src/classes/engine/GameInterface.h"
 #include "src/classes/engine/rendering/RenderManager.h"
-#include "src/classes/engine/rendering/lighting/LightingPoints.h"
 #include "src/customCode/testScene/TestSceneOrigin.h"
+#include "src/customCode/mandelbrotScene/MandelbrotSceneOrigin.h"
 
 int main()
 {
@@ -27,7 +27,8 @@ int main()
     diffuseLight->setColor(glm::vec3(1.0f, 0.7f, 0.7f));
     diffuseLight->UpdateUbo();
 
-    std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
+    //std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
+    std::shared_ptr<MandelbrotSceneOrigin> startNode = std::make_shared<MandelbrotSceneOrigin>();
     startNode->setName("Scene Origin");
     game->getEngineManager()->setScene(startNode);
 

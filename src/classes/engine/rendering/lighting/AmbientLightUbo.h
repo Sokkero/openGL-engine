@@ -15,15 +15,15 @@ namespace Engine::Lighting
 
             bool isActive() const { return m_useAmbient; };
 
-            void setIsActive(bool useAmbient) { m_useAmbient = useAmbient; };
+            void setIsActive(bool useAmbient);
 
             glm::vec3 getColor() const { return m_color; };
 
-            void setColor(glm::vec3 color) { m_color = color; };
+            void setColor(glm::vec3 color);
 
             float getIntensity() const { return m_intensity; };
 
-            void setIntensity(float intensity) { m_intensity = intensity; };
+            void setIntensity(float intensity);
 
         private:
             int m_useAmbient;

@@ -17,3 +17,21 @@ void AmbientLightUbo::UpdateUbo()
     LoadVariable(m_intensity, 4);
     LoadVariable(m_color, 16);
 }
+
+void AmbientLightUbo::setIsActive(bool useAmbient)
+{
+    m_useAmbient = useAmbient;
+    LoadVariable(m_useAmbient, 0);
+}
+
+void AmbientLightUbo::setColor(glm::vec3 color)
+{
+    m_color = color;
+    LoadVariable(m_color, 16);
+}
+
+void AmbientLightUbo::setIntensity(float intensity)
+{
+    m_intensity = intensity;
+    LoadVariable(m_intensity, 4);
+}
