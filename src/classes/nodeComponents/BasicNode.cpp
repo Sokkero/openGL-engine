@@ -46,7 +46,33 @@ namespace Engine
     {
         for(const auto& childNode : m_childNodes)
         {
-            childNode->callOnAllChildren(func);
+            func(childNode.get());
+        }
+    }
+
+    void BasicNode::callOnAllChildrenRecursive(const std::function<void(BasicNode*)>& func)
+    {
+        for(const auto& childNode : m_childNodes)
+        {
+            childNode->callOnAllChildrenRecursive(func);
+            func(childNode.get());
+        }
+    }
+
+    void BasicNode::callOnAllChildrenAndSelf(const std::function<void(BasicNode*)>& func)
+    {
+        for(const auto& childNode : m_childNodes)
+        {
+            func(childNode.get());
+        }
+        func(this);
+    }
+
+    void BasicNode::callOnAllChildrenRecursiveAndSelf(const std::function<void(BasicNode*)>& func)
+    {
+        for(const auto& childNode : m_childNodes)
+        {
+            childNode->callOnAllChildrenRecursive(func);
         }
         func(this);
     }

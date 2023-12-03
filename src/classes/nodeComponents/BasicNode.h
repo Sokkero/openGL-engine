@@ -40,6 +40,9 @@ namespace Engine
             std::vector<std::shared_ptr<BasicNode>> removeAllChildNodes();
             void deleteAllChildNodes();
             void callOnAllChildren(const std::function<void(BasicNode*)>& func);
+            void callOnAllChildrenRecursive(const std::function<void(BasicNode*)>& func);
+            void callOnAllChildrenAndSelf(const std::function<void(BasicNode*)>& func);
+            void callOnAllChildrenRecursiveAndSelf(const std::function<void(BasicNode*)>& func);
 
             glm::mat4 getGlobalModelMatrix() const;
             glm::quat getGlobalRotation() const;

@@ -87,9 +87,9 @@ namespace Engine
                                    &vertexIndex[0],
                                    &normalIndex[0],
                                    &vertexIndex[1],
-                                   &normalIndex[0],
+                                   &normalIndex[1],
                                    &vertexIndex[2],
-                                   &normalIndex[0]);
+                                   &normalIndex[2]);
                     if(matches != 6)
                     {
                         matches =
