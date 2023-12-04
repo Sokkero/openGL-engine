@@ -29,7 +29,7 @@ TEST(BasicNodeSuite, CallOnChildren)
     node->addChild(nodeChild2);
     node->addChild(nodeChild3);
 
-    node->callOnAllChildrenRecursive([&name](BasicNode* node) {node->setName(name);});
+    node->callOnAllChildrenRecursive([&name](BasicNode* node) { node->setName(name); });
 
     ASSERT_EQ("Not Donald", node->getName());
     ASSERT_EQ(name, nodeChild1->getName());

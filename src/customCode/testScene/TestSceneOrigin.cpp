@@ -45,7 +45,7 @@ void TestSceneOrigin::start()
     suzanneObj->getShader()->bindUbo(renderManager->getAmbientLightUbo());
     suzanneObj->setPosition(glm::vec3(3.f, 0.f, 0.f));
     suzanneObj->setScale(glm::vec3(1.f));
-    suzanneObj->setTint(glm::vec3(1.f, 0.f, 0.f));
+    suzanneObj->setTint(glm::vec3(1.f, 1.f, 1.f));
 
     std::vector<glm::vec4> g_color_buffer_data;
     for(int v = 0; v < suzanneObj->getObjectData()->getVertexCount(); v++)
