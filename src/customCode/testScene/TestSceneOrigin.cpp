@@ -23,7 +23,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     camera->setZFar(1000.f);
-    camera->setPosition(glm::vec3(0.f, 0.f, 15.f));
+    camera->setPosition(glm::vec3(0.f, 0.f, 20.f));
     camera->setName("camera");
     cameraHolder->addChild(camera);
     getEngineManager()->setCamera(camera);
@@ -33,7 +33,7 @@ void TestSceneOrigin::start()
     std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
     treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
     treeObj->setShader(std::make_shared<SolidTextureShader>(renderManager));
-    treeObj->setPosition(glm::vec3(0.f, 0.f, 0.f));
+    treeObj->setPosition(glm::vec3(0.f, -1.5f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
     treeObj->setTint(glm::vec3(1.f, 1.f, 1.f));
@@ -43,7 +43,7 @@ void TestSceneOrigin::start()
     suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
     suzanneObj->setShader(std::make_shared<SolidColorShader>(renderManager));
     suzanneObj->getShader()->bindUbo(renderManager->getAmbientLightUbo());
-    suzanneObj->setPosition(glm::vec3(3.f, 0.f, 0.f));
+    suzanneObj->setPosition(glm::vec3(3.f, -1.5f, 0.f));
     suzanneObj->setScale(glm::vec3(1.f));
     suzanneObj->setTint(glm::vec3(1.f, 1.f, 1.f));
 

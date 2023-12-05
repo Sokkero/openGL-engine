@@ -12,7 +12,7 @@ namespace Engine
 {
     WindowManager::WindowManager()
         : m_gameWindow(nullptr)
-        , m_windowDimensions(std::pair<int, int>(1024, 640))
+        , m_windowDimensions(std::pair<int, int>(1920, 1080))
         , m_textureSamples(4)
         , m_windowTitle("My little Engine")
         , m_vsync(true)
