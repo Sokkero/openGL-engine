@@ -6,26 +6,62 @@
 
 namespace Engine::Ui
 {
+    /**
+     * @brief Base class for UI elements.
+     */
     class UiElement
     {
         public:
             UiElement() = default;
             ~UiElement() = default;
 
+            /**
+             * @brief Pure virtual function to draw the UI element. Override is necessary.
+             */
             virtual void drawUi() = 0;
 
+            /**
+             * @brief Check if the UI element should be drawn on the same line as the previous element.
+             * @return true if the UI element should be drawn on the same line, false otherwise.
+             */
             bool isSameLine() const { return m_sameLine; };
 
+            /**
+             * @brief Set whether the UI element should be drawn on the same line as the previous element.
+             * @param sameLine true if the UI element should be drawn on the same line, false otherwise.
+             */
             void setSameLine(bool sameLine) { m_sameLine = sameLine; };
 
+            /**
+             * @brief Get the X offset of the UI element.
+             * @return The X offset of the UI element.
+             */
             float getXOffset() const { return m_xOffset; };
 
+            /**
+             * @brief Set the X offset of the UI element.
+             * @param offset The X offset of the UI element.
+             */
             void setXOffset(float offset) { m_xOffset = offset; };
 
+            /**
+             * @brief Get the spacing between UI elements.
+             * @return The spacing between UI elements.
+             */
             float getSpacing() const { return m_spacing; };
 
+            /**
+             * @brief Set the spacing between UI elements.
+             * @param spacing The spacing between UI elements.
+             */
             void setSpacing(float spacing) { m_spacing = spacing; };
 
+            /**
+             * @brief Get the ImGuiDataType for a given type.
+             * @tparam T The type for which to get the ImGuiDataType.
+             * @param value An instance of the type T (not used).
+             * @return The ImGuiDataType for the given type T.
+             */
             template<typename T>
             static ImGuiDataType_ GetDataType(const T)
             {

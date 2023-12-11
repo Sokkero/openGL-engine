@@ -3,9 +3,9 @@
 
 MandelbrotUbo::MandelbrotUbo()
     : m_iterations(300)
-    , m_zoom(800)
+    , m_zoom(400)
     , m_screenSize(1920, 1080)
-    , m_offset(1.5, 0.5)
+    , m_offset(0.5, -0.2)
     , m_updated(false)
 {
     setSize(24);
