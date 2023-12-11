@@ -34,11 +34,13 @@ namespace Engine
             void setDeltaTime();
             float getDeltaTime() const;
 
-            void setClearColor(glm::vec4 color) { m_clearColor = color; };
+            void setClearColor(const float color[4]);
 
-            glm::vec4 getClearColor() const { return m_clearColor; };
+            float* getClearColor() { return m_clearColor; };
 
-            void printFps();
+            void updateFps();
+
+            int getFpsCount() const { return m_fpsCount; };
 
         private:
             std::shared_ptr<RenderManager> m_renderManager;
@@ -48,9 +50,10 @@ namespace Engine
             double m_deltaTime;
             double m_currentFrameTimestamp;
             double m_lastFrameTimestamp;
-            double m_lastFpsPrint;
+            double m_lastFpsCalc;
+            int m_fpsCount;
             int m_frames;
-            glm::vec4 m_clearColor;
+            float m_clearColor[4];
     };
 
 } // namespace Engine

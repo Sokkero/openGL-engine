@@ -49,6 +49,8 @@ namespace Engine
             }
         }
 
+        checkListeners();
+
         // For debugging purposes
         /*
                 for (const auto& userEvent : m_userEvents) {
@@ -57,23 +59,37 @@ namespace Engine
         */
     }
 
+    void UserEventManager::checkListeners()
+    {
+        for(const std::pair<int, int> event : m_userEvents)
+        {
+            for(const auto& listener : m_listeners)
+            {
+                if(listener.first == event)
+                {
+                    listener.second();
+                }
+            }
+        }
+    }
+
     glm::vec2 UserEventManager::getWasdInput()
     {
         glm::vec2 input = glm::vec2(0.f, 0.f);
 
-        if(getUserEvent(GLFW_KEY_W) > 0)
+        if(getUserEvent(GLFW_KEY_W) > 0 || getUserEvent(GLFW_KEY_UP) > 0)
         {
             input.y++;
         }
-        if(getUserEvent(GLFW_KEY_S) > 0)
+        if(getUserEvent(GLFW_KEY_S) > 0 || getUserEvent(GLFW_KEY_DOWN) > 0)
         {
             input.y--;
         }
-        if(getUserEvent(GLFW_KEY_A) > 0)
+        if(getUserEvent(GLFW_KEY_A) > 0 || getUserEvent(GLFW_KEY_LEFT) > 0)
         {
             input.x--;
         }
-        if(getUserEvent(GLFW_KEY_D) > 0)
+        if(getUserEvent(GLFW_KEY_D) > 0 || getUserEvent(GLFW_KEY_RIGHT) > 0)
         {
             input.x++;
         }

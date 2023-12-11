@@ -16,6 +16,15 @@
 
 namespace Engine
 {
+    /**
+     * Loads an OBJ file and extracts the vertex positions, texture coordinates, and normals.
+     *
+     * @param filePath The path to the OBJ file.
+     * @param vertices The vector to store the vertex positions.
+     * @param uvs The vector to store the texture coordinates.
+     * @param normals The vector to store the normals.
+     * @return True if the file was loaded successfully, false otherwise.
+     */
     static bool loadFileOBJ(
             const char* filePath,
             std::vector<glm::vec3>& vertices,
@@ -87,9 +96,9 @@ namespace Engine
                                    &vertexIndex[0],
                                    &normalIndex[0],
                                    &vertexIndex[1],
-                                   &normalIndex[0],
+                                   &normalIndex[1],
                                    &vertexIndex[2],
-                                   &normalIndex[0]);
+                                   &normalIndex[2]);
                     if(matches != 6)
                     {
                         matches =
@@ -162,6 +171,12 @@ namespace Engine
         return true;
     }
 
+    /**
+     * Loads a DDS file and returns the OpenGL texture ID.
+     *
+     * @param filePath The path to the DDS file.
+     * @return The OpenGL texture ID if the file was loaded successfully, -1 otherwise.
+     */
     static GLuint loadFileDDS(const char* filePath)
     {
         unsigned char header[124];
@@ -268,15 +283,12 @@ namespace Engine
         return textureID;
     }
 
-    /*
-    static const GLuint loadFileTGA(
-            char* filePath,
-            std::vector<glm::vec3>& vertices,
-            std::vector<glm::vec2>& uvs,
-            std::vector<glm::vec3>& normals
-    );
+    /**
+     * Loads a BMP file and returns the OpenGL texture ID.
+     *
+     * @param filePath The path to the BMP file.
+     * @return The OpenGL texture ID if the file was loaded successfully, -1 otherwise.
      */
-
     static GLuint loadFileBMP(const char* filePath)
     {
         // Data read from the header of the BMP file

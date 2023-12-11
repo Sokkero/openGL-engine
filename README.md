@@ -30,12 +30,10 @@ To enforce the defined code style, simply execute the script `format.sh` in the 
 - `.DDS`
 
 ### Capabilities
-- Supports two shaders
-  - Render vertices in custom colors
-  - Render vertices with a texture
-- Supporting customizable ambient & diffuse lighting
+- Supports loading of custom shaders with custom data structures
+- Supports customizable ambient & diffuse lighting
+  - Can be bound to any shader
 - Objects in the scene follow a scene graph hierarchy
 - All engine settings and variables can be safely accessed from its entry point `Engine::GameInterface`
-- Objects can be tinted
-- Objects can freely be moved, scaled (wip) and rotated in runtime
+- Objects can be freely be moved, scaled and rotated at runtime
 - Scene Objects (`VirtualObjects`) can be created by picking components from `src/engine/classes/NodeComponents`

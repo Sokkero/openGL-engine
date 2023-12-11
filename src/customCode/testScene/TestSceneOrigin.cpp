@@ -4,13 +4,17 @@
 #include "../../classes/engine/EngineManager.h"
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
-#include "../../classes/helper/LightingHelper.h"
+#include "../../classes/objects/SceneDebugWindow.h"
+#include "../../resources/shader/SolidColorShader.h"
+#include "../../resources/shader/SolidTextureShader.h"
 #include "CameraActor.h"
 #include "TestObject.h"
 
 void TestSceneOrigin::start()
 {
-    // Rotations work as intended but are used in a shitty way in the CameraActor.cpp controller
+    std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::SceneDebugWindow>();
+    debugWindow->setName("debugWindow");
+    addChild(debugWindow);
 
     std::shared_ptr<BasicNode> cameraHolder = std::make_shared<BasicNode>();
     cameraHolder->setName("cameraHolder");
@@ -19,7 +23,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     camera->setZFar(1000.f);
-    camera->setPosition(glm::vec3(0.f, 0.f, 15.f));
+    camera->setPosition(glm::vec3(0.f, 0.f, 20.f));
     camera->setName("camera");
     cameraHolder->addChild(camera);
     getEngineManager()->setCamera(camera);
@@ -28,19 +32,20 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
     treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
-    treeObj->setShader("solidTexture");
-    treeObj->setPosition(glm::vec3(0.f, 0.f, 0.f));
+    treeObj->setShader(std::make_shared<SolidTextureShader>(renderManager));
+    treeObj->setPosition(glm::vec3(0.f, -1.5f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
-    // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
+    treeObj->setTint(glm::vec3(1.f, 1.f, 1.f));
     addChild(treeObj);
-    // treeObj->addChild(camera);
 
     std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
     suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
-    suzanneObj->setShader("solidColor");
-    suzanneObj->setPosition(glm::vec3(3.f, 0.f, 0.f));
+    suzanneObj->setShader(std::make_shared<SolidColorShader>(renderManager));
+    suzanneObj->getShader()->bindUbo(renderManager->getAmbientLightUbo());
+    suzanneObj->setPosition(glm::vec3(3.f, -1.5f, 0.f));
     suzanneObj->setScale(glm::vec3(1.f));
+    suzanneObj->setTint(glm::vec3(1.f, 1.f, 1.f));
 
     std::vector<glm::vec4> g_color_buffer_data;
     for(int v = 0; v < suzanneObj->getObjectData()->getVertexCount(); v++)
@@ -50,15 +55,7 @@ void TestSceneOrigin::start()
 
     suzanneObj->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
     suzanneObj->setName("suzanne");
-    // node1->setTint(glm::vec4(1.f, 0.f, 0.f, 1.f));
     addChild(suzanneObj);
-    // suzanne->addChild(treeObj);
 }
 
-void TestSceneOrigin::update()
-{
-    if(getUserEventManager()->getUserEvent(GLFW_KEY_V) == GLFW_PRESS)
-    {
-        getWindowManager()->setVsync(!getWindowManager()->getVsync());
-    }
-}
+void TestSceneOrigin::update() {}

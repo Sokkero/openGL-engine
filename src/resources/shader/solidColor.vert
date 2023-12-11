@@ -7,7 +7,7 @@ layout(location = 2) in vec3 vertexNormal;
 
 // Values that stay constant for the whole mesh.
 uniform mat4 MVP;
-uniform vec4 tintColor = vec4(1.0, 1.0, 1.0, 1.0);
+uniform vec4 tintColor;
 
 // Output data ; will be interpolated for each fragment.
 out vec4 fragmentColor;

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "ShaderPoints.h"
 #include <GL/glew.h>
+#include <utility>
 
 namespace Engine
 {
@@ -13,9 +13,10 @@ namespace Engine
 
             void setupUbo()
             {
-                if(m_bindingPoint.second == 0 || m_size == 0)
+                if(m_size == 0)
                 {
                     fprintf(stderr, "Ubo is missing values!");
+                    return;
                 }
 
                 glGenBuffers(1, &m_uboId);
@@ -24,15 +25,14 @@ namespace Engine
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
                 glBindBufferBase(GL_UNIFORM_BUFFER, m_bindingPoint.second, m_uboId);
 
-                AddShaderPoint(m_bindingPoint.first, m_bindingPoint.second);
-
                 UpdateUbo();
             }
 
             virtual void UpdateUbo() = 0;
 
-            template <typename T>
-            void LoadData(T data, int byteOffset) {
+            template<typename T>
+            void LoadVariable(T data, int byteOffset)
+            {
                 glBindBuffer(GL_UNIFORM_BUFFER, m_uboId);
                 glBufferSubData(GL_UNIFORM_BUFFER, byteOffset, sizeof(T), &data);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
@@ -44,13 +44,13 @@ namespace Engine
 
             void setSize(GLuint size) { m_size = size; }
 
-            GLuint getSize() { return m_size; }
+            GLuint getSize() const { return m_size; }
 
-            GLuint getId() { return m_uboId; }
+            GLuint getId() const { return m_uboId; }
 
         private:
             std::pair<char*, GLuint> m_bindingPoint;
-            GLuint m_size;
+            GLuint m_size = 0;
             GLuint m_uboId = -1;
     };
 } // namespace Engine
