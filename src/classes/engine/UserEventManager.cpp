@@ -79,21 +79,21 @@ namespace Engine
 
         if(getUserEvent(GLFW_KEY_W) > 0 || getUserEvent(GLFW_KEY_UP) > 0)
         {
-            input.y++;
+            input.y--;
         }
         if(getUserEvent(GLFW_KEY_S) > 0 || getUserEvent(GLFW_KEY_DOWN) > 0)
         {
-            input.y--;
+            input.y++;
         }
         if(getUserEvent(GLFW_KEY_A) > 0 || getUserEvent(GLFW_KEY_LEFT) > 0)
         {
-            input.x--;
+            input.x++;
         }
         if(getUserEvent(GLFW_KEY_D) > 0 || getUserEvent(GLFW_KEY_RIGHT) > 0)
         {
-            input.x++;
+            input.x--;
         }
 
-        return input == glm::vec2() ? input : glm::normalize(input);
+        return input;
     }
 } // namespace Engine

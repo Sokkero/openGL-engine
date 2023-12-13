@@ -10,14 +10,16 @@
 #include "MandelbrotDebugWindow.h"
 #include "MandelbrotUbo.h"
 
+MandelbrotSceneOrigin::MandelbrotSceneOrigin() : m_mandelbrotUbo(nullptr) {}
+
 void MandelbrotSceneOrigin::start()
 {
     std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::SceneDebugWindow>();
     debugWindow->setName("debugWindow");
     addChild(debugWindow);
 
-    const auto& mandelbrotUbo = std::make_shared<MandelbrotUbo>();
-    std::shared_ptr<BasicNode> mandelbrotDebugWindow = std::make_shared<MandelbrotDebugWindow>(mandelbrotUbo);
+    m_mandelbrotUbo = std::make_shared<MandelbrotUbo>();
+    std::shared_ptr<BasicNode> mandelbrotDebugWindow = std::make_shared<MandelbrotDebugWindow>(m_mandelbrotUbo);
     mandelbrotDebugWindow->setName("mandelbrotDebugWindow");
     addChild(mandelbrotDebugWindow);
 
@@ -32,7 +34,7 @@ void MandelbrotSceneOrigin::start()
 
     std::shared_ptr<Engine::GeometryComponent> mandelbrotPlane = std::make_shared<Engine::GeometryComponent>();
     mandelbrotPlane->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
-    mandelbrotPlane->setShader(std::make_shared<MandelbrotShader>(renderManager, mandelbrotUbo));
+    mandelbrotPlane->setShader(std::make_shared<MandelbrotShader>(renderManager, m_mandelbrotUbo));
     mandelbrotPlane->setPosition(glm::vec3(0.f, 0.f, 0.f));
 
     std::vector<glm::vec4> g_color_buffer_data;
@@ -45,7 +47,59 @@ void MandelbrotSceneOrigin::start()
     mandelbrotPlane->setName("plane");
     addChild(mandelbrotPlane);
 
-    mandelbrotPlane->getShader()->bindUbo(mandelbrotUbo);
+    mandelbrotPlane->getShader()->bindUbo(m_mandelbrotUbo);
 }
 
-void MandelbrotSceneOrigin::update() {}
+void MandelbrotSceneOrigin::increaseZoom()
+{
+    auto deltaTime = getEngineManager()->getDeltaTime();
+    auto currZoom = m_mandelbrotUbo->getZoom();
+    auto newZoom = currZoom + (currZoom * 2) * deltaTime * 0.25f;
+
+    m_mandelbrotUbo->setZoom(newZoom);
+}
+
+void MandelbrotSceneOrigin::decreaseZoom()
+{
+    auto deltaTime = getEngineManager()->getDeltaTime();
+    auto currZoom = m_mandelbrotUbo->getZoom();
+    auto newZoom = currZoom - (currZoom * 2) * deltaTime * 0.25f;
+
+    m_mandelbrotUbo->setZoom(newZoom);
+}
+
+void MandelbrotSceneOrigin::moveCam(glm::vec2 movement)
+{
+    auto deltaTime = getEngineManager()->getDeltaTime();
+    auto currZoom = m_mandelbrotUbo->getZoom();
+    auto currOffset = m_mandelbrotUbo->getOffset();
+    movement *= deltaTime * 400.f;
+    auto newOffset = currOffset + movement / currZoom;
+
+    m_mandelbrotUbo->setOffset(newOffset);
+}
+
+void MandelbrotSceneOrigin::update()
+{
+    auto eventManager = getUserEventManager();
+
+    if(eventManager->getUserEvent(GLFW_KEY_E) == GLFW_PRESS ||
+       eventManager->getUserEvent(GLFW_KEY_E) == GLFW_REPEAT)
+    {
+        increaseZoom();
+    }
+
+    if(eventManager->getUserEvent(GLFW_KEY_Q) == GLFW_PRESS ||
+       eventManager->getUserEvent(GLFW_KEY_Q) == GLFW_REPEAT)
+    {
+        decreaseZoom();
+    }
+
+    if(eventManager->getUserEvent(GLFW_KEY_R) == GLFW_PRESS ||
+       eventManager->getUserEvent(GLFW_KEY_R) == GLFW_REPEAT)
+    {
+        m_mandelbrotUbo->resetData();
+    }
+
+    moveCam(eventManager->getWasdInput());
+}

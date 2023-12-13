@@ -20,8 +20,6 @@ void MandelbrotShader::renderVertices(GeometryComponent* object, const glm::mat4
         return;
     }
 
-    m_mandelbrotUbo->checkUpdates();
-
     glUseProgram(getShaderIdentifier().second);
 
     // Load MVP matrix into uniform

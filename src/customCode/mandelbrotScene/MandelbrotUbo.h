@@ -27,13 +27,11 @@ class MandelbrotUbo : public Engine::UboBlock
 
         void setOffset(glm::vec2 offset);
 
-        void checkUpdates();
+        void resetData();
 
     private:
         int m_iterations;
         float m_zoom;
         glm::vec2 m_screenSize;
         glm::vec2 m_offset;
-
-        bool m_updated;
 };

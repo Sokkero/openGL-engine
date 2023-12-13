@@ -54,8 +54,7 @@ namespace Engine
     {
         for(const auto& childNode : m_childNodes)
         {
-            childNode->callOnAllChildrenRecursive(func);
-            func(childNode.get());
+            childNode->callOnAllChildrenRecursiveAndSelf(func);
         }
     }
 
@@ -72,7 +71,7 @@ namespace Engine
     {
         for(const auto& childNode : m_childNodes)
         {
-            childNode->callOnAllChildrenRecursive(func);
+            childNode->callOnAllChildrenRecursiveAndSelf(func);
         }
         func(this);
     }

@@ -61,7 +61,7 @@ namespace Engine
         updateFps();
         const auto func = [](BasicNode* node) { node->update(); };
 
-        getScene()->callOnAllChildren(func);
+        getScene()->callOnAllChildrenRecursiveAndSelf(func);
     }
 
     void EngineManager::engineDraw()

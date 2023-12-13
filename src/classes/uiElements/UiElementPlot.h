@@ -20,7 +20,8 @@ namespace Engine::Ui
              */
             explicit UiElementPlot(std::string text, std::vector<float> values = std::vector<float>())
                 : m_text(std::move(text))
-                , m_values(std::move(values)) {};
+                , m_values(std::move(values))
+                , m_maxValues(50) {};
             ~UiElementPlot() = default;
 
             /**
@@ -53,7 +54,14 @@ namespace Engine::Ui
              * @brief Adds a value to the plot.
              * @param value The value to be added.
              */
-            void addValue(float value) { m_values.emplace_back(value); };
+            void addValue(float value)
+            {
+                m_values.emplace_back(value);
+                if(m_values.size() > m_maxValues)
+                {
+                    m_values.erase(m_values.begin());
+                }
+            };
 
             /**
              * @brief Clears all the values of the plot.
@@ -72,8 +80,21 @@ namespace Engine::Ui
              */
             void setValues(std::vector<float> values) { m_values = std::move(values); };
 
+            /**
+             * @brief Gets the max amount of values of the plot.
+             * @return The max amount of values of the plot.
+             */
+            int getMaxValues() { return m_maxValues; };
+
+            /**
+             * @brief Sets the max amount of values of the plot.
+             * @param values The max amount of values to be set.
+             */
+            void setMaxValues(int values) { m_maxValues = std::move(values); };
+
         private:
             std::vector<float> m_values;
             std::string m_text;
+            int m_maxValues;
     };
 } // namespace Engine::Ui
