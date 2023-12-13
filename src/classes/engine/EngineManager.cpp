@@ -87,7 +87,7 @@ namespace Engine
         }
          */
 
-        const auto& geometry = dynamic_cast<GeometryComponent*>(node);
+        const auto& geometry = node->getComponent<GeometryComponent>();
         if(geometry)
         {
             // MVP = Projection * View * Model (Matrix calculations are the other way around)
@@ -96,7 +96,7 @@ namespace Engine
             geometry->getShader()->renderVertices(geometry, mvp);
         }
 
-        const auto& ui = dynamic_cast<Ui::UiDebugWindow*>(node);
+        const auto& ui = node->getComponent<Ui::UiDebugWindow>();
         if(ui)
         {
             ui->drawUi();

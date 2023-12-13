@@ -256,6 +256,14 @@ namespace Engine
              */
             glm::vec3 getUp() const;
 
+            /**
+             * @brief Gets a pointer to the component T.
+             *
+             * @return The requested component
+             */
+            template<typename T>
+            T* getComponent();
+
         private:
             std::string m_name;
             BasicNode* m_parentNode;
