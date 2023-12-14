@@ -262,7 +262,10 @@ namespace Engine
              * @return The requested component
              */
             template<typename T>
-            T* getComponent();
+            T* getComponent()
+            {
+                return dynamic_cast<T*>(this);
+            };
 
         private:
             std::string m_name;

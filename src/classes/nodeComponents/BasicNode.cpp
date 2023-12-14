@@ -139,10 +139,4 @@ namespace Engine
     {
         return glm::normalize(glm::rotate(getGlobalRotation(), glm::vec3(0.0f, 1.0f, 0.0f)));
     }
-
-    template<typename T>
-    T* BasicNode::getComponent()
-    {
-        return dynamic_cast<T*>(this);
-    }
 } // namespace Engine
