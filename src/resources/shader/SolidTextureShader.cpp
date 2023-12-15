@@ -11,7 +11,7 @@ SolidTextureShader::SolidTextureShader(const std::shared_ptr<RenderManager>& ren
     bindUbo(renderManager->getDiffuseLightUbo());
 }
 
-void SolidTextureShader::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
+void SolidTextureShader::renderVertices(GeometryComponent* object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {
@@ -32,6 +32,9 @@ void SolidTextureShader::renderVertices(GeometryComponent* object, const glm::ma
     }
 
     glUseProgram(getShaderIdentifier().second);
+
+    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() *
+            object->getGlobalModelMatrix();
 
     // Load MVP matrix into uniform
     glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);

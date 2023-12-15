@@ -11,7 +11,7 @@ SolidColorShader::SolidColorShader(const std::shared_ptr<RenderManager>& renderM
     bindUbo(renderManager->getDiffuseLightUbo());
 }
 
-void SolidColorShader::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
+void SolidColorShader::renderVertices(GeometryComponent* object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {
@@ -32,6 +32,9 @@ void SolidColorShader::renderVertices(GeometryComponent* object, const glm::mat4
     }
 
     glUseProgram(getShaderIdentifier().second);
+
+    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() *
+            object->getGlobalModelMatrix();
 
     // Load MVP matrix into uniform
     glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);

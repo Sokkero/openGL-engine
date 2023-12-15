@@ -26,6 +26,7 @@ namespace Engine
         , m_fpsCount(0)
         , m_renderManager(nullptr)
         , m_clearColor { 0.f, 0.f, 0.f, 0.f }
+        , m_showGrid(true)
     {
         m_renderManager = std::make_shared<RenderManager>();
     }
@@ -59,6 +60,12 @@ namespace Engine
     void EngineManager::engineUpdate()
     {
         updateFps();
+
+        if(m_showGrid)
+        {
+
+        }
+
         const auto func = [](BasicNode* node) { node->update(); };
 
         getScene()->callOnAllChildrenRecursiveAndSelf(func);
@@ -90,10 +97,7 @@ namespace Engine
         const auto& geometry = node->getComponent<GeometryComponent>();
         if(geometry)
         {
-            // MVP = Projection * View * Model (Matrix calculations are the other way around)
-            glm::mat4 mvp = m_camera->getProjectionMatrix() * m_camera->getViewMatrix() *
-                    node->getGlobalModelMatrix();
-            geometry->getShader()->renderVertices(geometry, mvp);
+            geometry->getShader()->renderVertices(geometry, m_camera.get());
         }
 
         const auto& ui = node->getComponent<Ui::UiDebugWindow>();

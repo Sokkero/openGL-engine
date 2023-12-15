@@ -8,5 +8,5 @@ class SolidTextureShader : public Engine::Shader
         explicit SolidTextureShader(const std::shared_ptr<Engine::RenderManager>& renderManager);
         ~SolidTextureShader() = default;
 
-        void renderVertices(Engine::GeometryComponent* object, const glm::mat4& mvp) override;
+        void renderVertices(Engine::GeometryComponent *object, Engine::CameraComponent* camera) override;
 };

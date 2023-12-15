@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../nodeComponents/GeometryComponent.h"
+#include "../../nodeComponents/CameraComponent.h"
 #include "RenderManager.h"
 #include "UboBlock.h"
 #include <utility>
@@ -50,7 +51,7 @@ namespace Engine
                 m_shaderIdentifier = renderManager->registerShader(shaderPath, shaderName);
             };
 
-            virtual void renderVertices(GeometryComponent* object, const glm::mat4& mvp) = 0;
+            virtual void renderVertices(GeometryComponent* object, CameraComponent* camera) = 0;
 
             std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 

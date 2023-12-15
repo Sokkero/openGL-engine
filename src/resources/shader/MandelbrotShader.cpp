@@ -12,7 +12,7 @@ MandelbrotShader::MandelbrotShader(const std::shared_ptr<RenderManager>& renderM
     registerShader(renderManager, "resources/shader/mandelbrot", "mandelbrot");
 }
 
-void MandelbrotShader::renderVertices(GeometryComponent* object, const glm::mat4& mvp)
+void MandelbrotShader::renderVertices(GeometryComponent* object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {
@@ -21,6 +21,9 @@ void MandelbrotShader::renderVertices(GeometryComponent* object, const glm::mat4
     }
 
     glUseProgram(getShaderIdentifier().second);
+
+    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() *
+            object->getGlobalModelMatrix();
 
     // Load MVP matrix into uniform
     glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);

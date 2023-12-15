@@ -13,7 +13,7 @@ class MandelbrotShader : public Engine::Shader
         );
         ~MandelbrotShader() = default;
 
-        void renderVertices(Engine::GeometryComponent* object, const glm::mat4& mvp) override;
+        void renderVertices(Engine::GeometryComponent *object, Engine::CameraComponent *camera) override;
 
     private:
         std::shared_ptr<MandelbrotUbo> m_mandelbrotUbo;

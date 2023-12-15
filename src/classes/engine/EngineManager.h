@@ -42,10 +42,15 @@ namespace Engine
 
             int getFpsCount() const { return m_fpsCount; };
 
+            bool isGridVisible() const { return m_showGrid; };
+            void setGridVisibility(bool showGrid) { m_showGrid = showGrid; };
+
         private:
             std::shared_ptr<RenderManager> m_renderManager;
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
+
+            bool m_showGrid;
 
             double m_deltaTime;
             double m_currentFrameTimestamp;
