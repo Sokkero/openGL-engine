@@ -5,8 +5,8 @@
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
 #include "../nodeComponents/UiDebugWindow.h"
+#include "internalResources/shader/GridShader.h"
 #include "rendering/RenderManager.h"
-#include "rendering/Shader.h"
 
 #include <iostream>
 #include <utility>
@@ -27,8 +27,10 @@ namespace Engine
         , m_renderManager(nullptr)
         , m_clearColor { 0.f, 0.f, 0.f, 0.f }
         , m_showGrid(true)
+        , m_gridShader(nullptr)
     {
         m_renderManager = std::make_shared<RenderManager>();
+        m_gridShader = std::make_shared<GridShader>(m_renderManager);
     }
 
     bool EngineManager::engineStart()
@@ -61,11 +63,6 @@ namespace Engine
     {
         updateFps();
 
-        if(m_showGrid)
-        {
-
-        }
-
         const auto func = [](BasicNode* node) { node->update(); };
 
         getScene()->callOnAllChildrenRecursiveAndSelf(func);
@@ -76,6 +73,12 @@ namespace Engine
         if(m_camera)
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
+
+            if(m_showGrid)
+            {
+                m_gridShader->renderVertices(nullptr, m_camera.get());
+            }
+
             getScene()->callOnAllChildren(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
         }
         else

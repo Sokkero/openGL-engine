@@ -8,6 +8,7 @@ namespace Engine
     class BasicNode;
     class RenderManager;
     class CameraComponent;
+    class GridShader;
 
     class EngineManager
     {
@@ -51,6 +52,7 @@ namespace Engine
             std::shared_ptr<CameraComponent> m_camera;
 
             bool m_showGrid;
+            std::shared_ptr<GridShader> m_gridShader;
 
             double m_deltaTime;
             double m_currentFrameTimestamp;

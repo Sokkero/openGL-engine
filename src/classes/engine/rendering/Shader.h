@@ -26,10 +26,10 @@ namespace Engine
                 // Create an array to store the shader object IDs
                 auto* shaderIds = new GLuint[numShaders];
 
-                // Get the attached shader objects
+                // Get the attached shader primitives
                 glGetAttachedShaders(m_shaderIdentifier.second, numShaders, nullptr, shaderIds);
 
-                // Detach and delete the shader objects if needed
+                // Detach and delete the shader primitives if needed
                 for(int i = 0; i < numShaders; ++i)
                 {
                     GLuint shaderId = shaderIds[i];

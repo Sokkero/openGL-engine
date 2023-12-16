@@ -10,7 +10,6 @@ vec3(1, 1, 0), vec3(-1, -1, 0), vec3(-1, 1, 0),
 vec3(-1, -1, 0), vec3(1, 1, 0), vec3(1, -1, 0)
 );
 
-// normal vertice projection
 void main() {
-    gl_Position = projection * view * vec4(gridPlane[gl_VertexIndex].xyz, 1.0);
+    gl_Position = projection * view * vec4(gridPlane[gl_VertexID].xyz, 1.0);
 }

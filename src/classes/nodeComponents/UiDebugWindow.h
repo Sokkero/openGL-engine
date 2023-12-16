@@ -39,7 +39,7 @@ namespace Engine::Ui
             /**
              * @brief Gets the content of the debug window.
              *
-             * @return A vector of shared pointers to UiElement objects representing the content of the debug window.
+             * @return A vector of shared pointers to UiElement primitives representing the content of the debug window.
              */
             std::vector<std::shared_ptr<UiElement>> getContent() const { return m_content; };
 
