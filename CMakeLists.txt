@@ -41,6 +41,7 @@ add_subdirectory(tests)
 FILE(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
 add_executable(${PROJECT_NAME} ${IMGUI} ${SOURCE_FILES} ${RES_FILES} main.cpp)
 
+file(REMOVE_RECURSE ${CMAKE_CURRENT_BINARY_DIR}/bin)
 # Copy src/classes/engine/internalResources -> bin/resources
 file(COPY ${CMAKE_SOURCE_DIR}/src/classes/engine/internalResources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
 file(RENAME ${CMAKE_CURRENT_BINARY_DIR}/bin/internalResources ${CMAKE_CURRENT_BINARY_DIR}/bin/resources)
