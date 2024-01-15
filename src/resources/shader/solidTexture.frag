@@ -27,26 +27,26 @@ void main()
 {
     vec4 textureColor = vec4(texture(textureSampler, UV).rgb, 1) * tintColor;
 
-    vec4 ambientColor;
+    vec3 ambientColor;
     if(useAmbient)
     {
-        ambientColor = textureColor * vec4(ambientLightColor, 1.0) * ambientIntensity;
+        ambientColor = textureColor.xyz * vec3(ambientLightColor * ambientIntensity);
     }
     else
     {
-        ambientColor = vec4(0.0, 0.0, 0.0, 0.0);
+        ambientColor = vec3(0.0, 0.0, 0.0);
     }
 
-    vec4 diffuseColor;
+    vec3 diffuseColor;
     if(useDiffuse)
     {
         float diffuse = max(dot(normalize(normal), normalize(diffuseLightDir)), 0.0);
-        diffuseColor = textureColor * vec4(diffuseLightColor, 1.0) * diffuse * diffuseIntensity;
+        diffuseColor = textureColor.xyz * vec3(diffuseLightColor * diffuse * diffuseIntensity);
     }
     else
     {
-        diffuseColor = vec4(0.0, 0.0, 0.0, 0.0);
+        diffuseColor = vec3(0.0, 0.0, 0.0);
     }
 
-    color = ambientColor + diffuseColor;
+    color = vec4(ambientColor + diffuseColor, textureColor.w);
 }

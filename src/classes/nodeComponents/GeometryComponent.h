@@ -32,9 +32,9 @@ namespace Engine
 
             /**
              * @brief Get the tint color of the geometry.
-             * @return The tint color as a glm::vec3.
+             * @return The tint color as a glm::vec4.
              */
-            glm::vec3 getTint() const { return m_tint; };
+            glm::vec4 getTint() const { return m_tint; };
 
             /**
              * @brief Get the object data associated with the geometry.
@@ -62,9 +62,9 @@ namespace Engine
 
             /**
              * @brief Set the tint color for the geometry.
-             * @param tint The tint color as a glm::vec3.
+             * @param tint The tint color as a glm::vec4.
              */
-            void setTint(glm::vec3 tint) { m_tint = tint; };
+            void setTint(glm::vec4 tint) { m_tint = tint; };
 
             /**
              * @brief Set the texture buffer ID for the geometry.
@@ -82,7 +82,7 @@ namespace Engine
             std::shared_ptr<ObjectData> m_objectData;
             std::shared_ptr<Shader> m_shader;
             GLuint m_textureBuffer;
-            glm::vec3 m_tint;
+            glm::vec4 m_tint;
     };
 
 } // namespace Engine

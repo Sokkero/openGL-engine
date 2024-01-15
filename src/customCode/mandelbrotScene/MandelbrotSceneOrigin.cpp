@@ -33,7 +33,7 @@ void MandelbrotSceneOrigin::start()
     const auto& renderManager = getEngineManager()->getRenderManager();
 
     std::shared_ptr<Engine::GeometryComponent> mandelbrotPlane = std::make_shared<Engine::GeometryComponent>();
-    mandelbrotPlane->setObjectData(renderManager->registerObject("resources/primitives/plane.obj"));
+    mandelbrotPlane->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
     mandelbrotPlane->setShader(std::make_shared<MandelbrotShader>(renderManager, m_mandelbrotUbo));
     mandelbrotPlane->setPosition(glm::vec3(0.f, 0.f, 0.f));
 

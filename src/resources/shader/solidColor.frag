@@ -23,26 +23,26 @@ layout(std140) uniform DiffuseLightBlock
 
 void main()
 {
-    vec4 ambientColor;
+    vec3 ambientColor;
     if(useAmbient)
     {
-        ambientColor = fragmentColor * vec4(ambientLightColor, 1.0) * ambientIntensity;
+        ambientColor = fragmentColor.xyz * vec3(ambientLightColor * ambientIntensity);
     }
     else
     {
-        ambientColor = vec4(0.0, 0.0, 0.0, 0.0);
+        ambientColor = vec3(0.0, 0.0, 0.0);
     }
 
-    vec4 diffuseColor;
+    vec3 diffuseColor;
     if(useDiffuse)
     {
         float diffuse = max(dot(normalize(normal), normalize(diffuseLightDir)), 0.0);
-        diffuseColor = fragmentColor * vec4(diffuseLightColor, 1.0) * diffuse * diffuseIntensity;
+        diffuseColor = fragmentColor.xyz * vec3(diffuseLightColor * diffuse * diffuseIntensity);
     }
     else
     {
-        diffuseColor = vec4(0.0, 0.0, 0.0, 0.0);
+        diffuseColor = vec3(0.0, 0.0, 0.0);
     }
 
-    color = ambientColor + diffuseColor;
+    color = vec4(ambientColor + diffuseColor, fragmentColor.w);
 }
