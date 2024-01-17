@@ -114,7 +114,7 @@ namespace Engine
     {
         if(m_sceneNode)
         {
-            m_sceneNode->removeAllChildNodes();
+            m_sceneNode->deleteAllChildren();
         }
         m_sceneNode = std::move(sceneNode);
     }

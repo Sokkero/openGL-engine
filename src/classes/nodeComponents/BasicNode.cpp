@@ -1,14 +1,21 @@
 #include "BasicNode.h"
 
+#include "../engine/EngineManager.h"
+#include "GeometryComponent.h"
+
 #include <iostream>
 
 namespace Engine
 {
+    unsigned int BasicNode::LASTID = 0;
     std::shared_ptr<WindowManager> BasicNode::WINDOW_MANAGER = nullptr;
     std::shared_ptr<EngineManager> BasicNode::ENGINE_MANAGER = nullptr;
     std::shared_ptr<UserEventManager> BasicNode::USER_EVENT_MANAGER = nullptr;
 
-    BasicNode::BasicNode() : m_parentNode(nullptr) {}
+    BasicNode::BasicNode() : m_parentNode(nullptr), m_nodeId(0)
+    {
+        m_nodeId = getNewUniqueId();
+    }
 
     std::shared_ptr<BasicNode> BasicNode::getChildNode(int pos) const
     {
@@ -24,22 +31,76 @@ namespace Engine
         m_childNodes.emplace_back(node);
         node->setParent(this);
 
+        auto geometry = std::dynamic_pointer_cast<GeometryComponent>(node);
+        if(geometry)
+        {
+            ENGINE_MANAGER->addGeometryToScene(geometry);
+        }
+
         node->start();
         std::cout << "Object [" << node->getName() << "] initialised" << std::endl;
     }
 
-    std::vector<std::shared_ptr<BasicNode>> BasicNode::removeAllChildNodes()
+    std::shared_ptr<BasicNode> BasicNode::detatchChild(const std::shared_ptr<BasicNode>& node)
     {
+        return detatchChild(node->getNodeId());
+    }
+
+    std::shared_ptr<BasicNode> BasicNode::detatchChild(const unsigned int& nodeId)
+    {
+        const auto& it = m_childNodes.erase(std::remove_if(m_childNodes.begin(), m_childNodes.end(), [nodeId](const auto& childNode)->bool { return nodeId == childNode->getNodeId(); }), m_childNodes.end());
+
+        if(it == m_childNodes.end())
+        {
+            return nullptr;
+        }
+
+        auto geometry = std::dynamic_pointer_cast<GeometryComponent>(*it);
+        if(geometry)
+        {
+            ENGINE_MANAGER->removeGeometryFromScene(geometry);
+        }
+
+        (*it)->setParent(nullptr);
+
+        return *it;
+    }
+
+    void BasicNode::deleteChild(const std::shared_ptr<BasicNode>& node)
+    {
+        detatchChild(node->getNodeId());
+    }
+
+    void BasicNode::deleteChild(const unsigned int& nodeId)
+    {
+        detatchChild(nodeId);
+    }
+
+    std::vector<std::shared_ptr<BasicNode>> BasicNode::detatchAllChildren()
+    {
+        for(const auto& child : m_childNodes)
+        {
+            child->callOnAllChildrenRecursiveAndSelf([](BasicNode* node)->void{ENGINE_MANAGER->removeGeometryFromScene(node);});
+            child->setParent(nullptr);
+        }
+
         return std::move(m_childNodes);
     }
 
-    void BasicNode::deleteAllChildNodes()
+    void BasicNode::deleteAllChildren()
     {
-        for(const auto& childNode : m_childNodes)
-        {
-            childNode->deleteAllChildNodes();
-        }
-        m_childNodes.clear();
+        detatchAllChildren();
+    }
+
+    void BasicNode::detatchFromParent()
+    {
+        callOnAllChildrenRecursiveAndSelf([](BasicNode* node)->void{ENGINE_MANAGER->removeGeometryFromScene(node);});
+        setParent(nullptr);
+    }
+
+    void BasicNode::deleteNode()
+    {
+        detatchFromParent();
     }
 
     void BasicNode::callOnAllChildren(const std::function<void(BasicNode*)>& func)

@@ -25,6 +25,7 @@ namespace Engine
                 , m_shader(nullptr)
                 , m_textureBuffer(0)
                 , m_tint(glm::vec4(1.f, 1.f, 1.f, 1.f))
+                , m_isTranslucent(false)
             {
                 setIsTranslucent(m_tint.w < 1.f);
             }

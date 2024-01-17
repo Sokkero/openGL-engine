@@ -25,6 +25,13 @@ namespace Engine
             virtual ~BasicNode() = default;
 
             /**
+             * @brief Called right before the node gets added to the scene.
+             *
+             * This function can be overridden by derived classes to perform any necessary operations before the node is added to the scene.
+             */
+            virtual void awake() {};
+
+            /**
              * @brief Called when the node is started.
              *
              * This function can be overridden by derived classes to perform any necessary initialization when the node is started.
@@ -53,6 +60,13 @@ namespace Engine
             std::string getName() const { return m_name; };
 
             /**
+             * @brief Sets the parent node of this node.
+             *
+             * @param node The parent node to set.
+             */
+            void setParent(BasicNode* node) { m_parentNode = node; };
+
+            /**
              * @brief Adds a child node to this node.
              *
              * @param node The child node to add.
@@ -60,11 +74,50 @@ namespace Engine
             void addChild(const std::shared_ptr<BasicNode>& node);
 
             /**
-             * @brief Sets the parent node of this node.
+             * @brief Detatches a child node from this node.
              *
-             * @param node The parent node to set.
+             * @param node The child node to be detatched.
              */
-            void setParent(BasicNode* node) { m_parentNode = node; };
+            std::shared_ptr<BasicNode> detatchChild(const std::shared_ptr<BasicNode>& node);
+
+            /**
+             * @brief Detatches a child node from this node.
+             *
+             * @param uint The child ID of the node to be detatched.
+             */
+            std::shared_ptr<BasicNode> detatchChild(const unsigned int& nodeId);
+
+            /**
+             * @brief Deletes a child node of this node.
+             */
+            void deleteChild(const std::shared_ptr<BasicNode>& node);
+
+            /**
+             * @brief Detatches a child node of this node.
+             */
+            void deleteChild(const unsigned int& nodeId);
+
+            /**
+             * @brief Detatches all children of this node.
+             *
+             * @return A vector containing all the child nodes that were detatched.
+             */
+            std::vector<std::shared_ptr<BasicNode>> detatchAllChildren();
+
+            /**
+             * @brief Deletes all the child nodes of this node.
+             */
+            void deleteAllChildren();
+
+            /**
+             * @brief Detatches this node from its parents.
+             */
+            void detatchFromParent();
+
+            /**
+             * @brief Deletes this node and all its children.
+             */
+            void deleteNode();
 
             /**
              * @brief Gets the parent node of this node.
@@ -94,18 +147,6 @@ namespace Engine
              * @return The number of child nodes of this node.
              */
             int getChildCount() const { return int(m_childNodes.size()); };
-
-            /**
-             * @brief Removes and returns all the child nodes of this node.
-             *
-             * @return A vector containing all the child nodes that were removed.
-             */
-            std::vector<std::shared_ptr<BasicNode>> removeAllChildNodes();
-
-            /**
-             * @brief Deletes all the child nodes of this node.
-             */
-            void deleteAllChildNodes();
 
             /**
              * @brief Calls a function on all the children of this node.
@@ -267,10 +308,24 @@ namespace Engine
                 return dynamic_cast<T*>(this);
             };
 
+            /**
+             * @brief Returns the unique ID of the node.
+             * @return An unsigned int, the unique ID of the node
+             */
+            unsigned int getNodeId() const { return m_nodeId; }
+
         private:
             std::string m_name;
             BasicNode* m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
+            unsigned int m_nodeId;
+
+            static unsigned int LASTID;
+
+            static unsigned int getNewUniqueId()
+            {
+                return ++LASTID;
+            }
 
             static std::shared_ptr<WindowManager> WINDOW_MANAGER;
             static std::shared_ptr<EngineManager> ENGINE_MANAGER;

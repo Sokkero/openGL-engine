@@ -8,6 +8,7 @@ namespace Engine
     class BasicNode;
     class RenderManager;
     class CameraComponent;
+    class GeometryComponent;
     class GridShader;
 
     class EngineManager
@@ -46,7 +47,14 @@ namespace Engine
             bool isGridVisible() const { return m_showGrid; };
             void setGridVisibility(bool showGrid) { m_showGrid = showGrid; };
 
+            void addGeometryToScene(std::shared_ptr<GeometryComponent>& node) {};
+            void removeGeometryFromScene(std::shared_ptr<GeometryComponent>& node) {};
+            void removeGeometryFromScene(std::shared_ptr<BasicNode>& node) {};
+            void removeGeometryFromScene(BasicNode* node) {};
+            void removeGeometryFromScene(const unsigned int& nodeId) {};
+
         private:
+            std::vector<std::shared_ptr<GeometryComponent>> m_sceneGeometry;
             std::shared_ptr<RenderManager> m_renderManager;
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
