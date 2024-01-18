@@ -22,7 +22,7 @@ namespace Engine
             void engineUpdate();
             void engineDraw();
 
-            void drawNode(std::shared_ptr<GeometryComponent> node);
+            void drawNode(const std::shared_ptr<GeometryComponent>& node);
 
             void setScene(std::shared_ptr<BasicNode> sceneNode);
 
@@ -59,8 +59,8 @@ namespace Engine
             void depthSortNodes();
 
             static bool nodeSortingAlgorithm(
-                    std::shared_ptr<GeometryComponent> a,
-                    std::shared_ptr<GeometryComponent> b,
+                    const std::shared_ptr<GeometryComponent>& a,
+                    const std::shared_ptr<GeometryComponent>& b,
                     const glm::vec3& cameraPosition
             );
 

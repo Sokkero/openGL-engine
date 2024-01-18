@@ -108,8 +108,8 @@ namespace Engine
 
     // Sorted by: Solid objects first, sorted by their shaderID. Translucent objects second, sorted by their distance to the camera.
     bool EngineManager::nodeSortingAlgorithm(
-            std::shared_ptr<GeometryComponent> a,
-            std::shared_ptr<GeometryComponent> b,
+            const std::shared_ptr<GeometryComponent>& a,
+            const std::shared_ptr<GeometryComponent>& b,
             const glm::vec3& cameraPosition
     )
     {
@@ -129,7 +129,7 @@ namespace Engine
         return distanceA > distanceB;
     }
 
-    void EngineManager::drawNode(std::shared_ptr<GeometryComponent> node)
+    void EngineManager::drawNode(const std::shared_ptr<GeometryComponent>& node)
     {
         /*
         if(node->getName() == "cameraHolder")

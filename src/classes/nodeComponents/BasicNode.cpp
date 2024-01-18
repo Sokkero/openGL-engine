@@ -12,10 +12,7 @@ namespace Engine
     std::shared_ptr<EngineManager> BasicNode::ENGINE_MANAGER = nullptr;
     std::shared_ptr<UserEventManager> BasicNode::USER_EVENT_MANAGER = nullptr;
 
-    BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()), m_nodeId(0)
-    {
-        m_nodeId = getNewUniqueId();
-    }
+    BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()) { m_nodeId = getNewUniqueId(); }
 
     std::shared_ptr<BasicNode> BasicNode::getChildNode(int pos) const
     {

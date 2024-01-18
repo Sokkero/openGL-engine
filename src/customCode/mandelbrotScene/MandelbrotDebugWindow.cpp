@@ -9,7 +9,7 @@
 
 using namespace Engine::Ui;
 
-MandelbrotDebugWindow::MandelbrotDebugWindow(std::shared_ptr<MandelbrotUbo> ubo) : m_mandelbrotUbo(ubo)
+MandelbrotDebugWindow::MandelbrotDebugWindow(const std::shared_ptr<MandelbrotUbo>& ubo) : m_mandelbrotUbo(ubo)
 {
     addWindowFlag(ImGuiWindowFlags_AlwaysAutoResize);
 

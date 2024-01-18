@@ -7,7 +7,7 @@ class MandelbrotUbo;
 class MandelbrotDebugWindow : public Engine::Ui::UiDebugWindow
 {
     public:
-        MandelbrotDebugWindow(std::shared_ptr<MandelbrotUbo> ubo);
+        MandelbrotDebugWindow(const std::shared_ptr<MandelbrotUbo>& ubo);
         ~MandelbrotDebugWindow() = default;
 
     private:

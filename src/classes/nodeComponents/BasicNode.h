@@ -67,7 +67,7 @@ namespace Engine
              *
              * @param node The parent node to set.
              */
-            void setParent(std::shared_ptr<BasicNode> node) { m_parentNode = node; };
+            void setParent(const std::shared_ptr<BasicNode> node) { m_parentNode = node; };
 
             /**
              * @brief Adds a child node to this node.
