@@ -12,7 +12,7 @@ namespace Engine
     std::shared_ptr<EngineManager> BasicNode::ENGINE_MANAGER = nullptr;
     std::shared_ptr<UserEventManager> BasicNode::USER_EVENT_MANAGER = nullptr;
 
-    BasicNode::BasicNode() : m_parentNode(nullptr), m_nodeId(0)
+    BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()), m_nodeId(0)
     {
         m_nodeId = getNewUniqueId();
     }
@@ -29,7 +29,7 @@ namespace Engine
     void BasicNode::addChild(const std::shared_ptr<BasicNode>& node)
     {
         m_childNodes.emplace_back(node);
-        node->setParent(this);
+        node->setParent(shared_from_this());
 
         auto geometry = std::dynamic_pointer_cast<GeometryComponent>(node);
         if(geometry)
@@ -139,18 +139,18 @@ namespace Engine
 
     glm::mat4 BasicNode::getGlobalModelMatrix() const
     {
-        if(m_parentNode)
+        if(m_parentNode.lock())
         {
-            return m_parentNode->getGlobalModelMatrix() * getModelMatrix();
+            return m_parentNode.lock()->getGlobalModelMatrix() * getModelMatrix();
         }
         return getModelMatrix();
     }
 
     glm::quat BasicNode::getGlobalRotation() const
     {
-        if(m_parentNode)
+        if(m_parentNode.lock())
         {
-            return m_parentNode->getGlobalRotation() * getRotationQuat();
+            return m_parentNode.lock()->getGlobalRotation() * getRotationQuat();
         }
         return getRotationQuat();
     }

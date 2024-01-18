@@ -18,7 +18,7 @@ namespace Engine
      * This class is a subclass of TransformComponent and provides basic functionality for managing a node's hierarchy,
      * including parent-child relationships, adding and removing child nodes, and accessing global transformation properties.
      */
-    class BasicNode : virtual public TransformComponent
+    class BasicNode : virtual public TransformComponent, public std::enable_shared_from_this<BasicNode>
     {
         public:
             BasicNode();
@@ -64,7 +64,7 @@ namespace Engine
              *
              * @param node The parent node to set.
              */
-            void setParent(BasicNode* node) { m_parentNode = node; };
+            void setParent(std::shared_ptr<BasicNode> node) { m_parentNode = node; };
 
             /**
              * @brief Adds a child node to this node.
@@ -124,7 +124,7 @@ namespace Engine
              *
              * @return The parent node of this node.
              */
-            BasicNode* getParentNode() const { return m_parentNode; };
+            std::shared_ptr<BasicNode> getParentNode() const { return m_parentNode.lock(); };
 
             /**
              * @brief Gets the child node at the specified position.
@@ -316,7 +316,7 @@ namespace Engine
 
         private:
             std::string m_name;
-            BasicNode* m_parentNode;
+            std::weak_ptr<BasicNode> m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
             unsigned int m_nodeId;
 
