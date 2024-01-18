@@ -148,4 +148,30 @@ namespace Engine
 
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
     }
+
+    void EngineManager::addGeometryToScene(std::shared_ptr<GeometryComponent>& node)
+    {
+        node->awake();
+        m_sceneGeometry.emplace_back(node);
+    }
+
+    void EngineManager::removeGeometryFromScene(const unsigned int& nodeId)
+    {
+        m_sceneGeometry.erase(std::remove_if(m_sceneGeometry.begin(), m_sceneGeometry.end(), [nodeId](const auto& childNode)->bool{ return childNode->getNodeId() == nodeId; }), m_sceneGeometry.end());
+    }
+
+    void EngineManager::removeGeometryFromScene(Engine::BasicNode* node)
+    {
+        removeGeometryFromScene(node->getNodeId());
+    }
+
+    void EngineManager::removeGeometryFromScene(std::shared_ptr<BasicNode>& node)
+    {
+        removeGeometryFromScene(node->getNodeId());
+    }
+
+    void EngineManager::removeGeometryFromScene(std::shared_ptr<GeometryComponent>& node)
+    {
+        removeGeometryFromScene(node->getNodeId());
+    }
 } // namespace Engine
