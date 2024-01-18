@@ -8,5 +8,5 @@ class SolidColorShader : public Engine::Shader
         explicit SolidColorShader(const std::shared_ptr<Engine::RenderManager>& renderManager);
         ~SolidColorShader() = default;
 
-        void renderVertices(Engine::GeometryComponent *object, Engine::CameraComponent *camera) override;
+        void renderVertices(std::shared_ptr<Engine::GeometryComponent> object, Engine::CameraComponent *camera) override;
 };

@@ -10,6 +10,6 @@ namespace Engine
             GridShader(const std::shared_ptr<RenderManager>& renderManager);
             ~GridShader() = default;
 
-            void renderVertices(GeometryComponent* object, CameraComponent* camera) override;
+            void renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera) override;
     };
 }

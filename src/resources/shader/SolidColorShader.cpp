@@ -11,7 +11,7 @@ SolidColorShader::SolidColorShader(const std::shared_ptr<RenderManager>& renderM
     bindUbo(renderManager->getDiffuseLightUbo());
 }
 
-void SolidColorShader::renderVertices(GeometryComponent* object, CameraComponent* camera)
+void SolidColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {

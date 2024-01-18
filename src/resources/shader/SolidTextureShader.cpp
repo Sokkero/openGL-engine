@@ -11,7 +11,7 @@ SolidTextureShader::SolidTextureShader(const std::shared_ptr<RenderManager>& ren
     bindUbo(renderManager->getDiffuseLightUbo());
 }
 
-void SolidTextureShader::renderVertices(GeometryComponent* object, CameraComponent* camera)
+void SolidTextureShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {

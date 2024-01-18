@@ -1,5 +1,6 @@
 #pragma once
 
+#include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <vector>
 
@@ -21,7 +22,7 @@ namespace Engine
             void engineUpdate();
             void engineDraw();
 
-            void drawNode(BasicNode* node);
+            void drawNode(std::shared_ptr<GeometryComponent> node);
 
             void setScene(std::shared_ptr<BasicNode> sceneNode);
 
@@ -54,6 +55,10 @@ namespace Engine
             void removeGeometryFromScene(const unsigned int& nodeId);
 
         private:
+            void depthSortNodes();
+
+            static bool nodeSortingAlgorithm(std::shared_ptr<GeometryComponent> a, std::shared_ptr<GeometryComponent> b, const glm::vec3& cameraPosition);
+
             std::vector<std::shared_ptr<GeometryComponent>> m_sceneGeometry;
             std::shared_ptr<RenderManager> m_renderManager;
             std::shared_ptr<BasicNode> m_sceneNode;

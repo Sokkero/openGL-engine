@@ -12,7 +12,7 @@ MandelbrotShader::MandelbrotShader(const std::shared_ptr<RenderManager>& renderM
     registerShader(renderManager, "resources/shader/mandelbrot", "mandelbrot");
 }
 
-void MandelbrotShader::renderVertices(GeometryComponent* object, CameraComponent* camera)
+void MandelbrotShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {

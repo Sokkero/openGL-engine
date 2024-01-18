@@ -51,7 +51,7 @@ namespace Engine
                 m_shaderIdentifier = renderManager->registerShader(shaderPath, shaderName);
             };
 
-            virtual void renderVertices(GeometryComponent* object, CameraComponent* camera) = 0;
+            virtual void renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera) = 0;
 
             std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 

@@ -25,7 +25,7 @@ namespace Engine
         , m_frames(0)
         , m_fpsCount(0)
         , m_renderManager(nullptr)
-        , m_clearColor { 0.f, 0.f, 0.f, 0.f }
+        , m_clearColor { 0.f, 0.f, 0.f, 1.f }
         , m_showGrid(true)
         , m_gridShader(nullptr)
     {
@@ -49,6 +49,9 @@ namespace Engine
         glEnable(GL_DEPTH_TEST);
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS);
+        // Enable variying opacity
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
 
@@ -74,12 +77,17 @@ namespace Engine
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 
+            depthSortNodes();
+
+            for(const auto& node : m_sceneGeometry)
+            {
+                drawNode(node);
+            }
+
             if(m_showGrid)
             {
                 m_gridShader->renderVertices(nullptr, m_camera.get());
             }
-
-            getScene()->callOnAllChildren(std::bind(&EngineManager::drawNode, this, std::placeholders::_1));
         }
         else
         {
@@ -87,7 +95,32 @@ namespace Engine
         }
     }
 
-    void EngineManager::drawNode(BasicNode* node)
+    void EngineManager::depthSortNodes()
+    {
+        const auto& cameraPos = getCamera()->getGlobalPosition();
+        std::sort(m_sceneGeometry.begin(), m_sceneGeometry.end(), [cameraPos](const auto& a, const auto&b) {return EngineManager::nodeSortingAlgorithm(a, b, cameraPos);});
+    }
+
+    // Sorted by: Solid objects first, sorted by their shaderID. Translucent objects second, sorted by their distance to the camera.
+    bool EngineManager::nodeSortingAlgorithm(std::shared_ptr<GeometryComponent> a, std::shared_ptr<GeometryComponent> b, const glm::vec3& cameraPosition)
+    {
+        const auto& aTranslucency = a->getIsTranslucent();
+        if(aTranslucency != b->getIsTranslucent())
+        {
+            return !aTranslucency;
+        }
+        else if(!aTranslucency)
+        {
+            return a->getShader()->getShaderIdentifier().second < b->getShader()->getShaderIdentifier().second;
+        }
+
+        const auto& distanceA = glm::distance(a->getGlobalPosition(), cameraPosition);
+        const auto& distanceB = glm::distance(b->getGlobalPosition(), cameraPosition);
+
+        return distanceA > distanceB;
+    }
+
+    void EngineManager::drawNode(std::shared_ptr<GeometryComponent> node)
     {
         /*
         if(node->getName() == "cameraHolder")
@@ -97,10 +130,9 @@ namespace Engine
         }
          */
 
-        const auto& geometry = node->getComponent<GeometryComponent>();
-        if(geometry)
+        if(node)
         {
-            geometry->getShader()->renderVertices(geometry, m_camera.get());
+            node->getShader()->renderVertices(node, m_camera.get());
         }
 
         const auto& ui = node->getComponent<Ui::UiDebugWindow>();
