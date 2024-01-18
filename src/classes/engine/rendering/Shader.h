@@ -96,7 +96,7 @@ namespace Engine
                 m_boundUbos.erase(std::remove(m_boundUbos.begin(), m_boundUbos.end(), ubo), m_boundUbos.end());
             }
 
-            void bindTexture(
+            static void bindTexture(
                     GLuint attribId,
                     GLenum targetType,
                     GLuint bufferId,

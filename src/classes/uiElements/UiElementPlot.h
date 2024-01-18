@@ -84,13 +84,13 @@ namespace Engine::Ui
              * @brief Gets the max amount of values of the plot.
              * @return The max amount of values of the plot.
              */
-            int getMaxValues() { return m_maxValues; };
+            int getMaxValues() const { return m_maxValues; };
 
             /**
              * @brief Sets the max amount of values of the plot.
              * @param values The max amount of values to be set.
              */
-            void setMaxValues(int values) { m_maxValues = std::move(values); };
+            void setMaxValues(int values) { m_maxValues = values; };
 
         private:
             std::vector<float> m_values;

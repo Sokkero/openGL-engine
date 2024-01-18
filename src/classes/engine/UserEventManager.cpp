@@ -1,7 +1,6 @@
 
 #include "UserEventManager.h"
 
-#include <glm/geometric.hpp>
 #include <iostream>
 #include <vector>
 

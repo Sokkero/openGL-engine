@@ -25,9 +25,9 @@ namespace Engine
 
             void checkListeners();
 
-            void addListener(std::pair<GLFW_KEY, GLFW_ACTION> action, Callback listener)
+            void addListener(std::pair<GLFW_KEY, GLFW_ACTION> action, const Callback& listener)
             {
-                m_listeners.emplace_back(std::pair<std::pair<GLFW_KEY, GLFW_ACTION>, Callback>(action, listener));
+                m_listeners.emplace_back(action, listener);
             };
 
             void clearListener() { m_listeners.clear(); };

@@ -1,8 +1,6 @@
 
 #include "GridShader.h"
 
-#include <utility>
-
 using namespace Engine;
 
 GridShader::GridShader(const std::shared_ptr<RenderManager>& renderManager)
