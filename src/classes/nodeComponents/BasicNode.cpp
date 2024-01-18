@@ -48,7 +48,14 @@ namespace Engine
 
     std::shared_ptr<BasicNode> BasicNode::detatchChild(const unsigned int& nodeId)
     {
-        const auto& it = m_childNodes.erase(std::remove_if(m_childNodes.begin(), m_childNodes.end(), [nodeId](const auto& childNode)->bool { return nodeId == childNode->getNodeId(); }), m_childNodes.end());
+        const auto& it = m_childNodes.erase(
+                std::remove_if(
+                        m_childNodes.begin(),
+                        m_childNodes.end(),
+                        [nodeId](const auto& childNode) -> bool { return nodeId == childNode->getNodeId(); }
+                ),
+                m_childNodes.end()
+        );
 
         if(it == m_childNodes.end())
         {
@@ -66,42 +73,34 @@ namespace Engine
         return *it;
     }
 
-    void BasicNode::deleteChild(const std::shared_ptr<BasicNode>& node)
-    {
-        detatchChild(node->getNodeId());
-    }
+    void BasicNode::deleteChild(const std::shared_ptr<BasicNode>& node) { detatchChild(node->getNodeId()); }
 
-    void BasicNode::deleteChild(const unsigned int& nodeId)
-    {
-        detatchChild(nodeId);
-    }
+    void BasicNode::deleteChild(const unsigned int& nodeId) { detatchChild(nodeId); }
 
     std::vector<std::shared_ptr<BasicNode>> BasicNode::detatchAllChildren()
     {
         for(const auto& child : m_childNodes)
         {
-            child->callOnAllChildrenRecursiveAndSelf([](BasicNode* node)->void{ENGINE_MANAGER->removeGeometryFromScene(node);});
+            child->callOnAllChildrenRecursiveAndSelf(
+                    [](BasicNode* node) -> void { ENGINE_MANAGER->removeGeometryFromScene(node); }
+            );
             child->setParent(nullptr);
         }
 
         return std::move(m_childNodes);
     }
 
-    void BasicNode::deleteAllChildren()
-    {
-        detatchAllChildren();
-    }
+    void BasicNode::deleteAllChildren() { detatchAllChildren(); }
 
     void BasicNode::detatchFromParent()
     {
-        callOnAllChildrenRecursiveAndSelf([](BasicNode* node)->void{ENGINE_MANAGER->removeGeometryFromScene(node);});
+        callOnAllChildrenRecursiveAndSelf(
+                [](BasicNode* node) -> void { ENGINE_MANAGER->removeGeometryFromScene(node); }
+        );
         setParent(nullptr);
     }
 
-    void BasicNode::deleteNode()
-    {
-        detatchFromParent();
-    }
+    void BasicNode::deleteNode() { detatchFromParent(); }
 
     void BasicNode::callOnAllChildren(const std::function<void(BasicNode*)>& func)
     {

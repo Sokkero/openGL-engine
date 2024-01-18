@@ -22,8 +22,7 @@ void MandelbrotShader::renderVertices(std::shared_ptr<GeometryComponent> object,
 
     glUseProgram(getShaderIdentifier().second);
 
-    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() *
-            object->getGlobalModelMatrix();
+    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * object->getGlobalModelMatrix();
 
     // Load MVP matrix into uniform
     glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);

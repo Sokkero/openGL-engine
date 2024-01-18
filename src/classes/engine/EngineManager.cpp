@@ -98,11 +98,20 @@ namespace Engine
     void EngineManager::depthSortNodes()
     {
         const auto& cameraPos = getCamera()->getGlobalPosition();
-        std::sort(m_sceneGeometry.begin(), m_sceneGeometry.end(), [cameraPos](const auto& a, const auto&b) {return EngineManager::nodeSortingAlgorithm(a, b, cameraPos);});
+        std::sort(
+                m_sceneGeometry.begin(),
+                m_sceneGeometry.end(),
+                [cameraPos](const auto& a, const auto& b)
+                { return EngineManager::nodeSortingAlgorithm(a, b, cameraPos); }
+        );
     }
 
     // Sorted by: Solid objects first, sorted by their shaderID. Translucent objects second, sorted by their distance to the camera.
-    bool EngineManager::nodeSortingAlgorithm(std::shared_ptr<GeometryComponent> a, std::shared_ptr<GeometryComponent> b, const glm::vec3& cameraPosition)
+    bool EngineManager::nodeSortingAlgorithm(
+            std::shared_ptr<GeometryComponent> a,
+            std::shared_ptr<GeometryComponent> b,
+            const glm::vec3& cameraPosition
+    )
     {
         const auto& aTranslucency = a->getIsTranslucent();
         if(aTranslucency != b->getIsTranslucent())
@@ -189,7 +198,14 @@ namespace Engine
 
     void EngineManager::removeGeometryFromScene(const unsigned int& nodeId)
     {
-        m_sceneGeometry.erase(std::remove_if(m_sceneGeometry.begin(), m_sceneGeometry.end(), [nodeId](const auto& childNode)->bool{ return childNode->getNodeId() == nodeId; }), m_sceneGeometry.end());
+        m_sceneGeometry.erase(
+                std::remove_if(
+                        m_sceneGeometry.begin(),
+                        m_sceneGeometry.end(),
+                        [nodeId](const auto& childNode) -> bool { return childNode->getNodeId() == nodeId; }
+                ),
+                m_sceneGeometry.end()
+        );
     }
 
     void EngineManager::removeGeometryFromScene(Engine::BasicNode* node)

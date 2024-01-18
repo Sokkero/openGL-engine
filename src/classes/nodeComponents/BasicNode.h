@@ -18,7 +18,9 @@ namespace Engine
      * This class is a subclass of TransformComponent and provides basic functionality for managing a node's hierarchy,
      * including parent-child relationships, adding and removing child nodes, and accessing global transformation properties.
      */
-    class BasicNode : virtual public TransformComponent, public std::enable_shared_from_this<BasicNode>
+    class BasicNode
+        : virtual public TransformComponent
+        , public std::enable_shared_from_this<BasicNode>
     {
         public:
             BasicNode();
@@ -27,7 +29,8 @@ namespace Engine
             /**
              * @brief Called right before the node gets added to the scene.
              *
-             * This function can be overridden by derived classes to perform any necessary operations before the node is added to the scene.
+             * This function can be overridden by derived classes to perform any necessary operations before
+             * the node is added to the scene.
              */
             virtual void awake() {};
 
@@ -322,10 +325,7 @@ namespace Engine
 
             static unsigned int LASTID;
 
-            static unsigned int getNewUniqueId()
-            {
-                return ++LASTID;
-            }
+            static unsigned int getNewUniqueId() { return ++LASTID; }
 
             static std::shared_ptr<WindowManager> WINDOW_MANAGER;
             static std::shared_ptr<EngineManager> ENGINE_MANAGER;

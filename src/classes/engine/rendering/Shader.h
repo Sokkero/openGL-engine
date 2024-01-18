@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../nodeComponents/GeometryComponent.h"
 #include "../../nodeComponents/CameraComponent.h"
+#include "../../nodeComponents/GeometryComponent.h"
 #include "RenderManager.h"
 #include "UboBlock.h"
 #include <utility>

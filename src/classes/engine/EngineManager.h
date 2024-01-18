@@ -46,6 +46,7 @@ namespace Engine
             int getFpsCount() const { return m_fpsCount; };
 
             bool isGridVisible() const { return m_showGrid; };
+
             void setGridVisibility(bool showGrid) { m_showGrid = showGrid; };
 
             void addGeometryToScene(std::shared_ptr<GeometryComponent>& node);
@@ -57,7 +58,11 @@ namespace Engine
         private:
             void depthSortNodes();
 
-            static bool nodeSortingAlgorithm(std::shared_ptr<GeometryComponent> a, std::shared_ptr<GeometryComponent> b, const glm::vec3& cameraPosition);
+            static bool nodeSortingAlgorithm(
+                    std::shared_ptr<GeometryComponent> a,
+                    std::shared_ptr<GeometryComponent> b,
+                    const glm::vec3& cameraPosition
+            );
 
             std::vector<std::shared_ptr<GeometryComponent>> m_sceneGeometry;
             std::shared_ptr<RenderManager> m_renderManager;

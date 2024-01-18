@@ -12,4 +12,4 @@ namespace Engine
 
             void renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera) override;
     };
-}
+} // namespace Engine
