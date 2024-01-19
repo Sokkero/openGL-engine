@@ -58,6 +58,10 @@ namespace Engine
         private:
             void depthSortNodes();
 
+            void drawSolidNodes();
+
+            void drawTranslucentNodes();
+
             static bool nodeSortingAlgorithm(
                     const std::shared_ptr<GeometryComponent>& a,
                     const std::shared_ptr<GeometryComponent>& b,

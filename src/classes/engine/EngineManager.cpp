@@ -49,9 +49,6 @@ namespace Engine
         glEnable(GL_DEPTH_TEST);
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS);
-        // Enable variying opacity
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
 
@@ -77,7 +74,15 @@ namespace Engine
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 
+            //Multithread tri sorting here
+
             depthSortNodes();
+
+            drawSolidNodes();
+
+            //Wait for threads to finish here
+
+            drawTranslucentNodes();
 
             for(const auto& node : m_sceneGeometry)
             {
@@ -127,6 +132,38 @@ namespace Engine
         const auto& distanceB = glm::distance(b->getGlobalPosition(), cameraPosition);
 
         return distanceA > distanceB;
+    }
+
+    void EngineManager::drawSolidNodes()
+    {
+        for(const auto& node : m_sceneGeometry)
+        {
+            if(node->getIsTranslucent())
+            {
+                return;
+            }
+
+            drawNode(node);
+        }
+    }
+
+    void EngineManager::drawTranslucentNodes()
+    {
+        // Enable variying opacity
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        for(const auto& node : m_sceneGeometry)
+        {
+            if(!node->getIsTranslucent())
+            {
+                continue;
+            }
+
+            drawNode(node);
+        }
+
+        glDisable(GL_BLEND);
     }
 
     void EngineManager::drawNode(const std::shared_ptr<GeometryComponent>& node)
