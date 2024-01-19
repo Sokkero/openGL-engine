@@ -66,7 +66,7 @@ namespace Engine
         private:
             void depthSortNodes();
 
-            void drawSolidNodes();
+            void drawOpaqueNodes();
 
             void drawTranslucentNodes();
 

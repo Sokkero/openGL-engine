@@ -83,7 +83,7 @@ namespace Engine
 
             depthSortNodes();
 
-            drawSolidNodes();
+            drawOpaqueNodes();
 
             //Wait for threads to finish here
 
@@ -118,7 +118,7 @@ namespace Engine
         );
     }
 
-    // Sorted by: Solid objects first, sorted by their shaderID. Translucent objects second, sorted by their distance to the camera.
+    // Sorted by: Opaque objects first, sorted by their shaderID. Translucent objects second, sorted by their distance to the camera.
     bool EngineManager::nodeSortingAlgorithm(
             const std::shared_ptr<GeometryComponent>& a,
             const std::shared_ptr<GeometryComponent>& b,
@@ -141,7 +141,7 @@ namespace Engine
         return distanceA > distanceB;
     }
 
-    void EngineManager::drawSolidNodes()
+    void EngineManager::drawOpaqueNodes()
     {
         for(const auto& node : m_sceneGeometry)
         {
