@@ -12,6 +12,11 @@ namespace Engine
     class GeometryComponent;
     class GridShader;
 
+    namespace Ui
+    {
+        class UiDebugWindow;
+    }
+
     class EngineManager
     {
         public:
@@ -55,12 +60,17 @@ namespace Engine
             void removeGeometryFromScene(BasicNode* node);
             void removeGeometryFromScene(const unsigned int& nodeId);
 
+            void addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node);
+            void removeDebugUiFromScene(std::shared_ptr<Ui::UiDebugWindow>& node);
+
         private:
             void depthSortNodes();
 
             void drawSolidNodes();
 
             void drawTranslucentNodes();
+
+            void drawUiNodes();
 
             static bool nodeSortingAlgorithm(
                     const std::shared_ptr<GeometryComponent>& a,
@@ -69,13 +79,14 @@ namespace Engine
             );
 
             std::vector<std::shared_ptr<GeometryComponent>> m_sceneGeometry;
+            std::vector<std::shared_ptr<Ui::UiDebugWindow>> m_sceneDebugUi;
             std::shared_ptr<RenderManager> m_renderManager;
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
-
-            bool m_showGrid;
             std::shared_ptr<GridShader> m_gridShader;
 
+            bool m_showGrid;
+            bool m_showDebugUi;
             double m_deltaTime;
             double m_currentFrameTimestamp;
             double m_lastFrameTimestamp;

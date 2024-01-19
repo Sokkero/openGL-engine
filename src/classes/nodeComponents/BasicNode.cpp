@@ -2,6 +2,7 @@
 
 #include "../engine/EngineManager.h"
 #include "GeometryComponent.h"
+#include "UiDebugWindow.h"
 
 #include <iostream>
 
@@ -32,6 +33,12 @@ namespace Engine
         if(geometry)
         {
             ENGINE_MANAGER->addGeometryToScene(geometry);
+        }
+
+        auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(node);
+        if(debugUi)
+        {
+            ENGINE_MANAGER->addDebugUiToScene(debugUi);
         }
 
         node->start();

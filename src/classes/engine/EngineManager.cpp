@@ -26,8 +26,9 @@ namespace Engine
         , m_fpsCount(0)
         , m_renderManager(nullptr)
         , m_clearColor { 0.f, 0.f, 0.f, 1.f }
-        , m_showGrid(true)
+        , m_showGrid(false)
         , m_gridShader(nullptr)
+        , m_showDebugUi(true)
     {
         m_renderManager = std::make_shared<RenderManager>();
         m_gridShader = std::make_shared<GridShader>(m_renderManager);
@@ -49,6 +50,10 @@ namespace Engine
         glEnable(GL_DEPTH_TEST);
         // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS);
+
+        // Enable variying opacity
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
 
@@ -84,15 +89,17 @@ namespace Engine
 
             drawTranslucentNodes();
 
-            for(const auto& node : m_sceneGeometry)
+            if(!m_showDebugUi)
             {
-                drawNode(node);
+                return;
             }
 
             if(m_showGrid)
             {
                 m_gridShader->renderVertices(nullptr, m_camera.get());
             }
+
+            drawUiNodes();
         }
         else
         {
@@ -150,8 +157,8 @@ namespace Engine
     void EngineManager::drawTranslucentNodes()
     {
         // Enable variying opacity
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         for(const auto& node : m_sceneGeometry)
         {
@@ -163,7 +170,21 @@ namespace Engine
             drawNode(node);
         }
 
-        glDisable(GL_BLEND);
+        //glDisable(GL_BLEND);
+    }
+
+    void EngineManager::drawUiNodes()
+    {
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glDepthFunc(GL_LESS);
+
+        for(const auto& node : m_sceneDebugUi)
+        {
+            node->drawUi();
+        }
+
+        //glDisable(GL_BLEND);
     }
 
     void EngineManager::drawNode(const std::shared_ptr<GeometryComponent>& node)
@@ -258,5 +279,15 @@ namespace Engine
     void EngineManager::removeGeometryFromScene(std::shared_ptr<GeometryComponent>& node)
     {
         removeGeometryFromScene(node->getNodeId());
+    }
+
+    void EngineManager::addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node)
+    {
+        m_sceneDebugUi.emplace_back(node);
+    }
+
+    void EngineManager::removeDebugUiFromScene(std::shared_ptr<Ui::UiDebugWindow>& node)
+    {
+        m_sceneDebugUi.erase(std::remove(m_sceneDebugUi.begin(), m_sceneDebugUi.end(), node), m_sceneDebugUi.end());
     }
 } // namespace Engine
