@@ -66,8 +66,6 @@ namespace Engine
 
     void EngineManager::engineUpdate()
     {
-        updateFps();
-
         const auto func = [](BasicNode* node) { node->update(); };
 
         getScene()->callOnAllChildrenRecursiveAndSelf(func);
@@ -223,6 +221,8 @@ namespace Engine
         m_currentFrameTimestamp = glfwGetTime();
         m_deltaTime = m_currentFrameTimestamp - m_lastFrameTimestamp;
         m_lastFrameTimestamp = m_currentFrameTimestamp;
+
+        updateFps();
     }
 
     float EngineManager::getDeltaTime() const { return float(m_deltaTime); }
