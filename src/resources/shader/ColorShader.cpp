@@ -1,17 +1,17 @@
 
-#include "SolidColorShader.h"
+#include "ColorShader.h"
 
 using namespace Engine;
 
-SolidColorShader::SolidColorShader(const std::shared_ptr<RenderManager>& renderManager)
+ColorShader::ColorShader(const std::shared_ptr<RenderManager>& renderManager)
 {
-    registerShader(renderManager, "resources/shader/solidColor", "solidColor");
+    registerShader(renderManager, "resources/shader/color", "color");
 
     bindUbo(renderManager->getAmbientLightUbo());
     bindUbo(renderManager->getDiffuseLightUbo());
 }
 
-void SolidColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
+void ColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {

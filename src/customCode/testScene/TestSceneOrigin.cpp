@@ -5,8 +5,8 @@
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
 #include "../../classes/primitives/SceneDebugWindow.h"
-#include "../../resources/shader/SolidColorShader.h"
-#include "../../resources/shader/SolidTextureShader.h"
+#include "../../resources/shader/ColorShader.h"
+#include "../../resources/shader/TextureShader.h"
 #include "CameraActor.h"
 #include "TestObject.h"
 
@@ -32,7 +32,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
     treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
-    treeObj->setShader(std::make_shared<SolidTextureShader>(renderManager));
+    treeObj->setShader(std::make_shared<TextureShader>(renderManager));
     treeObj->setPosition(glm::vec3(0.f, -1.5f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
@@ -41,7 +41,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
     suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
-    suzanneObj->setShader(std::make_shared<SolidColorShader>(renderManager));
+    suzanneObj->setShader(std::make_shared<ColorShader>(renderManager));
     suzanneObj->getShader()->bindUbo(renderManager->getAmbientLightUbo());
     suzanneObj->setPosition(glm::vec3(3.f, -1.5f, 0.f));
     suzanneObj->setScale(glm::vec3(1.f));

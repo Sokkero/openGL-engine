@@ -2,11 +2,11 @@
 
 #include "../../classes/engine/rendering/Shader.h"
 
-class SolidColorShader : public Engine::Shader
+class ColorShader : public Engine::Shader
 {
     public:
-        explicit SolidColorShader(const std::shared_ptr<Engine::RenderManager>& renderManager);
-        ~SolidColorShader() = default;
+        explicit ColorShader(const std::shared_ptr<Engine::RenderManager>& renderManager);
+        ~ColorShader() = default;
 
         void renderVertices(std::shared_ptr<Engine::GeometryComponent> object, Engine::CameraComponent* camera) override;
 };

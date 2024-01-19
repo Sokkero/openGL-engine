@@ -1,17 +1,17 @@
 
-#include "SolidTextureShader.h"
+#include "TextureShader.h"
 
 using namespace Engine;
 
-SolidTextureShader::SolidTextureShader(const std::shared_ptr<RenderManager>& renderManager)
+TextureShader::TextureShader(const std::shared_ptr<RenderManager>& renderManager)
 {
-    registerShader(renderManager, "resources/shader/solidTexture", "solidTexture");
+    registerShader(renderManager, "resources/shader/texture", "texture");
 
     bindUbo(renderManager->getAmbientLightUbo());
     bindUbo(renderManager->getDiffuseLightUbo());
 }
 
-void SolidTextureShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
+void TextureShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
 {
     if(object->getObjectData()->m_vertexBuffer == -1)
     {
