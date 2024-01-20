@@ -77,13 +77,13 @@ namespace Engine
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
 
-            //Multithread tri sorting here
+            // Multithread tri sorting here
 
             depthSortNodes();
 
             drawOpaqueNodes();
 
-            //Wait for threads to finish here
+            // Wait for threads to finish here
 
             drawTranslucentNodes();
 
@@ -167,16 +167,16 @@ namespace Engine
 
     void EngineManager::drawUiNodes()
     {
-        //glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        //glDepthFunc(GL_LESS);
+        // glEnable(GL_BLEND);
+        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        // glDepthFunc(GL_LESS);
 
         for(const auto& node : m_sceneDebugUi)
         {
             node->drawUi();
         }
 
-        //glDisable(GL_BLEND);
+        // glDisable(GL_BLEND);
     }
 
     void EngineManager::drawNode(const std::shared_ptr<GeometryComponent>& node)

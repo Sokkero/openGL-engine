@@ -51,7 +51,17 @@ namespace Engine
         GLuint normalBuffer = !vertexNormals.empty() ? createBuffer(vertexNormals) : -1;
         GLuint indexBuffer = !triIndexData.empty() ? createBuffer(triIndexData) : -1;
 
-        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, normalBuffer, indexBuffer, vertexData, uvData, vertexNormals, triIndexData);
+        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(
+                filePath,
+                vertexBuffer,
+                uvBuffer,
+                normalBuffer,
+                indexBuffer,
+                vertexData,
+                uvData,
+                vertexNormals,
+                triIndexData
+        );
 
         m_objectList[filePath] = newObject;
 

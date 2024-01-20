@@ -44,24 +44,8 @@ void TextureShader::renderVertices(std::shared_ptr<GeometryComponent> object, Ca
     const glm::vec4 tint = object->getTint();
     glUniform4f(getActiveUniform("tintColor"), tint.x, tint.y, tint.z, tint.w);
 
-    bindVertexData(
-            GLOBAL_ATTRIB_INDEX_VERTEXPOSITION,
-            GL_ARRAY_BUFFER,
-            objectData->m_vertexBuffer,
-            3,
-            GL_FLOAT,
-            false,
-            0
-    );
-    bindVertexData(
-            GLOBAL_ATTRIB_INDEX_VERTEXNORMAL,
-            GL_ARRAY_BUFFER,
-            objectData->m_normalBuffer,
-            3,
-            GL_FLOAT,
-            false,
-            0
-    );
+    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION, GL_ARRAY_BUFFER, objectData->m_vertexBuffer, 3, GL_FLOAT, false, 0);
+    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL, GL_ARRAY_BUFFER, objectData->m_normalBuffer, 3, GL_FLOAT, false, 0);
 
     bindTexture(
             GLOBAL_ATTRIB_INDEX_VERTEXCOLOR,
@@ -81,10 +65,10 @@ void TextureShader::renderVertices(std::shared_ptr<GeometryComponent> object, Ca
 
     // Drawing the object
     glDrawElements(
-            GL_TRIANGLES,      // mode
-            objectData->getVertexCount(),    // count
-            GL_UNSIGNED_SHORT, // type
-            nullptr           // element array buffer offset
+            GL_TRIANGLES,                 // mode
+            objectData->getVertexCount(), // count
+            GL_UNSIGNED_SHORT,            // type
+            nullptr                       // element array buffer offset
     );
 
     glDisableVertexAttribArray(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION);
