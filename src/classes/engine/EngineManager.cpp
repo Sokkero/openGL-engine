@@ -154,10 +154,6 @@ namespace Engine
 
     void EngineManager::drawTranslucentNodes()
     {
-        // Enable variying opacity
-        //glEnable(GL_BLEND);
-        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
         for(const auto& node : m_sceneGeometry)
         {
             if(!node->getIsTranslucent())
@@ -167,8 +163,6 @@ namespace Engine
 
             drawNode(node);
         }
-
-        //glDisable(GL_BLEND);
     }
 
     void EngineManager::drawUiNodes()
