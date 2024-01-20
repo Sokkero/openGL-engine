@@ -13,13 +13,15 @@ ColorShader::ColorShader(const std::shared_ptr<RenderManager>& renderManager)
 
 void ColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
 {
-    if(object->getObjectData()->m_vertexBuffer == -1)
+    const auto& objectData = object->getObjectData();
+
+    if(objectData->m_vertexBuffer == -1)
     {
         fprintf(stderr, "Object is missing vertices!");
         return;
     }
 
-    if(object->getObjectData()->m_normalBuffer == -1)
+    if(objectData->m_normalBuffer == -1)
     {
         fprintf(stderr, "Object is missing vertex normals!");
         return;
@@ -45,7 +47,7 @@ void ColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, Came
     bindVertexData(
             GLOBAL_ATTRIB_INDEX_VERTEXPOSITION,
             GL_ARRAY_BUFFER,
-            object->getObjectData()->m_vertexBuffer,
+            objectData->m_vertexBuffer,
             3,
             GL_FLOAT,
             false,
@@ -54,7 +56,7 @@ void ColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, Came
     bindVertexData(
             GLOBAL_ATTRIB_INDEX_VERTEXNORMAL,
             GL_ARRAY_BUFFER,
-            object->getObjectData()->m_normalBuffer,
+            objectData->m_normalBuffer,
             3,
             GL_FLOAT,
             false,
@@ -62,8 +64,16 @@ void ColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, Came
     );
     bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
 
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, objectData->m_indexBuffer);
+
     // Drawing the object
-    glDrawArrays(GL_TRIANGLES, 0, object->getObjectData()->getVertexCount());
+    glDrawElements(
+            GL_TRIANGLES,      // mode
+            objectData->getVertexCount(),    // count
+            GL_UNSIGNED_SHORT, // type
+            nullptr           // element array buffer offset
+    );
+
     glDisableVertexAttribArray(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION);
     glDisableVertexAttribArray(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR);
     glDisableVertexAttribArray(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL);

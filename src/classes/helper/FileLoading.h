@@ -1,9 +1,5 @@
 #pragma once
 
-// Most of this stuff is from the openGL tutorial
-//  It was cool to do this myself but nor very practical or reliable
-// So use a library like SOIL & assimp in the future
-
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 

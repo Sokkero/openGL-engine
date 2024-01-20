@@ -2,6 +2,7 @@
 #include "RenderManager.h"
 
 #include "../../helper/FileLoading.h"
+#include "../../helper/VertexIndexingHelper.h"
 #include "ShaderLoader.h"
 
 #include <iostream>
@@ -41,12 +42,16 @@ namespace Engine
             return nullptr;
         }
 
+        std::vector<triData> triIndexData;
+
+        indexVBO(vertexData, uvData, vertexNormals, triIndexData);
+
         GLuint vertexBuffer = !vertexData.empty() ? createBuffer(vertexData) : -1;
         GLuint uvBuffer = !uvData.empty() ? createBuffer(uvData) : -1;
         GLuint normalBuffer = !vertexNormals.empty() ? createBuffer(vertexNormals) : -1;
+        GLuint indexBuffer = !triIndexData.empty() ? createBuffer(triIndexData) : -1;
 
-        std::shared_ptr<ObjectData> newObject =
-                std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, normalBuffer, vertexData, uvData, vertexNormals);
+        std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, normalBuffer, indexBuffer, vertexData, uvData, vertexNormals, triIndexData);
 
         m_objectList[filePath] = newObject;
 
