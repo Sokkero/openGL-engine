@@ -38,9 +38,9 @@ namespace Engine
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
             }
 
-            void setBindingPoint(std::pair<char*, GLuint> point) { m_bindingPoint = point; }
+            void setBindingPoint(std::pair<const char*, GLuint> point) { m_bindingPoint = point; }
 
-            std::pair<char*, GLuint> getBindingPoint() { return m_bindingPoint; }
+            std::pair<const char*, GLuint> getBindingPoint() { return m_bindingPoint; }
 
             void setSize(GLuint size) { m_size = size; }
 
@@ -49,7 +49,7 @@ namespace Engine
             GLuint getId() const { return m_uboId; }
 
         private:
-            std::pair<char*, GLuint> m_bindingPoint;
+            std::pair<const char*, GLuint> m_bindingPoint;
             GLuint m_size = 0;
             GLuint m_uboId = -1;
     };
