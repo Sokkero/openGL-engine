@@ -43,7 +43,7 @@ void MandelbrotSceneOrigin::start()
         g_color_buffer_data.emplace_back(1.f, 1.f, 1.f, 1.f);
     }
 
-    mandelbrotPlane->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
+    mandelbrotPlane->setTextureBuffer(renderManager->createBuffer(g_color_buffer_data));
     mandelbrotPlane->setName("plane");
     addChild(mandelbrotPlane);
 

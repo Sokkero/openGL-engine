@@ -53,7 +53,7 @@ void TestSceneOrigin::start()
         g_color_buffer_data.emplace_back(1.f, 1.f, 1.f, 1.f);
     }
 
-    suzanneObj->setTextureBuffer(renderManager->createVBO(g_color_buffer_data));
+    suzanneObj->setTextureBuffer(renderManager->createBuffer(g_color_buffer_data));
     suzanneObj->setName("suzanne");
     addChild(suzanneObj);
 }

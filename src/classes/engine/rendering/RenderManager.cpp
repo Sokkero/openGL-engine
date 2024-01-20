@@ -41,9 +41,9 @@ namespace Engine
             return nullptr;
         }
 
-        GLuint vertexBuffer = !vertexData.empty() ? createVBO(vertexData) : -1;
-        GLuint uvBuffer = !uvData.empty() ? createVBO(uvData) : -1;
-        GLuint normalBuffer = !vertexNormals.empty() ? createVBO(vertexNormals) : -1;
+        GLuint vertexBuffer = !vertexData.empty() ? createBuffer(vertexData) : -1;
+        GLuint uvBuffer = !uvData.empty() ? createBuffer(uvData) : -1;
+        GLuint normalBuffer = !vertexNormals.empty() ? createBuffer(vertexNormals) : -1;
 
         std::shared_ptr<ObjectData> newObject =
                 std::make_shared<ObjectData>(filePath, vertexBuffer, uvBuffer, normalBuffer, vertexData, uvData, vertexNormals);

@@ -55,7 +55,7 @@ namespace Engine
             void setWireframeMode(bool toggle);
 
             template<typename T>
-            static GLuint createVBO(std::vector<T>& data)
+            static GLuint createBuffer(std::vector<T>& data)
             {
                 int dataSize = data.size() * sizeof(T);
 
