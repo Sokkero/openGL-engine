@@ -27,5 +27,5 @@ static bool depthSortTrianglesAlgorithm(
     const auto& distanceA = glm::distance(aPos, cameraPos);
     const auto& distanceB = glm::distance(bPos, cameraPos);
 
-    return distanceA < distanceB;
+    return distanceA > distanceB;
 }

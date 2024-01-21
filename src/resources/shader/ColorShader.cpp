@@ -48,10 +48,7 @@ void ColorShader::renderVertices(std::shared_ptr<GeometryComponent> object, Came
     bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL, GL_ARRAY_BUFFER, objectData->m_normalBuffer, 3, GL_FLOAT, false, 0);
     bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
 
-    glBindBuffer(
-            GL_ELEMENT_ARRAY_BUFFER,
-            object->getIsTranslucent() ? object->m_customIndexBuffer : objectData->m_indexBuffer
-    );
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
 
     // Drawing the object
     glDrawElements(

@@ -118,7 +118,7 @@ namespace Engine
                         { return depthSortTrianglesAlgorithm(cameraPos, nodePos, vertices, a, b); }
                 );
 
-                int dataSize = m_customVertexIndices.size() * sizeof(triData);
+                unsigned int dataSize = m_customVertexIndices.size() * sizeof(triData);
                 if(m_customIndexBuffer == 0)
                 {
                     // Generate a buffer with our identifier
@@ -137,7 +137,19 @@ namespace Engine
                 // glFinish();
             }
 
-            GLuint m_customIndexBuffer;
+            /**
+             * @brief Gets the bufferId for Object.
+             * @return GLuint
+             */
+            GLuint getIndexBuffer() const
+            {
+                if(m_isTranslucent)
+                {
+                    return m_customIndexBuffer;
+                }
+
+                return m_objectData ? m_objectData->m_indexBuffer : 0;
+            };
 
         private:
             std::shared_ptr<ObjectData> m_objectData;
@@ -146,6 +158,7 @@ namespace Engine
             glm::vec4 m_tint;
             bool m_isTranslucent;
 
+            GLuint m_customIndexBuffer;
             std::vector<triData> m_customVertexIndices;
     };
 

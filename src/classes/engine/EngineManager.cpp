@@ -46,15 +46,8 @@ namespace Engine
         glGenVertexArrays(1, &VertexArrayID);
         glBindVertexArray(VertexArrayID);
 
-        // Enable depth test
         glEnable(GL_DEPTH_TEST);
-        // Accept fragment if it closer to the camera than the former one
         glDepthFunc(GL_LESS);
-
-        glDisable(GL_CULL_FACE);
-
-        // Enable variying opacity
-        glEnable(GL_BLEND);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
@@ -77,7 +70,7 @@ namespace Engine
     {
         if(m_camera)
         {
-            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Clear the screen
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // Multithread tri sorting here
 
@@ -156,6 +149,7 @@ namespace Engine
 
     void EngineManager::drawTranslucentNodes()
     {
+        glEnable(GL_BLEND);
         for(const auto& node : m_sceneGeometry)
         {
             if(!node->getIsTranslucent())
@@ -167,20 +161,15 @@ namespace Engine
 
             drawNode(node);
         }
+        glDisable(GL_BLEND);
     }
 
     void EngineManager::drawUiNodes()
     {
-        // glEnable(GL_BLEND);
-        // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        // glDepthFunc(GL_LESS);
-
         for(const auto& node : m_sceneDebugUi)
         {
             node->drawUi();
         }
-
-        // glDisable(GL_BLEND);
     }
 
     void EngineManager::drawNode(const std::shared_ptr<GeometryComponent>& node)

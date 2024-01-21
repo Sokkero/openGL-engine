@@ -61,7 +61,7 @@ void TextureShader::renderVertices(std::shared_ptr<GeometryComponent> object, Ca
             getActiveUniform("textureSampler")
     );
 
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, objectData->m_indexBuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
 
     // Drawing the object
     glDrawElements(
