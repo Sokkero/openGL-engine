@@ -1,8 +1,10 @@
 #pragma once
 
+#include "../engine/EngineManager.h"
 #include "../engine/rendering/RenderManager.h"
 #include "../helper/ObjectData.h"
 #include "BasicNode.h"
+#include "CameraComponent.h"
 
 #include <memory>
 
@@ -26,6 +28,8 @@ namespace Engine
                 , m_textureBuffer(0)
                 , m_tint(glm::vec4(1.f, 1.f, 1.f, 1.f))
                 , m_isTranslucent(false)
+                , m_customIndexBuffer(0)
+                , m_customVertexIndices(std::vector<triData>())
             {
                 setIsTranslucent(m_tint.w < 1.f);
             }
@@ -96,12 +100,53 @@ namespace Engine
              */
             void setIsTranslucent(bool isTranslucent) { m_isTranslucent = isTranslucent; }
 
+            void depthSortTriangles()
+            {
+                if(m_customVertexIndices.empty())
+                {
+                    m_customVertexIndices = m_objectData->m_vertexIndices;
+                }
+
+                const auto& cameraPos = getEngineManager()->getCamera()->getGlobalPosition();
+                const auto& nodePos = getGlobalPosition();
+                const auto& vertices = m_objectData->m_vertexData;
+
+                std::sort(
+                        m_customVertexIndices.begin(),
+                        m_customVertexIndices.end(),
+                        [cameraPos, nodePos, vertices](const auto& a, const auto& b)
+                        { return depthSortTrianglesAlgorithm(cameraPos, nodePos, vertices, a, b); }
+                );
+
+                int dataSize = m_customVertexIndices.size() * sizeof(triData);
+                if(m_customIndexBuffer == 0)
+                {
+                    // Generate a buffer with our identifier
+                    glGenBuffers(1, &m_customIndexBuffer);
+                    glBindBuffer(GL_ARRAY_BUFFER, m_customIndexBuffer);
+
+                    // Give vertices to OpenGL
+                    glBufferData(GL_ARRAY_BUFFER, dataSize, &m_customVertexIndices[0], GL_STATIC_DRAW);
+                }
+                else
+                {
+                    glBindBuffer(GL_ARRAY_BUFFER, m_customIndexBuffer);
+                    // Give vertices to OpenGL
+                    glBufferData(GL_ARRAY_BUFFER, dataSize, &m_customVertexIndices[0], GL_STATIC_DRAW);
+                }
+                // glFinish();
+            }
+
+            GLuint m_customIndexBuffer;
+
         private:
             std::shared_ptr<ObjectData> m_objectData;
             std::shared_ptr<Shader> m_shader;
             GLuint m_textureBuffer;
             glm::vec4 m_tint;
             bool m_isTranslucent;
+
+            std::vector<triData> m_customVertexIndices;
     };
 
 } // namespace Engine
