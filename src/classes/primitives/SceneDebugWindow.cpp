@@ -8,6 +8,7 @@
 #include "../uiElements/UiElementPlot.h"
 #include "../uiElements/UiElementRadio.h"
 #include "../uiElements/UiElementText.h"
+#include "../uiElements/UiElementSeperator.h"
 
 using namespace Engine::Ui;
 
@@ -20,6 +21,9 @@ SceneDebugWindow::SceneDebugWindow()
     m_windowManager = getWindowManager();
 
     setWindowTitle("Scene Debugger");
+
+    addContent(std::make_shared<UiElementSeparator>("Performance"));
+
     m_fpsCounter = std::make_shared<UiElementPlot>("FPS: inf");
     addContent(m_fpsCounter);
 
@@ -29,6 +33,8 @@ SceneDebugWindow::SceneDebugWindow()
     const auto& vsyncCallback = ([this](bool myBool) { m_windowManager->setVsync(myBool); });
     auto vsyncRadio = std::make_shared<UiElementRadio>(m_windowManager->getVsync(), "V-sync", vsyncCallback);
     addContent(vsyncRadio);
+
+    addContent(std::make_shared<UiElementSeparator>("Scene Settings"));
 
     const auto& wireframeCallback = ([this](bool myBool)
                                      { m_engineManager->getRenderManager()->setWireframeMode(myBool); });
