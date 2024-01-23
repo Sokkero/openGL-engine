@@ -42,11 +42,18 @@ namespace Engine
             virtual void start() {};
 
             /**
-             * @brief Called every frame to update the node.
+             * @brief Called every frame before the draw call to update the node.
              *
              * This function can be overridden by derived classes to update the node's state every frame.
              */
             virtual void update() {};
+
+            /**
+             * @brief Called every frame after the draw call to update the node.
+             *
+             * This function can be overridden by derived classes to update the node's state every frame.
+             */
+            virtual void lateUpdate() {};
 
             /**
              * @brief Sets the name of the node.
@@ -128,6 +135,8 @@ namespace Engine
              * @return The parent node of this node.
              */
             std::shared_ptr<BasicNode> getParentNode() const { return m_parentNode.lock(); };
+
+            void cleanupNode();
 
             /**
              * @brief Gets the child node at the specified position.

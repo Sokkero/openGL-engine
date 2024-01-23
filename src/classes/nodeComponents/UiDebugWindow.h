@@ -26,7 +26,10 @@ namespace Engine::Ui
              * @param flags The ImGui window flags for the debug window.
              */
             explicit UiDebugWindow(ImGuiWindowFlags flags = ImGuiWindowFlags_None);
-            ~UiDebugWindow() = default;
+            ~UiDebugWindow()
+                    {
+                        ImGui::End();
+                    };
 
             /**
              * @brief Draws the UI elements inside the debug window.

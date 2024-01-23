@@ -11,13 +11,12 @@ UiDebugWindow::UiDebugWindow(ImGuiWindowFlags flags)
 
 void UiDebugWindow::drawUi()
 {
-    ImGui::Begin(m_windowTitle.c_str(), &m_windowOpen, m_flags);
-
     if(!m_windowOpen)
     {
-        ImGui::End();
         return;
     }
+
+    ImGui::Begin(m_windowTitle.c_str(), &m_windowOpen, m_flags);
 
     for(const auto& element : m_content)
     {

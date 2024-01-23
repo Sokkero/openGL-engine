@@ -39,12 +39,14 @@ namespace Engine
 
             m_userEventManager->updateEvents(m_windowManager->getWindow());
             m_engineManager->engineUpdate();
-            m_engineManager->engineDraw();
 
+            m_engineManager->engineDraw();
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
             glfwSwapBuffers(m_windowManager->getWindow());
+
+            m_engineManager->engineLateUpdate();
+
             glfwPollEvents();
 
             m_engineManager->setDeltaTime();

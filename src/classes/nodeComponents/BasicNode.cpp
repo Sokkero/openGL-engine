@@ -15,6 +15,23 @@ namespace Engine
 
     BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()) { m_nodeId = getNewUniqueId(); }
 
+    void BasicNode::cleanupNode()
+    {
+        const auto& thisNode = shared_from_this();
+
+        auto geometry = std::dynamic_pointer_cast<GeometryComponent>(thisNode);
+        if(geometry)
+        {
+            ENGINE_MANAGER->removeGeometryFromScene(geometry->getNodeId());
+        }
+
+        auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(thisNode);
+        if(debugUi)
+        {
+            ENGINE_MANAGER->removeDebugUiFromScene(debugUi);
+        }
+    }
+
     std::shared_ptr<BasicNode> BasicNode::getChildNode(int pos) const
     {
         if(pos >= m_childNodes.size())

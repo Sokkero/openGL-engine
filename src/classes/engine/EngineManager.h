@@ -26,6 +26,7 @@ namespace Engine
             bool engineStart();
             void engineUpdate();
             void engineDraw();
+            void engineLateUpdate();
 
             void drawNode(const std::shared_ptr<GeometryComponent>& node);
 

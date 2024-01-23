@@ -7,11 +7,11 @@ namespace Engine::Ui
     class UiElementPlot;
     class UiElementText;
 
-    class SceneDebugWindow : public UiDebugWindow
+    class PerformanceDebugWindow : public UiDebugWindow
     {
         public:
-            SceneDebugWindow();
-            ~SceneDebugWindow() = default;
+            PerformanceDebugWindow();
+            ~PerformanceDebugWindow() = default;
 
             void update() override;
 

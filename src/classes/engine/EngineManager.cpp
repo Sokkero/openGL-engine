@@ -66,6 +66,13 @@ namespace Engine
         getScene()->callOnAllChildrenRecursiveAndSelf(func);
     }
 
+    void EngineManager::engineLateUpdate()
+    {
+        const auto func = [](BasicNode* node) { node->lateUpdate(); };
+
+        getScene()->callOnAllChildrenRecursiveAndSelf(func);
+    }
+
     void EngineManager::engineDraw()
     {
         if(m_camera)
@@ -168,7 +175,10 @@ namespace Engine
     {
         for(const auto& node : m_sceneDebugUi)
         {
-            node->drawUi();
+            if(node)
+            {
+                node->drawUi();
+            }
         }
     }
 

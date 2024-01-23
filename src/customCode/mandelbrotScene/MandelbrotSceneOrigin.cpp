@@ -5,7 +5,7 @@
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
 #include "../../classes/nodeComponents/CameraComponent.h"
-#include "../../classes/primitives/SceneDebugWindow.h"
+#include "../../classes/primitives/DebugManagerWindow.h"
 #include "../../resources/shader/MandelbrotShader.h"
 #include "MandelbrotDebugWindow.h"
 #include "MandelbrotUbo.h"
@@ -14,7 +14,7 @@ MandelbrotSceneOrigin::MandelbrotSceneOrigin() : m_mandelbrotUbo(nullptr) {}
 
 void MandelbrotSceneOrigin::start()
 {
-    std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::SceneDebugWindow>();
+    std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::DebugManagerWindow>();
     debugWindow->setName("debugWindow");
     addChild(debugWindow);
 

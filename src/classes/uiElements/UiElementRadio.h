@@ -29,7 +29,7 @@ namespace Engine::Ui
                 : m_value(startValue)
                 , m_previousValue(startValue)
                 , m_text(std::move(text))
-                , m_onChangeCallback(std::move(callbackFunc)) {};
+                , m_onChangeCallback(callbackFunc) {};
             ~UiElementRadio() = default;
 
             /**
@@ -68,6 +68,10 @@ namespace Engine::Ui
              * @param text The new label text to be set.
              */
             void setText(std::string text) { m_text = std::move(text); };
+
+            bool getValue() const { return m_value; };
+
+            void setValue(bool newValue) { m_value = newValue; };
 
         private:
             Callback m_onChangeCallback;
