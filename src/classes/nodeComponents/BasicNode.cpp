@@ -17,6 +17,8 @@ namespace Engine
 
     void BasicNode::cleanupNode()
     {
+        setParent(nullptr);
+
         const auto& thisNode = shared_from_this();
 
         auto geometry = std::dynamic_pointer_cast<GeometryComponent>(thisNode);
@@ -69,29 +71,18 @@ namespace Engine
 
     std::shared_ptr<BasicNode> BasicNode::detatchChild(const unsigned int& nodeId)
     {
-        const auto& it = m_childNodes.erase(
-                std::remove_if(
-                        m_childNodes.begin(),
-                        m_childNodes.end(),
-                        [nodeId](const auto& childNode) -> bool { return nodeId == childNode->getNodeId(); }
-                ),
-                m_childNodes.end()
-        );
-
-        if(it == m_childNodes.end())
+        for (auto it = m_childNodes.begin(); it != m_childNodes.end();)
         {
-            return nullptr;
+            if ((*it)->getNodeId() == nodeId)
+            {
+                auto itNode = *it;
+                m_childNodes.erase(it);
+                itNode->cleanupNode();
+                return itNode;
+            }
+            ++it;
         }
-
-        auto geometry = std::dynamic_pointer_cast<GeometryComponent>(*it);
-        if(geometry)
-        {
-            ENGINE_MANAGER->removeGeometryFromScene(geometry);
-        }
-
-        (*it)->setParent(nullptr);
-
-        return *it;
+        return nullptr;
     }
 
     void BasicNode::deleteChild(const std::shared_ptr<BasicNode>& node) { detatchChild(node->getNodeId()); }
@@ -105,6 +96,7 @@ namespace Engine
             child->callOnAllChildrenRecursiveAndSelf(
                     [](BasicNode* node) -> void { ENGINE_MANAGER->removeGeometryFromScene(node); }
             );
+            child->cleanupNode();
             child->setParent(nullptr);
         }
 

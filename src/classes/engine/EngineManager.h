@@ -63,6 +63,7 @@ namespace Engine
 
             void addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node);
             void removeDebugUiFromScene(std::shared_ptr<Ui::UiDebugWindow>& node);
+            void removeDebugUiFromScene(const unsigned int& nodeId);
 
         private:
             void depthSortNodes();

@@ -14,6 +14,8 @@ PerformanceDebugWindow::PerformanceDebugWindow()
 {
     addWindowFlag(ImGuiWindowFlags_AlwaysAutoResize);
 
+    setIsWindowClosable(false);
+
     m_lastTimeStamp = glfwGetTime();
     m_engineManager = getEngineManager();
     m_windowManager = getWindowManager();

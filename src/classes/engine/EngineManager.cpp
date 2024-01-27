@@ -173,11 +173,11 @@ namespace Engine
 
     void EngineManager::drawUiNodes()
     {
-        for(const auto& node : m_sceneDebugUi)
+        for(int i = 0; i < m_sceneDebugUi.size(); i++)
         {
-            if(node)
+            if(m_sceneDebugUi[i])
             {
-                node->drawUi();
+                m_sceneDebugUi[i]->drawUi();
             }
         }
     }
@@ -285,6 +285,18 @@ namespace Engine
 
     void EngineManager::removeDebugUiFromScene(std::shared_ptr<Ui::UiDebugWindow>& node)
     {
-        m_sceneDebugUi.erase(std::remove(m_sceneDebugUi.begin(), m_sceneDebugUi.end(), node), m_sceneDebugUi.end());
+        removeDebugUiFromScene(node->getNodeId());
+    }
+
+    void EngineManager::removeDebugUiFromScene(const unsigned int& nodeId)
+    {
+        m_sceneDebugUi.erase(
+                std::remove_if(
+                        m_sceneDebugUi.begin(),
+                        m_sceneDebugUi.end(),
+                        [nodeId](const auto& childNode) -> bool { return childNode->getNodeId() == nodeId; }
+                ),
+                m_sceneDebugUi.end()
+        );
     }
 } // namespace Engine

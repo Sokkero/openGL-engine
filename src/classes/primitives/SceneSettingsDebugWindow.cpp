@@ -12,6 +12,8 @@ SceneSettingsDebugWindow::SceneSettingsDebugWindow()
 {
     addWindowFlag(ImGuiWindowFlags_AlwaysAutoResize);
 
+    setIsWindowClosable(false);
+
     m_engineManager = getEngineManager();
 
     setWindowTitle("Scene Settings");

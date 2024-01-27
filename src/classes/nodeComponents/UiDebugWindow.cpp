@@ -7,16 +7,17 @@ UiDebugWindow::UiDebugWindow(ImGuiWindowFlags flags)
     , m_windowOpen(true)
     , m_flags(flags)
 {
+    setName(m_windowTitle);
 }
 
 void UiDebugWindow::drawUi()
 {
-    if(!m_windowOpen)
+    if(!m_windowOpen && m_windowIsClosable)
     {
         return;
     }
 
-    ImGui::Begin(m_windowTitle.c_str(), &m_windowOpen, m_flags);
+    ImGui::Begin(m_windowTitle.c_str(), m_windowIsClosable ? &m_windowOpen : nullptr, m_flags);
 
     for(const auto& element : m_content)
     {

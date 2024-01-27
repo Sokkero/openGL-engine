@@ -26,10 +26,7 @@ namespace Engine::Ui
              * @param flags The ImGui window flags for the debug window.
              */
             explicit UiDebugWindow(ImGuiWindowFlags flags = ImGuiWindowFlags_None);
-            ~UiDebugWindow()
-                    {
-                        ImGui::End();
-                    };
+            ~UiDebugWindow() = default;
 
             /**
              * @brief Draws the UI elements inside the debug window.
@@ -113,11 +110,20 @@ namespace Engine::Ui
              *
              * @param title The new title of the debug window.
              */
-            void setWindowTitle(std::string title) { m_windowTitle = std::move(title); };
+            void setWindowTitle(std::string title)
+            {
+                m_windowTitle = std::move(title);
+                setName(m_windowTitle);
+            };
+
+            bool getIsWindowClosable() const { return m_windowIsClosable; };
+
+            void setIsWindowClosable(bool isClosable) { m_windowIsClosable = std::move(isClosable); };
 
         private:
             std::vector<std::shared_ptr<UiElement>> m_content;
             bool m_windowOpen;
+            bool m_windowIsClosable;
             ImGuiWindowFlags m_flags;
             std::string m_windowTitle = "Hello, World!";
     };
