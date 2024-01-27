@@ -17,10 +17,18 @@ DebugManagerWindow::DebugManagerWindow()
 
     setWindowTitle("Debug Manager");
 
-    m_performanceWindowRadio = std::make_shared<UiElementRadio>(false, "Performance Monitor", std::bind(&DebugManagerWindow::onPerformanceWindowRadioClick, this, std::placeholders::_1));
+    m_performanceWindowRadio = std::make_shared<UiElementRadio>(
+            false,
+            "Performance Monitor",
+            std::bind(&DebugManagerWindow::onPerformanceWindowRadioClick, this, std::placeholders::_1)
+    );
     addContent(m_performanceWindowRadio);
 
-    m_sceneSettingsWindowRadio = std::make_shared<UiElementRadio>(false, "Scene Settings", std::bind(&DebugManagerWindow::onSceneSettingsWindowRadioClick, this, std::placeholders::_1));
+    m_sceneSettingsWindowRadio = std::make_shared<UiElementRadio>(
+            false,
+            "Scene Settings",
+            std::bind(&DebugManagerWindow::onSceneSettingsWindowRadioClick, this, std::placeholders::_1)
+    );
     addContent(m_sceneSettingsWindowRadio);
 }
 

@@ -3,8 +3,8 @@
 #include "../engine/EngineManager.h"
 #include "../engine/WindowManager.h"
 #include "../engine/rendering/RenderManager.h"
-#include "../uiElements/UiElementRadio.h"
 #include "../uiElements/UiElementColorEdit.h"
+#include "../uiElements/UiElementRadio.h"
 
 using namespace Engine::Ui;
 
@@ -34,4 +34,4 @@ SceneSettingsDebugWindow::SceneSettingsDebugWindow()
     addContent(clearColorEdit);
 }
 
-void SceneSettingsDebugWindow::update() { }
+void SceneSettingsDebugWindow::update() {}

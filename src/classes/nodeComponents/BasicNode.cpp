@@ -71,9 +71,9 @@ namespace Engine
 
     std::shared_ptr<BasicNode> BasicNode::detatchChild(const unsigned int& nodeId)
     {
-        for (auto it = m_childNodes.begin(); it != m_childNodes.end();)
+        for(auto it = m_childNodes.begin(); it != m_childNodes.end();)
         {
-            if ((*it)->getNodeId() == nodeId)
+            if((*it)->getNodeId() == nodeId)
             {
                 auto itNode = *it;
                 m_childNodes.erase(it);
