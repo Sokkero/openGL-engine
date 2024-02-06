@@ -6,11 +6,14 @@
 in vec3 nearPoint; // nearPoint calculated in vertex shader
 in vec3 farPoint;
 
-in float near;
-in float far;
-
 in mat4 fragView;
 in mat4 fragProj;
+
+uniform float mainGridScale;
+uniform float secondaryGridScale;
+
+uniform float near;
+uniform float far;
 
 out vec4 color;
 
@@ -56,6 +59,6 @@ void main() {
     float linearDepth = computeLinearDepth(fragPos3D);
     float fading = max(0, (0.5 - linearDepth));
 
-    color = (grid(fragPos3D, 1) + grid(fragPos3D, 0.1)) * float(t > 0); // adding multiple resolution for the grid
+    color = (grid(fragPos3D, mainGridScale) + grid(fragPos3D, secondaryGridScale)) * float(t > 0); // adding multiple resolution for the grid
     color.a *= fading;
 }

@@ -10,9 +10,6 @@ uniform mat4 view;
 out vec3 nearPoint;
 out vec3 farPoint;
 
-out float near = 0.01f;
-out float far = 20.f;
-
 out mat4 fragView = view;
 out mat4 fragProj = projection;
 
