@@ -23,7 +23,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     camera->setZFar(1000.f);
-    camera->setPosition(glm::vec3(0.f, 0.f, 20.f));
+    camera->setPosition(glm::vec3(0.f, 5.f, 20.f));
     camera->setName("camera");
     cameraHolder->addChild(camera);
     getEngineManager()->setCamera(camera);
