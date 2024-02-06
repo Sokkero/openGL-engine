@@ -1,3 +1,6 @@
+// Credits to @MarieEveDube2
+// https://asliceofrendering.com/scene%20helper/2020/01/05/InfiniteGrid/
+
 #version 330 core
 
 // Values that stay constant for the whole mesh.
@@ -6,6 +9,12 @@ uniform mat4 view;
 
 out vec3 nearPoint;
 out vec3 farPoint;
+
+out float near = 0.01f;
+out float far = 20.f;
+
+out mat4 fragView = view;
+out mat4 fragProj = projection;
 
 // Grid position are in xy clipped space
 vec3 gridPlane[6] = vec3[](
@@ -21,10 +30,8 @@ vec3 UnprojectPoint(float x, float y, float z, mat4 view, mat4 projection) {
 }
 
 void main() {
-    vec3 p = gridPlane[gl_VertexID].xyz;
-    nearPoint = UnprojectPoint(p.x, p.y, 0.0, view, projection).xyz; // unprojecting on the near plane
-    farPoint = UnprojectPoint(p.x, p.y, 1.0, view, projection).xyz; // unprojecting on the far plane
-    nearPoint = vec3(0, 0, 1);
-    farPoint = vec3(0, 1, 0);
+    vec3 p = gridPlane[gl_VertexID];
+    nearPoint = UnprojectPoint(p.x, p.y, 0.0, view, projection); // unprojecting on the near plane
+    farPoint = UnprojectPoint(p.x, p.y, 1.0, view, projection); // unprojecting on the far plane
     gl_Position = vec4(p, 1.0); // using directly the clipped coordinates
 }

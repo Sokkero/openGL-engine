@@ -26,7 +26,7 @@ namespace Engine
         , m_fpsCount(0)
         , m_renderManager(nullptr)
         , m_clearColor { 0.f, 0.f, 0.f, 1.f }
-        , m_showGrid(false)
+        , m_showGrid(true)
         , m_gridShader(nullptr)
         , m_showDebugUi(true)
     {
@@ -79,6 +79,7 @@ namespace Engine
         {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+            // TODO: Investigate multithreading
             // Multithread tri sorting here
 
             depthSortNodes();
@@ -91,8 +92,11 @@ namespace Engine
 
             if(!m_showDebugUi)
             {
+                glDisable(GL_BLEND);
                 return;
             }
+
+            glFinish();
 
             if(m_showGrid)
             {
@@ -100,6 +104,7 @@ namespace Engine
             }
 
             drawUiNodes();
+            glDisable(GL_BLEND);
         }
         else
         {
@@ -168,7 +173,6 @@ namespace Engine
 
             drawNode(node);
         }
-        glDisable(GL_BLEND);
     }
 
     void EngineManager::drawUiNodes()

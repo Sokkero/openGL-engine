@@ -37,7 +37,7 @@ void TestSceneOrigin::start()
     treeObj->setPosition(glm::vec3(0.f, -1.5f, 0.f));
     treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     treeObj->setName("tree");
-    treeObj->setTint(glm::vec4(1.f, 1.f, 1.f, .5f));
+    treeObj->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
     addChild(treeObj);
 
     std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
