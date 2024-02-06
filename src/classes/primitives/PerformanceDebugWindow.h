@@ -16,6 +16,8 @@ namespace Engine::Ui
             void update() override;
 
         private:
+            void onVsyncToggle(bool value);
+
             std::shared_ptr<EngineManager> m_engineManager;
             std::shared_ptr<WindowManager> m_windowManager;
             std::shared_ptr<UiElementPlot> m_fpsCounter;

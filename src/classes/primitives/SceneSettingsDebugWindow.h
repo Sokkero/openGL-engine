@@ -16,6 +16,9 @@ namespace Engine::Ui
             void update() override;
 
         private:
+            void onWireframeToggle(bool value) const;
+            void onGridToggle(bool value) const;
+
             std::shared_ptr<EngineManager> m_engineManager;
     };
 } // namespace Engine::Ui

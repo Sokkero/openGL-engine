@@ -28,12 +28,17 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     m_frameTimer = std::make_shared<UiElementText>("ms/frame: inf");
     addContent(m_frameTimer);
 
-    const auto& vsyncCallback = ([this](bool myBool) { m_windowManager->setVsync(myBool); });
-    auto vsyncRadio = std::make_shared<UiElementRadio>(m_windowManager->getVsync(), "V-sync", vsyncCallback);
+    auto vsyncRadio = std::make_shared<UiElementRadio>(
+            m_windowManager->getVsync(),
+            "V-sync",
+            std::bind(&PerformanceDebugWindow::onVsyncToggle, this, std::placeholders::_1)
+    );
     addContent(vsyncRadio);
 }
 
 void PerformanceDebugWindow::update() { updateFrameCounter(); }
+
+void PerformanceDebugWindow::onVsyncToggle(bool value) { m_windowManager->setVsync(value); }
 
 void PerformanceDebugWindow::updateFrameCounter()
 {

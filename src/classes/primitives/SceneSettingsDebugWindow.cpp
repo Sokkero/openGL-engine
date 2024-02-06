@@ -18,12 +18,17 @@ SceneSettingsDebugWindow::SceneSettingsDebugWindow()
 
     setWindowTitle("Scene Settings");
 
-    const auto& wireframeCallback = ([this](bool myBool)
-                                     { m_engineManager->getRenderManager()->setWireframeMode(myBool); });
+    auto gridRadio = std::make_shared<UiElementRadio>(
+            m_engineManager->isGridVisible(),
+            "Grid",
+            std::bind(&SceneSettingsDebugWindow::onGridToggle, this, std::placeholders::_1)
+    );
+    addContent(gridRadio);
+
     auto wireframeRadio = std::make_shared<UiElementRadio>(
             m_engineManager->getRenderManager()->getWireframeMode(),
             "Wireframe",
-            wireframeCallback
+            std::bind(&SceneSettingsDebugWindow::onWireframeToggle, this, std::placeholders::_1)
     );
     addContent(wireframeRadio);
 
@@ -33,5 +38,12 @@ SceneSettingsDebugWindow::SceneSettingsDebugWindow()
             std::make_shared<UiElementColorEdit>(currClearColor, "Clear Color", clearColorCallback);
     addContent(clearColorEdit);
 }
+
+void SceneSettingsDebugWindow::onWireframeToggle(bool value) const
+{
+    m_engineManager->getRenderManager()->setWireframeMode(value);
+}
+
+void SceneSettingsDebugWindow::onGridToggle(bool value) const { m_engineManager->setGridVisibility(value); }
 
 void SceneSettingsDebugWindow::update() {}
