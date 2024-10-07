@@ -67,6 +67,8 @@ void indexVBO(
     std::vector<glm::vec3> out_normals;
 
     //TODO: Not every object has UV's or normals
+    //      Missing normals should be calculated/estimated.
+    //      Missing UV's should be ignored
 
     // For each input vertex
     for(unsigned int i = 0; i < in_vertices.size(); i++)
