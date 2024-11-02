@@ -148,7 +148,7 @@ namespace Engine
 
     void EngineManager::drawOpaqueNodes()
     {
-        for(const auto& node : m_sceneGeometry)
+        for(auto& node : m_sceneGeometry)
         {
             if(node->getIsTranslucent())
             {
@@ -162,7 +162,7 @@ namespace Engine
     void EngineManager::drawTranslucentNodes()
     {
         glEnable(GL_BLEND);
-        for(const auto& node : m_sceneGeometry)
+        for(auto& node : m_sceneGeometry)
         {
             if(!node->getIsTranslucent())
             {

@@ -66,17 +66,15 @@ void indexVBO(
     std::vector<glm::vec2> out_uvs;
     std::vector<glm::vec3> out_normals;
 
-    //TODO: Not every object has UV's or normals
-    //      Missing normals should be calculated/estimated.
-    //      Missing UV's should be ignored
-
     // For each input vertex
     for(unsigned int i = 0; i < in_vertices.size(); i++)
     {
         const unsigned short tupleIndex = i / 3;
         const unsigned short valueIndex = i % 3;
 
-        PackedVertex packed = { in_vertices[i], in_uvs[i], in_normals[i] };
+        PackedVertex packed = { in_vertices[i],
+                                (i < in_uvs.size() ? in_uvs[i] : glm::vec2(0.f)),
+                                (i < in_normals.size() ? in_normals[i] : glm::vec3(0.f)) };
 
         // Try to find a similar vertex in out_XXXX
         unsigned short index;
@@ -89,8 +87,8 @@ void indexVBO(
         else
         { // If not, it needs to be added in the output data.
             out_vertices.push_back(in_vertices[i]);
-            out_uvs.push_back(in_uvs[i]);
-            out_normals.push_back(in_normals[i]);
+            out_uvs.push_back(i < in_uvs.size() ? in_uvs[i] : glm::vec2(0.f));
+            out_normals.push_back(i < in_normals.size() ? in_normals[i] : glm::vec3(0.f));
             unsigned short newindex = (unsigned short)out_vertices.size() - 1;
             writeToTuple(out_indices[tupleIndex], valueIndex, newindex);
             VertexToOutIndex[packed] = newindex;

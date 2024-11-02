@@ -11,7 +11,7 @@ GridShader::GridShader(const std::shared_ptr<RenderManager>& renderManager)
     registerShader(renderManager, "resources/shader/grid", "grid");
 }
 
-void GridShader::renderVertices(std::shared_ptr<GeometryComponent> object, CameraComponent* camera)
+void GridShader::renderVertices(std::nullptr_t object, CameraComponent* camera)
 {
     glUseProgram(getShaderIdentifier().second);
 
