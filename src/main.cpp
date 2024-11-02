@@ -1,8 +1,8 @@
 
 #include "classes/engine/GameInterface.h"
 #include "classes/engine/rendering/RenderManager.h"
-#include "customCode/testScene/TestSceneOrigin.h"
 #include "customCode/mandelbrotScene/MandelbrotSceneOrigin.h"
+#include "customCode/testScene/TestSceneOrigin.h"
 
 int main()
 {

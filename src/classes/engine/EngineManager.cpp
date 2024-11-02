@@ -2,10 +2,10 @@
 #include "EngineManager.h"
 
 #include "../../customCode/testScene/TestSceneOrigin.h"
+#include "../../resources/shader/GridShader.h"
 #include "../nodeComponents/CameraComponent.h"
 #include "../nodeComponents/GeometryComponent.h"
 #include "../nodeComponents/UiDebugWindow.h"
-#include "internalResources/shader/GridShader.h"
 #include "rendering/RenderManager.h"
 
 #include <iostream>
