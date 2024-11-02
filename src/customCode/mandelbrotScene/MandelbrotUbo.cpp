@@ -1,7 +1,7 @@
 
 #include "MandelbrotUbo.h"
 
-MandelbrotUbo::MandelbrotUbo() : m_iterations(300), m_zoom(400), m_screenSize(1920, 1080), m_offset(0, 0)
+MandelbrotUbo::MandelbrotUbo() : m_iterations(300), m_zoom(400), m_screenSize(1200, 600), m_offset(0, 0)
 {
     setSize(24);
     setBindingPoint({ "MandelbrotBlock", 5 });
@@ -21,8 +21,6 @@ void MandelbrotUbo::resetData()
 {
     m_iterations = 300;
     m_zoom = 400;
-    m_screenSize.x = 1920;
-    m_screenSize.y = 1080;
     m_offset.x = 0;
     m_offset.y = 0;
 

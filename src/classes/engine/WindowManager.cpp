@@ -12,7 +12,7 @@ namespace Engine
 {
     WindowManager::WindowManager()
         : m_gameWindow(nullptr)
-        , m_windowDimensions(std::pair<int, int>(1200, 600))
+        , m_windowDimensions(glm::vec2(1200, 600))
         , m_textureSamples(4)
         , m_windowTitle("My little Engine")
         , m_vsync(true)
@@ -21,7 +21,7 @@ namespace Engine
 
     void WindowManager::setWindowDimensions(int width, int height)
     {
-        m_windowDimensions = std::pair<int, int>(width, height);
+        m_windowDimensions = glm::vec2(width, height);
         glfwSetWindowSize(m_gameWindow, width, height);
     }
 
@@ -49,8 +49,8 @@ namespace Engine
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
         m_gameWindow = glfwCreateWindow(
-                m_windowDimensions.first,
-                m_windowDimensions.second,
+                (int)m_windowDimensions.x,
+                (int)m_windowDimensions.y,
                 m_windowTitle.c_str(),
                 nullptr,
                 nullptr

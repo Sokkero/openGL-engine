@@ -5,6 +5,7 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/vec2.hpp>
 
 namespace Engine
 {
@@ -21,7 +22,7 @@ namespace Engine
 
             GLFWwindow* getWindow() { return m_gameWindow; };
 
-            std::pair<int, int> getWindowDimensions() { return m_windowDimensions; };
+            glm::vec2 getWindowDimensions() { return m_windowDimensions; };
 
             void setWindowDimensions(int width, int height);
 
@@ -39,7 +40,7 @@ namespace Engine
 
         private:
             GLFWwindow* m_gameWindow;
-            std::pair<int, int> m_windowDimensions;
+            glm::vec2 m_windowDimensions;
             bool m_vsync;
             int m_textureSamples;
             std::string m_windowTitle;

@@ -19,6 +19,7 @@ void MandelbrotSceneOrigin::start()
     addChild(debugWindow);
 
     m_mandelbrotUbo = std::make_shared<MandelbrotUbo>();
+    m_mandelbrotUbo->setScreenSize(getWindowManager()->getWindowDimensions());
     std::shared_ptr<BasicNode> mandelbrotDebugWindow = std::make_shared<MandelbrotDebugWindow>(m_mandelbrotUbo);
     mandelbrotDebugWindow->setName("mandelbrotDebugWindow");
     addChild(mandelbrotDebugWindow);
@@ -101,5 +102,9 @@ void MandelbrotSceneOrigin::update()
         m_mandelbrotUbo->resetData();
     }
 
-    moveCam(eventManager->getWasdInput());
+    const glm::vec2 movement = eventManager->getWasdInput();
+    if(glm::length(movement) != 0.f)
+    {
+        moveCam(movement);
+    }
 }
