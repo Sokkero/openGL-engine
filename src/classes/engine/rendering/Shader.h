@@ -33,8 +33,9 @@ namespace Engine
 
             virtual void renderVertices(std::nullptr_t object, CameraComponent* camera);
             virtual void renderVertices(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera);
-            virtual void loadCustomRenderData(CameraComponent* camera) { };
-            virtual void loadCustomRenderData(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) { };
+            virtual void loadCustomRenderData(CameraComponent* camera) {};
+            virtual void loadCustomRenderData(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) {
+            };
 
             std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 
@@ -59,6 +60,7 @@ namespace Engine
             );
 
             passVisual getVisualPassStyle() const { return m_passVisual; }
+
             void setVisualPassStyle(passVisual passType) { m_passVisual = passType; }
 
         private:

@@ -3,8 +3,7 @@
 
 using namespace Engine;
 
-Shader::Shader() : m_passVisual(PASS_NONE)
-{}
+Shader::Shader() : m_passVisual(PASS_NONE) {}
 
 Shader::~Shader()
 {
