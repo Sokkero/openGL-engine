@@ -1,7 +1,7 @@
 // Credits to @MarieEveDube2
 // https://asliceofrendering.com/scene%20helper/2020/01/05/InfiniteGrid/
 
-#version 330 core
+#version 410
 
 // Values that stay constant for the whole mesh.
 uniform mat4 projection;

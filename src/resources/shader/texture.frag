@@ -1,4 +1,4 @@
-#version 330 core
+#version 410
 
 // Input Data
 in vec2 UV;
