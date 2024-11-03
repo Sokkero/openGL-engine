@@ -35,7 +35,6 @@ namespace Engine
     bool WindowManager::startWindow()
     {
         // Initialise GLFW
-        glewExperimental = true; // Needed for core profile
         if(!glfwInit())
         {
             fprintf(stderr, "Failed to initialize GLFW!\n");
@@ -71,6 +70,7 @@ namespace Engine
         }
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
+        //glfwSetInputMode(m_gameWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
         std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
 
@@ -91,5 +91,10 @@ namespace Engine
         ImGui_ImplOpenGL3_Init("#version 150");
 
         return true;
+    }
+
+    void WindowManager::setWindowInputMode(int mode, int value)
+    {
+        glfwSetInputMode(m_gameWindow, mode, value);
     }
 } // namespace Engine

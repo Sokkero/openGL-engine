@@ -6,17 +6,31 @@
 
 void CameraActor::start()
 {
-    const auto& wCallback =
-            ([this]() { getParentNode()->rotateObj(getRight(), getEngineManager()->getDeltaTime() * 100); });
-    const auto& sCallback =
-            ([this]() { getParentNode()->rotateObj(getLeft(), getEngineManager()->getDeltaTime() * 100); });
-    const auto& aCallback =
-            ([this]() { getParentNode()->rotateObj(getUp(), getEngineManager()->getDeltaTime() * 100); });
-    const auto& dCallback =
-            ([this]() { getParentNode()->rotateObj(getDown(), getEngineManager()->getDeltaTime() * 100); });
-    const auto& eCallback = ([this]() { moveObj((getForward() * getEngineManager()->getDeltaTime()) * 10.f); });
+    const auto& wCallback = ([this]()
+                             {
+                                 getParentNode()->rotateObj(getRight(), getEngineManager()->getDeltaTime() * 100);
+                             });
+    const auto& sCallback = ([this]()
+                             {
+                                 getParentNode()->rotateObj(getLeft(), getEngineManager()->getDeltaTime() * 100);
+                             });
+    const auto& aCallback = ([this]()
+                             {
+                                 getParentNode()->rotateObj(getUp(), getEngineManager()->getDeltaTime() * 100);
+                             });
+    const auto& dCallback = ([this]()
+                             {
+                                 getParentNode()->rotateObj(getDown(), getEngineManager()->getDeltaTime() * 100);
+                             });
+
+    const auto& eCallback = ([this]()
+                             {
+                                 moveObj((getForward() * getEngineManager()->getDeltaTime()) * 10.f);
+                             });
     const auto& qCallback = ([this]()
-                             { moveObj((getBackwards() * getEngineManager()->getDeltaTime()) * 10.f); });
+                             {
+                                 moveObj((getBackwards() * getEngineManager()->getDeltaTime()) * 10.f);
+                             });
 
     getUserEventManager()->addListener(std::pair<int, int>(GLFW_KEY_W, GLFW_PRESS), wCallback);
     getUserEventManager()->addListener(std::pair<int, int>(GLFW_KEY_W, GLFW_REPEAT), wCallback);

@@ -2,6 +2,7 @@
 #include "classes/engine/GameInterface.h"
 #include "classes/engine/rendering/RenderManager.h"
 #include "customCode/mandelbrotScene/MandelbrotSceneOrigin.h"
+#include "customCode/waveFunctionCollapse/WafeFunctionCollapseSceneOrigin.h"
 #include "customCode/testScene/TestSceneOrigin.h"
 
 int main()
@@ -27,7 +28,10 @@ int main()
     diffuseLight->setColor(glm::vec3(1.0f, 0.7f, 0.7f));
     diffuseLight->UpdateUbo();
 
-    std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
+    diffuseLight->setIsActive(false);
+
+    //std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
+    std::shared_ptr<WafeFunctionCollapseSceneOrigin> startNode = std::make_shared<WafeFunctionCollapseSceneOrigin>();
     //std::shared_ptr<MandelbrotSceneOrigin> startNode = std::make_shared<MandelbrotSceneOrigin>();
     startNode->setName("Scene Origin");
     game->getEngineManager()->setScene(startNode);

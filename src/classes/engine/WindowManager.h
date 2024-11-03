@@ -38,6 +38,8 @@ namespace Engine
 
             void setVsync(bool);
 
+            void setWindowInputMode(int mode, int value);
+
         private:
             GLFWwindow* m_gameWindow;
             glm::vec2 m_windowDimensions;
