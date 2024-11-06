@@ -183,33 +183,15 @@ namespace Engine
         return scale;
     }
 
-    glm::vec3 BasicNode::getForward() const
-    {
-        return glm::normalize(-getModelMatrix()[2]);
-    }
+    glm::vec3 BasicNode::getForward() const { return glm::normalize(-getModelMatrix()[2]); }
 
-    glm::vec3 BasicNode::getBackwards() const
-    {
-        return glm::normalize(getModelMatrix()[2]);
-    }
+    glm::vec3 BasicNode::getBackwards() const { return glm::normalize(getModelMatrix()[2]); }
 
-    glm::vec3 BasicNode::getLeft() const
-    {
-        return glm::normalize(-getModelMatrix()[0]);
-    }
+    glm::vec3 BasicNode::getLeft() const { return glm::normalize(-getModelMatrix()[0]); }
 
-    glm::vec3 BasicNode::getRight() const
-    {
-        return glm::normalize(getModelMatrix()[2]);
-    }
+    glm::vec3 BasicNode::getRight() const { return glm::normalize(getModelMatrix()[2]); }
 
-    glm::vec3 BasicNode::getDown() const
-    {
-        return glm::normalize(-getModelMatrix()[1]);
-    }
+    glm::vec3 BasicNode::getDown() const { return glm::normalize(-getModelMatrix()[1]); }
 
-    glm::vec3 BasicNode::getUp() const
-    {
-        return glm::normalize(getModelMatrix()[1]);
-    }
+    glm::vec3 BasicNode::getUp() const { return glm::normalize(getModelMatrix()[1]); }
 } // namespace Engine

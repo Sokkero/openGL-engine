@@ -1,7 +1,7 @@
 #include "CameraComponent.h"
 
-#include "../engine/rendering/RenderManager.h"
 #include "../engine/WindowManager.h"
+#include "../engine/rendering/RenderManager.h"
 
 #include "glm/ext/matrix_clip_space.hpp"
 
@@ -21,7 +21,8 @@ namespace Engine
 
     glm::mat4 CameraComponent::getViewMatrix()
     {
-        return glm::lookAt(getGlobalPosition(), getForward() + getGlobalPosition(), WORLD_UP);
+        const glm::vec3 globalModel = getGlobalModelMatrix()[2];
+        return glm::lookAt(getGlobalPosition(), getForward() + globalModel, WORLD_UP);
     }
 
     void CameraComponent::updateProjectionMatrix()

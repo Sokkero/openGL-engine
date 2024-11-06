@@ -2,12 +2,12 @@
 
 using namespace Engine;
 
-std::vector<std::pair<std::string, std::function<void(int, int)>>> WindowEventCallbackHelper::WINDOW_RESIZE_CALLBACKS = std::vector<std::pair<std::string, std::function<void(int, int)>>>();
+std::vector<std::pair<std::string, std::function<void(int, int)>>> WindowEventCallbackHelper::WINDOW_RESIZE_CALLBACKS =
+        std::vector<std::pair<std::string, std::function<void(int, int)>>>();
 std::shared_ptr<EngineManager> WindowEventCallbackHelper::ENIGNE_MANAGER = nullptr;
 
 void WindowEventCallbackHelper::executeWindowResizeCallbacks(GLFWwindow* window, int width, int height)
 {
-
     if(!ENIGNE_MANAGER || !ENIGNE_MANAGER->getCamera())
     {
         return;
@@ -27,9 +27,8 @@ void WindowEventCallbackHelper::addWindowResizeCallback(const std::string& id, s
             WINDOW_RESIZE_CALLBACKS.begin(),
             WINDOW_RESIZE_CALLBACKS.end(),
             [id](const std::pair<std::string, std::function<void(int, int)>>& data)
-            {
-                return data.first == id;
-            });
+            { return data.first == id; }
+    );
 
     if(it == WINDOW_RESIZE_CALLBACKS.end())
     {
@@ -39,15 +38,12 @@ void WindowEventCallbackHelper::addWindowResizeCallback(const std::string& id, s
 
 void WindowEventCallbackHelper::removeWindowResizeCallback(const std::string& id)
 {
-    WINDOW_RESIZE_CALLBACKS.erase(
-            std::remove_if(
-                    WINDOW_RESIZE_CALLBACKS.begin(),
-                    WINDOW_RESIZE_CALLBACKS.end(),
-                    [id](const std::pair<std::string, std::function<void(int, int)>>& data)
-                    {
-                        return data.first == id;
-                    }
-            ),
-            WINDOW_RESIZE_CALLBACKS.end()
-    );
+    WINDOW_RESIZE_CALLBACKS
+            .erase(std::remove_if(
+                           WINDOW_RESIZE_CALLBACKS.begin(),
+                           WINDOW_RESIZE_CALLBACKS.end(),
+                           [id](const std::pair<std::string, std::function<void(int, int)>>& data)
+                           { return data.first == id; }
+                   ),
+                   WINDOW_RESIZE_CALLBACKS.end());
 }

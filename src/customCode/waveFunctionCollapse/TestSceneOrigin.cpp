@@ -40,5 +40,5 @@ void WafeFunctionCollapseSceneOrigin::start()
 
 void WafeFunctionCollapseSceneOrigin::update()
 {
-    //getEngineManager()->getCamera()->rotateObj(getEngineManager()->getCamera()->getRight(), getEngineManager()->getDeltaTime() * 50);
+    // getEngineManager()->getCamera()->rotateObj(getEngineManager()->getCamera()->getRight(), getEngineManager()->getDeltaTime() * 50);
 }

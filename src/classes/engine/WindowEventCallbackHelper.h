@@ -1,14 +1,15 @@
 #pragma once
 
-#include "EngineManager.h"
 #include "../nodeComponents/CameraComponent.h"
+#include "EngineManager.h"
 
 #include <GLFW/glfw3.h>
 #include <functional>
 #include <string>
 #include <utility>
 
-namespace Engine {
+namespace Engine
+{
     class WindowEventCallbackHelper
     {
         public:
@@ -21,4 +22,4 @@ namespace Engine {
         private:
             static std::vector<std::pair<std::string, std::function<void(int, int)>>> WINDOW_RESIZE_CALLBACKS;
     };
-}
+} // namespace Engine
