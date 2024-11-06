@@ -9,8 +9,7 @@
 
 void WafeFunctionCollapseSceneOrigin::start()
 {
-    //TODO: Changin window resolution fucks with shaders
-    getWindowManager()->setWindowDimensions(1000, 1000);
+    getWindowManager()->setWindowDimensions(1024, 768);
 
     std::shared_ptr<Engine::CameraComponent> camera = std::make_shared<Engine::CameraComponent>();
     camera->setZFar(1000.f);

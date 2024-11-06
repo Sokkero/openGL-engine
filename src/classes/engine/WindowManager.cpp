@@ -1,6 +1,7 @@
 #include "WindowManager.h"
 
 #include "EngineManager.h"
+#include "WindowEventCallbackHelper.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -71,6 +72,8 @@ namespace Engine
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
         //glfwSetInputMode(m_gameWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+        glfwSetWindowSizeCallback(m_gameWindow, WindowEventCallbackHelper::executeWindowResizeCallbacks);
 
         std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
 

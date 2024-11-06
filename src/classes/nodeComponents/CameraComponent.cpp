@@ -1,18 +1,21 @@
 #include "CameraComponent.h"
 
 #include "../engine/rendering/RenderManager.h"
+#include "../engine/WindowManager.h"
 
-#include <glm/ext/matrix_clip_space.hpp>
+#include "glm/ext/matrix_clip_space.hpp"
 
 namespace Engine
 {
     CameraComponent::CameraComponent()
         : m_projectionMatrix(glm::mat4())
         , m_fov(45.f)
-        , m_aspectRatio((float)1024 / (float)640)
         , m_zNear(.1f)
         , m_zFar(100.f)
     {
+        const glm::vec2 dim = getWindowManager()->getWindowDimensions();
+        m_aspectRatio = dim.x / dim.y;
+
         updateProjectionMatrix();
     }
 

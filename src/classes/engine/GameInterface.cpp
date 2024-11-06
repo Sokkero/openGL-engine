@@ -2,6 +2,8 @@
 #include "GameInterface.h"
 
 #include "../nodeComponents/BasicNode.h"
+#include "WindowEventCallbackHelper.h"
+
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>
@@ -22,6 +24,8 @@ namespace Engine
         BasicNode::setWindowManager(m_windowManager);
         BasicNode::setEngineManager(m_engineManager);
         BasicNode::setUserEventManager(m_userEventManager);
+
+        WindowEventCallbackHelper::ENIGNE_MANAGER = m_engineManager;
     }
 
     int GameInterface::startGame()
