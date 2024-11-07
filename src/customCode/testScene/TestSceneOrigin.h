@@ -5,7 +5,10 @@
 namespace Engine
 {
     class EngineManager;
-}
+    class GeometryComponent;
+} // namespace Engine
+
+class TestObject;
 
 class TestSceneOrigin : public Engine::BasicNode
 {
@@ -14,6 +17,9 @@ class TestSceneOrigin : public Engine::BasicNode
         ~TestSceneOrigin() = default;
 
     private:
+        std::shared_ptr<Engine::GeometryComponent> m_tree;
+        std::shared_ptr<TestObject> m_ape;
+
         void start() override;
         void update() override;
 };

@@ -9,12 +9,15 @@
 
 void WafeFunctionCollapseSceneOrigin::start()
 {
+    std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::DebugManagerWindow>();
+    debugWindow->setName("debugWindow");
+    addChild(debugWindow);
+
     getWindowManager()->setWindowDimensions(1024, 768);
 
     std::shared_ptr<Engine::CameraComponent> camera = std::make_shared<Engine::CameraComponent>();
-    camera->setZFar(1000.f);
-    camera->setPosition(glm::vec3(0.f, 10.f, 0.f));
-    camera->setRotation(glm::vec3(-90.f, 0.f, 0.f));
+    camera->setPosition(glm::vec3(0.f, 5.f, 20.f));
+    camera->setRotation(glm::vec3(0.f, 0.f, 0.f));
     camera->setName("camera");
     addChild(camera);
     getEngineManager()->setCamera(camera);
@@ -25,7 +28,7 @@ void WafeFunctionCollapseSceneOrigin::start()
     std::shared_ptr<Engine::GeometryComponent> planeObj = std::make_shared<Engine::GeometryComponent>();
     planeObj->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
     planeObj->setShader(std::make_shared<ColorShader>(renderManager));
-    planeObj->setName("tree");
+    planeObj->setName("plane");
     planeObj->setRotation(glm::vec3(-90.f, 0.f, 0.f));
 
     std::vector<glm::vec4> g_color_buffer_data;
@@ -40,5 +43,7 @@ void WafeFunctionCollapseSceneOrigin::start()
 
 void WafeFunctionCollapseSceneOrigin::update()
 {
-    // getEngineManager()->getCamera()->rotateObj(getEngineManager()->getCamera()->getRight(), getEngineManager()->getDeltaTime() * 50);
+    getEngineManager()
+            ->getCamera()
+            ->rotateObj(getEngineManager()->getCamera()->getDown(), getEngineManager()->getDeltaTime() * 50);
 }

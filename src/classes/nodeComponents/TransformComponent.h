@@ -23,7 +23,8 @@ namespace Engine
                 : m_modelMatrix(glm::mat4(1.f))
                 , m_scale(glm::vec3(1.f))
                 , m_position(glm::vec3(0.f))
-                , m_rotation(glm::mat4(1.f)) {};
+                , m_rotation(glm::mat4(1.f)) // Quaternions have to be initialized with 1.f!!!
+            {};
             ~TransformComponent() = default;
 
             /**
@@ -43,7 +44,7 @@ namespace Engine
              */
             void rotateObj(glm::vec3 dirVec, float degrees)
             {
-                m_rotation *= glm::angleAxis(glm::radians(degrees), dirVec);
+                m_rotation *= glm::angleAxis(glm::radians(degrees), glm::normalize(dirVec));
                 updateModelMatrix();
             };
 
@@ -136,9 +137,9 @@ namespace Engine
              */
             void updateModelMatrix()
             {
-                glm::mat4 posMat = glm::translate(glm::mat4(1.f), m_position);
-                glm::mat4 scaleMat = glm::scale(glm::mat4(1.f), m_scale);
-                glm::mat4 rotMat = glm::toMat4(m_rotation);
+                const glm::mat4 posMat = glm::translate(glm::mat4(1.f), m_position);
+                const glm::mat4 rotMat = glm::toMat4(m_rotation);
+                const glm::mat4 scaleMat = glm::scale(glm::mat4(1.f), m_scale);
 
                 m_modelMatrix = posMat * rotMat * scaleMat;
             }

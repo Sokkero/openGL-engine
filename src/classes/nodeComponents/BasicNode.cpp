@@ -183,15 +183,33 @@ namespace Engine
         return scale;
     }
 
-    glm::vec3 BasicNode::getForward() const { return glm::normalize(-getModelMatrix()[2]); }
+    glm::vec3 BasicNode::getForward() const
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 0.f, -1.f));
+    }
 
-    glm::vec3 BasicNode::getBackwards() const { return glm::normalize(getModelMatrix()[2]); }
+    glm::vec3 BasicNode::getBackwards() const
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 0.f, 1.f));
+    }
 
-    glm::vec3 BasicNode::getLeft() const { return glm::normalize(-getModelMatrix()[0]); }
+    glm::vec3 BasicNode::getLeft() const
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(-1.f, 0.f, 0.f));
+    }
 
-    glm::vec3 BasicNode::getRight() const { return glm::normalize(getModelMatrix()[2]); }
+    glm::vec3 BasicNode::getRight() const
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(1.f, 0.f, 0.f));
+    }
 
-    glm::vec3 BasicNode::getDown() const { return glm::normalize(-getModelMatrix()[1]); }
+    glm::vec3 BasicNode::getDown() const
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, -1.f, 0.f));
+    }
 
-    glm::vec3 BasicNode::getUp() const { return glm::normalize(getModelMatrix()[1]); }
+    glm::vec3 BasicNode::getUp() const
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 1.f, 0.f));
+    }
 } // namespace Engine

@@ -7,13 +7,13 @@
 void CameraActor::start()
 {
     const auto& wCallback =
-            ([this]() { getParentNode()->rotateObj(getRight(), getEngineManager()->getDeltaTime() * 100); });
+            ([this]() { rotateObj(glm::vec3(-1.f, 0.f, 0.f), getEngineManager()->getDeltaTime() * 100); });
     const auto& sCallback =
-            ([this]() { getParentNode()->rotateObj(getLeft(), getEngineManager()->getDeltaTime() * 100); });
+            ([this]() { rotateObj(glm::vec3(1.f, 0.f, 0.f), getEngineManager()->getDeltaTime() * 100); });
     const auto& aCallback =
-            ([this]() { getParentNode()->rotateObj(getUp(), getEngineManager()->getDeltaTime() * 100); });
+            ([this]() { rotateObj(glm::vec3(0.f, 1.f, 0.f), getEngineManager()->getDeltaTime() * 100); });
     const auto& dCallback =
-            ([this]() { getParentNode()->rotateObj(getDown(), getEngineManager()->getDeltaTime() * 100); });
+            ([this]() { rotateObj(glm::vec3(0.f, -1.f, 0.f), getEngineManager()->getDeltaTime() * 100); });
 
     const auto& eCallback = ([this]() { moveObj((getForward() * getEngineManager()->getDeltaTime()) * 10.f); });
     const auto& qCallback = ([this]()

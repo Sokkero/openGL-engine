@@ -21,8 +21,8 @@ namespace Engine
 
     glm::mat4 CameraComponent::getViewMatrix()
     {
-        const glm::vec3 globalModel = getGlobalModelMatrix()[2];
-        return glm::lookAt(getGlobalPosition(), getForward() + globalModel, WORLD_UP);
+        const glm::vec3 pos = getGlobalPosition();
+        return glm::lookAt(pos, pos + getForward(), WORLD_UP);
     }
 
     void CameraComponent::updateProjectionMatrix()

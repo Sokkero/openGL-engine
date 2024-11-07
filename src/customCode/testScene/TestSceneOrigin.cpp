@@ -23,7 +23,7 @@ void TestSceneOrigin::start()
 
     std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     camera->setZFar(1000.f);
-    camera->setPosition(glm::vec3(0.f, 5.f, 20.f));
+    camera->setPosition(glm::vec3(0.f, 5.f, 15.f));
     camera->setName("camera");
     cameraHolder->addChild(camera);
     getEngineManager()->setCamera(camera);
@@ -31,32 +31,38 @@ void TestSceneOrigin::start()
     const auto& renderManager = getEngineManager()->getRenderManager();
 
     // Tree models normals are broken, causing the model to look bad with translucency
-    std::shared_ptr<GeometryComponent> treeObj = std::make_shared<GeometryComponent>();
-    treeObj->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
-    treeObj->setShader(std::make_shared<TextureShader>(renderManager));
-    treeObj->setPosition(glm::vec3(0.f, -1.5f, 0.f));
-    treeObj->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
-    treeObj->setName("tree");
-    treeObj->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
-    addChild(treeObj);
+    m_tree = std::make_shared<GeometryComponent>();
+    m_tree->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
+    m_tree->setShader(std::make_shared<TextureShader>(renderManager));
+    m_tree->setPosition(glm::vec3(0.f, 3.f, 0.f));
+    // m_tree->setRotation(glm::vec3(70.f, 0.f, 0.f));
+    m_tree->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
+    m_tree->setName("tree");
+    m_tree->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
+    addChild(m_tree);
 
-    std::shared_ptr<TestObject> suzanneObj = std::make_shared<TestObject>();
-    suzanneObj->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
-    suzanneObj->setShader(std::make_shared<ColorShader>(renderManager));
-    suzanneObj->getShader()->bindUbo(renderManager->getAmbientLightUbo());
-    suzanneObj->setPosition(glm::vec3(3.f, -1.5f, 0.f));
-    suzanneObj->setScale(glm::vec3(1.f));
-    suzanneObj->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
+    m_ape = std::make_shared<TestObject>();
+    m_ape->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
+    m_ape->setShader(std::make_shared<ColorShader>(renderManager));
+    m_ape->getShader()->bindUbo(renderManager->getAmbientLightUbo());
+    m_ape->setPosition(glm::vec3(3.f, 3.f, 0.f));
+    m_ape->setScale(glm::vec3(1.f));
+    m_ape->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
 
     std::vector<glm::vec4> g_color_buffer_data;
-    for(int v = 0; v < suzanneObj->getObjectData()->getVertexCount(); v++)
+    for(int v = 0; v < m_ape->getObjectData()->getVertexCount(); v++)
     {
         g_color_buffer_data.emplace_back(1.f, 1.f, 1.f, 1.f);
     }
 
-    suzanneObj->setTextureBuffer(renderManager->createBuffer(g_color_buffer_data));
-    suzanneObj->setName("suzanne");
-    addChild(suzanneObj);
+    m_ape->setTextureBuffer(renderManager->createBuffer(g_color_buffer_data));
+    m_ape->setName("suzanne");
+    addChild(m_ape);
 }
 
-void TestSceneOrigin::update() {}
+void TestSceneOrigin::update()
+{
+    m_tree->rotateObj(glm::vec3(0.f, 1.f, 0.f), getEngineManager()->getDeltaTime() * 50.f);
+    // m_tree->rotateObj(glm::vec3(1.f, 0.f, 0.f), getEngineManager()->getDeltaTime() * 50.f);
+    // m_ape->setPosition(m_tree->getGlobalPosition() + (m_tree->getForward() * 3.f));
+}
