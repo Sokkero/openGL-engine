@@ -5,10 +5,11 @@
 #include <glm/ext/vector_int2.hpp>
 #include <glm/vec2.hpp>
 
-namespace Engine {
+namespace Engine
+{
     class GeometryComponent;
     class RenderManager;
-}
+} // namespace Engine
 
 class FieldTile
 {
@@ -19,7 +20,9 @@ class FieldTile
         void updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field, bool& updated);
 
         std::shared_ptr<Engine::GeometryComponent> setTile(
-                TileTypeEnum type, const std::shared_ptr<Engine::RenderManager>& renderManager);
+                TileTypeEnum type,
+                const std::shared_ptr<Engine::RenderManager>& renderManager
+        );
 
         void setPosition(const glm::ivec2& pos) { m_tilePos = pos; }
 

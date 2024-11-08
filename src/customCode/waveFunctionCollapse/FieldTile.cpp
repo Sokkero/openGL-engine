@@ -42,7 +42,11 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
             {
                 BasicTileDataStruct possibleNeighborTileData = EnumToTileData(possibleNeighborTileType);
 
-                auto it = std::find(possibleNeighborTileData.allowedNeighbors.begin(), possibleNeighborTileData.allowedNeighbors.end(), possibleTileType);
+                auto it = std::find(
+                        possibleNeighborTileData.allowedNeighbors.begin(),
+                        possibleNeighborTileData.allowedNeighbors.end(),
+                        possibleTileType
+                );
                 if(it != possibleNeighborTileData.allowedNeighbors.end())
                 {
                     found = true;
@@ -50,7 +54,8 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
                 }
             }
 
-            if(!found) {
+            if(!found)
+            {
                 tilesToRemove.push_back(possibleTileType);
             }
         }
@@ -67,14 +72,17 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
                        possibleTiles.end());
     }
 
-    if(m_possibleTiles.size() != possibleTiles.size()) {
+    if(m_possibleTiles.size() != possibleTiles.size())
+    {
         m_possibleTiles = possibleTiles;
         updated = true;
     }
 }
 
 std::shared_ptr<Engine::GeometryComponent> FieldTile::setTile(
-        TileTypeEnum type, const std::shared_ptr<Engine::RenderManager>& renderManager)
+        TileTypeEnum type,
+        const std::shared_ptr<Engine::RenderManager>& renderManager
+)
 {
     static const float startPosX = (TILE_SIZE.x * ((float)FIELD_SIZE.x - 1.f)) / 2.f;
     static const float startPosY = (TILE_SIZE.y * ((float)FIELD_SIZE.y - 1.f)) / 2.f;

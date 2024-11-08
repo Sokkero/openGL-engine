@@ -32,10 +32,7 @@ inline static glm::vec3 EnumToColorValue(int tile)
     }
 }
 
-inline static std::vector<TileTypeEnum> GetAllTiles()
-{
-    return { deepWater, shallowWater, beach, grass };
-}
+inline static std::vector<TileTypeEnum> GetAllTiles() { return { deepWater, shallowWater, beach, grass }; }
 
 struct BasicTileDataStruct
 {
@@ -68,17 +65,26 @@ struct ShallowWaterTileDataStruct : BasicTileDataStruct
 struct DeepWaterTileDataStruct : BasicTileDataStruct
 {
         DeepWaterTileDataStruct()
-            : BasicTileDataStruct({ TileTypeEnum::shallowWater, TileTypeEnum::deepWater }, EnumToColorValue(TileTypeEnum::deepWater)) {};
+            : BasicTileDataStruct(
+                      { TileTypeEnum::shallowWater, TileTypeEnum::deepWater },
+                      EnumToColorValue(TileTypeEnum::deepWater)
+              ) {};
 };
 
 struct GrasTileDataStruct : BasicTileDataStruct
 {
-        GrasTileDataStruct() : BasicTileDataStruct({ TileTypeEnum::beach, TileTypeEnum::grass }, EnumToColorValue(TileTypeEnum::grass)) {};
+        GrasTileDataStruct()
+            : BasicTileDataStruct({ TileTypeEnum::beach, TileTypeEnum::grass }, EnumToColorValue(TileTypeEnum::grass)) {
+            };
 };
 
 struct UndeterminedTileDataStruct : BasicTileDataStruct
 {
-        UndeterminedTileDataStruct() : BasicTileDataStruct({ TileTypeEnum::beach, TileTypeEnum::grass, TileTypeEnum::deepWater, TileTypeEnum::shallowWater }, EnumToColorValue(TileTypeEnum::undetermined)) {};
+        UndeterminedTileDataStruct()
+            : BasicTileDataStruct(
+                      { TileTypeEnum::beach, TileTypeEnum::grass, TileTypeEnum::deepWater, TileTypeEnum::shallowWater },
+                      EnumToColorValue(TileTypeEnum::undetermined)
+              ) {};
 };
 
 inline static BasicTileDataStruct EnumToTileData(int tile)
@@ -98,48 +104,28 @@ inline static BasicTileDataStruct EnumToTileData(int tile)
     }
 }
 
-
 // Careful!! These could brake the algorithm if wrong
 inline static std::vector<std::pair<glm::ivec2, TileTypeEnum>> GetPredeterminedTiles()
 {
     return {
-        { glm::ivec2(6, 6), TileTypeEnum::grass },
-        { glm::ivec2(4, 4), TileTypeEnum::grass },
-        { glm::ivec2(0, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(1, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(2, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(3, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(4, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(5, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(6, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(7, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(8, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 1), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 2), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 3), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 4), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 5), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 6), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 7), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 8), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(8, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(7, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(6, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(5, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(4, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(3, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(2, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(1, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 8), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 7), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 6), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 5), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 4), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 3), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 2), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 1), TileTypeEnum::deepWater },
+        { glm::ivec2(6, 6), TileTypeEnum::grass },     { glm::ivec2(4, 4), TileTypeEnum::grass },
+        { glm::ivec2(0, 0), TileTypeEnum::deepWater }, { glm::ivec2(1, 0), TileTypeEnum::deepWater },
+        { glm::ivec2(2, 0), TileTypeEnum::deepWater }, { glm::ivec2(3, 0), TileTypeEnum::deepWater },
+        { glm::ivec2(4, 0), TileTypeEnum::deepWater }, { glm::ivec2(5, 0), TileTypeEnum::deepWater },
+        { glm::ivec2(6, 0), TileTypeEnum::deepWater }, { glm::ivec2(7, 0), TileTypeEnum::deepWater },
+        { glm::ivec2(8, 0), TileTypeEnum::deepWater }, { glm::ivec2(9, 0), TileTypeEnum::deepWater },
+        { glm::ivec2(9, 1), TileTypeEnum::deepWater }, { glm::ivec2(9, 2), TileTypeEnum::deepWater },
+        { glm::ivec2(9, 3), TileTypeEnum::deepWater }, { glm::ivec2(9, 4), TileTypeEnum::deepWater },
+        { glm::ivec2(9, 5), TileTypeEnum::deepWater }, { glm::ivec2(9, 6), TileTypeEnum::deepWater },
+        { glm::ivec2(9, 7), TileTypeEnum::deepWater }, { glm::ivec2(9, 8), TileTypeEnum::deepWater },
+        { glm::ivec2(9, 9), TileTypeEnum::deepWater }, { glm::ivec2(8, 9), TileTypeEnum::deepWater },
+        { glm::ivec2(7, 9), TileTypeEnum::deepWater }, { glm::ivec2(6, 9), TileTypeEnum::deepWater },
+        { glm::ivec2(5, 9), TileTypeEnum::deepWater }, { glm::ivec2(4, 9), TileTypeEnum::deepWater },
+        { glm::ivec2(3, 9), TileTypeEnum::deepWater }, { glm::ivec2(2, 9), TileTypeEnum::deepWater },
+        { glm::ivec2(1, 9), TileTypeEnum::deepWater }, { glm::ivec2(0, 9), TileTypeEnum::deepWater },
+        { glm::ivec2(0, 8), TileTypeEnum::deepWater }, { glm::ivec2(0, 7), TileTypeEnum::deepWater },
+        { glm::ivec2(0, 6), TileTypeEnum::deepWater }, { glm::ivec2(0, 5), TileTypeEnum::deepWater },
+        { glm::ivec2(0, 4), TileTypeEnum::deepWater }, { glm::ivec2(0, 3), TileTypeEnum::deepWater },
+        { glm::ivec2(0, 2), TileTypeEnum::deepWater }, { glm::ivec2(0, 1), TileTypeEnum::deepWater },
     };
 }

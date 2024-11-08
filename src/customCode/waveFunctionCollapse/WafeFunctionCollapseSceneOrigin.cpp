@@ -7,7 +7,9 @@
 #include "../../classes/primitives/DebugManagerWindow.h"
 #include "../../resources/shader/ColorShader.h"
 
-WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin(const glm::ivec2& fieldDimension) : m_field(fieldDimension.x, std::vector<std::shared_ptr<FieldTile>>(fieldDimension.y)), m_fieldDimensions(fieldDimension)
+WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin(const glm::ivec2& fieldDimension)
+    : m_field(fieldDimension.x, std::vector<std::shared_ptr<FieldTile>>(fieldDimension.y))
+    , m_fieldDimensions(fieldDimension)
 {
     FieldTile::setFieldSize(fieldDimension);
 
@@ -45,12 +47,14 @@ void WafeFunctionCollapseSceneOrigin::setupField()
 
         const glm::ivec2 nextTilePos = pickNextTile();
 
-        if(nextTilePos == glm::ivec2(-1.f, -1.f)) {
+        if(nextTilePos == glm::ivec2(-1.f, -1.f))
+        {
             canContinue = false;
             continue;
         }
 
-        const std::vector<TileTypeEnum> possibleTiles = m_field[nextTilePos.x][nextTilePos.y]->getAllPossibleTiles();
+        const std::vector<TileTypeEnum> possibleTiles =
+                m_field[nextTilePos.x][nextTilePos.y]->getAllPossibleTiles();
         if(possibleTiles.empty())
         {
             addPlane(glm::ivec2(nextTilePos.x, nextTilePos.y), TileTypeEnum::undetermined);
@@ -60,19 +64,20 @@ void WafeFunctionCollapseSceneOrigin::setupField()
         const TileTypeEnum tileChosen = possibleTiles.at(std::rand() % possibleTiles.size());
         addPlane(glm::ivec2(nextTilePos.x, nextTilePos.y), tileChosen);
     }
-
 }
 
 void WafeFunctionCollapseSceneOrigin::updateAllTiles()
 {
     bool hasUpdated = true;
-    while(hasUpdated) {
+    while(hasUpdated)
+    {
         hasUpdated = false;
         for(const auto& row : m_field)
         {
             for(const auto& tile : row)
             {
-                if(tile->getCurrentTile() == TileTypeEnum::undetermined) {
+                if(tile->getCurrentTile() == TileTypeEnum::undetermined)
+                {
                     tile->updatePossibleTiles(m_field, hasUpdated);
                 }
             }
@@ -95,7 +100,7 @@ glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile()
             }
 
             const size_t possibleTiles = currentTile->getAllPossibleTiles().size();
-            //assert(possibleTiles > 0);
+            // assert(possibleTiles > 0);
 
             if(possibleTiles == nextPossibleTileAmount)
             {
@@ -110,7 +115,8 @@ glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile()
         }
     }
 
-    if(nextPossibleTiles.empty()){
+    if(nextPossibleTiles.empty())
+    {
         return glm::ivec2(-1, -1);
     }
 
@@ -126,7 +132,8 @@ void WafeFunctionCollapseSceneOrigin::setupScene()
     // addChild(debugWindow);
 
     std::shared_ptr<Engine::CameraComponent> camera = std::make_shared<Engine::CameraComponent>();
-    const float cameraDistance = m_fieldDimensions.x > m_fieldDimensions.y ? 2.5f * (float)m_fieldDimensions.x : 2.5f * (float)m_fieldDimensions.y;
+    const float cameraDistance = m_fieldDimensions.x > m_fieldDimensions.y ? 2.5f * (float)m_fieldDimensions.x
+                                                                           : 2.5f * (float)m_fieldDimensions.y;
     camera->setZFar(1000.f);
     camera->setPosition(glm::vec3(0.f, cameraDistance, 0.f));
     camera->setRotation(glm::vec3(-90.f, 0.f, 0.f));
@@ -136,6 +143,7 @@ void WafeFunctionCollapseSceneOrigin::setupScene()
 
 void WafeFunctionCollapseSceneOrigin::addPlane(const glm::ivec2& pos, const TileTypeEnum type)
 {
-    const std::shared_ptr<Engine::GeometryComponent> plane = m_field[pos.x][pos.y]->setTile(type, getEngineManager()->getRenderManager());
+    const std::shared_ptr<Engine::GeometryComponent> plane =
+            m_field[pos.x][pos.y]->setTile(type, getEngineManager()->getRenderManager());
     addChild(plane);
 }
