@@ -30,9 +30,9 @@ int main()
 
     diffuseLight->setIsActive(false);
 
-    std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
-    // std::shared_ptr<WafeFunctionCollapseSceneOrigin> startNode = std::make_shared<WafeFunctionCollapseSceneOrigin>();
-    // std::shared_ptr<MandelbrotSceneOrigin> startNode = std::make_shared<MandelbrotSceneOrigin>();
+    //std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
+    std::shared_ptr<WafeFunctionCollapseSceneOrigin> startNode = std::make_shared<WafeFunctionCollapseSceneOrigin>();
+    //std::shared_ptr<MandelbrotSceneOrigin> startNode = std::make_shared<MandelbrotSceneOrigin>();
     startNode->setName("Scene Origin");
     game->getEngineManager()->setScene(startNode);
 

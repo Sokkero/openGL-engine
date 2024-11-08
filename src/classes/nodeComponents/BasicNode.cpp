@@ -61,7 +61,11 @@ namespace Engine
         }
 
         node->start();
-        std::cout << "Object [" << node->getName() << "] initialised" << std::endl;
+
+        if(!node->getName().empty())
+        {
+            std::cout << "Object [" << node->getName() << "] initialised" << std::endl;
+        }
     }
 
     std::shared_ptr<BasicNode> BasicNode::detatchChild(const std::shared_ptr<BasicNode>& node)
