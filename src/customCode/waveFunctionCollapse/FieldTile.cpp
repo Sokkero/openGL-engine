@@ -11,7 +11,7 @@ FieldTile::FieldTile() : m_currentTile(TileTypeEnum::undetermined), m_tilePos(gl
     m_possibleTiles = GetAllTiles();
 }
 
-void FieldTile::updatePossibleTiles(const std::shared_ptr<FieldTile> (&field)[10][10], bool& updated)
+void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field, bool& updated)
 {
     const static std::vector<glm::ivec2> possibleOffsets = {
         glm::ivec2(1.f, 1.f),   glm::ivec2(0.f, 1.f),  glm::ivec2(-1.f, 1.f), glm::ivec2(-1.f, 0.f),
@@ -23,7 +23,7 @@ void FieldTile::updatePossibleTiles(const std::shared_ptr<FieldTile> (&field)[10
     {
         offset += m_tilePos;
 
-        if(offset.x < 0 || offset.x >= 10 || offset.y < 0 || offset.y >= 10)
+        if(offset.x < 0 || offset.x >= FIELD_SIZE.x || offset.y < 0 || offset.y >= FIELD_SIZE.y)
         {
             continue; // Out of bounds
         }
@@ -74,15 +74,14 @@ void FieldTile::updatePossibleTiles(const std::shared_ptr<FieldTile> (&field)[10
 }
 
 std::shared_ptr<Engine::GeometryComponent> FieldTile::setTile(
-        TileTypeEnum type, std::shared_ptr<Engine::RenderManager> renderManager)
+        TileTypeEnum type, const std::shared_ptr<Engine::RenderManager>& renderManager)
 {
-    const float startPosX = (TILE_SIZE.x * 9) / 2;
-    const float startPosY = (TILE_SIZE.y * 9) / 2;
+    static const float startPosX = (TILE_SIZE.x * ((float)FIELD_SIZE.x - 1.f)) / 2.f;
+    static const float startPosY = (TILE_SIZE.y * ((float)FIELD_SIZE.y - 1.f)) / 2.f;
 
     const float posX = (m_tilePos.x * TILE_SIZE.x) - startPosX;
     const float posY = (m_tilePos.y * TILE_SIZE.y) - startPosY;
 
-    // Tree models normals are broken, causing the model to look bad with translucency
     std::shared_ptr<Engine::GeometryComponent> planeObj = std::make_shared<Engine::GeometryComponent>();
     planeObj->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
     planeObj->setShader(std::make_shared<ColorShader>(renderManager));

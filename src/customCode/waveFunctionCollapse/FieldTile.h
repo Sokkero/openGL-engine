@@ -16,12 +16,12 @@ class FieldTile
         FieldTile();
         ~FieldTile() = default;
 
-        void updatePossibleTiles(const std::shared_ptr<FieldTile> (&field)[10][10], bool& updated);
+        void updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field, bool& updated);
 
         std::shared_ptr<Engine::GeometryComponent> setTile(
-                TileTypeEnum type, std::shared_ptr<Engine::RenderManager> renderManager);
+                TileTypeEnum type, const std::shared_ptr<Engine::RenderManager>& renderManager);
 
-        void setPosition(glm::ivec2 pos) { m_tilePos = pos; }
+        void setPosition(const glm::ivec2& pos) { m_tilePos = pos; }
 
         const static glm::vec2 TILE_SIZE;
 
@@ -29,7 +29,11 @@ class FieldTile
 
         std::vector<TileTypeEnum> getAllPossibleTiles() const { return m_possibleTiles; }
 
+        static void setFieldSize(const glm::ivec2& fieldSize) { FIELD_SIZE = fieldSize; }
+
     private:
+        static inline glm::ivec2 FIELD_SIZE = glm::ivec2();
+
         glm::ivec2 m_tilePos;
         TileTypeEnum m_currentTile;
         std::vector<TileTypeEnum> m_possibleTiles;

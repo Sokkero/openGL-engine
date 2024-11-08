@@ -7,12 +7,13 @@
 #include "../../classes/primitives/DebugManagerWindow.h"
 #include "../../resources/shader/ColorShader.h"
 
-WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin() : m_field()
+WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin(const glm::ivec2& fieldDimension) : m_field(fieldDimension.x, std::vector<std::shared_ptr<FieldTile>>(fieldDimension.y)), m_fieldDimensions(fieldDimension)
 {
-    // Initialize dield array
-    for(int x = 0; x < 10; ++x)
+    FieldTile::setFieldSize(fieldDimension);
+
+    for(int x = 0; x < fieldDimension.x; ++x)
     {
-        for(int y = 0; y < 10; ++y)
+        for(int y = 0; y < fieldDimension.y; ++y)
         {
             m_field[x][y] = std::make_shared<FieldTile>();
             m_field[x][y]->setPosition(glm::ivec2(x, y));
@@ -22,6 +23,8 @@ WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin() : m_field()
 
 void WafeFunctionCollapseSceneOrigin::start()
 {
+    // Works, nice!
+    // But performance is fucking dog shit
     setupScene();
     setupField();
 }
@@ -81,9 +84,9 @@ glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile()
 {
     std::vector<glm::ivec2> nextPossibleTiles;
     size_t nextPossibleTileAmount = GetAllTiles().size();
-    for(int x = 0; x < 10; ++x)
+    for(int x = 0; x < m_fieldDimensions.x; ++x)
     {
-        for(int y = 0; y < 10; ++y)
+        for(int y = 0; y < m_fieldDimensions.y; ++y)
         {
             const std::shared_ptr<FieldTile>& currentTile = m_field[x][y];
             if(currentTile->getCurrentTile() != TileTypeEnum::undetermined)
@@ -117,20 +120,21 @@ glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile()
 void WafeFunctionCollapseSceneOrigin::setupScene()
 {
     getEngineManager()->getRenderManager()->getAmbientLightUbo()->setIntensity(.7f);
+    getWindowManager()->setWindowDimensions(700, 700);
 
     // std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::DebugManagerWindow>();
     // addChild(debugWindow);
 
-    getWindowManager()->setWindowDimensions(1024, 768);
-
     std::shared_ptr<Engine::CameraComponent> camera = std::make_shared<Engine::CameraComponent>();
-    camera->setPosition(glm::vec3(0.f, 25.f, 0.f));
+    const float cameraDistance = m_fieldDimensions.x > m_fieldDimensions.y ? 2.5f * (float)m_fieldDimensions.x : 2.5f * (float)m_fieldDimensions.y;
+    camera->setZFar(1000.f);
+    camera->setPosition(glm::vec3(0.f, cameraDistance, 0.f));
     camera->setRotation(glm::vec3(-90.f, 0.f, 0.f));
     addChild(camera);
     getEngineManager()->setCamera(camera);
 }
 
-void WafeFunctionCollapseSceneOrigin::addPlane(glm::ivec2 pos, TileTypeEnum type)
+void WafeFunctionCollapseSceneOrigin::addPlane(const glm::ivec2& pos, const TileTypeEnum type)
 {
     const std::shared_ptr<Engine::GeometryComponent> plane = m_field[pos.x][pos.y]->setTile(type, getEngineManager()->getRenderManager());
     addChild(plane);

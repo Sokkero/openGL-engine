@@ -11,16 +11,17 @@ namespace Engine
 class WafeFunctionCollapseSceneOrigin : public Engine::BasicNode
 {
     public:
-        WafeFunctionCollapseSceneOrigin();
+        WafeFunctionCollapseSceneOrigin(const glm::ivec2& fieldDimension);
         ~WafeFunctionCollapseSceneOrigin() = default;
 
     private:
-        std::shared_ptr<FieldTile> m_field[10][10];
+        std::vector<std::vector<std::shared_ptr<FieldTile>>> m_field;
+        const glm::ivec2 m_fieldDimensions;
 
         void setupScene();
         void setupField();
 
-        void addPlane(glm::ivec2 pos, TileTypeEnum type);
+        void addPlane(const glm::ivec2& pos, TileTypeEnum type);
         void updateAllTiles();
         glm::ivec2 pickNextTile();
 

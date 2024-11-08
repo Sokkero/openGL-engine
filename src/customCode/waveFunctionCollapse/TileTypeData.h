@@ -27,6 +27,8 @@ inline static glm::vec3 EnumToColorValue(int tile)
             return glm::vec3(0.0f, 0.502f, 0.0f);
         case TileTypeEnum::undetermined:
             return glm::vec3(1.0f, 0.f, 0.f);
+        default:
+            assert(false);
     }
 }
 
@@ -96,6 +98,8 @@ inline static BasicTileDataStruct EnumToTileData(int tile)
     }
 }
 
+
+// Careful!! These could brake the algorithm if wrong
 inline static std::vector<std::pair<glm::ivec2, TileTypeEnum>> GetPredeterminedTiles()
 {
     return {
