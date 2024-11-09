@@ -6,19 +6,24 @@
 
 const glm::vec2 FieldTile::TILE_SIZE = glm::vec2(2.f);
 
-FieldTile::FieldTile() : m_currentTile(TileTypeEnum::undetermined), m_tilePos(glm::ivec2())
+FieldTile::FieldTile() : m_tilePlaced(false), m_tilePos(glm::ivec2())
 {
     m_possibleTiles = GetAllTiles();
 }
 
 void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field, bool& updated)
 {
+    if(m_possibleTiles.size() == 1)
+    {
+        return;
+    }
+
     const static std::vector<glm::ivec2> possibleOffsets = {
         glm::ivec2(1.f, 1.f),   glm::ivec2(0.f, 1.f),  glm::ivec2(-1.f, 1.f), glm::ivec2(-1.f, 0.f),
         glm::ivec2(-1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(1.f, -1.f), glm::ivec2(1.f, 0.f),
     };
 
-    std::vector<TileTypeEnum> possibleTiles = GetAllTiles();
+    std::vector<TileTypeEnum> possibleTiles = m_possibleTiles;
     for(glm::ivec2 offset : possibleOffsets)
     {
         offset += m_tilePos;
@@ -28,11 +33,7 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
             continue; // Out of bounds
         }
 
-        std::vector<TileTypeEnum> possibleTilesOfNeighborField = field[offset.x][offset.y]->getAllPossibleTiles();
-        if(possibleTilesOfNeighborField.empty())
-        {
-            possibleTilesOfNeighborField.push_back(field[offset.x][offset.y]->getCurrentTile());
-        }
+        const std::vector<TileTypeEnum>& possibleTilesOfNeighborField = field[offset.x][offset.y]->getAllPossibleTiles();
 
         std::vector<TileTypeEnum> tilesToRemove;
         for(const TileTypeEnum possibleTileType : possibleTiles)
@@ -58,6 +59,8 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
             {
                 tilesToRemove.push_back(possibleTileType);
             }
+
+            if(possibleTiles.size() - tilesToRemove.size() == 1) { break; }
         }
 
         possibleTiles
@@ -70,6 +73,8 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
                                }
                        ),
                        possibleTiles.end());
+
+        if(possibleTiles.size() == 1) { break; }
     }
 
     if(m_possibleTiles.size() != possibleTiles.size())
@@ -105,7 +110,8 @@ std::shared_ptr<Engine::GeometryComponent> FieldTile::setTile(
     planeObj->setTextureBuffer(renderManager->createBuffer(g_color_buffer_data));
 
     m_possibleTiles.clear();
-    m_currentTile = type;
+    m_possibleTiles.push_back(type);
+    m_tilePlaced = true;
 
     return planeObj;
 }

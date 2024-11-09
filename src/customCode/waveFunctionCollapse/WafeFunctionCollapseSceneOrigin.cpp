@@ -34,16 +34,30 @@ void WafeFunctionCollapseSceneOrigin::start()
 
     const double elapsedTime = glfwGetTime() - startTime;
 
-    const int hours = static_cast<int>(elapsedTime) / 3600;
-    const int minutes = (static_cast<int>(elapsedTime) % 3600) / 60;
-    const int seconds = static_cast<int>(elapsedTime) % 60;
-    const int milliseconds = static_cast<int>((elapsedTime - static_cast<int>(elapsedTime)) * 1000);
+    std::cout << "\nFunction took:" << std::endl;
+    printHumanReadable(elapsedTime);
 
-    std::cout << "Function took: "
-              << hours << "h "
-              << minutes << "m "
-              << seconds << "s "
-              << milliseconds << "ms" << std::endl;
+    std::cout << "\nupdateAllTiles():" << std::endl;
+    printHumanReadable(getAverage(m_updateTilesTimes), "Average: ");
+    printHumanReadable(getMin(m_updateTilesTimes), "Min: ");
+    printHumanReadable(getMax(m_updateTilesTimes), "Max: ");
+    printHumanReadable(getSum(m_updateTilesTimes), "Total: ");
+    std::cout << std::to_string(m_updateTilesTimes.size()) + "x called" << std::endl;
+
+    std::cout << "\nupdatePossibleTiles():" << std::endl;
+    printHumanReadable(getAverage(m_updatePerTileTimes), "Average: ");
+    printHumanReadable(getMin(m_updatePerTileTimes), "Min: ");
+    printHumanReadable(getMax(m_updatePerTileTimes), "Max: ");
+    printHumanReadable(getSum(m_updatePerTileTimes), "Total: ");
+    std::cout << std::to_string(m_updatePerTileTimes.size()) + "x called" << std::endl;
+
+    std::cout << "\npickNextTile():" << std::endl;
+    printHumanReadable(getSum(m_pickNextTileTimes), "Total: ");
+    std::cout << std::to_string(m_pickNextTileTimes.size()) + "x called" << std::endl;
+
+    std::cout << "\nplace new tile:" << std::endl;
+    printHumanReadable(getSum(m_placeNextTileTimes), "Total: ");
+    std::cout << std::to_string(m_placeNextTileTimes.size()) + "x called" << std::endl;
 }
 
 void WafeFunctionCollapseSceneOrigin::setupField()
@@ -55,29 +69,32 @@ void WafeFunctionCollapseSceneOrigin::setupField()
         addPlane(glm::ivec2(predeterminedTile.first.x, predeterminedTile.first.y), predeterminedTile.second);
     }
 
-    bool canContinue = true;
-    while(canContinue)
+    while(true)
     {
+        double startTime = glfwGetTime();
         updateAllTiles();
+        double elapsedTime = glfwGetTime() - startTime;
+        m_updateTilesTimes.push_back(elapsedTime);
 
+        startTime = glfwGetTime();
         const glm::ivec2 nextTilePos = pickNextTile();
+        elapsedTime = glfwGetTime() - startTime;
+        m_pickNextTileTimes.push_back(elapsedTime);
 
+        startTime = glfwGetTime();
         if(nextTilePos == glm::ivec2(-1.f, -1.f))
         {
-            canContinue = false;
-            continue;
+            break;
         }
 
         const std::vector<TileTypeEnum> possibleTiles =
                 m_field[nextTilePos.x][nextTilePos.y]->getAllPossibleTiles();
-        if(possibleTiles.empty())
-        {
-            addPlane(glm::ivec2(nextTilePos.x, nextTilePos.y), TileTypeEnum::undetermined);
-            return;
-        }
+        assert(!possibleTiles.empty());
 
         const TileTypeEnum tileChosen = possibleTiles.at(std::rand() % possibleTiles.size());
         addPlane(glm::ivec2(nextTilePos.x, nextTilePos.y), tileChosen);
+        elapsedTime = glfwGetTime() - startTime;
+        m_placeNextTileTimes.push_back(elapsedTime);
     }
 }
 
@@ -91,10 +108,10 @@ void WafeFunctionCollapseSceneOrigin::updateAllTiles()
         {
             for(const auto& tile : row)
             {
-                if(tile->getCurrentTile() == TileTypeEnum::undetermined)
-                {
-                    tile->updatePossibleTiles(m_field, hasUpdated);
-                }
+                double startTime = glfwGetTime();
+                tile->updatePossibleTiles(m_field, hasUpdated);
+                double elapsedTime = glfwGetTime() - startTime;
+                m_updatePerTileTimes.push_back(elapsedTime);
             }
         }
     }
@@ -109,13 +126,18 @@ glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile()
         for(int y = 0; y < m_fieldDimensions.y; ++y)
         {
             const std::shared_ptr<FieldTile>& currentTile = m_field[x][y];
-            if(currentTile->getCurrentTile() != TileTypeEnum::undetermined)
+            if(currentTile->getIsPlaced())
             {
                 continue; // Tile already taken
             }
 
             const size_t possibleTiles = currentTile->getAllPossibleTiles().size();
-            // assert(possibleTiles > 0);
+            assert(possibleTiles > 0);
+
+            if(possibleTiles == 1)
+            {
+                return glm::ivec2(x, y);
+            }
 
             if(possibleTiles == nextPossibleTileAmount)
             {

@@ -28,7 +28,7 @@ class FieldTile
 
         const static glm::vec2 TILE_SIZE;
 
-        TileTypeEnum getCurrentTile() const { return m_currentTile; }
+        const bool getIsPlaced() const { return m_tilePlaced; }
 
         std::vector<TileTypeEnum> getAllPossibleTiles() const { return m_possibleTiles; }
 
@@ -38,6 +38,6 @@ class FieldTile
         static inline glm::ivec2 FIELD_SIZE = glm::ivec2();
 
         glm::ivec2 m_tilePos;
-        TileTypeEnum m_currentTile;
+        bool m_tilePlaced;
         std::vector<TileTypeEnum> m_possibleTiles;
 };
