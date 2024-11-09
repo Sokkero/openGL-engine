@@ -27,8 +27,23 @@ void WafeFunctionCollapseSceneOrigin::start()
 {
     // Works, nice!
     // But performance is fucking dog shit
+    const double startTime = glfwGetTime();
+
     setupScene();
     setupField();
+
+    const double elapsedTime = glfwGetTime() - startTime;
+
+    const int hours = static_cast<int>(elapsedTime) / 3600;
+    const int minutes = (static_cast<int>(elapsedTime) % 3600) / 60;
+    const int seconds = static_cast<int>(elapsedTime) % 60;
+    const int milliseconds = static_cast<int>((elapsedTime - static_cast<int>(elapsedTime)) * 1000);
+
+    std::cout << "Function took: "
+              << hours << "h "
+              << minutes << "m "
+              << seconds << "s "
+              << milliseconds << "ms" << std::endl;
 }
 
 void WafeFunctionCollapseSceneOrigin::setupField()
