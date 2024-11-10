@@ -4,13 +4,22 @@
 #include <utility>
 #include <vector>
 
+inline static std::vector<glm::ivec2> GetNeighborOffsets() {
+    return {
+                glm::ivec2(1.f, 1.f),   glm::ivec2(0.f, 1.f),  glm::ivec2(-1.f, 1.f), glm::ivec2(-1.f, 0.f),
+                glm::ivec2(-1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(1.f, -1.f), glm::ivec2(1.f, 0.f),
+           };
+}
+
 enum TileTypeEnum
 {
     undetermined = 0,
     deepWater = 1,
     shallowWater = 2,
     beach = 3,
-    grass = 4
+    grass = 4,
+    hill = 5,
+    mountain = 6
 };
 
 inline static glm::vec3 EnumToColorValue(int tile)
@@ -25,23 +34,47 @@ inline static glm::vec3 EnumToColorValue(int tile)
             return glm::vec3(1.0f, 1.0f, 0.0f);
         case TileTypeEnum::grass:
             return glm::vec3(0.0f, 0.502f, 0.0f);
-        case TileTypeEnum::undetermined:
-            return glm::vec3(1.0f, 0.f, 0.f);
+        case TileTypeEnum::hill:
+            return glm::vec3(0.5f, 0.2f, 0.f);
+        case TileTypeEnum::mountain:
+            return glm::vec3(0.6f, 0.f, 0.1f);
         default:
             assert(false);
     }
 }
 
-inline static std::vector<TileTypeEnum> GetAllTiles() { return { deepWater, shallowWater, beach, grass }; }
+inline static std::vector<TileTypeEnum> GetAllTiles() { return { deepWater, shallowWater, beach, grass, hill, mountain }; }
 
 struct BasicTileDataStruct
 {
         const std::vector<TileTypeEnum> allowedNeighbors;
         const glm::vec3 tileColor;
+        const int weight;
 
-        BasicTileDataStruct(std::vector<TileTypeEnum> allowedTiles, glm::vec3 tileColor)
+        BasicTileDataStruct(std::vector<TileTypeEnum> allowedTiles, glm::vec3 tileColor, int weight)
             : allowedNeighbors(std::move(allowedTiles))
-            , tileColor(tileColor) {};
+            , tileColor(tileColor)
+            , weight(weight){};
+};
+
+struct HillTileDataStruct : BasicTileDataStruct
+{
+        HillTileDataStruct()
+            : BasicTileDataStruct(
+                      { TileTypeEnum::grass, TileTypeEnum::hill, TileTypeEnum::mountain },
+                      EnumToColorValue(TileTypeEnum::beach),
+                      2
+              ) {};
+};
+
+struct MountainTileDataStruct : BasicTileDataStruct
+{
+        MountainTileDataStruct()
+            : BasicTileDataStruct(
+                      { TileTypeEnum::mountain, TileTypeEnum::hill },
+                      EnumToColorValue(TileTypeEnum::mountain),
+                      1
+              ) {};
 };
 
 struct BeachTileDataStruct : BasicTileDataStruct
@@ -49,7 +82,8 @@ struct BeachTileDataStruct : BasicTileDataStruct
         BeachTileDataStruct()
             : BasicTileDataStruct(
                       { TileTypeEnum::beach, TileTypeEnum::grass, TileTypeEnum::shallowWater },
-                      EnumToColorValue(TileTypeEnum::beach)
+                      EnumToColorValue(TileTypeEnum::beach),
+                      2
               ) {};
 };
 
@@ -58,7 +92,8 @@ struct ShallowWaterTileDataStruct : BasicTileDataStruct
         ShallowWaterTileDataStruct()
             : BasicTileDataStruct(
                       { TileTypeEnum::beach, TileTypeEnum::deepWater, TileTypeEnum::shallowWater },
-                      EnumToColorValue(TileTypeEnum::shallowWater)
+                      EnumToColorValue(TileTypeEnum::shallowWater),
+                      2
               ) {};
 };
 
@@ -67,24 +102,16 @@ struct DeepWaterTileDataStruct : BasicTileDataStruct
         DeepWaterTileDataStruct()
             : BasicTileDataStruct(
                       { TileTypeEnum::shallowWater, TileTypeEnum::deepWater },
-                      EnumToColorValue(TileTypeEnum::deepWater)
+                      EnumToColorValue(TileTypeEnum::deepWater),
+                      1
               ) {};
 };
 
 struct GrasTileDataStruct : BasicTileDataStruct
 {
         GrasTileDataStruct()
-            : BasicTileDataStruct({ TileTypeEnum::beach, TileTypeEnum::grass }, EnumToColorValue(TileTypeEnum::grass)) {
+            : BasicTileDataStruct({ TileTypeEnum::beach, TileTypeEnum::grass, TileTypeEnum::hill }, EnumToColorValue(TileTypeEnum::grass), 20) {
             };
-};
-
-struct UndeterminedTileDataStruct : BasicTileDataStruct
-{
-        UndeterminedTileDataStruct()
-            : BasicTileDataStruct(
-                      { TileTypeEnum::beach, TileTypeEnum::grass, TileTypeEnum::deepWater, TileTypeEnum::shallowWater },
-                      EnumToColorValue(TileTypeEnum::undetermined)
-              ) {};
 };
 
 inline static BasicTileDataStruct EnumToTileData(int tile)
@@ -99,33 +126,26 @@ inline static BasicTileDataStruct EnumToTileData(int tile)
             return BeachTileDataStruct();
         case TileTypeEnum::grass:
             return GrasTileDataStruct();
-        case TileTypeEnum::undetermined:
-            return UndeterminedTileDataStruct();
+        case TileTypeEnum::hill:
+            return HillTileDataStruct();
+        case TileTypeEnum::mountain:
+            return MountainTileDataStruct();
+        default:
+            assert(false);
     }
 }
 
-// Careful!! These could brake the algorithm if wrong
-inline static std::vector<std::pair<glm::ivec2, TileTypeEnum>> GetPredeterminedTiles()
+inline static void AddTileWeighting(std::vector<TileTypeEnum>& tiles)
 {
-    return {
-        { glm::ivec2(6, 6), TileTypeEnum::grass },     { glm::ivec2(4, 4), TileTypeEnum::grass },
-        { glm::ivec2(0, 0), TileTypeEnum::deepWater }, { glm::ivec2(1, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(2, 0), TileTypeEnum::deepWater }, { glm::ivec2(3, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(4, 0), TileTypeEnum::deepWater }, { glm::ivec2(5, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(6, 0), TileTypeEnum::deepWater }, { glm::ivec2(7, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(8, 0), TileTypeEnum::deepWater }, { glm::ivec2(9, 0), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 1), TileTypeEnum::deepWater }, { glm::ivec2(9, 2), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 3), TileTypeEnum::deepWater }, { glm::ivec2(9, 4), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 5), TileTypeEnum::deepWater }, { glm::ivec2(9, 6), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 7), TileTypeEnum::deepWater }, { glm::ivec2(9, 8), TileTypeEnum::deepWater },
-        { glm::ivec2(9, 9), TileTypeEnum::deepWater }, { glm::ivec2(8, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(7, 9), TileTypeEnum::deepWater }, { glm::ivec2(6, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(5, 9), TileTypeEnum::deepWater }, { glm::ivec2(4, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(3, 9), TileTypeEnum::deepWater }, { glm::ivec2(2, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(1, 9), TileTypeEnum::deepWater }, { glm::ivec2(0, 9), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 8), TileTypeEnum::deepWater }, { glm::ivec2(0, 7), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 6), TileTypeEnum::deepWater }, { glm::ivec2(0, 5), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 4), TileTypeEnum::deepWater }, { glm::ivec2(0, 3), TileTypeEnum::deepWater },
-        { glm::ivec2(0, 2), TileTypeEnum::deepWater }, { glm::ivec2(0, 1), TileTypeEnum::deepWater },
-    };
+    std::vector<TileTypeEnum> tilesToAdd;
+    for(const auto& tile : tiles) {
+        const BasicTileDataStruct data = EnumToTileData(tile);
+        for(int i = 1; i < data.weight; ++i) {
+            tilesToAdd.push_back(tile);
+        }
+    }
+
+    for(const auto& tile : tilesToAdd) {
+        tiles.push_back(tile);
+    }
 }

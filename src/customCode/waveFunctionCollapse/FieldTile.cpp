@@ -11,20 +11,30 @@ FieldTile::FieldTile() : m_tilePlaced(false), m_tilePos(glm::ivec2())
     m_possibleTiles = GetAllTiles();
 }
 
-void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field, bool& updated)
+void FieldTile::updateNeighbors(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field)
+{
+    for(glm::ivec2 offset : GetNeighborOffsets())
+    {
+        offset += m_tilePos;
+
+        if(offset.x < 0 || offset.x >= FIELD_SIZE.x || offset.y < 0 || offset.y >= FIELD_SIZE.y)
+        {
+            continue; // Out of bounds
+        }
+
+        field[offset.x][offset.y]->updatePossibleTiles(field);
+    }
+}
+
+void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field)
 {
     if(m_possibleTiles.size() == 1)
     {
         return;
     }
 
-    const static std::vector<glm::ivec2> possibleOffsets = {
-        glm::ivec2(1.f, 1.f),   glm::ivec2(0.f, 1.f),  glm::ivec2(-1.f, 1.f), glm::ivec2(-1.f, 0.f),
-        glm::ivec2(-1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(1.f, -1.f), glm::ivec2(1.f, 0.f),
-    };
-
     std::vector<TileTypeEnum> possibleTiles = m_possibleTiles;
-    for(glm::ivec2 offset : possibleOffsets)
+    for(glm::ivec2 offset : GetNeighborOffsets())
     {
         offset += m_tilePos;
 
@@ -80,13 +90,14 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
     if(m_possibleTiles.size() != possibleTiles.size())
     {
         m_possibleTiles = possibleTiles;
-        updated = true;
+        updateNeighbors(field);
     }
 }
 
 std::shared_ptr<Engine::GeometryComponent> FieldTile::setTile(
         TileTypeEnum type,
-        const std::shared_ptr<Engine::RenderManager>& renderManager
+        const std::shared_ptr<Engine::RenderManager>& renderManager,
+        const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field
 )
 {
     static const float startPosX = (TILE_SIZE.x * ((float)FIELD_SIZE.x - 1.f)) / 2.f;
@@ -112,6 +123,8 @@ std::shared_ptr<Engine::GeometryComponent> FieldTile::setTile(
     m_possibleTiles.clear();
     m_possibleTiles.push_back(type);
     m_tilePlaced = true;
+
+    updateNeighbors(field);
 
     return planeObj;
 }

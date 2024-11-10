@@ -17,12 +17,15 @@ class FieldTile
         FieldTile();
         ~FieldTile() = default;
 
-        void updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field, bool& updated);
+        void updatePossibleTiles(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field);
 
         std::shared_ptr<Engine::GeometryComponent> setTile(
                 TileTypeEnum type,
-                const std::shared_ptr<Engine::RenderManager>& renderManager
+                const std::shared_ptr<Engine::RenderManager>& renderManager,
+                const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field
         );
+
+        void updateNeighbors(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field);
 
         void setPosition(const glm::ivec2& pos) { m_tilePos = pos; }
 
