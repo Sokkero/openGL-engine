@@ -4,11 +4,12 @@
 #include <utility>
 #include <vector>
 
-inline static std::vector<glm::ivec2> GetNeighborOffsets() {
+inline static std::vector<glm::ivec2> GetNeighborOffsets()
+{
     return {
-                glm::ivec2(1.f, 1.f),   glm::ivec2(0.f, 1.f),  glm::ivec2(-1.f, 1.f), glm::ivec2(-1.f, 0.f),
-                glm::ivec2(-1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(1.f, -1.f), glm::ivec2(1.f, 0.f),
-           };
+        glm::ivec2(1.f, 1.f),   glm::ivec2(0.f, 1.f),  glm::ivec2(-1.f, 1.f), glm::ivec2(-1.f, 0.f),
+        glm::ivec2(-1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(1.f, -1.f), glm::ivec2(1.f, 0.f),
+    };
 }
 
 enum TileTypeEnum
@@ -43,7 +44,10 @@ inline static glm::vec3 EnumToColorValue(int tile)
     }
 }
 
-inline static std::vector<TileTypeEnum> GetAllTiles() { return { deepWater, shallowWater, beach, grass, hill, mountain }; }
+inline static std::vector<TileTypeEnum> GetAllTiles()
+{
+    return { deepWater, shallowWater, beach, grass, hill, mountain };
+}
 
 struct BasicTileDataStruct
 {
@@ -54,7 +58,7 @@ struct BasicTileDataStruct
         BasicTileDataStruct(std::vector<TileTypeEnum> allowedTiles, glm::vec3 tileColor, int weight)
             : allowedNeighbors(std::move(allowedTiles))
             , tileColor(tileColor)
-            , weight(weight){};
+            , weight(weight) {};
 };
 
 struct HillTileDataStruct : BasicTileDataStruct
@@ -110,8 +114,11 @@ struct DeepWaterTileDataStruct : BasicTileDataStruct
 struct GrasTileDataStruct : BasicTileDataStruct
 {
         GrasTileDataStruct()
-            : BasicTileDataStruct({ TileTypeEnum::beach, TileTypeEnum::grass, TileTypeEnum::hill }, EnumToColorValue(TileTypeEnum::grass), 20) {
-            };
+            : BasicTileDataStruct(
+                      { TileTypeEnum::beach, TileTypeEnum::grass, TileTypeEnum::hill },
+                      EnumToColorValue(TileTypeEnum::grass),
+                      20
+              ) {};
 };
 
 inline static BasicTileDataStruct EnumToTileData(int tile)
@@ -138,14 +145,17 @@ inline static BasicTileDataStruct EnumToTileData(int tile)
 inline static void AddTileWeighting(std::vector<TileTypeEnum>& tiles)
 {
     std::vector<TileTypeEnum> tilesToAdd;
-    for(const auto& tile : tiles) {
+    for(const auto& tile : tiles)
+    {
         const BasicTileDataStruct data = EnumToTileData(tile);
-        for(int i = 1; i < data.weight; ++i) {
+        for(int i = 1; i < data.weight; ++i)
+        {
             tilesToAdd.push_back(tile);
         }
     }
 
-    for(const auto& tile : tilesToAdd) {
+    for(const auto& tile : tilesToAdd)
+    {
         tiles.push_back(tile);
     }
 }

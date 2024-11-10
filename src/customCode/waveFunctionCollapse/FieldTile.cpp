@@ -6,10 +6,7 @@
 
 const glm::vec2 FieldTile::TILE_SIZE = glm::vec2(2.f);
 
-FieldTile::FieldTile() : m_tilePlaced(false), m_tilePos(glm::ivec2())
-{
-    m_possibleTiles = GetAllTiles();
-}
+FieldTile::FieldTile() : m_tilePlaced(false), m_tilePos(glm::ivec2()) { m_possibleTiles = GetAllTiles(); }
 
 void FieldTile::updateNeighbors(const std::vector<std::vector<std::shared_ptr<FieldTile>>>& field)
 {
@@ -43,7 +40,8 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
             continue; // Out of bounds
         }
 
-        const std::vector<TileTypeEnum>& possibleTilesOfNeighborField = field[offset.x][offset.y]->getAllPossibleTiles();
+        const std::vector<TileTypeEnum>& possibleTilesOfNeighborField =
+                field[offset.x][offset.y]->getAllPossibleTiles();
 
         std::vector<TileTypeEnum> tilesToRemove;
         for(const TileTypeEnum possibleTileType : possibleTiles)
@@ -70,7 +68,10 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
                 tilesToRemove.push_back(possibleTileType);
             }
 
-            if(possibleTiles.size() - tilesToRemove.size() == 1) { break; }
+            if(possibleTiles.size() - tilesToRemove.size() == 1)
+            {
+                break;
+            }
         }
 
         possibleTiles
@@ -84,7 +85,10 @@ void FieldTile::updatePossibleTiles(const std::vector<std::vector<std::shared_pt
                        ),
                        possibleTiles.end());
 
-        if(possibleTiles.size() == 1) { break; }
+        if(possibleTiles.size() == 1)
+        {
+            break;
+        }
     }
 
     if(m_possibleTiles.size() != possibleTiles.size())

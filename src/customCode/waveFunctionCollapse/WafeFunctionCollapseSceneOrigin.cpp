@@ -4,9 +4,9 @@
 #include "../../classes/engine/EngineManager.h"
 #include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
+#include "../../classes/helper/DebugUtils.h"
 #include "../../classes/primitives/DebugManagerWindow.h"
 #include "../../resources/shader/ColorShader.h"
-#include "../../classes/helper/DebugUtils.h"
 
 WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin(const glm::ivec2& fieldDimension)
     : m_field(fieldDimension.x, std::vector<std::shared_ptr<FieldTile>>(fieldDimension.y))
@@ -44,7 +44,8 @@ void WafeFunctionCollapseSceneOrigin::addDefaultTiles(const bool waterOnEdges, c
     const TileTypeEnum waterTile = TileTypeEnum::deepWater;
     const TileTypeEnum landTile = TileTypeEnum::mountain;
 
-    if(waterOnEdges) {
+    if(waterOnEdges)
+    {
         for(int x = 0; x < m_fieldDimensions.y; ++x)
         {
             addPlane(glm::ivec2(x, 0), waterTile);
@@ -58,8 +59,10 @@ void WafeFunctionCollapseSceneOrigin::addDefaultTiles(const bool waterOnEdges, c
         }
     }
 
-    if(landInMiddle) {
-        for(int i = 0; i < landTilesToAdd; ++i) {
+    if(landInMiddle)
+    {
+        for(int i = 0; i < landTilesToAdd; ++i)
+        {
             const glm::ivec2 tilePos = getTileForTileType(landTile);
             if(tilePos == glm::ivec2(-1.f, -1.f))
             {
@@ -87,8 +90,7 @@ void WafeFunctionCollapseSceneOrigin::setupField()
             break;
         }
 
-        std::vector<TileTypeEnum> possibleTiles =
-                m_field[nextTilePos.x][nextTilePos.y]->getAllPossibleTiles();
+        std::vector<TileTypeEnum> possibleTiles = m_field[nextTilePos.x][nextTilePos.y]->getAllPossibleTiles();
         assert(!possibleTiles.empty());
 
         AddTileWeighting(possibleTiles);
@@ -97,7 +99,7 @@ void WafeFunctionCollapseSceneOrigin::setupField()
     }
 }
 
-glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile()
+const glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile() const
 {
     std::vector<glm::ivec2> nextPossibleTiles;
     size_t nextPossibleTileAmount = GetAllTiles().size();
@@ -140,7 +142,7 @@ glm::ivec2 WafeFunctionCollapseSceneOrigin::pickNextTile()
     return nextPossibleTiles.at(std::rand() % nextPossibleTiles.size());
 }
 
-glm::ivec2 WafeFunctionCollapseSceneOrigin::getTileForTileType(TileTypeEnum tile)
+const glm::ivec2 WafeFunctionCollapseSceneOrigin::getTileForTileType(TileTypeEnum tile) const
 {
     std::vector<glm::ivec2> possibleTiles;
     for(int x = 0; x < m_fieldDimensions.x; ++x)

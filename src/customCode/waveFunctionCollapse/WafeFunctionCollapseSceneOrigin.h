@@ -22,10 +22,14 @@ class WafeFunctionCollapseSceneOrigin : public Engine::BasicNode
         void setupField();
 
         void addPlane(const glm::ivec2& pos, TileTypeEnum type);
-        glm::ivec2 pickNextTile();
-        glm::ivec2 getTileForTileType(TileTypeEnum tile);
+        const glm::ivec2 pickNextTile() const;
+        const glm::ivec2 getTileForTileType(TileTypeEnum tile) const;
 
-        void addDefaultTiles(const bool waterOnEdges = true, const bool landInMiddle = true, const uint8_t landTilesToAdd = 2);
+        void addDefaultTiles(
+                const bool waterOnEdges = true,
+                const bool landInMiddle = true,
+                const uint8_t landTilesToAdd = 2
+        );
 
         void start() override;
         void update() override {};
