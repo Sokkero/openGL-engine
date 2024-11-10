@@ -25,7 +25,7 @@ namespace Engine
         public:
             BasicNode();
 
-            virtual ~BasicNode() { std::cout << "Object [" << getName() << "] deconstructed" << std::endl; };
+            virtual ~BasicNode();
 
             /**
              * @brief Called right before the node gets added to the scene.

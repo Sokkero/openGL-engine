@@ -15,6 +15,14 @@ namespace Engine
 
     BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()) { m_nodeId = getNewUniqueId(); }
 
+    BasicNode::~BasicNode()
+    {
+        if(!getName().empty())
+        {
+            std::cout << "Object [" << getName() << "] deconstructed" << std::endl;
+        }
+    }
+
     void BasicNode::cleanupNode()
     {
         setParent(nullptr);
