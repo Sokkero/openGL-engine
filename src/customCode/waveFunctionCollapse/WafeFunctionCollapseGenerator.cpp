@@ -6,8 +6,7 @@
 #include <iostream>
 
 WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed)
-    : m_gridDimensions(dimensions)
-    , m_seed(0)
+    : m_seed(0)
     , m_generated(false)
     , m_initialized(false)
     , m_grid(dimensions.x, std::vector<std::shared_ptr<Field>>(dimensions.y))
@@ -22,21 +21,28 @@ WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& d
     }
 
     std::srand(m_seed);
-    Field::setGridSize(m_gridDimensions);
+    GRID_SIZE = dimensions;
 }
 
 void WafeFunctionCollapseGenerator::initializeGrid()
 {
     if(m_initialized)
     {
+        std::cout << "Failed to initialize grid: Grid already initialized!" << std::endl;
         return;
     }
 
-    for(int x = 0; x < m_gridDimensions.x; ++x)
+    if(m_allFieldTypes.empty())
     {
-        for(int y = 0; y < m_gridDimensions.y; ++y)
+        std::cout << "Failed to initialize grid: No field types added!" << std::endl;
+        return;
+    }
+
+    for(int x = 0; x < GRID_SIZE.x; ++x)
+    {
+        for(int y = 0; y < GRID_SIZE.y; ++y)
         {
-            m_grid[x][y] = std::make_shared<Field>(m_fieldTypes);
+            m_grid[x][y] = std::make_shared<Field>(m_allFieldTypes);
             m_grid[x][y]->setPosition(glm::ivec2(x, y));
         }
     }
@@ -48,9 +54,9 @@ void WafeFunctionCollapseGenerator::addFieldTypes(const std::vector<BasicFieldDa
 {
     for(const BasicFieldDataStruct& type : fieldTypes)
     {
-        if(std::find(m_fieldTypes.begin(), m_fieldTypes.end(), type) == m_fieldTypes.end())
+        if(std::find(m_allFieldTypes.begin(), m_allFieldTypes.end(), type) == m_allFieldTypes.end())
         {
-            m_fieldTypes.push_back(type);
+            m_allFieldTypes.push_back(type);
         }
     }
 }
@@ -59,6 +65,13 @@ void WafeFunctionCollapseGenerator::generateGrid()
 {
     if(m_generated)
     {
+        std::cout << "Failed to generate grid: Grid already generated!" << std::endl;
+        return;
+    }
+
+    if(!m_initialized)
+    {
+        std::cout << "Failed to generate grid: Grid not yet initialized!" << std::endl;
         return;
     }
 
@@ -75,12 +88,30 @@ void WafeFunctionCollapseGenerator::generateGrid()
                 m_grid[nextTilePos.x][nextTilePos.y]->getAllPossibleFieldTypes();
         assert(!possibleTiles.empty());
 
-        // AddFieldWeighting(possibleTiles);
+        //AddFieldWeighting(possibleTiles);
         const BasicFieldDataStruct tileChosen = possibleTiles.at(std::rand() % possibleTiles.size());
         setField(nextTilePos, tileChosen);
     }
 
     m_generated = true;
+}
+
+void WafeFunctionCollapseGenerator::setField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType)
+{
+    if(m_generated)
+    {
+        std::cout << "Failed to set field: Grid already generated!" << std::endl;
+        return;
+    }
+
+    if(!m_initialized)
+    {
+        std::cout << "Failed to set field: Grid not yet initialized!" << std::endl;
+        return;
+    }
+
+    m_grid[pos.x][pos.y]->setField(tileType, m_grid);
+    setFieldCallback(pos, tileType);
 }
 
 bool WafeFunctionCollapseGenerator::presetField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType)
@@ -112,10 +143,10 @@ bool WafeFunctionCollapseGenerator::presetField(const glm::ivec2& pos, const Bas
 const glm::ivec2 WafeFunctionCollapseGenerator::pickNextField() const
 {
     std::vector<glm::ivec2> nextPossibleTiles;
-    size_t nextPossibleTileAmount = m_fieldTypes.size();
-    for(int x = 0; x < m_gridDimensions.x; ++x)
+    size_t nextPossibleTileAmount = m_allFieldTypes.size();
+    for(int x = 0; x < GRID_SIZE.x; ++x)
     {
-        for(int y = 0; y < m_gridDimensions.y; ++y)
+        for(int y = 0; y < GRID_SIZE.y; ++y)
         {
             const std::shared_ptr<Field>& currentTile = m_grid[x][y];
             if(currentTile->getIsFieldSet())
@@ -154,15 +185,21 @@ const glm::ivec2 WafeFunctionCollapseGenerator::pickNextField() const
 
 const glm::ivec2 WafeFunctionCollapseGenerator::getFieldForFieldType(const BasicFieldDataStruct& tileType) const
 {
+    if(!m_initialized)
+    {
+        std::cout << "Failed to get field for type: Grid not yet initialized!" << std::endl;
+        return glm::ivec2(-1.f, -1.f);
+    }
+
     if(m_generated)
     {
         return glm::ivec2(-1.f, -1.f);
     }
 
     std::vector<glm::ivec2> possibleTiles;
-    for(int x = 0; x < m_gridDimensions.x; ++x)
+    for(int x = 0; x < GRID_SIZE.x; ++x)
     {
-        for(int y = 0; y < m_gridDimensions.y; ++y)
+        for(int y = 0; y < GRID_SIZE.y; ++y)
         {
             const std::shared_ptr<Field>& currentTile = m_grid[x][y];
             if(currentTile->getIsFieldSet())

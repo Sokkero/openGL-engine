@@ -2,6 +2,7 @@
 
 #include "FieldTypeUtils.h"
 
+#include <glm/vec2.hpp>
 #include <map>
 
 class Field;
@@ -19,15 +20,18 @@ class WafeFunctionCollapseGenerator
 
         void addFieldTypes(const std::vector<BasicFieldDataStruct>& fieldTypes);
 
-    private:
-        virtual void setField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType) = 0;
+        static inline glm::ivec2 GRID_SIZE = glm::ivec2(0);
 
-        const glm::ivec2 pickNextField() const;
+    protected:
+        virtual void setField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType);
+        virtual void setFieldCallback(const glm::ivec2& pos, const BasicFieldDataStruct& tileType) = 0;
 
         long m_seed;
         std::vector<std::vector<std::shared_ptr<Field>>> m_grid;
-        const glm::ivec2 m_gridDimensions;
-        std::vector<BasicFieldDataStruct> m_fieldTypes;
+        std::vector<BasicFieldDataStruct> m_allFieldTypes;
         bool m_generated;
         bool m_initialized;
+
+    private:
+        const glm::ivec2 pickNextField() const;
 };

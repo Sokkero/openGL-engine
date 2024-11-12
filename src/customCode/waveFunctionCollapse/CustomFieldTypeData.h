@@ -33,36 +33,20 @@ inline static glm::vec3 EnumToColorValue(int field)
     }
 }
 
-struct HillFieldDataStruct : BasicFieldDataStruct
+struct DeepWaterFieldDataStruct : BasicFieldDataStruct
 {
-        HillFieldDataStruct()
+        DeepWaterFieldDataStruct()
             : BasicFieldDataStruct(
-                      { FieldTypeEnum::grass, FieldTypeEnum::hill, FieldTypeEnum::mountain },
-                      EnumToColorValue(FieldTypeEnum::beach),
-                      2,
-                      FieldTypeEnum::hill
-              ) {};
-};
-
-struct MountainFieldDataStruct : BasicFieldDataStruct
-{
-        MountainFieldDataStruct()
-            : BasicFieldDataStruct(
-                      { FieldTypeEnum::mountain, FieldTypeEnum::hill },
-                      EnumToColorValue(FieldTypeEnum::mountain),
+                      { FieldTypeEnum::shallowWater, FieldTypeEnum::deepWater },
+                      EnumToColorValue(FieldTypeEnum::deepWater),
                       1,
-                      FieldTypeEnum::mountain
-              ) {};
-};
-
-struct BeachFieldDataStruct : BasicFieldDataStruct
-{
-        BeachFieldDataStruct()
-            : BasicFieldDataStruct(
-                      { FieldTypeEnum::beach, FieldTypeEnum::grass, FieldTypeEnum::shallowWater },
-                      EnumToColorValue(FieldTypeEnum::beach),
-                      2,
-                      FieldTypeEnum::beach
+                      FieldTypeEnum::deepWater,
+                      {[&](const glm::ivec2& pos, const grid2d& grid) -> bool
+                        {
+                            std::cout << "Lambda function for key 1" << std::endl;
+                            return false;
+                        }
+                      }
               ) {};
 };
 
@@ -73,18 +57,30 @@ struct ShallowWaterFieldDataStruct : BasicFieldDataStruct
                       { FieldTypeEnum::beach, FieldTypeEnum::deepWater, FieldTypeEnum::shallowWater },
                       EnumToColorValue(FieldTypeEnum::shallowWater),
                       2,
-                      FieldTypeEnum::shallowWater
+                      FieldTypeEnum::shallowWater,
+                      {[&](const glm::ivec2& pos, const grid2d& grid) -> bool
+                        {
+                            std::cout << "Lambda function for key 1" << std::endl;
+                            return false;
+                        }
+                      }
               ) {};
 };
 
-struct DeepWaterFieldDataStruct : BasicFieldDataStruct
+struct BeachFieldDataStruct : BasicFieldDataStruct
 {
-        DeepWaterFieldDataStruct()
+        BeachFieldDataStruct()
             : BasicFieldDataStruct(
-                      { FieldTypeEnum::shallowWater, FieldTypeEnum::deepWater },
-                      EnumToColorValue(FieldTypeEnum::deepWater),
-                      1,
-                      FieldTypeEnum::deepWater
+                      { FieldTypeEnum::beach, FieldTypeEnum::grass, FieldTypeEnum::shallowWater },
+                      EnumToColorValue(FieldTypeEnum::beach),
+                      3,
+                      FieldTypeEnum::beach,
+                      {[&](const glm::ivec2& pos, const grid2d& grid) -> bool
+                        {
+                            std::cout << "Lambda function for key 1" << std::endl;
+                            return false;
+                        }
+                      }
               ) {};
 };
 
@@ -94,8 +90,53 @@ struct GrasFieldDataStruct : BasicFieldDataStruct
             : BasicFieldDataStruct(
                       { FieldTypeEnum::beach, FieldTypeEnum::grass, FieldTypeEnum::hill },
                       EnumToColorValue(FieldTypeEnum::grass),
-                      20,
-                      FieldTypeEnum::grass
+                      5,
+                      FieldTypeEnum::grass,
+                      {[&](const glm::ivec2& pos, const grid2d& grid) -> bool
+                        {
+                            std::cout << "Lambda function for key 1" << std::endl;
+                            return false;
+                        }
+                      }
+              ) {};
+};
+
+struct HillFieldDataStruct : BasicFieldDataStruct
+{
+        HillFieldDataStruct()
+            : BasicFieldDataStruct(
+                      { FieldTypeEnum::grass, FieldTypeEnum::hill, FieldTypeEnum::mountain },
+                      EnumToColorValue(FieldTypeEnum::beach),
+                      2,
+                      FieldTypeEnum::hill,
+                      {[&](const glm::ivec2& pos, const grid2d& grid) -> bool
+                        {
+                            std::cout << "Lambda function for key 1" << std::endl;
+                            return false;
+                        }
+                      }
+              ) {};
+};
+
+struct MountainFieldDataStruct : BasicFieldDataStruct
+{
+        MountainFieldDataStruct()
+            : BasicFieldDataStruct(
+                      { FieldTypeEnum::mountain, FieldTypeEnum::hill },
+                      EnumToColorValue(FieldTypeEnum::mountain),
+                      1,
+                      FieldTypeEnum::mountain,
+                      {[&](const glm::ivec2& pos, const grid2d& grid) -> bool
+                        {
+                            std::cout << "Lambda function for key 1" << std::endl;
+                            return true;
+                        },
+                        [&](const glm::ivec2& pos, const grid2d& grid) -> bool
+                        {
+                            std::cout << "Lambda function for key 1" << std::endl;
+                            return true;
+                        }
+                      }
               ) {};
 };
 
