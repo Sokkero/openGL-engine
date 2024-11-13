@@ -19,27 +19,21 @@ using ruleFunction = std::function<bool(const glm::ivec2& pos, const grid2d& gri
 
 struct BasicFieldDataStruct
 {
-        std::vector<int> allowedNeighborTileTypeIds;
-        glm::vec3 fieldColor;
-        int weight;
-        int tileTypeId;
+        int uniqueTileTypeId;
         std::vector<ruleFunction> placementRules;
+        int weight;
 
-        BasicFieldDataStruct(
-                const std::vector<int>& allowedfields,
-                const glm::vec3& fieldColor,
-                const int weight,
-                const int tileTypeId,
-                std::vector<ruleFunction> placementRules
-        )
-            : allowedNeighborTileTypeIds(allowedfields)
-            , fieldColor(fieldColor)
-            , weight(weight)
-            , tileTypeId(tileTypeId)
-            , placementRules(placementRules)
-        {};
+        /**
+         * @param uniqueTileTypeId The unique id of the tile
+         * @param weight The wighting youd like to add to the tile (changes probability of picking this tile)
+         * @param placementRules Vector of rules that have to pass in order to place this tile. All rules have to pass.
+         */
+        BasicFieldDataStruct(const int uniqueTileTypeId, const int weight, const std::vector<ruleFunction>& placementRules)
+            : weight(weight)
+            , uniqueTileTypeId(uniqueTileTypeId)
+            , placementRules(placementRules) {};
 
-        static bool checkRulesForPosition(const glm::ivec2& pos, const grid2d& grid, BasicFieldDataStruct field)
+        static bool checkRulesForPosition(const glm::ivec2& pos, const grid2d& grid, const BasicFieldDataStruct& field)
         {
             for(const ruleFunction& rule : field.placementRules)
             {
@@ -53,8 +47,7 @@ struct BasicFieldDataStruct
 
         bool operator==(const BasicFieldDataStruct& other) const
         {
-            return allowedNeighborTileTypeIds == other.allowedNeighborTileTypeIds &&
-                    tileTypeId == other.tileTypeId;
+            return uniqueTileTypeId == other.uniqueTileTypeId;
         }
 };
 

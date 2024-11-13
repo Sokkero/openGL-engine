@@ -88,7 +88,7 @@ void WafeFunctionCollapseGenerator::generateGrid()
                 m_grid[nextTilePos.x][nextTilePos.y]->getAllPossibleFieldTypes();
         assert(!possibleTiles.empty());
 
-        //AddFieldWeighting(possibleTiles);
+        // AddFieldWeighting(possibleTiles);
         const BasicFieldDataStruct tileChosen = possibleTiles.at(std::rand() % possibleTiles.size());
         setField(nextTilePos, tileChosen);
     }

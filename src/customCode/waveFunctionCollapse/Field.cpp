@@ -16,7 +16,8 @@ void Field::updateNeighboringFields(const std::vector<std::vector<std::shared_pt
     {
         offset += m_fieldPos;
 
-        if(offset.x < 0 || offset.x >= WafeFunctionCollapseGenerator::GRID_SIZE.x || offset.y < 0 || offset.y >= WafeFunctionCollapseGenerator::GRID_SIZE.y)
+        if(offset.x < 0 || offset.x >= WafeFunctionCollapseGenerator::GRID_SIZE.x || offset.y < 0 ||
+           offset.y >= WafeFunctionCollapseGenerator::GRID_SIZE.y)
         {
             continue; // Out of bounds
         }
@@ -34,23 +35,16 @@ void Field::updatePossibleFields(const std::vector<std::vector<std::shared_ptr<F
 
     // New
     std::vector<BasicFieldDataStruct> possibleFields = m_possibleFieldTypes;
-    for( const auto& field : possibleFields)
+    for(const auto& field : possibleFields)
     {
         if(possibleFields.size() == 1)
         {
             break;
         }
 
-        if(!field.checkRulesForPosition(m_fieldPos, grid, field))
+        if(!BasicFieldDataStruct::checkRulesForPosition(m_fieldPos, grid, field))
         {
-            possibleFields.erase(
-                    std::remove(
-                            possibleFields.begin(),
-                            possibleFields.end(),
-                            field
-                    ),
-                    possibleFields.end()
-            );
+            possibleFields.erase(std::find(possibleFields.begin(), possibleFields.end(), field));
         }
     }
 
@@ -61,7 +55,8 @@ void Field::updatePossibleFields(const std::vector<std::vector<std::shared_ptr<F
     {
         offset += m_fieldPos;
 
-        if(offset.x < 0 || offset.x >= WafeFunctionCollapseGenerator::GRID_SIZE.x || offset.y < 0 || offset.y >= WafeFunctionCollapseGenerator::GRID_SIZE.y)
+        if(offset.x < 0 || offset.x >= WafeFunctionCollapseGenerator::GRID_SIZE.x || offset.y < 0 || offset.y
+    >= WafeFunctionCollapseGenerator::GRID_SIZE.y)
         {
             continue; // Out of bounds
         }

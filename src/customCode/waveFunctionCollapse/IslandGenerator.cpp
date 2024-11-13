@@ -14,7 +14,12 @@ IslandGenerator::IslandGenerator(const glm::ivec2& gridDimensions, const double&
 
 void IslandGenerator::start()
 {
-    addFieldTypes({DeepWaterFieldDataStruct(), ShallowWaterFieldDataStruct(), BeachFieldDataStruct(), GrasFieldDataStruct(), HillFieldDataStruct(), MountainFieldDataStruct()});
+    addFieldTypes({ DeepWaterFieldDataStruct(),
+                    ShallowWaterFieldDataStruct(),
+                    BeachFieldDataStruct(),
+                    GrasFieldDataStruct(),
+                    HillFieldDataStruct(),
+                    MountainFieldDataStruct() });
     initializeGrid();
     addDefaultTiles(true, true, (int)(((float)GRID_SIZE.x * (float)GRID_SIZE.y) * 0.005f));
     generateGrid();
