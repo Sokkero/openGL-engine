@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Field.h"
 #include "FieldTypeUtils.h"
 
 enum FieldTypeEnum
@@ -35,91 +36,38 @@ inline static glm::vec3 EnumToColorValue(int field)
 
 struct DeepWaterFieldDataStruct : BasicFieldDataStruct
 {
-        DeepWaterFieldDataStruct()
-            : BasicFieldDataStruct(
-                      FieldTypeEnum::deepWater,
-                      1,
-                      { [&](const glm::ivec2& pos, const grid2d& grid) -> bool
-                        {
-                            std::cout << "Lambda function for key 1" << std::endl;
-                            return false;
-                        } }
-              ) {};
+        DeepWaterFieldDataStruct();
+        ~DeepWaterFieldDataStruct() = default;
 };
 
 struct ShallowWaterFieldDataStruct : BasicFieldDataStruct
 {
-        ShallowWaterFieldDataStruct()
-            : BasicFieldDataStruct(
-                      FieldTypeEnum::shallowWater,
-                      2,
-                      { [&](const glm::ivec2& pos, const grid2d& grid) -> bool
-                        {
-                            std::cout << "Lambda function for key 1" << std::endl;
-                            return false;
-                        } }
-              ) {};
+        ShallowWaterFieldDataStruct();
+        ~ShallowWaterFieldDataStruct() = default;
 };
 
 struct BeachFieldDataStruct : BasicFieldDataStruct
 {
-        BeachFieldDataStruct()
-            : BasicFieldDataStruct(
-                      FieldTypeEnum::beach,
-                      3,
-                      { [&](const glm::ivec2& pos, const grid2d& grid) -> bool
-                        {
-                            std::cout << "Lambda function for key 1" << std::endl;
-                            return false;
-                        } }
-              ) {};
+        BeachFieldDataStruct();
+        ~BeachFieldDataStruct() = default;
 };
 
 struct GrasFieldDataStruct : BasicFieldDataStruct
 {
-        GrasFieldDataStruct()
-            : BasicFieldDataStruct(
-                      FieldTypeEnum::grass,
-                      5,
-                      { [&](const glm::ivec2& pos, const grid2d& grid) -> bool
-                        {
-                            std::cout << "Lambda function for key 1" << std::endl;
-                            return false;
-                        } }
-              ) {};
+        GrasFieldDataStruct();
+        ~GrasFieldDataStruct() = default;
 };
 
 struct HillFieldDataStruct : BasicFieldDataStruct
 {
-        HillFieldDataStruct()
-            : BasicFieldDataStruct(
-                      FieldTypeEnum::hill,
-                      2,
-                      { [&](const glm::ivec2& pos, const grid2d& grid) -> bool
-                        {
-                            std::cout << "Lambda function for key 1" << std::endl;
-                            return false;
-                        } }
-              ) {};
+        HillFieldDataStruct();
+        ~HillFieldDataStruct() = default;
 };
 
 struct MountainFieldDataStruct : BasicFieldDataStruct
 {
-        MountainFieldDataStruct()
-            : BasicFieldDataStruct(
-                      FieldTypeEnum::mountain,
-                      1,
-                      { [&](const glm::ivec2& pos, const grid2d& grid) -> bool
-                        {
-                            std::cout << "Lambda function for key 1" << std::endl;
-                            return true;
-                        },
-                        [&](const glm::ivec2& pos, const grid2d& grid) -> bool
-                        {
-                            std::cout << "Lambda function for key 1" << std::endl;
-                            return true;
-                        } }
-              ) {};
+        MountainFieldDataStruct();
+        ~MountainFieldDataStruct() = default;
 };
 
 inline static BasicFieldDataStruct EnumToFieldData(int field)

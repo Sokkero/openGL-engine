@@ -42,7 +42,7 @@ void IslandGenerator::setFieldCallback(const glm::ivec2& pos, const BasicFieldDa
     planeObj->setPosition(glm::vec3(posX, 0.f, posY));
 
     std::vector<glm::vec4> g_color_buffer_data;
-    const glm::vec3 color = EnumToColorValue(tileType.tileTypeId);
+    const glm::vec3 color = EnumToColorValue(tileType.uniqueTileTypeId);
     for(int v = 0; v < planeObj->getObjectData()->getVertexCount(); v++)
     {
         g_color_buffer_data.emplace_back(color, 1.f);

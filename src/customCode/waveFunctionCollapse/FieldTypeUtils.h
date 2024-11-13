@@ -4,7 +4,25 @@
 #include <glm/vec3.hpp>
 #include <string>
 
-class Field;
+inline static std::vector<glm::ivec2> GetDirectNeighborOffsets()
+{
+    return {
+        glm::ivec2(0.f, 1.f),
+        glm::ivec2(-1.f, 0.f),
+        glm::ivec2(0.f, -1.f),
+        glm::ivec2(1.f, 0.f),
+    };
+}
+
+inline static std::vector<glm::ivec2> GetCornerNeighborOffsets()
+{
+    return {
+        glm::ivec2(1.f, 1.f),
+        glm::ivec2(-1.f, 1.f),
+        glm::ivec2(-1.f, -1.f),
+        glm::ivec2(1.f, -1.f),
+    };
+}
 
 inline static std::vector<glm::ivec2> GetNeighborOffsets()
 {
@@ -14,6 +32,7 @@ inline static std::vector<glm::ivec2> GetNeighborOffsets()
     };
 }
 
+class Field;
 using grid2d = std::vector<std::vector<std::shared_ptr<Field>>>;
 using ruleFunction = std::function<bool(const glm::ivec2& pos, const grid2d& grid)>;
 
