@@ -4,6 +4,7 @@
 #include <glm/vec3.hpp>
 #include <string>
 
+// Gets all 4 neighbors that are directly adjacent
 inline static std::vector<glm::ivec2> GetDirectNeighborOffsets()
 {
     return {
@@ -14,6 +15,7 @@ inline static std::vector<glm::ivec2> GetDirectNeighborOffsets()
     };
 }
 
+// Gets all 4 neighbors that are touching the corners
 inline static std::vector<glm::ivec2> GetCornerNeighborOffsets()
 {
     return {
@@ -24,6 +26,29 @@ inline static std::vector<glm::ivec2> GetCornerNeighborOffsets()
     };
 }
 
+// Gets all neighbors in 4 groups for the NE/SE/SW/NW corners
+inline static std::vector<std::vector<glm::ivec2>> GetGroupedCornerNeighborOffsets()
+{
+    return {
+        {glm::ivec2(0.f, 1.f), glm::ivec2(1.f, 1.f), glm::ivec2(1.f, 0.f)},
+        {glm::ivec2(1.f, 0.f), glm::ivec2(1.f, -1.f), glm::ivec2(0.f, -1.f)},
+        {glm::ivec2(0.f, -1.f), glm::ivec2(-1.f, -1.f), glm::ivec2(-1.f, 0.f)},
+        {glm::ivec2(-1.f, 0.f), glm::ivec2(-1.f, 1.f), glm::ivec2(0.f, 1.f)},
+    };
+}
+
+// Gets all neighbors in 4 groups for the N/E/S/W sides
+inline static std::vector<std::vector<glm::ivec2>> GetGroupedDirectNeighborOffsets()
+{
+    return {
+        {glm::ivec2(-1.f, 1.f), glm::ivec2(0.f, 1.f), glm::ivec2(1.f, 1.f)},
+        {glm::ivec2(1.f, 1.f), glm::ivec2(1.f, 0.f), glm::ivec2(1.f, -1.f)},
+        {glm::ivec2(1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(-1.f, -1.f)},
+        {glm::ivec2(-1.f, -1.f), glm::ivec2(-1.f, 0.f), glm::ivec2(-1.f, 1.f)},
+    };
+}
+
+// Gets all 8 neighbors
 inline static std::vector<glm::ivec2> GetNeighborOffsets()
 {
     return {
