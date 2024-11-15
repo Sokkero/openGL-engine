@@ -14,6 +14,7 @@ class WafeFunctionCollapseGenerator
         ~WafeFunctionCollapseGenerator() = default;
 
         void generateGrid();
+        bool generateNextField();
         void initializeGrid();
         bool presetField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType);
         const glm::ivec2 getFieldForFieldType(const BasicFieldDataStruct& tileType) const;

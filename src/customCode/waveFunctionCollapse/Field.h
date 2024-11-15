@@ -13,7 +13,7 @@ class Field
 
         void updatePossibleFields(const std::vector<std::vector<std::shared_ptr<Field>>>& grid);
 
-        void setField(BasicFieldDataStruct type, const std::vector<std::vector<std::shared_ptr<Field>>>& grid);
+        void setField(const BasicFieldDataStruct& type, const std::vector<std::vector<std::shared_ptr<Field>>>& grid);
 
         void updateNeighboringFields(const std::vector<std::vector<std::shared_ptr<Field>>>& grid);
 
@@ -22,6 +22,9 @@ class Field
         bool getIsFieldSet() const { return m_fieldSet; }
 
         std::vector<BasicFieldDataStruct> getAllPossibleFieldTypes() const { return m_possibleFieldTypes; }
+
+        bool getCanBeFieldType(const BasicFieldDataStruct& fieldType) const;
+        bool getIsSetAsFieldType(const BasicFieldDataStruct& fieldType) const;
 
     private:
         glm::ivec2 m_fieldPos;

@@ -9,8 +9,9 @@ enum FieldTypeEnum
     shallowWater = 2,
     beach = 3,
     grass = 4,
-    hill = 5,
-    mountain = 6
+    stone = 5,
+    hill = 6,
+    mountain = 7
 };
 
 inline static glm::vec3 EnumToColorValue(int field)
@@ -25,6 +26,8 @@ inline static glm::vec3 EnumToColorValue(int field)
             return glm::vec3(1.0f, 1.0f, 0.0f);
         case FieldTypeEnum::grass:
             return glm::vec3(0.0f, 0.502f, 0.0f);
+        case FieldTypeEnum::stone:
+            return glm::vec3(0.6f, 0.6f, 0.6f);
         case FieldTypeEnum::hill:
             return glm::vec3(0.5f, 0.2f, 0.f);
         case FieldTypeEnum::mountain:
@@ -58,6 +61,12 @@ struct GrasFieldDataStruct : BasicFieldDataStruct
         ~GrasFieldDataStruct() = default;
 };
 
+struct StoneFieldDataStruct : BasicFieldDataStruct
+{
+        StoneFieldDataStruct();
+        ~StoneFieldDataStruct() = default;
+};
+
 struct HillFieldDataStruct : BasicFieldDataStruct
 {
         HillFieldDataStruct();
@@ -82,6 +91,8 @@ inline static BasicFieldDataStruct EnumToFieldData(int field)
             return BeachFieldDataStruct();
         case FieldTypeEnum::grass:
             return GrasFieldDataStruct();
+        case FieldTypeEnum::stone:
+            return StoneFieldDataStruct();
         case FieldTypeEnum::hill:
             return HillFieldDataStruct();
         case FieldTypeEnum::mountain:

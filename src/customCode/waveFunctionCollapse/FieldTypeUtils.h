@@ -30,10 +30,10 @@ inline static std::vector<glm::ivec2> GetCornerNeighborOffsets()
 inline static std::vector<std::vector<glm::ivec2>> GetGroupedCornerNeighborOffsets()
 {
     return {
-        {glm::ivec2(0.f, 1.f), glm::ivec2(1.f, 1.f), glm::ivec2(1.f, 0.f)},
-        {glm::ivec2(1.f, 0.f), glm::ivec2(1.f, -1.f), glm::ivec2(0.f, -1.f)},
-        {glm::ivec2(0.f, -1.f), glm::ivec2(-1.f, -1.f), glm::ivec2(-1.f, 0.f)},
-        {glm::ivec2(-1.f, 0.f), glm::ivec2(-1.f, 1.f), glm::ivec2(0.f, 1.f)},
+        { glm::ivec2(0.f, 1.f), glm::ivec2(1.f, 1.f), glm::ivec2(1.f, 0.f) },
+        { glm::ivec2(1.f, 0.f), glm::ivec2(1.f, -1.f), glm::ivec2(0.f, -1.f) },
+        { glm::ivec2(0.f, -1.f), glm::ivec2(-1.f, -1.f), glm::ivec2(-1.f, 0.f) },
+        { glm::ivec2(-1.f, 0.f), glm::ivec2(-1.f, 1.f), glm::ivec2(0.f, 1.f) },
     };
 }
 
@@ -41,10 +41,10 @@ inline static std::vector<std::vector<glm::ivec2>> GetGroupedCornerNeighborOffse
 inline static std::vector<std::vector<glm::ivec2>> GetGroupedDirectNeighborOffsets()
 {
     return {
-        {glm::ivec2(-1.f, 1.f), glm::ivec2(0.f, 1.f), glm::ivec2(1.f, 1.f)},
-        {glm::ivec2(1.f, 1.f), glm::ivec2(1.f, 0.f), glm::ivec2(1.f, -1.f)},
-        {glm::ivec2(1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(-1.f, -1.f)},
-        {glm::ivec2(-1.f, -1.f), glm::ivec2(-1.f, 0.f), glm::ivec2(-1.f, 1.f)},
+        { glm::ivec2(-1.f, 1.f), glm::ivec2(0.f, 1.f), glm::ivec2(1.f, 1.f) },
+        { glm::ivec2(1.f, 1.f), glm::ivec2(1.f, 0.f), glm::ivec2(1.f, -1.f) },
+        { glm::ivec2(1.f, -1.f), glm::ivec2(0.f, -1.f), glm::ivec2(-1.f, -1.f) },
+        { glm::ivec2(-1.f, -1.f), glm::ivec2(-1.f, 0.f), glm::ivec2(-1.f, 1.f) },
     };
 }
 

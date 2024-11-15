@@ -1,6 +1,7 @@
 
 #include "IslandGenerator.h"
 
+#include "../../classes/engine/UserEventManager.h"
 #include "../../classes/nodeComponents/GeometryComponent.h"
 #include "../../resources/shader/ColorShader.h"
 #include "CustomFieldTypeData.h"
@@ -18,11 +19,14 @@ void IslandGenerator::start()
                     ShallowWaterFieldDataStruct(),
                     BeachFieldDataStruct(),
                     GrasFieldDataStruct(),
+                    StoneFieldDataStruct(),
                     HillFieldDataStruct(),
                     MountainFieldDataStruct() });
     initializeGrid();
     addDefaultTiles(true, true, (int)(((float)GRID_SIZE.x * (float)GRID_SIZE.y) * 0.005f));
     generateGrid();
+
+    // getUserEventManager()->addListener(std::pair<int, int>(GLFW_KEY_SPACE, GLFW_PRESS), ([this]() { generateNextField(); }));
 }
 
 void IslandGenerator::setFieldCallback(const glm::ivec2& pos, const BasicFieldDataStruct& tileType)

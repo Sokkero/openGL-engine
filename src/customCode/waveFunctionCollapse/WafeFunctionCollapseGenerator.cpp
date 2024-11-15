@@ -1,8 +1,10 @@
 
 #include "WafeFunctionCollapseGenerator.h"
 
+#include "../../classes/helper/DebugUtils.h"
 #include "Field.h"
 
+#include <GLFW/glfw3.h>
 #include <iostream>
 
 WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed)
@@ -38,6 +40,7 @@ void WafeFunctionCollapseGenerator::initializeGrid()
         return;
     }
 
+    const double startTime = glfwGetTime();
     for(int x = 0; x < GRID_SIZE.x; ++x)
     {
         for(int y = 0; y < GRID_SIZE.y; ++y)
@@ -48,6 +51,7 @@ void WafeFunctionCollapseGenerator::initializeGrid()
     }
 
     m_initialized = true;
+    DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "Grid initialized in: ");
 }
 
 void WafeFunctionCollapseGenerator::addFieldTypes(const std::vector<BasicFieldDataStruct>& fieldTypes)
@@ -75,25 +79,37 @@ void WafeFunctionCollapseGenerator::generateGrid()
         return;
     }
 
+    const double startTime = glfwGetTime();
     while(true)
     {
-        const glm::ivec2 nextTilePos = pickNextField();
-
-        if(nextTilePos == glm::ivec2(-1.f, -1.f))
+        if(!generateNextField())
         {
             break;
         }
-
-        std::vector<BasicFieldDataStruct> possibleTiles =
-                m_grid[nextTilePos.x][nextTilePos.y]->getAllPossibleFieldTypes();
-        assert(!possibleTiles.empty());
-
-        // AddFieldWeighting(possibleTiles);
-        const BasicFieldDataStruct tileChosen = possibleTiles.at(std::rand() % possibleTiles.size());
-        setField(nextTilePos, tileChosen);
     }
 
     m_generated = true;
+    DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "Grid generated in: ");
+}
+
+bool WafeFunctionCollapseGenerator::generateNextField()
+{
+    const glm::ivec2 nextTilePos = pickNextField();
+
+    if(nextTilePos == glm::ivec2(-1.f, -1.f))
+    {
+        return false;
+    }
+
+    std::vector<BasicFieldDataStruct> possibleTiles =
+            m_grid[nextTilePos.x][nextTilePos.y]->getAllPossibleFieldTypes();
+    assert(!possibleTiles.empty());
+
+    AddFieldWeighting(possibleTiles);
+    const BasicFieldDataStruct tileChosen = possibleTiles.at(std::rand() % possibleTiles.size());
+    setField(nextTilePos, tileChosen);
+
+    return true;
 }
 
 void WafeFunctionCollapseGenerator::setField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType)
@@ -156,11 +172,6 @@ const glm::ivec2 WafeFunctionCollapseGenerator::pickNextField() const
 
             const size_t possibleTiles = currentTile->getAllPossibleFieldTypes().size();
             assert(possibleTiles > 0);
-
-            if(possibleTiles == 1)
-            {
-                return glm::ivec2(x, y);
-            }
 
             if(possibleTiles == nextPossibleTileAmount)
             {

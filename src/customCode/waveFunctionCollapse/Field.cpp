@@ -33,7 +33,6 @@ void Field::updatePossibleFields(const std::vector<std::vector<std::shared_ptr<F
         return;
     }
 
-    // New
     std::vector<BasicFieldDataStruct> possibleFields = m_possibleFieldTypes;
     for(const auto& field : possibleFields)
     {
@@ -48,70 +47,6 @@ void Field::updatePossibleFields(const std::vector<std::vector<std::shared_ptr<F
         }
     }
 
-    /*
-     * Old
-    std::vector<BasicFieldDataStruct> possibleFields = m_possibleFieldTypes;
-    for(glm::ivec2 offset : GetNeighborOffsets())
-    {
-        offset += m_fieldPos;
-
-        if(offset.x < 0 || offset.x >= WafeFunctionCollapseGenerator::GRID_SIZE.x || offset.y < 0 || offset.y
-    >= WafeFunctionCollapseGenerator::GRID_SIZE.y)
-        {
-            continue; // Out of bounds
-        }
-
-        const std::vector<BasicFieldDataStruct>& possibleFieldTypesOfNeighborField =
-                grid[offset.x][offset.y]->getAllPossibleFieldTypes();
-
-        std::vector<BasicFieldDataStruct> fieldsToRemove;
-        for(const BasicFieldDataStruct& possibleFieldType : possibleFields)
-        {
-            bool found = false;
-            for(const BasicFieldDataStruct& possibleNeighborFieldType : possibleFieldTypesOfNeighborField)
-            {
-                auto it = std::find(
-                        possibleNeighborFieldType.allowedNeighborTileTypeIds.begin(),
-                        possibleNeighborFieldType.allowedNeighborTileTypeIds.end(),
-                        possibleFieldType.tileTypeId
-                );
-                if(it != possibleNeighborFieldType.allowedNeighborTileTypeIds.end())
-                {
-                    found = true;
-                    break;
-                }
-            }
-
-            if(!found)
-            {
-                fieldsToRemove.push_back(possibleFieldType);
-            }
-
-            if(possibleFields.size() - fieldsToRemove.size() == 1)
-            {
-                break;
-            }
-        }
-
-        possibleFields.erase(
-                std::remove_if(
-                        possibleFields.begin(),
-                        possibleFields.end(),
-                        [&](const BasicFieldDataStruct& fieldToCheck) {
-                            return std::find(fieldsToRemove.begin(), fieldsToRemove.end(), fieldToCheck) !=
-                                    fieldsToRemove.end();
-                        }
-                ),
-                possibleFields.end()
-        );
-
-        if(possibleFields.size() == 1)
-        {
-            break;
-        }
-    }
-     */
-
     if(m_possibleFieldTypes.size() != possibleFields.size())
     {
         m_possibleFieldTypes = possibleFields;
@@ -119,7 +54,29 @@ void Field::updatePossibleFields(const std::vector<std::vector<std::shared_ptr<F
     }
 }
 
-void Field::setField(BasicFieldDataStruct type, const std::vector<std::vector<std::shared_ptr<Field>>>& grid)
+bool Field::getCanBeFieldType(const BasicFieldDataStruct& fieldType) const
+{
+    for(const BasicFieldDataStruct& possibleFieldType : m_possibleFieldTypes)
+    {
+        if(fieldType == possibleFieldType)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool Field::getIsSetAsFieldType(const BasicFieldDataStruct& fieldType) const
+{
+    if(!m_fieldSet)
+    {
+        return false;
+    }
+
+    return m_possibleFieldTypes.front() == fieldType;
+}
+
+void Field::setField(const BasicFieldDataStruct& type, const std::vector<std::vector<std::shared_ptr<Field>>>& grid)
 {
     m_possibleFieldTypes.clear();
     m_possibleFieldTypes.push_back(type);
