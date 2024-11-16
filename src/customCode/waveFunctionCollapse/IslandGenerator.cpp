@@ -8,7 +8,7 @@
 #include "Field.h"
 
 IslandGenerator::IslandGenerator(const glm::ivec2& gridDimensions, const double& seed)
-    : WafeFunctionCollapseGenerator(gridDimensions, seed)
+    : WafeFunctionCollapseGenerator(gridDimensions, seed, true)
 {
     FIELD_SIZE = glm::vec2(2.f);
 }
@@ -29,13 +29,14 @@ void IslandGenerator::start()
     // getUserEventManager()->addListener(std::pair<int, int>(GLFW_KEY_SPACE, GLFW_PRESS), ([this]() { generateNextField(); }));
 }
 
-void IslandGenerator::setFieldCallback(const glm::ivec2& pos, const BasicFieldDataStruct& tileType)
+void IslandGenerator::setFieldCallback(const std::shared_ptr<Field>& field, const BasicFieldDataStruct& tileType)
 {
     static const float startPosX = (FIELD_SIZE.x * ((float)GRID_SIZE.x - 1.f)) / 2.f;
     static const float startPosY = (FIELD_SIZE.y * ((float)GRID_SIZE.y - 1.f)) / 2.f;
 
-    const float posX = (pos.x * FIELD_SIZE.x) - startPosX;
-    const float posY = (pos.y * FIELD_SIZE.y) - startPosY;
+    const glm::ivec2 fieldPos = field->getPosition();
+    const float posX = (fieldPos.x * FIELD_SIZE.x) - startPosX;
+    const float posY = (fieldPos.y * FIELD_SIZE.y) - startPosY;
 
     const std::shared_ptr<Engine::RenderManager> renderManager = getEngineManager()->getRenderManager();
 
@@ -66,14 +67,14 @@ void IslandGenerator::addDefaultTiles(const bool waterOnEdges, const bool landIn
     {
         for(int x = 0; x < GRID_SIZE.y; ++x)
         {
-            setField(glm::ivec2(x, 0), waterTile);
-            setField(glm::ivec2(x, GRID_SIZE.y - 1), waterTile);
+            setField(m_grid[x][0], waterTile);
+            setField(m_grid[x][GRID_SIZE.y - 1], waterTile);
         }
 
         for(int y = 0; y < GRID_SIZE.y; ++y)
         {
-            setField(glm::ivec2(0, y), waterTile);
-            setField(glm::ivec2(GRID_SIZE.x - 1, y), waterTile);
+            setField(m_grid[0][y], waterTile);
+            setField(m_grid[GRID_SIZE.x - 1][y], waterTile);
         }
     }
 
@@ -88,7 +89,7 @@ void IslandGenerator::addDefaultTiles(const bool waterOnEdges, const bool landIn
                 break;
             }
 
-            setField(tilePos, landTile);
+            setField(m_grid[tilePos.x][tilePos.y], landTile);
         }
     }
 }

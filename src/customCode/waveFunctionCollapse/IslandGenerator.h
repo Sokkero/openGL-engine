@@ -14,7 +14,7 @@ class IslandGenerator
 
     protected:
         void addDefaultTiles(const bool waterOnEdges, const bool landInMiddle, const uint8_t landTilesToAdd);
-        void setFieldCallback(const glm::ivec2& pos, const BasicFieldDataStruct& tileType) override;
+        void setFieldCallback(const std::shared_ptr<Field>& field, const BasicFieldDataStruct& tileType) override;
         void start() override;
 
     private:

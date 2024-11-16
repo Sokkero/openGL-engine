@@ -2,15 +2,17 @@
 #include "WafeFunctionCollapseGenerator.h"
 
 #include "../../classes/helper/DebugUtils.h"
+#include "../../classes/helper/MathUtils.h"
 #include "Field.h"
 
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed)
+WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed, const bool debugOutput)
     : m_seed(0)
     , m_generated(false)
     , m_initialized(false)
+    , m_debugMode(debugOutput)
     , m_grid(dimensions.x, std::vector<std::shared_ptr<Field>>(dimensions.y))
 {
     if(seed == 0)
@@ -23,6 +25,7 @@ WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& d
     }
 
     std::srand(m_seed);
+    if(m_debugMode) std::cout << "WFCA | Using seed " << m_seed << std::endl;
     GRID_SIZE = dimensions;
 }
 
@@ -30,13 +33,13 @@ void WafeFunctionCollapseGenerator::initializeGrid()
 {
     if(m_initialized)
     {
-        std::cout << "Failed to initialize grid: Grid already initialized!" << std::endl;
+        std::cout << "WFCA | Failed to initialize grid: Grid already initialized!" << std::endl;
         return;
     }
 
     if(m_allFieldTypes.empty())
     {
-        std::cout << "Failed to initialize grid: No field types added!" << std::endl;
+        std::cout << "WFCA | Failed to initialize grid: No field types added!" << std::endl;
         return;
     }
 
@@ -51,7 +54,7 @@ void WafeFunctionCollapseGenerator::initializeGrid()
     }
 
     m_initialized = true;
-    DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "Grid initialized in: ");
+    if(m_debugMode) { DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid initialized in: "); }
 }
 
 void WafeFunctionCollapseGenerator::addFieldTypes(const std::vector<BasicFieldDataStruct>& fieldTypes)
@@ -69,13 +72,13 @@ void WafeFunctionCollapseGenerator::generateGrid()
 {
     if(m_generated)
     {
-        std::cout << "Failed to generate grid: Grid already generated!" << std::endl;
+        std::cout << "WFCA | Failed to generate grid: Grid already generated!" << std::endl;
         return;
     }
 
     if(!m_initialized)
     {
-        std::cout << "Failed to generate grid: Grid not yet initialized!" << std::endl;
+        std::cout << "WFCA | Failed to generate grid: Grid not yet initialized!" << std::endl;
         return;
     }
 
@@ -89,58 +92,71 @@ void WafeFunctionCollapseGenerator::generateGrid()
     }
 
     m_generated = true;
-    DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "Grid generated in: ");
+    if(m_debugMode)
+    {
+        DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid generated in: ");
+        DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields), "WFCA | Time spent picking fields: ");
+        DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentAddingFieldWeight), "WFCA | Time spent adding field weights: ");
+        DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields), "WFCA | Time spent setting fields: ");
+    }
 }
 
 bool WafeFunctionCollapseGenerator::generateNextField()
 {
-    const glm::ivec2 nextTilePos = pickNextField();
+    double startTime = glfwGetTime();
+    const std::shared_ptr<Field>& nextField = pickNextField();
+    if(m_debugMode) { m_timeSpentPickingFields.push_back(glfwGetTime() - startTime); }
 
-    if(nextTilePos == glm::ivec2(-1.f, -1.f))
+    if(!nextField)
     {
         return false;
     }
 
-    std::vector<BasicFieldDataStruct> possibleTiles =
-            m_grid[nextTilePos.x][nextTilePos.y]->getAllPossibleFieldTypes();
-    assert(!possibleTiles.empty());
+    std::vector<BasicFieldDataStruct> possibleFieldTypes = nextField->getAllPossibleFieldTypes();
+    assert(!possibleFieldTypes.empty());
 
-    AddFieldWeighting(possibleTiles);
-    const BasicFieldDataStruct tileChosen = possibleTiles.at(std::rand() % possibleTiles.size());
-    setField(nextTilePos, tileChosen);
+    startTime = glfwGetTime();
+    AddFieldWeighting(possibleFieldTypes);
+    if(m_debugMode) { m_timeSpentAddingFieldWeight.push_back(glfwGetTime() - startTime); }
+
+    const BasicFieldDataStruct tileChosen = possibleFieldTypes.at(std::rand() % possibleFieldTypes.size());
+
+    startTime = glfwGetTime();
+    setField(nextField, tileChosen);
+    if(m_debugMode) { m_timeSpentSettingFields.push_back(glfwGetTime() - startTime); }
 
     return true;
 }
 
-void WafeFunctionCollapseGenerator::setField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType)
+void WafeFunctionCollapseGenerator::setField(const std::shared_ptr<Field>& field, const BasicFieldDataStruct& tileType)
 {
     if(m_generated)
     {
-        std::cout << "Failed to set field: Grid already generated!" << std::endl;
+        std::cout << "WFCA | Failed to set field: Grid already generated!" << std::endl;
         return;
     }
 
     if(!m_initialized)
     {
-        std::cout << "Failed to set field: Grid not yet initialized!" << std::endl;
+        std::cout << "WFCA | Failed to set field: Grid not yet initialized!" << std::endl;
         return;
     }
 
-    m_grid[pos.x][pos.y]->setField(tileType, m_grid);
-    setFieldCallback(pos, tileType);
+    field->setField(tileType, m_grid);
+    setFieldCallback(field, tileType);
 }
 
 bool WafeFunctionCollapseGenerator::presetField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType)
 {
     if(m_generated)
     {
-        std::cout << "Failed to preset field: Grid already generated!" << std::endl;
+        std::cout << "WFCA | Failed to preset field: Grid already generated!" << std::endl;
         return false;
     }
 
     if(!m_initialized)
     {
-        std::cout << "Failed to preset field: Grid not yet initialized!" << std::endl;
+        std::cout << "WFCA | Failed to preset field: Grid not yet initialized!" << std::endl;
         return false;
     }
 
@@ -156,39 +172,38 @@ bool WafeFunctionCollapseGenerator::presetField(const glm::ivec2& pos, const Bas
     }
 }
 
-const glm::ivec2 WafeFunctionCollapseGenerator::pickNextField() const
+const std::shared_ptr<Field> WafeFunctionCollapseGenerator::pickNextField() const
 {
-    std::vector<glm::ivec2> nextPossibleTiles;
+    std::vector<std::shared_ptr<Field>> nextPossibleTiles;
     size_t nextPossibleTileAmount = m_allFieldTypes.size();
-    for(int x = 0; x < GRID_SIZE.x; ++x)
+    for(const auto& row : m_grid)
     {
-        for(int y = 0; y < GRID_SIZE.y; ++y)
+        for(const auto& field : row)
         {
-            const std::shared_ptr<Field>& currentTile = m_grid[x][y];
-            if(currentTile->getIsFieldSet())
+            if(field->getIsFieldSet())
             {
                 continue; // Tile already taken
             }
 
-            const size_t possibleTiles = currentTile->getAllPossibleFieldTypes().size();
+            const size_t possibleTiles = field->getAllPossibleFieldTypes().size();
             assert(possibleTiles > 0);
 
             if(possibleTiles == nextPossibleTileAmount)
             {
-                nextPossibleTiles.push_back(glm::ivec2(x, y));
+                nextPossibleTiles.push_back(field);
             }
             else if(possibleTiles < nextPossibleTileAmount)
             {
                 nextPossibleTileAmount = possibleTiles;
                 nextPossibleTiles.clear();
-                nextPossibleTiles.push_back(glm::ivec2(x, y));
+                nextPossibleTiles.push_back(field);
             }
         }
     }
 
     if(nextPossibleTiles.empty())
     {
-        return glm::ivec2(-1, -1);
+        return nullptr;
     }
 
     return nextPossibleTiles.at(std::rand() % nextPossibleTiles.size());
@@ -198,7 +213,7 @@ const glm::ivec2 WafeFunctionCollapseGenerator::getFieldForFieldType(const Basic
 {
     if(!m_initialized)
     {
-        std::cout << "Failed to get field for type: Grid not yet initialized!" << std::endl;
+        std::cout << "WFCA | Failed to get field for type: Grid not yet initialized!" << std::endl;
         return glm::ivec2(-1.f, -1.f);
     }
 

@@ -10,7 +10,7 @@ class Field;
 class WafeFunctionCollapseGenerator
 {
     public:
-        explicit WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed = 0);
+        explicit WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed = 0, const bool debugOutput = false);
         ~WafeFunctionCollapseGenerator() = default;
 
         void generateGrid();
@@ -24,8 +24,8 @@ class WafeFunctionCollapseGenerator
         static inline glm::ivec2 GRID_SIZE = glm::ivec2(0);
 
     protected:
-        virtual void setField(const glm::ivec2& pos, const BasicFieldDataStruct& tileType);
-        virtual void setFieldCallback(const glm::ivec2& pos, const BasicFieldDataStruct& tileType) = 0;
+        virtual void setField(const std::shared_ptr<Field>& pos, const BasicFieldDataStruct& tileType);
+        virtual void setFieldCallback(const std::shared_ptr<Field>& pos, const BasicFieldDataStruct& tileType) = 0;
 
         long m_seed;
         std::vector<std::vector<std::shared_ptr<Field>>> m_grid;
@@ -33,6 +33,11 @@ class WafeFunctionCollapseGenerator
         bool m_generated;
         bool m_initialized;
 
+        bool m_debugMode;
+        std::vector<double> m_timeSpentPickingFields;
+        std::vector<double> m_timeSpentAddingFieldWeight;
+        std::vector<double> m_timeSpentSettingFields;
+
     private:
-        const glm::ivec2 pickNextField() const;
+        const std::shared_ptr<Field> pickNextField() const;
 };
