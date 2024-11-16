@@ -7,6 +7,7 @@
 
 #include <GLFW/glfw3.h>
 #include <iostream>
+#include <thread>
 
 WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed, const bool debugOutput)
     : m_seed(0)
@@ -96,7 +97,6 @@ void WafeFunctionCollapseGenerator::generateGrid()
     {
         DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid generated in: ");
         DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields), "WFCA | Time spent picking fields: ");
-        DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentAddingFieldWeight), "WFCA | Time spent adding field weights: ");
         DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields), "WFCA | Time spent setting fields: ");
     }
 }
@@ -115,10 +115,7 @@ bool WafeFunctionCollapseGenerator::generateNextField()
     std::vector<BasicFieldDataStruct> possibleFieldTypes = nextField->getAllPossibleFieldTypes();
     assert(!possibleFieldTypes.empty());
 
-    startTime = glfwGetTime();
     AddFieldWeighting(possibleFieldTypes);
-    if(m_debugMode) { m_timeSpentAddingFieldWeight.push_back(glfwGetTime() - startTime); }
-
     const BasicFieldDataStruct tileChosen = possibleFieldTypes.at(std::rand() % possibleFieldTypes.size());
 
     startTime = glfwGetTime();
@@ -176,29 +173,43 @@ const std::shared_ptr<Field> WafeFunctionCollapseGenerator::pickNextField() cons
 {
     std::vector<std::shared_ptr<Field>> nextPossibleTiles;
     size_t nextPossibleTileAmount = m_allFieldTypes.size();
+    std::mutex mtx;
+    std::vector<std::thread> threads;
     for(const auto& row : m_grid)
     {
-        for(const auto& field : row)
-        {
-            if(field->getIsFieldSet())
-            {
-                continue; // Tile already taken
-            }
+        threads.emplace_back(([&]()
+                             {
+                                 for(const auto& field : row)
+                                 {
+                                     if(field->getIsFieldSet())
+                                     {
+                                         continue; // Tile already taken
+                                     }
 
-            const size_t possibleTiles = field->getAllPossibleFieldTypes().size();
-            assert(possibleTiles > 0);
+                                     const size_t possibleTiles = field->getAllPossibleFieldTypes().size();
+                                     assert(possibleTiles > 0);
 
-            if(possibleTiles == nextPossibleTileAmount)
-            {
-                nextPossibleTiles.push_back(field);
-            }
-            else if(possibleTiles < nextPossibleTileAmount)
-            {
-                nextPossibleTileAmount = possibleTiles;
-                nextPossibleTiles.clear();
-                nextPossibleTiles.push_back(field);
-            }
-        }
+                                     if(possibleTiles == nextPossibleTileAmount)
+                                     {
+                                         mtx.lock();
+                                         nextPossibleTiles.push_back(field);
+                                         mtx.unlock();
+                                     }
+                                     else if(possibleTiles < nextPossibleTileAmount)
+                                     {
+                                         mtx.lock();
+                                         nextPossibleTileAmount = possibleTiles;
+                                         nextPossibleTiles.clear();
+                                         nextPossibleTiles.push_back(field);
+                                         mtx.unlock();
+                                     }
+                                 }
+                             }));
+    }
+
+    for(auto& thread : threads)
+    {
+        thread.join();
     }
 
     if(nextPossibleTiles.empty())

@@ -35,7 +35,6 @@ class WafeFunctionCollapseGenerator
 
         bool m_debugMode;
         std::vector<double> m_timeSpentPickingFields;
-        std::vector<double> m_timeSpentAddingFieldWeight;
         std::vector<double> m_timeSpentSettingFields;
 
     private:

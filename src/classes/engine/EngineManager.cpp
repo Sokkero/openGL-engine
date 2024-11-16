@@ -28,7 +28,6 @@ namespace Engine
         , m_clearColor { 0.f, 0.f, 0.f, 1.f }
         , m_showGrid(true)
         , m_gridShader(nullptr)
-        , m_showDebugUi(true)
     {
         m_renderManager = std::make_shared<RenderManager>();
         m_gridShader = std::make_shared<GridShader>(m_renderManager);
@@ -89,14 +88,6 @@ namespace Engine
             // Wait for threads to finish here
 
             drawTranslucentNodes();
-
-            if(!m_showDebugUi)
-            {
-                glDisable(GL_BLEND);
-                return;
-            }
-
-            glFinish();
 
             if(m_showGrid)
             {
@@ -188,17 +179,10 @@ namespace Engine
 
     void EngineManager::drawNode(const std::shared_ptr<GeometryComponent>& node)
     {
-        /*
-        if(node->getName() == "cameraHolder")
-        {
-            auto pos = node->getGlobalPosition();
-            std::cout << "x: " << pos.x << " y: " << pos.y << " z: " << pos.z << std::endl;
-        }
-         */
-
         if(node)
         {
             node->getShader()->renderVertices(node, m_camera.get());
+            return;
         }
 
         const auto& ui = node->getComponent<Ui::UiDebugWindow>();

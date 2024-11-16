@@ -18,8 +18,8 @@ void WafeFunctionCollapseSceneOrigin::start()
     getEngineManager()->getRenderManager()->getAmbientLightUbo()->setIntensity(.7f);
     getWindowManager()->setWindowDimensions(700, 700);
 
-    // std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::DebugManagerWindow>();
-    // addChild(debugWindow);
+    std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::DebugManagerWindow>();
+    addChild(debugWindow);
 
     std::shared_ptr<Engine::CameraComponent> camera = std::make_shared<Engine::CameraComponent>();
     const float cameraDistance = gridDimension.x > gridDimension.y ? 2.5f * (float)gridDimension.x

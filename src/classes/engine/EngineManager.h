@@ -88,7 +88,6 @@ namespace Engine
             std::shared_ptr<GridShader> m_gridShader;
 
             bool m_showGrid;
-            bool m_showDebugUi;
             double m_deltaTime;
             double m_currentFrameTimestamp;
             double m_lastFrameTimestamp;
