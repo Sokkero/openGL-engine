@@ -139,6 +139,12 @@ void WafeFunctionCollapseGenerator::setField(const std::shared_ptr<Field>& field
         return;
     }
 
+    if(field->getIsFieldSet())
+    {
+        std::cout << "WFCA | Failed to set field: Field already set!" << std::endl;
+        return;
+    }
+
     field->setField(tileType, m_grid);
     setFieldCallback(field, tileType);
 }
