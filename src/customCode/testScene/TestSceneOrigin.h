@@ -17,6 +17,8 @@ class TestSceneOrigin : public Engine::BasicNode
         ~TestSceneOrigin() = default;
 
     private:
+        std::shared_ptr<Engine::EngineManager> m_engineManager;
+
         std::shared_ptr<Engine::GeometryComponent> m_tree;
         std::shared_ptr<TestObject> m_ape;
 

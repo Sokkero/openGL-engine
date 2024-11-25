@@ -16,6 +16,8 @@ class CameraActor : public Engine::CameraComponent
         ~CameraActor() = default;
 
     private:
+        std::shared_ptr<Engine::EngineManager> m_engineManager;
+
         void start() override;
         void update() override;
 };

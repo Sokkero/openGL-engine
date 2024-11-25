@@ -5,7 +5,8 @@
 namespace Engine
 {
     class EngineManager;
-}
+    class UserEventManager;
+} // namespace Engine
 
 class MandelbrotUbo;
 
@@ -20,6 +21,9 @@ class MandelbrotSceneOrigin : public Engine::BasicNode
         void moveCam(glm::vec2 movement);
 
     private:
+        std::shared_ptr<Engine::EngineManager> m_engineManager;
+        std::shared_ptr<Engine::UserEventManager> m_userEventManager;
+
         void start() override;
         void update() override;
 

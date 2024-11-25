@@ -13,7 +13,7 @@ namespace Engine
         , m_zNear(.1f)
         , m_zFar(100.f)
     {
-        const glm::vec2 dim = getWindowManager()->getWindowDimensions();
+        const glm::vec2 dim = SingletonManager::get<WindowManager>()->getWindowDimensions();
         m_aspectRatio = dim.x / dim.y;
 
         updateProjectionMatrix();

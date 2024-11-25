@@ -107,7 +107,7 @@ namespace Engine
                     m_customVertexIndices = m_objectData->m_vertexIndices;
                 }
 
-                const auto& cameraPos = getEngineManager()->getCamera()->getGlobalPosition();
+                const auto& cameraPos = SingletonManager::get<EngineManager>()->getCamera()->getGlobalPosition();
                 const auto& nodePos = getGlobalPosition();
                 const auto& vertices = m_objectData->m_vertexData;
 

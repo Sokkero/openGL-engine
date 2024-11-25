@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../SingletonManager.h"
+
 #include <map>
 
 #include <GL/glew.h>
@@ -8,7 +10,7 @@
 
 namespace Engine
 {
-    class UserEventManager
+    class UserEventManager : public SingletonBase
     {
         public:
             using Callback = std::function<void()>;

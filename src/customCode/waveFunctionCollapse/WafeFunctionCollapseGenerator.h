@@ -10,7 +10,11 @@ class Field;
 class WafeFunctionCollapseGenerator
 {
     public:
-        explicit WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed = 0, const bool debugOutput = false);
+        explicit WafeFunctionCollapseGenerator(
+                const glm::ivec2& dimensions,
+                const long& seed = 0,
+                const bool debugOutput = false
+        );
         ~WafeFunctionCollapseGenerator() = default;
 
         void generateGrid();

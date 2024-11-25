@@ -18,6 +18,7 @@ class Field
         void updateNeighboringFields(const std::vector<std::vector<std::shared_ptr<Field>>>& grid);
 
         void setPosition(const glm::ivec2& pos) { m_fieldPos = pos; }
+
         const glm::ivec2 getPosition() const { return m_fieldPos; }
 
         bool getIsFieldSet() const { return m_fieldSet; }

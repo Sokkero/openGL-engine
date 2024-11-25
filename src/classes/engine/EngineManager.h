@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../SingletonManager.h"
+
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 #include <vector>
@@ -17,7 +19,7 @@ namespace Engine
         class UiDebugWindow;
     }
 
-    class EngineManager
+    class EngineManager : public SingletonBase
     {
         public:
             EngineManager();

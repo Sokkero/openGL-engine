@@ -2,29 +2,35 @@
 
 #include "../nodeComponents/UiDebugWindow.h"
 
-namespace Engine::Ui
+namespace Engine
 {
-    class UiElementPlot;
-    class UiElementText;
+    class EngineManager;
+    class WindowManager;
 
-    class PerformanceDebugWindow : public UiDebugWindow
+    namespace Ui
     {
-        public:
-            PerformanceDebugWindow();
-            ~PerformanceDebugWindow() = default;
+        class UiElementPlot;
+        class UiElementText;
 
-            void update() override;
+        class PerformanceDebugWindow : public UiDebugWindow
+        {
+            public:
+                PerformanceDebugWindow();
+                ~PerformanceDebugWindow() = default;
 
-        private:
-            void onVsyncToggle(bool value);
+                void update() override;
 
-            std::shared_ptr<EngineManager> m_engineManager;
-            std::shared_ptr<WindowManager> m_windowManager;
-            std::shared_ptr<UiElementPlot> m_fpsCounter;
-            std::shared_ptr<UiElementText> m_frameTimer;
+            private:
+                void onVsyncToggle(bool value);
 
-            // Fps counter stuff
-            void updateFrameCounter();
-            double m_lastTimeStamp;
-    };
-} // namespace Engine::Ui
+                std::shared_ptr<EngineManager> m_engineManager;
+                std::shared_ptr<WindowManager> m_windowManager;
+                std::shared_ptr<UiElementPlot> m_fpsCounter;
+                std::shared_ptr<UiElementText> m_frameTimer;
+
+                // Fps counter stuff
+                void updateFrameCounter();
+                double m_lastTimeStamp;
+        };
+    } // namespace Ui
+} // namespace Engine

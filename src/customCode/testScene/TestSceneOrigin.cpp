@@ -12,6 +12,8 @@
 
 void TestSceneOrigin::start()
 {
+    m_engineManager = SingletonManager::get<EngineManager>();
+
     std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::DebugManagerWindow>();
     debugWindow->setName("debugWindow");
     addChild(debugWindow);
@@ -26,9 +28,9 @@ void TestSceneOrigin::start()
     camera->setPosition(glm::vec3(0.f, 5.f, 15.f));
     camera->setName("camera");
     cameraHolder->addChild(camera);
-    getEngineManager()->setCamera(camera);
+    m_engineManager->setCamera(camera);
 
-    const auto& renderManager = getEngineManager()->getRenderManager();
+    const auto& renderManager = m_engineManager->getRenderManager();
 
     // Tree models normals are broken, causing the model to look bad with translucency
     m_tree = std::make_shared<GeometryComponent>();
@@ -62,7 +64,7 @@ void TestSceneOrigin::start()
 
 void TestSceneOrigin::update()
 {
-    m_tree->rotateObj(glm::vec3(0.f, 1.f, 0.f), getEngineManager()->getDeltaTime() * 50.f);
+    m_tree->rotateObj(glm::vec3(0.f, 1.f, 0.f), m_engineManager->getDeltaTime() * 50.f);
     // m_tree->rotateObj(glm::vec3(1.f, 0.f, 0.f), getEngineManager()->getDeltaTime() * 50.f);
     // m_ape->setPosition(m_tree->getGlobalPosition() + (m_tree->getForward() * 3.f));
 }

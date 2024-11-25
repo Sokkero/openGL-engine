@@ -8,10 +8,6 @@
 
 namespace Engine
 {
-    class WindowManager;
-    class EngineManager;
-    class UserEventManager;
-
     /**
      * @brief The BasicNode class represents a basic node in the engine's scene graph.
      *
@@ -218,57 +214,6 @@ namespace Engine
             glm::vec3 getGlobalScale() const;
 
             /**
-             * @brief Sets the window manager for the engine.
-             *
-             * @param newWindowManager The new window manager to set.
-             */
-            static void setWindowManager(std::shared_ptr<WindowManager> newWindowManager)
-            {
-                WINDOW_MANAGER = std::move(newWindowManager);
-            };
-
-            /**
-             * @brief Gets the window manager for the engine.
-             *
-             * @return The window manager for the engine.
-             */
-            static std::shared_ptr<WindowManager> getWindowManager() { return WINDOW_MANAGER; };
-
-            /**
-             * @brief Sets the engine manager for the engine.
-             *
-             * @param newEngineManager The new engine manager to set.
-             */
-            static void setEngineManager(std::shared_ptr<EngineManager> newEngineManager)
-            {
-                ENGINE_MANAGER = std::move(newEngineManager);
-            };
-
-            /**
-             * @brief Gets the engine manager for the engine.
-             *
-             * @return The engine manager for the engine.
-             */
-            static std::shared_ptr<EngineManager> getEngineManager() { return ENGINE_MANAGER; };
-
-            /**
-             * @brief Sets the user event manager for the engine.
-             *
-             * @param newUserEventManager The new user event manager to set.
-             */
-            static void setUserEventManager(std::shared_ptr<UserEventManager> newUserEventManager)
-            {
-                USER_EVENT_MANAGER = std::move(newUserEventManager);
-            };
-
-            /**
-             * @brief Gets the user event manager for the engine.
-             *
-             * @return The user event manager for the engine.
-             */
-            static std::shared_ptr<UserEventManager> getUserEventManager() { return USER_EVENT_MANAGER; };
-
-            /**
              * @brief Gets the forward direction of this node.
              *
              * @return The forward direction of this node.
@@ -336,9 +281,5 @@ namespace Engine
             static unsigned int LASTID;
 
             static unsigned int getNewUniqueId() { return ++LASTID; }
-
-            static std::shared_ptr<WindowManager> WINDOW_MANAGER;
-            static std::shared_ptr<EngineManager> ENGINE_MANAGER;
-            static std::shared_ptr<UserEventManager> USER_EVENT_MANAGER;
     };
 } // namespace Engine

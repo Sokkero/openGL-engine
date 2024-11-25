@@ -14,7 +14,7 @@ SceneSettingsDebugWindow::SceneSettingsDebugWindow()
 
     setIsWindowClosable(false);
 
-    m_engineManager = getEngineManager();
+    m_engineManager = SingletonManager::get<EngineManager>();
 
     setWindowTitle("Scene Settings");
 

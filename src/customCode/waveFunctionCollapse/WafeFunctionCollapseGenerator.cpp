@@ -55,7 +55,10 @@ void WafeFunctionCollapseGenerator::initializeGrid()
     }
 
     m_initialized = true;
-    if(m_debugMode) { DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid initialized in: "); }
+    if(m_debugMode)
+    {
+        DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid initialized in: ");
+    }
 }
 
 void WafeFunctionCollapseGenerator::addFieldTypes(const std::vector<BasicFieldDataStruct>& fieldTypes)
@@ -96,8 +99,14 @@ void WafeFunctionCollapseGenerator::generateGrid()
     if(m_debugMode)
     {
         DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid generated in: ");
-        DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields), "WFCA | Time spent picking fields: ");
-        DebugUtils::PrintHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields), "WFCA | Time spent setting fields: ");
+        DebugUtils::PrintHumanReadableTimeDuration(
+                MathUtils::GetSum(m_timeSpentPickingFields),
+                "WFCA | Time spent picking fields: "
+        );
+        DebugUtils::PrintHumanReadableTimeDuration(
+                MathUtils::GetSum(m_timeSpentSettingFields),
+                "WFCA | Time spent setting fields: "
+        );
     }
 }
 
@@ -105,7 +114,10 @@ bool WafeFunctionCollapseGenerator::generateNextField()
 {
     double startTime = glfwGetTime();
     const std::shared_ptr<Field>& nextField = pickNextField();
-    if(m_debugMode) { m_timeSpentPickingFields.push_back(glfwGetTime() - startTime); }
+    if(m_debugMode)
+    {
+        m_timeSpentPickingFields.push_back(glfwGetTime() - startTime);
+    }
 
     if(!nextField)
     {
@@ -120,7 +132,10 @@ bool WafeFunctionCollapseGenerator::generateNextField()
 
     startTime = glfwGetTime();
     setField(nextField, tileChosen);
-    if(m_debugMode) { m_timeSpentSettingFields.push_back(glfwGetTime() - startTime); }
+    if(m_debugMode)
+    {
+        m_timeSpentSettingFields.push_back(glfwGetTime() - startTime);
+    }
 
     return true;
 }
@@ -183,34 +198,36 @@ const std::shared_ptr<Field> WafeFunctionCollapseGenerator::pickNextField() cons
     std::vector<std::thread> threads;
     for(const auto& row : m_grid)
     {
-        threads.emplace_back(([&]()
-                             {
-                                 for(const auto& field : row)
-                                 {
-                                     if(field->getIsFieldSet())
-                                     {
-                                         continue; // Tile already taken
-                                     }
+        threads.emplace_back((
+                [&]()
+                {
+                    for(const auto& field : row)
+                    {
+                        if(field->getIsFieldSet())
+                        {
+                            continue; // Tile already taken
+                        }
 
-                                     const size_t possibleTiles = field->getAllPossibleFieldTypes().size();
-                                     assert(possibleTiles > 0);
+                        const size_t possibleTiles = field->getAllPossibleFieldTypes().size();
+                        assert(possibleTiles > 0);
 
-                                     if(possibleTiles == nextPossibleTileAmount)
-                                     {
-                                         mtx.lock();
-                                         nextPossibleTiles.push_back(field);
-                                         mtx.unlock();
-                                     }
-                                     else if(possibleTiles < nextPossibleTileAmount)
-                                     {
-                                         mtx.lock();
-                                         nextPossibleTileAmount = possibleTiles;
-                                         nextPossibleTiles.clear();
-                                         nextPossibleTiles.push_back(field);
-                                         mtx.unlock();
-                                     }
-                                 }
-                             }));
+                        if(possibleTiles == nextPossibleTileAmount)
+                        {
+                            mtx.lock();
+                            nextPossibleTiles.push_back(field);
+                            mtx.unlock();
+                        }
+                        else if(possibleTiles < nextPossibleTileAmount)
+                        {
+                            mtx.lock();
+                            nextPossibleTileAmount = possibleTiles;
+                            nextPossibleTiles.clear();
+                            nextPossibleTiles.push_back(field);
+                            mtx.unlock();
+                        }
+                    }
+                }
+        ));
     }
 
     for(auto& thread : threads)

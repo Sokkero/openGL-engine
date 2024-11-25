@@ -17,8 +17,8 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     setIsWindowClosable(false);
 
     m_lastTimeStamp = glfwGetTime();
-    m_engineManager = getEngineManager();
-    m_windowManager = getWindowManager();
+    m_engineManager = SingletonManager::get<EngineManager>();
+    m_windowManager = SingletonManager::get<WindowManager>();
 
     setWindowTitle("Performance Monitor");
 

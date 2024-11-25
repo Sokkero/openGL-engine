@@ -9,9 +9,6 @@
 namespace Engine
 {
     unsigned int BasicNode::LASTID = 0;
-    std::shared_ptr<WindowManager> BasicNode::WINDOW_MANAGER = nullptr;
-    std::shared_ptr<EngineManager> BasicNode::ENGINE_MANAGER = nullptr;
-    std::shared_ptr<UserEventManager> BasicNode::USER_EVENT_MANAGER = nullptr;
 
     BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()) { m_nodeId = getNewUniqueId(); }
 
@@ -28,17 +25,13 @@ namespace Engine
         setParent(nullptr);
 
         const auto& thisNode = shared_from_this();
-
-        auto geometry = std::dynamic_pointer_cast<GeometryComponent>(thisNode);
-        if(geometry)
+        if(const auto geometry = std::dynamic_pointer_cast<GeometryComponent>(thisNode))
         {
-            ENGINE_MANAGER->removeGeometryFromScene(geometry->getNodeId());
+            SingletonManager::get<EngineManager>()->removeGeometryFromScene(geometry->getNodeId());
         }
-
-        auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(thisNode);
-        if(debugUi)
+        else if(const auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(thisNode))
         {
-            ENGINE_MANAGER->removeDebugUiFromScene(debugUi);
+            SingletonManager::get<EngineManager>()->removeDebugUiFromScene(debugUi->getNodeId());
         }
     }
 
@@ -56,16 +49,13 @@ namespace Engine
         m_childNodes.emplace_back(node);
         node->setParent(shared_from_this());
 
-        auto geometry = std::dynamic_pointer_cast<GeometryComponent>(node);
-        if(geometry)
+        if(auto geometry = std::dynamic_pointer_cast<GeometryComponent>(node))
         {
-            ENGINE_MANAGER->addGeometryToScene(geometry);
+            SingletonManager::get<EngineManager>()->addGeometryToScene(geometry);
         }
-
-        auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(node);
-        if(debugUi)
+        else if(auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(node))
         {
-            ENGINE_MANAGER->addDebugUiToScene(debugUi);
+            SingletonManager::get<EngineManager>()->addDebugUiToScene(debugUi);
         }
 
         node->start();
@@ -105,8 +95,9 @@ namespace Engine
     {
         for(const auto& child : m_childNodes)
         {
+            const auto& engineManager = SingletonManager::get<EngineManager>();
             child->callOnAllChildrenRecursiveAndSelf(
-                    [](BasicNode* node) -> void { ENGINE_MANAGER->removeGeometryFromScene(node); }
+                    [engineManager](BasicNode* node) -> void { engineManager->removeGeometryFromScene(node); }
             );
             child->cleanupNode();
             child->setParent(nullptr);
@@ -119,8 +110,9 @@ namespace Engine
 
     void BasicNode::detatchFromParent()
     {
+        const auto& engineManager = SingletonManager::get<EngineManager>();
         callOnAllChildrenRecursiveAndSelf(
-                [](BasicNode* node) -> void { ENGINE_MANAGER->removeGeometryFromScene(node); }
+                [engineManager](BasicNode* node) -> void { engineManager->removeGeometryFromScene(node); }
         );
         setParent(nullptr);
     }

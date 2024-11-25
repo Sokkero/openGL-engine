@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../SingletonManager.h"
+
 #include <string>
 #include <utility>
 
@@ -12,7 +14,7 @@ namespace Engine
     class EngineManager;
     class UserEventManager;
 
-    class WindowManager
+    class WindowManager : public SingletonBase
     {
         public:
             WindowManager();

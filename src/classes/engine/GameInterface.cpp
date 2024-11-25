@@ -2,7 +2,10 @@
 #include "GameInterface.h"
 
 #include "../nodeComponents/BasicNode.h"
+#include "EngineManager.h"
+#include "UserEventManager.h"
 #include "WindowEventCallbackHelper.h"
+#include "WindowManager.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -10,30 +13,18 @@
 
 namespace Engine
 {
-    GameInterface::GameInterface()
-        : m_engineManager(nullptr)
-        , m_windowManager(nullptr)
-        , m_userEventManager(nullptr)
-    {
-        m_windowManager = std::make_shared<WindowManager>();
-        m_windowManager->startWindow();
-
-        m_engineManager = std::make_shared<EngineManager>();
-        m_userEventManager = std::make_shared<UserEventManager>();
-
-        BasicNode::setWindowManager(m_windowManager);
-        BasicNode::setEngineManager(m_engineManager);
-        BasicNode::setUserEventManager(m_userEventManager);
-
-        WindowEventCallbackHelper::ENIGNE_MANAGER = m_engineManager;
-    }
+    GameInterface::GameInterface() { SingletonManager::get<WindowManager>()->startWindow(); }
 
     int GameInterface::startGame()
     {
-        if(!m_engineManager->engineStart())
+        const std::shared_ptr<EngineManager>& engineManager = SingletonManager::get<EngineManager>();
+        if(!engineManager->engineStart())
         {
             return 1;
         }
+
+        const std::shared_ptr<UserEventManager>& userEventManager = SingletonManager::get<UserEventManager>();
+        const std::shared_ptr<WindowManager>& windowManager = SingletonManager::get<WindowManager>();
 
         do
         {
@@ -41,21 +32,21 @@ namespace Engine
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
 
-            m_userEventManager->updateEvents(m_windowManager->getWindow());
-            m_engineManager->engineUpdate();
+            userEventManager->updateEvents(windowManager->getWindow());
+            engineManager->engineUpdate();
 
-            m_engineManager->engineDraw();
+            engineManager->engineDraw();
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            glfwSwapBuffers(m_windowManager->getWindow());
+            glfwSwapBuffers(windowManager->getWindow());
 
-            m_engineManager->engineLateUpdate();
+            engineManager->engineLateUpdate();
 
             glfwPollEvents();
 
-            m_engineManager->setDeltaTime();
-        } while(m_userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-                glfwWindowShouldClose(m_windowManager->getWindow()) == 0);
+            engineManager->setDeltaTime();
+        } while(userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+                glfwWindowShouldClose(windowManager->getWindow()) == 0);
 
         return 0;
     }

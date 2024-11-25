@@ -2,23 +2,28 @@
 
 #include "../nodeComponents/UiDebugWindow.h"
 
-namespace Engine::Ui
+namespace Engine
 {
-    class UiElementPlot;
-    class UiElementText;
+    class EngineManager;
 
-    class SceneSettingsDebugWindow : public UiDebugWindow
+    namespace Ui
     {
-        public:
-            SceneSettingsDebugWindow();
-            ~SceneSettingsDebugWindow() = default;
+        class UiElementPlot;
+        class UiElementText;
 
-            void update() override;
+        class SceneSettingsDebugWindow : public UiDebugWindow
+        {
+            public:
+                SceneSettingsDebugWindow();
+                ~SceneSettingsDebugWindow() = default;
 
-        private:
-            void onWireframeToggle(bool value) const;
-            void onGridToggle(bool value) const;
+                void update() override;
 
-            std::shared_ptr<EngineManager> m_engineManager;
-    };
-} // namespace Engine::Ui
+            private:
+                void onWireframeToggle(bool value) const;
+                void onGridToggle(bool value) const;
+
+                std::shared_ptr<EngineManager> m_engineManager;
+        };
+    } // namespace Ui
+} // namespace Engine

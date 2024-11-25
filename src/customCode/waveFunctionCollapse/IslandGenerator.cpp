@@ -38,10 +38,11 @@ void IslandGenerator::setFieldCallback(const std::shared_ptr<Field>& field, cons
     const float posX = (fieldPos.x * FIELD_SIZE.x) - startPosX;
     const float posY = (fieldPos.y * FIELD_SIZE.y) - startPosY;
 
-    const std::shared_ptr<Engine::RenderManager> renderManager = getEngineManager()->getRenderManager();
+    const auto& engineManager = SingletonManager::get<Engine::EngineManager>();
+    const auto& renderManager = engineManager->getRenderManager();
 
     std::shared_ptr<Engine::GeometryComponent> planeObj = std::make_shared<Engine::GeometryComponent>();
-    planeObj->setObjectData(getEngineManager()->getRenderManager()->registerObject("resources/objects/plane.obj"));
+    planeObj->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
     planeObj->setShader(std::make_shared<ColorShader>(renderManager));
     planeObj->setRotation(glm::vec3(-90.f, 0.f, 0.f));
     planeObj->setPosition(glm::vec3(posX, 0.f, posY));

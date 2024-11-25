@@ -62,10 +62,10 @@ static inline bool PreventSingleCornersOfT(const glm::ivec2& pos, const grid2d& 
             continue;
         }
 
-        const bool neighbor1CanT = grid[(offsetGroup[0] + pos).x][(offsetGroup[0] + pos).y]
-                                                 ->getCanBeFieldType(fieldType);
-        const bool neighbor2CanT = grid[(offsetGroup[2] + pos).x][(offsetGroup[2] + pos).y]
-                                                 ->getCanBeFieldType(fieldType);
+        const bool neighbor1CanT =
+                grid[(offsetGroup[0] + pos).x][(offsetGroup[0] + pos).y]->getCanBeFieldType(fieldType);
+        const bool neighbor2CanT =
+                grid[(offsetGroup[2] + pos).x][(offsetGroup[2] + pos).y]->getCanBeFieldType(fieldType);
 
         if(!neighbor1CanT && !neighbor2CanT)
         {
@@ -127,10 +127,8 @@ DeepWaterFieldDataStruct::DeepWaterFieldDataStruct()
     : BasicFieldDataStruct(
               FieldTypeEnum::deepWater,
               1,
-              {
-                CheckAllNeighborsCanBeOfTypesT<ShallowWaterFieldDataStruct, DeepWaterFieldDataStruct>,
-                DontSqueezeBetweenT<ShallowWaterFieldDataStruct>
-              }
+              { CheckAllNeighborsCanBeOfTypesT<ShallowWaterFieldDataStruct, DeepWaterFieldDataStruct>,
+                DontSqueezeBetweenT<ShallowWaterFieldDataStruct> }
       )
 {
 }
@@ -139,11 +137,9 @@ ShallowWaterFieldDataStruct::ShallowWaterFieldDataStruct()
     : BasicFieldDataStruct(
               FieldTypeEnum::shallowWater,
               2,
-              {
-                CheckAllNeighborsCanBeOfTypesT<ShallowWaterFieldDataStruct, DeepWaterFieldDataStruct, BeachFieldDataStruct>,
+              { CheckAllNeighborsCanBeOfTypesT<ShallowWaterFieldDataStruct, DeepWaterFieldDataStruct, BeachFieldDataStruct>,
                 DontSqueezeBetweenT<BeachFieldDataStruct>,
-                DontSqueezeBetweenT<DeepWaterFieldDataStruct>
-              }
+                DontSqueezeBetweenT<DeepWaterFieldDataStruct> }
       )
 {
 }
@@ -152,11 +148,9 @@ BeachFieldDataStruct::BeachFieldDataStruct()
     : BasicFieldDataStruct(
               FieldTypeEnum::beach,
               2,
-              {
-                CheckAllNeighborsCanBeOfTypesT<ShallowWaterFieldDataStruct, BeachFieldDataStruct, GrasFieldDataStruct>,
+              { CheckAllNeighborsCanBeOfTypesT<ShallowWaterFieldDataStruct, BeachFieldDataStruct, GrasFieldDataStruct>,
                 PreventSingleCornersOfT<BeachFieldDataStruct>,
-                DontSqueezeBetweenT<GrasFieldDataStruct>
-              }
+                DontSqueezeBetweenT<GrasFieldDataStruct> }
       )
 {
 }
@@ -165,11 +159,9 @@ GrasFieldDataStruct::GrasFieldDataStruct()
     : BasicFieldDataStruct(
               FieldTypeEnum::grass,
               10,
-              {
-                CheckAllNeighborsCanBeOfTypesT<StoneFieldDataStruct, BeachFieldDataStruct, GrasFieldDataStruct>,
+              { CheckAllNeighborsCanBeOfTypesT<StoneFieldDataStruct, BeachFieldDataStruct, GrasFieldDataStruct>,
                 DontSqueezeBetweenT<StoneFieldDataStruct>,
-                DontSqueezeBetweenT<BeachFieldDataStruct>
-              }
+                DontSqueezeBetweenT<BeachFieldDataStruct> }
       )
 {
 }
@@ -193,9 +185,9 @@ HillFieldDataStruct::HillFieldDataStruct()
               FieldTypeEnum::hill,
               2,
               {
-                CheckAllNeighborsCanBeOfTypesT<HillFieldDataStruct, StoneFieldDataStruct, MountainFieldDataStruct>,
-                PreventSingleCornersOfT<HillFieldDataStruct>,
-                DontSqueezeBetweenT<MountainFieldDataStruct>,
+                      CheckAllNeighborsCanBeOfTypesT<HillFieldDataStruct, StoneFieldDataStruct, MountainFieldDataStruct>,
+                      PreventSingleCornersOfT<HillFieldDataStruct>,
+                      DontSqueezeBetweenT<MountainFieldDataStruct>,
               }
       )
 {
@@ -206,8 +198,8 @@ MountainFieldDataStruct::MountainFieldDataStruct()
               FieldTypeEnum::mountain,
               1,
               {
-                CheckAllNeighborsCanBeOfTypesT<HillFieldDataStruct, MountainFieldDataStruct>,
-                PreventSingleCornersOfT<MountainFieldDataStruct>,
+                      CheckAllNeighborsCanBeOfTypesT<HillFieldDataStruct, MountainFieldDataStruct>,
+                      PreventSingleCornersOfT<MountainFieldDataStruct>,
               }
       )
 {
