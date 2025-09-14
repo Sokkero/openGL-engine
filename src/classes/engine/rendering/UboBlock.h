@@ -1,9 +1,9 @@
 #pragma once
 
 #include <GL/glew.h>
-#include <utility>
 #include <stdio.h>
 #include <stdlib.h>
+#include <utility>
 
 namespace Engine
 {

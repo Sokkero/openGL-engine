@@ -1,10 +1,10 @@
 #pragma once
 
+#include <functional>
 #include <glm/ext/vector_int2.hpp>
 #include <glm/vec3.hpp>
 #include <string>
 #include <vector>
-#include <functional>
 
 // Gets all 4 neighbors that are directly adjacent
 inline static std::vector<glm::ivec2> GetDirectNeighborOffsets()

@@ -1,13 +1,13 @@
 #pragma once
 
-#include "UiElement.h"
 #include "../helper/MathUtils.h"
+#include "UiElement.h"
 
 #include <implot.h>
+#include <map>
 #include <string>
 #include <utility>
 #include <vector>
-#include <map>
 
 namespace Engine::Ui
 {
@@ -15,25 +15,37 @@ namespace Engine::Ui
     {
         public:
             UiElementPieChart(const std::string& title, const std::vector<const char*>& fieldLabels)
-                : m_maxValues(5),
-                  m_colorScheme(ImPlotColormap_Pastel),
-                  m_chartTitle(title),
-                  m_labels(fieldLabels)
+                : m_maxValues(5)
+                , m_colorScheme(ImPlotColormap_Pastel)
+                , m_chartTitle(title)
+                , m_labels(fieldLabels)
             {
                 for(int i = 0; i < m_labels.size(); i++)
                 {
                     m_averageValues.push_back(0);
                 }
             };
+
             ~UiElementPieChart() = default;
 
             void drawUi() override
             {
                 ImPlot::PushColormap(m_colorScheme);
-                if (ImPlot::BeginPlot(m_chartTitle.c_str(), ImVec2(260,350), ImPlotFlags_Equal | ImPlotFlags_NoMouseText)) {
+                if(ImPlot::BeginPlot(m_chartTitle.c_str(), ImVec2(260, 350), ImPlotFlags_Equal | ImPlotFlags_NoMouseText))
+                {
                     ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                     ImPlot::SetupAxesLimits(0, 1, 0, 1);
-                    ImPlot::PlotPieChart(m_labels.data(), m_averageValues.data(), (int)m_labels.size(), 0.5, 0.5, 0.4, "%.2f", 90, ImPlotPieChartFlags_Normalize);
+                    ImPlot::PlotPieChart(
+                            m_labels.data(),
+                            m_averageValues.data(),
+                            (int)m_labels.size(),
+                            0.5,
+                            0.5,
+                            0.4,
+                            "%.2f",
+                            90,
+                            ImPlotPieChartFlags_Normalize
+                    );
                     ImPlot::EndPlot();
                 }
                 ImPlot::PopColormap();

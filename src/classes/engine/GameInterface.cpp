@@ -2,11 +2,11 @@
 #include "GameInterface.h"
 
 #include "../nodeComponents/BasicNode.h"
+#include "DebugModel.h"
 #include "EngineManager.h"
 #include "UserEventManager.h"
 #include "WindowEventCallbackHelper.h"
 #include "WindowManager.h"
-#include "DebugModel.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>

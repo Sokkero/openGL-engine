@@ -1,12 +1,12 @@
 #include "PerformanceDebugWindow.h"
 
+#include "../engine/DebugModel.h"
 #include "../engine/EngineManager.h"
 #include "../engine/WindowManager.h"
-#include "../engine/DebugModel.h"
 #include "../engine/rendering/RenderManager.h"
 #include "../uiElements/UiElementButton.h"
-#include "../uiElements/UiElementPlot.h"
 #include "../uiElements/UiElementPieChart.h"
+#include "../uiElements/UiElementPlot.h"
 #include "../uiElements/UiElementRadio.h"
 #include "../uiElements/UiElementText.h"
 
@@ -38,7 +38,8 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     m_frameTimer = std::make_shared<UiElementText>("ms/frame: inf");
     addContent(m_frameTimer);
 
-    m_timeDistributionGraph = std::make_shared<UiElementPieChart>("Frame time distribution (ms)", DebugModel::getAllEnumStrings());
+    m_timeDistributionGraph =
+            std::make_shared<UiElementPieChart>("Frame time distribution (ms)", DebugModel::getAllEnumStrings());
     addContent(m_timeDistributionGraph);
 }
 
