@@ -13,7 +13,7 @@ WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin() {}
 
 void WafeFunctionCollapseSceneOrigin::start()
 {
-    const glm::ivec2 gridDimension = glm::ivec2(50, 50);
+    const glm::ivec2 gridDimension = glm::ivec2(100, 100);
 
     const auto& engineManager = SingletonManager::get<Engine::EngineManager>();
     engineManager->getRenderManager()->getAmbientLightUbo()->setIntensity(.7f);
