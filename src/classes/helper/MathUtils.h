@@ -6,7 +6,7 @@ class MathUtils
 {
     public:
         template<typename T>
-        static double GetAverage(const std::vector<T>& numbers)
+        static T GetAverage(const std::vector<T>& numbers)
         {
             static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
 
@@ -20,7 +20,7 @@ class MathUtils
         }
 
         template<typename T>
-        static double GetSum(const std::vector<T>& numbers)
+        static T GetSum(const std::vector<T>& numbers)
         {
             static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
 
@@ -33,7 +33,7 @@ class MathUtils
         }
 
         template<typename T>
-        static double GetMax(const std::vector<T>& numbers)
+        static T GetMax(const std::vector<T>& numbers)
         {
             static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
 
@@ -49,7 +49,7 @@ class MathUtils
         }
 
         template<typename T>
-        static double GetMin(const std::vector<T>& numbers)
+        static T GetMin(const std::vector<T>& numbers)
         {
             static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
 

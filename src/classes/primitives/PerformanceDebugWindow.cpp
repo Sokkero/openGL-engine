@@ -2,9 +2,11 @@
 
 #include "../engine/EngineManager.h"
 #include "../engine/WindowManager.h"
+#include "../engine/DebugModel.h"
 #include "../engine/rendering/RenderManager.h"
 #include "../uiElements/UiElementButton.h"
 #include "../uiElements/UiElementPlot.h"
+#include "../uiElements/UiElementPieChart.h"
 #include "../uiElements/UiElementRadio.h"
 #include "../uiElements/UiElementText.h"
 
@@ -19,14 +21,9 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     m_lastTimeStamp = glfwGetTime();
     m_engineManager = SingletonManager::get<EngineManager>();
     m_windowManager = SingletonManager::get<WindowManager>();
+    m_debugModel = SingletonManager::get<DebugModel>();
 
     setWindowTitle("Performance Monitor");
-
-    m_fpsCounter = std::make_shared<UiElementPlot>("FPS: inf");
-    addContent(m_fpsCounter);
-
-    m_frameTimer = std::make_shared<UiElementText>("ms/frame: inf");
-    addContent(m_frameTimer);
 
     auto vsyncRadio = std::make_shared<UiElementRadio>(
             m_windowManager->getVsync(),
@@ -34,25 +31,47 @@ PerformanceDebugWindow::PerformanceDebugWindow()
             std::bind(&PerformanceDebugWindow::onVsyncToggle, this, std::placeholders::_1)
     );
     addContent(vsyncRadio);
+
+    m_fpsCounter = std::make_shared<UiElementPlot>("FPS: inf");
+    addContent(m_fpsCounter);
+
+    m_frameTimer = std::make_shared<UiElementText>("ms/frame: inf");
+    addContent(m_frameTimer);
+
+    m_timeDistributionGraph = std::make_shared<UiElementPieChart>("Frame time distribution (ms)", DebugModel::getAllEnumStrings());
+    addContent(m_timeDistributionGraph);
 }
 
-void PerformanceDebugWindow::update() { updateFrameCounter(); }
+void PerformanceDebugWindow::update()
+{
+    if(glfwGetTime() - m_lastTimeStamp >= 0.1)
+    {
+        updateFrameCounter();
+        updateTimeDistributionGraph();
+    }
+}
 
 void PerformanceDebugWindow::onVsyncToggle(bool value) { m_windowManager->setVsync(value); }
 
 void PerformanceDebugWindow::updateFrameCounter()
 {
-    if(glfwGetTime() - m_lastTimeStamp >= 0.5)
+    int frames = m_engineManager->getFpsCount();
+    std::string fpsText = "FPS: " + std::to_string(frames);
+    m_fpsCounter->setText(fpsText);
+    m_fpsCounter->addValue((float)frames);
+
+    float msTime = 1000.f / (float)frames;
+    fpsText = "Average ms/frame: " + std::to_string(msTime);
+    m_frameTimer->setText(fpsText);
+
+    m_lastTimeStamp = glfwGetTime();
+}
+
+void PerformanceDebugWindow::updateTimeDistributionGraph()
+{
+    for(const auto& pair : m_debugModel->getCalculationTimeData())
     {
-        int frames = m_engineManager->getFpsCount();
-        std::string fpsText = "FPS: " + std::to_string(frames);
-        m_fpsCounter->setText(fpsText);
-        m_fpsCounter->addValue((float)frames);
-
-        float msTime = 1000.f / (float)frames;
-        fpsText = "Average ms/frame: " + std::to_string(msTime);
-        m_frameTimer->setText(fpsText);
-
-        m_lastTimeStamp = glfwGetTime();
+        // *1000 ms -> s
+        m_timeDistributionGraph->addValue(DebugModel::EnumToString(pair.first), pair.second * 1000);
     }
 }

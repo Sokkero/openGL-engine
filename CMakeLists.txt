@@ -21,12 +21,14 @@ else()
 endif()
 
 include_directories(
-        external/SOIL/
         external/imgui/
         external/imgui/backends/
+        external/implot/
 )
 
 FILE(GLOB IMGUI
+        external/implot/*.cpp
+        external/implot/*.h
         external/imgui/*.cpp
         external/imgui/*.h
         external/imgui/backends/imgui_impl_glfw.h
