@@ -2,6 +2,7 @@
 
 #include "UiElement.h"
 
+#include <functional>
 #include <string>
 #include <utility>
 

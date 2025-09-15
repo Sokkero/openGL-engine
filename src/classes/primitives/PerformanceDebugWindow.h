@@ -13,6 +13,7 @@ namespace Engine
         class UiElementPlot;
         class UiElementPieChart;
         class UiElementText;
+        class UiElementCollapsableSection;
 
         class PerformanceDebugWindow : public UiDebugWindow
         {
@@ -27,6 +28,7 @@ namespace Engine
 
                 void updateFrameCounter();
                 void updateTimeDistributionGraph();
+                void updateRenderTimeDistributionGraph();
 
                 std::shared_ptr<EngineManager> m_engineManager;
                 std::shared_ptr<WindowManager> m_windowManager;
@@ -34,6 +36,8 @@ namespace Engine
                 std::shared_ptr<UiElementPlot> m_fpsCounter;
                 std::shared_ptr<UiElementText> m_frameTimer;
                 std::shared_ptr<UiElementPieChart> m_timeDistributionGraph;
+                std::shared_ptr<UiElementPieChart> m_renderTimeDistributionGraph;
+                std::shared_ptr<UiElementCollapsableSection> m_detailsSection;
 
                 double m_lastTimeStamp;
         };

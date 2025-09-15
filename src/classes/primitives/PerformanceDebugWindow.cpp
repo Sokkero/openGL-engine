@@ -5,6 +5,7 @@
 #include "../engine/WindowManager.h"
 #include "../engine/rendering/RenderManager.h"
 #include "../uiElements/UiElementButton.h"
+#include "../uiElements/UiElementCollapsableSection.h"
 #include "../uiElements/UiElementPieChart.h"
 #include "../uiElements/UiElementPlot.h"
 #include "../uiElements/UiElementRadio.h"
@@ -38,16 +39,37 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     m_frameTimer = std::make_shared<UiElementText>("ms/frame: inf");
     addContent(m_frameTimer);
 
-    m_timeDistributionGraph =
-            std::make_shared<UiElementPieChart>("Frame time distribution (ms)", DebugModel::getAllEnumStrings());
-    addContent(m_timeDistributionGraph);
+    m_detailsSection = std::make_shared<UiElementCollapsableSection>("Details");
+    m_detailsSection->setCallback(
+            [this](bool isOpen)
+            {
+                if(!isOpen)
+                {
+                    m_timeDistributionGraph->clearValues();
+                }
+            }
+    );
+    addContent(m_detailsSection);
+
+    m_timeDistributionGraph = std::make_shared<UiElementPieChart>(
+            "Frame time distribution (ms)",
+            DebugUtils::getAllLifecycleEventsEnumStrings()
+    );
+
+    m_detailsSection->addContent(m_timeDistributionGraph);
 }
 
 void PerformanceDebugWindow::update()
 {
-    if(glfwGetTime() - m_lastTimeStamp >= 0.1)
+    if(glfwGetTime() - m_lastTimeStamp < 0.1)
     {
-        updateFrameCounter();
+        return;
+    }
+
+    updateFrameCounter();
+
+    if(m_detailsSection->getIsCurrentlyOpen())
+    {
         updateTimeDistributionGraph();
     }
 }
@@ -73,6 +95,15 @@ void PerformanceDebugWindow::updateTimeDistributionGraph()
     for(const auto& pair : m_debugModel->getCalculationTimeData())
     {
         // *1000 ms -> s
-        m_timeDistributionGraph->addValue(DebugModel::EnumToString(pair.first), pair.second * 1000);
+        m_timeDistributionGraph->addValue(DebugUtils::LifecycleEventsEnumToString(pair.first), pair.second * 1000);
+    }
+}
+
+void PerformanceDebugWindow::updateRenderTimeDistributionGraph()
+{
+    for(const auto& pair : m_debugModel->getCalculationTimeData())
+    {
+        // *1000 ms -> s
+        m_timeDistributionGraph->addValue(DebugUtils::LifecycleEventsEnumToString(pair.first), pair.second * 1000);
     }
 }

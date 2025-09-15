@@ -14,10 +14,10 @@ namespace Engine::Ui
     class UiElementPieChart : public UiElement
     {
         public:
-            UiElementPieChart(const std::string& title, const std::vector<const char*>& fieldLabels)
-                : m_maxValues(5)
+            UiElementPieChart(std::string title, const std::vector<const char*>& fieldLabels, const int maxValues = 10)
+                : m_maxValues(maxValues)
                 , m_colorScheme(ImPlotColormap_Pastel)
-                , m_chartTitle(title)
+                , m_chartTitle(std::move(title))
                 , m_labels(fieldLabels)
             {
                 for(int i = 0; i < m_labels.size(); i++)
@@ -31,7 +31,7 @@ namespace Engine::Ui
             void drawUi() override
             {
                 ImPlot::PushColormap(m_colorScheme);
-                if(ImPlot::BeginPlot(m_chartTitle.c_str(), ImVec2(260, 350), ImPlotFlags_Equal | ImPlotFlags_NoMouseText))
+                if(ImPlot::BeginPlot(m_chartTitle.c_str(), ImVec2(260, 300), ImPlotFlags_Equal | ImPlotFlags_NoMouseText))
                 {
                     ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                     ImPlot::SetupAxesLimits(0, 1, 0, 1);
@@ -84,11 +84,7 @@ namespace Engine::Ui
                 }
             };
 
-            int getMaxValues() const { return m_maxValues; };
-
             void setMaxValues(int values) { m_maxValues = values; };
-
-            ImPlotColormap_ getColorSchema() const { return m_colorScheme; };
 
             void setColorSchema(ImPlotColormap_ schema) { m_colorScheme = schema; };
 

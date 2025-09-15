@@ -34,36 +34,36 @@ namespace Engine
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            debugModel->setCalculationTimeData(DebugModel::ImGuiNewFrame, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::ImGuiNewFrame, glfwGetTime() - tempTimestamp);
 
             tempTimestamp = glfwGetTime();
             userEventManager->updateEvents(windowManager->getWindow());
-            debugModel->setCalculationTimeData(DebugModel::UserEventsUpdate, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::UserEventsUpdate, glfwGetTime() - tempTimestamp);
 
             tempTimestamp = glfwGetTime();
             engineManager->engineUpdate();
-            debugModel->setCalculationTimeData(DebugModel::EngineUpdate, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::EngineUpdate, glfwGetTime() - tempTimestamp);
 
             tempTimestamp = glfwGetTime();
             engineManager->engineDraw();
-            debugModel->setCalculationTimeData(DebugModel::EngineDraw, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::EngineDraw, glfwGetTime() - tempTimestamp);
 
             tempTimestamp = glfwGetTime();
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            debugModel->setCalculationTimeData(DebugModel::ImGuiDraw, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::ImGuiDraw, glfwGetTime() - tempTimestamp);
 
             tempTimestamp = glfwGetTime();
             glfwSwapBuffers(windowManager->getWindow());
-            debugModel->setCalculationTimeData(DebugModel::BufferSwap, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::BufferSwap, glfwGetTime() - tempTimestamp);
 
             tempTimestamp = glfwGetTime();
             engineManager->engineLateUpdate();
-            debugModel->setCalculationTimeData(DebugModel::EngineLateUpdate, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::EngineLateUpdate, glfwGetTime() - tempTimestamp);
 
             tempTimestamp = glfwGetTime();
             glfwPollEvents();
-            debugModel->setCalculationTimeData(DebugModel::glfwPoll, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::glfwPoll, glfwGetTime() - tempTimestamp);
 
             engineManager->setDeltaTime();
         } while(userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS &&
