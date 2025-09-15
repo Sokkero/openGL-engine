@@ -17,7 +17,7 @@ namespace Engine
         , m_windowDimensions(glm::vec2(1200, 600))
         , m_textureSamples(4)
         , m_windowTitle("My little Engine")
-        , m_vsync(true)
+        , m_vsync(false)
     {
     }
 
@@ -70,6 +70,8 @@ namespace Engine
             fprintf(stderr, "Failed to initialize GLEW...\n");
             return false;
         }
+
+        glfwSwapInterval(m_vsync);
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
         // glfwSetInputMode(m_gameWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);

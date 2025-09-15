@@ -49,12 +49,17 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
     const auto& objectData = object->getObjectData();
     glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * object->getGlobalModelMatrix();
 
+    // #PIF This needs to be done once and sent to the shaders, instead of per object
+    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix();
+
+    // #PIF This needs to be sent to the shader and then calculated there
+    // #PIF Also, the globalModelMatrix should be cached and not need to be calculated each frame
+    mvp = mvp * object->getGlobalModelMatrix();
+    // #PIF Cache currently bound shader and only switch if required
     glUseProgram(getShaderIdentifier().second);
 
-    // Load MVP matrix into uniform
     glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);
 
-    // Load tint value into uniform
     const glm::vec4 tint = object->getTint();
     glUniform4f(getActiveUniform("tintColor"), tint.x, tint.y, tint.z, tint.w);
 
@@ -91,7 +96,6 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
 
-    // Drawing the object
     glDrawElements(
             GL_TRIANGLES,                 // mode
             objectData->getVertexCount(), // count
@@ -101,6 +105,7 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
 
     loadCustomRenderData(object, camera);
 
+    // #PIF Remove this entirely
     for(const GLuint arrayIndex : m_usedAttribArrays)
     {
         glDisableVertexAttribArray(arrayIndex);
