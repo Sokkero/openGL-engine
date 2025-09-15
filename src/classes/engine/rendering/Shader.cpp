@@ -47,7 +47,6 @@ void Shader::renderVertices(std::nullptr_t object, Engine::CameraComponent* came
 void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, Engine::CameraComponent* camera)
 {
     const auto& objectData = object->getObjectData();
-    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix() * object->getGlobalModelMatrix();
 
     // #PIF This needs to be done once and sent to the shaders, instead of per object
     glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix();
