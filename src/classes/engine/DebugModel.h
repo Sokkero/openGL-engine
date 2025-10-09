@@ -28,7 +28,18 @@ namespace Engine
                 return m_calculationTimes;
             }
 
+            void setDrawSectionTimeData(const char* section, double time)
+            {
+                m_drawSectionTimes[section] = time;
+            }
+
+            std::map<const char*, double> getDrawSectionTimeData() const
+            {
+                return m_drawSectionTimes;
+            }
+
         private:
             std::map<DebugUtils::LifecycleEventsEnum, double> m_calculationTimes;
+            std::map<const char*, double> m_drawSectionTimes;
     };
 } // namespace Engine

@@ -1,5 +1,6 @@
 
 #include "Shader.h"
+#include "../DebugModel.h"
 
 using namespace Engine;
 
@@ -46,21 +47,40 @@ void Shader::renderVertices(std::nullptr_t object, Engine::CameraComponent* came
 
 void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, Engine::CameraComponent* camera)
 {
-    const auto& objectData = object->getObjectData();
+    const std::shared_ptr<DebugModel>& debugModel = SingletonManager::get<DebugModel>();
 
+    const std::shared_ptr<ObjectData>& objectData = object->getObjectData();
+
+    double tempTimestamp = glfwGetTime();
     // #PIF This needs to be done once and sent to the shaders, instead of per object
     glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix();
+    debugModel->setDrawSectionTimeData("0.5", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
 
     // #PIF This needs to be sent to the shader and then calculated there
     // #PIF Also, the globalModelMatrix should be cached and not need to be calculated each frame
     mvp = mvp * object->getGlobalModelMatrix();
+
+
+    debugModel->setDrawSectionTimeData("1", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
+
     // #PIF Cache currently bound shader and only switch if required
     glUseProgram(getShaderIdentifier().second);
 
+    debugModel->setDrawSectionTimeData("2", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
+
     glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);
+
+    debugModel->setDrawSectionTimeData("3", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
 
     const glm::vec4 tint = object->getTint();
     glUniform4f(getActiveUniform("tintColor"), tint.x, tint.y, tint.z, tint.w);
+
+    debugModel->setDrawSectionTimeData("4", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
 
     if(objectData->m_vertexBuffer != -1)
     {
@@ -93,7 +113,13 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
         }
     }
 
+    debugModel->setDrawSectionTimeData("5", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
+
+    debugModel->setDrawSectionTimeData("6", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
 
     glDrawElements(
             GL_TRIANGLES,                 // mode
@@ -102,7 +128,13 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
             nullptr                       // element array buffer offset
     );
 
+    debugModel->setDrawSectionTimeData("7", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
+
     loadCustomRenderData(object, camera);
+
+    debugModel->setDrawSectionTimeData("8", glfwGetTime() - tempTimestamp);
+    tempTimestamp = glfwGetTime();
 
     // #PIF Remove this entirely
     for(const GLuint arrayIndex : m_usedAttribArrays)
@@ -110,6 +142,7 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
         glDisableVertexAttribArray(arrayIndex);
     }
     m_usedAttribArrays.clear();
+    debugModel->setDrawSectionTimeData("9", glfwGetTime() - tempTimestamp);
 }
 
 GLint Shader::getActiveUniform(const std::string& uniform) const

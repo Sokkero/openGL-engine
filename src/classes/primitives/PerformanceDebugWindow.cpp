@@ -55,8 +55,14 @@ PerformanceDebugWindow::PerformanceDebugWindow()
             "Frame time distribution (ms)",
             DebugUtils::getAllLifecycleEventsEnumStrings()
     );
-
     m_detailsSection->addContent(m_timeDistributionGraph);
+
+    const std::vector<const char*> names = {"0.5", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
+    m_testGraph = std::make_shared<UiElementPieChart>(
+            "Shader sections",
+            names
+    );
+    m_detailsSection->addContent(m_testGraph);
 }
 
 void PerformanceDebugWindow::update()
@@ -97,13 +103,10 @@ void PerformanceDebugWindow::updateTimeDistributionGraph()
         // *1000 ms -> s
         m_timeDistributionGraph->addValue(DebugUtils::LifecycleEventsEnumToString(pair.first), pair.second * 1000);
     }
-}
 
-void PerformanceDebugWindow::updateRenderTimeDistributionGraph()
-{
-    for(const auto& pair : m_debugModel->getCalculationTimeData())
+    for(const auto& pair : m_debugModel->getDrawSectionTimeData())
     {
         // *1000 ms -> s
-        m_timeDistributionGraph->addValue(DebugUtils::LifecycleEventsEnumToString(pair.first), pair.second * 1000);
+        m_testGraph->addValue(pair.first, pair.second);
     }
 }
