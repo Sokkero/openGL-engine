@@ -12,3 +12,6 @@ cmake-build-debug/
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+
+.claude/plans/
+.claude/settings.local.json
