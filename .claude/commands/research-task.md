@@ -3,7 +3,7 @@
 ## Research for issue: $ARGUMENTS
 
 **GOAL**
-Create a detailed and researched todo list, based on the existing code-base to achieve the goal of the provided issue for the developer.
+Create a todo list, based on the existing code-base to achieve the goal of the provided issue for the developer.
 
 **IMPORTANT**
 Everytime you start a new step - inform the user which step you are starting
@@ -48,7 +48,7 @@ Brainstorm a possible solution based on all gathered knowledge.
 
 ### Step 4 - Write the output file
 - Write the plan as a well-structured markdown following the template provided at the bottom of this file
-- Choose a fitting name based on the goal of the issue (maximum 3 words in snake_case)
+- Choose a fitting name based on the goal of the issue (1-3 words in snake_case)
 - Save the file under `.claude/plans/`
 
 Template:
