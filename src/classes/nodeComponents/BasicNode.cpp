@@ -167,11 +167,20 @@ namespace Engine
         glm::mat4 matrix = getLocalModelMatrix();
         if(m_parentNode.lock())
         {
-            matrix = m_parentNode.lock()->getCachedGlobalModelMatrix() * matrix;
+            matrix = m_parentNode.lock()->getGlobalModelMatrix() * matrix;
         }
 
         setCachedGlobalModelMatrix(matrix);
         setIsDirty(false);
+    }
+
+    void BasicNode::markAsDirty()
+    {
+        setIsDirty(true);
+        for(const auto& childNode : m_childNodes)
+        {
+            childNode->markAsDirty();
+        }
     }
 
     glm::quat BasicNode::getGlobalRotation()
