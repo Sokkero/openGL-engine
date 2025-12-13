@@ -153,31 +153,57 @@ namespace Engine
         func(this);
     }
 
-    glm::mat4 BasicNode::getGlobalModelMatrix() const
+    glm::mat4 BasicNode::getGlobalModelMatrix()
     {
-        if(m_parentNode.lock())
+        if(getIsDirty())
         {
-            return m_parentNode.lock()->getGlobalModelMatrix() * getModelMatrix();
+            updateGlobalModelMatrix();
         }
-        return getModelMatrix();
+        return getCachedGlobalModelMatrix();
     }
 
-    glm::quat BasicNode::getGlobalRotation() const
+    void BasicNode::updateGlobalModelMatrix()
     {
+        glm::mat4 matrix = getLocalModelMatrix();
         if(m_parentNode.lock())
         {
-            return m_parentNode.lock()->getGlobalRotation() * getRotationQuat();
+            matrix = m_parentNode.lock()->getCachedGlobalModelMatrix() * matrix;
         }
-        return getRotationQuat();
+
+        setCachedGlobalModelMatrix(matrix);
+        setIsDirty(false);
     }
 
-    glm::vec3 BasicNode::getGlobalPosition() const
+    glm::quat BasicNode::getGlobalRotation()
+    {
+        const glm::mat4 matrix = getGlobalModelMatrix();
+
+        // Extract the 3x3 rotation/scale matrix
+        glm::mat3 rotScale = glm::mat3(matrix);
+
+        // Extract scale (length of each basis vector)
+        glm::vec3 scale;
+        scale.x = glm::length(glm::vec3(rotScale[0]));
+        scale.y = glm::length(glm::vec3(rotScale[1]));
+        scale.z = glm::length(glm::vec3(rotScale[2]));
+
+        // Remove scale from the rotation matrix
+        glm::mat3 rotationMatrix;
+        rotationMatrix[0] = rotScale[0] / scale.x;
+        rotationMatrix[1] = rotScale[1] / scale.y;
+        rotationMatrix[2] = rotScale[2] / scale.z;
+
+        // Convert rotation matrix to quaternion
+        return glm::quat_cast(rotationMatrix);
+    }
+
+    glm::vec3 BasicNode::getGlobalPosition()
     {
         glm::mat4 matrix = getGlobalModelMatrix();
         return matrix[3];
     }
 
-    glm::vec3 BasicNode::getGlobalScale() const
+    glm::vec3 BasicNode::getGlobalScale()
     {
         glm::vec3 scale;
         const auto& matrix = getGlobalModelMatrix();
@@ -187,32 +213,32 @@ namespace Engine
         return scale;
     }
 
-    glm::vec3 BasicNode::getForward() const
+    glm::vec3 BasicNode::getForward()
     {
         return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 0.f, -1.f));
     }
 
-    glm::vec3 BasicNode::getBackwards() const
+    glm::vec3 BasicNode::getBackwards()
     {
         return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 0.f, 1.f));
     }
 
-    glm::vec3 BasicNode::getLeft() const
+    glm::vec3 BasicNode::getLeft()
     {
         return glm::normalize(getGlobalRotation() * glm::vec3(-1.f, 0.f, 0.f));
     }
 
-    glm::vec3 BasicNode::getRight() const
+    glm::vec3 BasicNode::getRight()
     {
         return glm::normalize(getGlobalRotation() * glm::vec3(1.f, 0.f, 0.f));
     }
 
-    glm::vec3 BasicNode::getDown() const
+    glm::vec3 BasicNode::getDown()
     {
         return glm::normalize(getGlobalRotation() * glm::vec3(0.f, -1.f, 0.f));
     }
 
-    glm::vec3 BasicNode::getUp() const
+    glm::vec3 BasicNode::getUp()
     {
         return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 1.f, 0.f));
     }

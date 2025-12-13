@@ -39,7 +39,7 @@ namespace Engine
              * @brief Gets the rotation of the object in degrees.
              * @return The rotation of the object in degrees.
              */
-            glm::vec3 getRotation() const { return glm::degrees(glm::eulerAngles(m_rotation)); };
+            glm::vec3 getRotation() const { return glm::degrees(glm::eulerAngles(m_rotation)); }
 
             /**
              * @brief Sets the rotation of the object in degrees.
@@ -51,7 +51,7 @@ namespace Engine
              * @brief Gets the rotation of the object as a quaternion.
              * @return The rotation of the object as a quaternion.
              */
-            glm::quat getRotationQuat() const { return m_rotation; };
+            glm::quat getRotationQuat() const { return m_rotation; }
 
             /**
              * @brief Sets the rotation of the object as a quaternion.
@@ -60,22 +60,10 @@ namespace Engine
             void setRotationQuat(glm::quat quat);
 
             /**
-             * @brief Gets the model matrix of the object.
-             * @return The model matrix of the object.
-             */
-            glm::mat4 getModelMatrix() const { return m_modelMatrix; };
-
-            /**
-             * @brief Sets the model matrix of the object.
-             * @param matrix The model matrix of the object.
-             */
-            void setModelMatrix(glm::mat4 matrix) { m_modelMatrix = matrix; };
-
-            /**
              * @brief Gets the position of the object.
              * @return The position of the object.
              */
-            glm::vec3 getPosition() const { return m_modelMatrix[3]; };
+            glm::vec3 getPosition() const { return m_position; }
 
             /**
              * @brief Sets the position of the object.
@@ -87,7 +75,7 @@ namespace Engine
              * @brief Gets the scale of the object.
              * @return The scale of the object.
              */
-            glm::vec3 getScale() const { return m_scale; };
+            glm::vec3 getScale() const { return m_scale; }
 
             /**
              * @brief Sets the scale of the object.
@@ -97,16 +85,58 @@ namespace Engine
 
         protected:
             /**
-             * @brief Updates the model matrix of the object based on its position, rotation, and scale.
+             * @brief Marks transform data as dirty.
              */
-            void updateModelMatrix();
+            void setCachedGlobalModelMatrix(const glm::mat4& matrix) { m_globalModelMatrix = matrix; }
 
-            glm::mat4 m_modelMatrix;
+            /**
+             * @brief Gets the model matrix of the object.
+             * @return The model matrix of the object.
+             */
+            glm::mat4 getCachedGlobalModelMatrix() const { return m_globalModelMatrix; }
+
+            /**
+             * @brief Gets the model matrix of the object.
+             * @return The model matrix of the object.
+             */
+            glm::mat4 getLocalModelMatrix() const;
+
+            bool getIsDirty() const { return m_isDirty; }
+            void setIsDirty(bool isDirty) { m_isDirty = isDirty; }
+
+        private:
+            glm::mat4 m_globalModelMatrix;
+            bool m_isDirty;
 
             glm::vec3 m_position;
             glm::vec3 m_scale;
             glm::quat m_rotation;
 
     };
+
+/*
+     void decompose(const glm::mat4& transform, glm::vec3& position, glm::quat& rotation, glm::vec3& scale)
+    {
+     // Extract position (translation is in the 4th column)
+     position = glm::vec3(transform[3]);
+
+    // Extract the 3x3 rotation/scale matrix
+    glm::mat3 rotScale = glm::mat3(transform);
+
+    // Extract scale (length of each basis vector)
+    scale.x = glm::length(glm::vec3(rotScale[0]));
+    scale.y = glm::length(glm::vec3(rotScale[1]));
+    scale.z = glm::length(glm::vec3(rotScale[2]));
+
+    // Remove scale from the rotation matrix
+    glm::mat3 rotationMatrix;
+    rotationMatrix[0] = rotScale[0] / scale.x;
+    rotationMatrix[1] = rotScale[1] / scale.y;
+    rotationMatrix[2] = rotScale[2] / scale.z;
+
+    // Convert rotation matrix to quaternion
+    rotation = glm::quat_cast(rotationMatrix);
+    }
+ */
 
 } // namespace Engine

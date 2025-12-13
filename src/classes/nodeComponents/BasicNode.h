@@ -190,70 +190,70 @@ namespace Engine
              *
              * @return The global model matrix of this node.
              */
-            glm::mat4 getGlobalModelMatrix() const;
+            glm::mat4 getGlobalModelMatrix();
 
             /**
              * @brief Gets the global rotation of this node.
              *
              * @return The global rotation of this node.
              */
-            glm::quat getGlobalRotation() const;
+            glm::quat getGlobalRotation();
 
             /**
              * @brief Gets the global position of this node.
              *
              * @return The global position of this node.
              */
-            glm::vec3 getGlobalPosition() const;
+            glm::vec3 getGlobalPosition();
 
             /**
              * @brief Gets the global scale of this node.
              *
              * @return The global scale of this node.
              */
-            glm::vec3 getGlobalScale() const;
+            glm::vec3 getGlobalScale();
 
             /**
              * @brief Gets the forward direction of this node.
              *
              * @return The forward direction of this node.
              */
-            glm::vec3 getForward() const;
+            glm::vec3 getForward();
 
             /**
              * @brief Gets the backwards direction of this node.
              *
              * @return The backwards direction of this node.
              */
-            glm::vec3 getBackwards() const;
+            glm::vec3 getBackwards();
 
             /**
              * @brief Gets the left direction of this node.
              *
              * @return The left direction of this node.
              */
-            glm::vec3 getLeft() const;
+            glm::vec3 getLeft();
 
             /**
              * @brief Gets the right direction of this node.
              *
              * @return The right direction of this node.
              */
-            glm::vec3 getRight() const;
+            glm::vec3 getRight();
 
             /**
              * @brief Gets the down direction of this node.
              *
              * @return The down direction of this node.
              */
-            glm::vec3 getDown() const;
+            glm::vec3 getDown();
 
             /**
              * @brief Gets the up direction of this node.
              *
              * @return The up direction of this node.
              */
-            glm::vec3 getUp() const;
+            glm::vec3 getUp();
 
             /**
              * @brief Gets a pointer to the component T.
@@ -261,9 +261,9 @@ namespace Engine
              * @return The requested component
              */
             template<typename T>
-            T* getComponent()
+            std::shared_ptr<T> getComponent()
             {
-                return dynamic_cast<T*>(this);
+                return std::dynamic_pointer_cast<T>(shared_from_this());
             };
 
             /**
@@ -273,6 +273,8 @@ namespace Engine
             unsigned int getNodeId() const { return m_nodeId; }
 
         private:
+            void updateGlobalModelMatrix();
+
             std::string m_name;
             std::weak_ptr<BasicNode> m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
