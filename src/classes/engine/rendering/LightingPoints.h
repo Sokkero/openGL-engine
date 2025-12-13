@@ -1,5 +1,8 @@
 #pragma once
 
+#include "GL/glew.h"
+#include "utility"
+
 namespace Engine
 {
     inline const std::pair<const char*, GLuint> AMBIENT_LIGHT_POINT =

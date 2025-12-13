@@ -1,5 +1,5 @@
+#include "../LightingPoints.h"
 #include "../UboBlock.h"
-#include "LightingPoints.h"
 
 #include <glm/vec3.hpp>
 

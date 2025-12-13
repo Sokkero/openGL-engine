@@ -1,5 +1,5 @@
+#include "../../classes/engine/rendering/LightingPoints.h"
 #include "../../classes/engine/rendering/UboBlock.h"
-#include "../../classes/engine/rendering/lighting/LightingPoints.h"
 
 #include <glm/vec2.hpp>
 

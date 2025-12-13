@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../../helper/ObjectData.h"
-#include "lighting/AmbientLightUbo.h"
-#include "lighting/DiffuseLightUbo.h"
+#include "ubos/AmbientLightUbo.h"
+#include "ubos/DiffuseLightUbo.h"
 
 #include <map>
 #include <string>
