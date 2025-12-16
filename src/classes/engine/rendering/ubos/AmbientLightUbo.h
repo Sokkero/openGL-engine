@@ -1,9 +1,9 @@
-#include "../LightingPoints.h"
-#include "../UboBlock.h"
+#include "UboBindingPoints.h"
+#include "UboBlock.h"
 
 #include <glm/vec3.hpp>
 
-namespace Engine::Lighting
+namespace Engine::UBOs
 {
     class AmbientLightUbo : public UboBlock
     {
@@ -11,7 +11,7 @@ namespace Engine::Lighting
             AmbientLightUbo();
             ~AmbientLightUbo() = default;
 
-            void UpdateUbo() override;
+            void updateUbo() override;
 
             bool isActive() const { return m_useAmbient; };
 
@@ -26,8 +26,10 @@ namespace Engine::Lighting
             void setIntensity(float intensity);
 
         private:
-            int m_useAmbient;
+            bool m_useAmbient;
             float m_intensity;
             glm::vec3 m_color;
+
+            glm::vec4 m_data;
     };
-} // namespace Engine::Lighting
+} // namespace Engine::UBOs

@@ -7,10 +7,10 @@ out vec4 color;
 
 layout(std140) uniform MandelbrotBlock
 {
-    int itr;
-    float zoom;
     vec2 screenSize;
     vec2 offset;
+    int itr;
+    float zoom;
 };
 
 float n = 0.0;

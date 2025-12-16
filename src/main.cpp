@@ -24,15 +24,12 @@ int main()
     auto& ambientLight = engineManager->getRenderManager()->getAmbientLightUbo();
     ambientLight->setIntensity(.2f);
     ambientLight->setColor(glm::vec3(1.f, 1.f, 1.f));
-    ambientLight->UpdateUbo();
 
     auto& diffuseLight = engineManager->getRenderManager()->getDiffuseLightUbo();
     diffuseLight->setIntensity(0.7f);
     diffuseLight->setDir(glm::vec3(1.f, 0.25f, 1.f));
     diffuseLight->setColor(glm::vec3(1.0f, 0.7f, 0.7f));
-    diffuseLight->UpdateUbo();
 
-    diffuseLight->setIsActive(false);
 
     std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
     // std::shared_ptr<WafeFunctionCollapseSceneOrigin> startNode = std::make_shared<WafeFunctionCollapseSceneOrigin>();

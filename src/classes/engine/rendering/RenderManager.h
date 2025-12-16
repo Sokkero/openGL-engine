@@ -46,9 +46,9 @@ namespace Engine
 
             std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
 
-            std::shared_ptr<Lighting::AmbientLightUbo>& getAmbientLightUbo() { return m_ambientLightUbo; };
+            std::shared_ptr<UBOs::AmbientLightUbo>& getAmbientLightUbo() { return m_ambientLightUbo; };
 
-            std::shared_ptr<Lighting::DiffuseLightUbo>& getDiffuseLightUbo() { return m_diffuseLightUbo; };
+            std::shared_ptr<UBOs::DiffuseLightUbo>& getDiffuseLightUbo() { return m_diffuseLightUbo; };
 
             bool getWireframeMode() const { return m_showWireframe; };
 
@@ -72,8 +72,8 @@ namespace Engine
             };
 
         private:
-            std::shared_ptr<Lighting::AmbientLightUbo> m_ambientLightUbo;
-            std::shared_ptr<Lighting::DiffuseLightUbo> m_diffuseLightUbo;
+            std::shared_ptr<UBOs::AmbientLightUbo> m_ambientLightUbo;
+            std::shared_ptr<UBOs::DiffuseLightUbo> m_diffuseLightUbo;
             std::map<std::string, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;

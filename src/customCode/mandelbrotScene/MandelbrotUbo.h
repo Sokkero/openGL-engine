@@ -1,15 +1,17 @@
-#include "../../classes/engine/rendering/LightingPoints.h"
-#include "../../classes/engine/rendering/UboBlock.h"
+#include "../../classes/engine/rendering/ubos/UboBindingPoints.h"
+#include "../../classes/engine/rendering/ubos/UboBlock.h"
 
 #include <glm/vec2.hpp>
 
-class MandelbrotUbo : public Engine::UboBlock
+using namespace Engine;
+
+class MandelbrotUbo : public UboBlock
 {
     public:
         MandelbrotUbo();
         ~MandelbrotUbo() = default;
 
-        void UpdateUbo() override;
+        void updateUbo() override;
 
         int getIterations() const { return m_iterations; };
 

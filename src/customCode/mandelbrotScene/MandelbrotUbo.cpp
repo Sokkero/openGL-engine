@@ -1,7 +1,7 @@
 
 #include "MandelbrotUbo.h"
 
-MandelbrotUbo::MandelbrotUbo() : m_iterations(300), m_zoom(400), m_screenSize(1200, 600), m_offset(0, 0)
+MandelbrotUbo::MandelbrotUbo() : m_iterations(300), m_zoom(400), m_screenSize(glm::vec2(1200, 600)), m_offset(glm::vec2(0, 0))
 {
     setSize(24);
     setBindingPoint({ "MandelbrotBlock", 5 });
@@ -9,12 +9,12 @@ MandelbrotUbo::MandelbrotUbo() : m_iterations(300), m_zoom(400), m_screenSize(12
     setupUbo();
 }
 
-void MandelbrotUbo::UpdateUbo()
+void MandelbrotUbo::updateUbo()
 {
-    LoadVariable(m_iterations, 0);
-    LoadVariable(m_zoom, 4);
-    LoadVariable(m_screenSize, 8);
-    LoadVariable(m_offset, 16);
+    LoadGlmVariable(m_screenSize, 0);
+    LoadGlmVariable(m_offset, 8);
+    LoadBasicVariable(m_iterations, 16);
+    LoadBasicVariable(m_zoom, 20);
 }
 
 void MandelbrotUbo::resetData()
@@ -24,29 +24,29 @@ void MandelbrotUbo::resetData()
     m_offset.x = 0;
     m_offset.y = 0;
 
-    UpdateUbo();
-}
-
-void MandelbrotUbo::setIterations(int itr)
-{
-    m_iterations = itr;
-    LoadVariable(m_iterations, 0);
-}
-
-void MandelbrotUbo::setZoom(float zoom)
-{
-    m_zoom = zoom;
-    LoadVariable(m_zoom, 4);
+    updateUbo();
 }
 
 void MandelbrotUbo::setScreenSize(glm::vec2 screenSize)
 {
     m_screenSize = screenSize;
-    LoadVariable(m_screenSize, 8);
+    LoadGlmVariable(m_screenSize, 0);
 }
 
 void MandelbrotUbo::setOffset(glm::vec2 offset)
 {
     m_offset = offset;
-    LoadVariable(m_offset, 16);
+    LoadGlmVariable(m_offset, 8);
+}
+
+void MandelbrotUbo::setIterations(int itr)
+{
+    m_iterations = itr;
+    LoadBasicVariable(m_iterations, 16);
+}
+
+void MandelbrotUbo::setZoom(float zoom)
+{
+    m_zoom = zoom;
+    LoadBasicVariable(m_zoom, 20);
 }

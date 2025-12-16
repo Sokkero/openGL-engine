@@ -20,7 +20,7 @@ to identify the current file structure.
 
 ### Step 2 - Read the code
 - Read the related files and the surrounding context
-- Identify specific classes and code blocks relevant to the issue at hand
+- Read classes and code blocks relevant to the issue at hand
 
 ### Step 3 - Brainstorm possible solutions
 Brainstorm a possible solution based on all gathered knowledge.
@@ -62,14 +62,14 @@ Template:
 
 ## Todo list:
 Steps:
-1) [Step 1]
-2) [Step 2]
-3) [Step 3]
-4) [etc]
+1) [ ] [Step 1]
+2) [ ] [Step 2]
+3) [ ] [Step 3]
+4) [ ] [etc]
 
 ## Docs and research material:
 Relevant topics and documentation:
-- [Name of topic/documentation](https://link_to_documentation_or_blog_etc.com)
-- [Name of topic/documentation](https://link_to_documentation_or_blog_etc.com)
+- Name of topic without a external link
+- [Name of topic/documentation with a external link](https://link_to_documentation_or_blog_etc.com)
 - etc
 ```

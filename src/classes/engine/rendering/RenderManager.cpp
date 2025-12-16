@@ -20,8 +20,12 @@ namespace Engine
         , m_diffuseLightUbo(nullptr)
         , m_showWireframe(false)
     {
-        m_ambientLightUbo = std::make_shared<Lighting::AmbientLightUbo>();
-        m_diffuseLightUbo = std::make_shared<Lighting::DiffuseLightUbo>();
+        GLint maxBindingPoints;
+        glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &maxBindingPoints);
+        std::cout << "Max UBO binding points: " << maxBindingPoints << std::endl;
+
+        m_ambientLightUbo = std::make_shared<UBOs::AmbientLightUbo>();
+        m_diffuseLightUbo = std::make_shared<UBOs::DiffuseLightUbo>();
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)

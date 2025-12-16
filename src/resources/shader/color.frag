@@ -9,24 +9,20 @@ out vec4 color;
 // Values that stay constant for the whole mesh
 layout(std140) uniform AmbientLightBlock
 {
-    bool useAmbient;
-    float ambientIntensity;
-    vec3 ambientLightColor;
+    vec4 ambientLightColorAndIntensity;
 };
 layout(std140) uniform DiffuseLightBlock
 {
-    bool useDiffuse;
-    float diffuseIntensity;
+    vec4 diffuseLightColorAndIntensity;
     vec3 diffuseLightDir;
-    vec3 diffuseLightColor;
 };
 
 void main()
 {
-    vec3 ambientColor = mix(vec3(0.0, 0.0, 0.0), fragmentColor.xyz * vec3(ambientLightColor * ambientIntensity), int(useAmbient));
+    vec3 ambientColor = fragmentColor.xyz * vec3(ambientLightColorAndIntensity.xyz * ambientLightColorAndIntensity.w);
 
     float diffuse = max(dot(normalize(normal), normalize(diffuseLightDir)), 0.0);
-    vec3 diffuseColor = mix(vec3(0.0, 0.0, 0.0), fragmentColor.xyz * vec3(diffuseLightColor * diffuse * diffuseIntensity), int(useDiffuse));
+    vec3 diffuseColor = fragmentColor.xyz * vec3(diffuseLightColorAndIntensity.xyz * diffuse * diffuseLightColorAndIntensity.w);
 
     color = vec4(ambientColor + diffuseColor, fragmentColor.w);
 }
