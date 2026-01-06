@@ -56,7 +56,7 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
     double tempTimestamp = glfwGetTime();
 
     const std::shared_ptr<ObjectData>& objectData = object->getObjectData();
-    glm::mat4 modelMatrix = object->getGlobalModelMatrix();
+    const glm::mat4& modelMatrix = object->getGlobalModelMatrix();
 
     debugModel->setDrawSectionTimeData("1", glfwGetTime() - tempTimestamp);
     tempTimestamp = glfwGetTime();

@@ -6,6 +6,7 @@
 #include "../../classes/helper/DebugUtils.h"
 #include "../../classes/primitives/DebugManagerWindow.h"
 #include "../../resources/shader/ColorShader.h"
+#include "../testScene/CameraActor.h"
 #include "IslandGenerator.h"
 
 WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin() {}
@@ -21,7 +22,7 @@ void WafeFunctionCollapseSceneOrigin::start()
     std::shared_ptr<BasicNode> debugWindow = std::make_shared<Engine::Ui::DebugManagerWindow>();
     addChild(debugWindow);
 
-    std::shared_ptr<Engine::CameraComponent> camera = std::make_shared<Engine::CameraComponent>();
+    std::shared_ptr<CameraActor> camera = std::make_shared<CameraActor>();
     const float cameraDistance = gridDimension.x > gridDimension.y ? 2.5f * (float)gridDimension.x
                                                                    : 2.5f * (float)gridDimension.y;
     camera->setZFar(1000.f);
