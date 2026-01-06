@@ -3,9 +3,8 @@
 
 #include "../../customCode/testScene/TestSceneOrigin.h"
 #include "../../resources/shader/GridShader.h"
-#include "../nodeComponents/CameraComponent.h"
-#include "../nodeComponents/GeometryComponent.h"
 #include "../nodeComponents/UiDebugWindow.h"
+#include "rendering/ubos/ViewProjectionUbo.h"
 #include "rendering/RenderManager.h"
 
 #include <iostream>
@@ -53,6 +52,8 @@ namespace Engine
 
         m_lastFrameTimestamp = glfwGetTime();
 
+        m_vpUbo = std::make_shared<UBOs::ViewProjectionUbo>();
+
         m_sceneNode->start();
 
         return true;
@@ -76,6 +77,8 @@ namespace Engine
     {
         if(m_camera)
         {
+            m_vpUbo->updateUbo(m_camera->getViewMatrix(), m_camera->getProjectionMatrix());
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
             // TODO: Investigate multithreading

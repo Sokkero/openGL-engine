@@ -58,10 +58,11 @@ namespace Engine
             GLuint getSize() const { return m_size; }
 
             /*
-                Load large data types (mat4 < mat3 < mat2 < vec4 < vec2 < bool/float/int) first.
+                Load large data types (mat4 > mat3 > mat2 > vec4 > vec2 > bool/float/int) first.
 
                 vec3s are HEAVILY discouraged from usage, since they are padded to be 4 floats.
                 To avoid common pitfalls and not waste bytes, use vec4s instead.
+                Same is true for booleans. Use integers instead.
 
                 The Key Difference: Size vs Alignment
                 In std140 layout:
