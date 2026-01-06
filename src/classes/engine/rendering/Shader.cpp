@@ -4,6 +4,8 @@
 
 using namespace Engine;
 
+GLuint Shader::CURRENT_PROGRAMM = -1;
+
 Shader::Shader() : m_passVisual(PASS_NONE) {}
 
 Shader::~Shader()
@@ -29,6 +31,8 @@ Shader::~Shader()
     // Finally, delete the program
     glDeleteProgram(m_shaderIdentifier.second);
     delete[](shaderIds);
+
+    RenderUtils::checkForGLError();
 }
 
 void Shader::registerShader(
@@ -49,35 +53,27 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
 {
     const std::shared_ptr<DebugModel>& debugModel = SingletonManager::get<DebugModel>();
 
-    const std::shared_ptr<ObjectData>& objectData = object->getObjectData();
-
     double tempTimestamp = glfwGetTime();
-    // #PIF This needs to be done once and sent to the shaders, instead of per object
-    glm::mat4 mvp = camera->getProjectionMatrix() * camera->getViewMatrix();
-    debugModel->setDrawSectionTimeData("0.5", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
 
-    // #PIF This needs to be sent to the shader and then calculated there
-    // #PIF Also, the globalModelMatrix should be cached and not need to be calculated each frame
-    mvp = mvp * object->getGlobalModelMatrix();
-
+    const std::shared_ptr<ObjectData>& objectData = object->getObjectData();
+    glm::mat4 modelMatrix = object->getGlobalModelMatrix();
 
     debugModel->setDrawSectionTimeData("1", glfwGetTime() - tempTimestamp);
     tempTimestamp = glfwGetTime();
 
-    // #PIF Cache currently bound shader and only switch if required
-    glUseProgram(getShaderIdentifier().second);
+    swapToProgramm();
 
     debugModel->setDrawSectionTimeData("2", glfwGetTime() - tempTimestamp);
     tempTimestamp = glfwGetTime();
 
-    glUniformMatrix4fv(getActiveUniform("MVP"), 1, GL_FALSE, &mvp[0][0]);
+    glUniformMatrix4fv(getActiveUniform("modelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
 
     debugModel->setDrawSectionTimeData("3", glfwGetTime() - tempTimestamp);
     tempTimestamp = glfwGetTime();
 
     const glm::vec4 tint = object->getTint();
-    glUniform4f(getActiveUniform("tintColor"), tint.x, tint.y, tint.z, tint.w);
+    GLuint uniformId = getActiveUniform("tintColor");
+    glUniform4f(uniformId, tint.x, tint.y, tint.z, tint.w);
 
     debugModel->setDrawSectionTimeData("4", glfwGetTime() - tempTimestamp);
     tempTimestamp = glfwGetTime();
@@ -85,13 +81,11 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
     if(objectData->m_vertexBuffer != -1)
     {
         bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION, GL_ARRAY_BUFFER, objectData->m_vertexBuffer, 3, GL_FLOAT, false, 0);
-        m_usedAttribArrays.push_back(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION);
     }
 
     if(objectData->m_normalBuffer != -1)
     {
         bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL, GL_ARRAY_BUFFER, objectData->m_normalBuffer, 3, GL_FLOAT, false, 0);
-        m_usedAttribArrays.push_back(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL);
     }
 
     if(object->getTextureBuffer() != -1)
@@ -99,7 +93,6 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
         if(m_passVisual == PASS_COLOR)
         {
             bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
-            m_usedAttribArrays.push_back(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR);
         }
         else if(m_passVisual == PASS_TEXTURE)
         {
@@ -109,7 +102,6 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
                     object->getTextureBuffer(),
                     getActiveUniform("textureSampler")
             );
-            m_usedAttribArrays.push_back(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR);
         }
     }
 
@@ -131,18 +123,20 @@ void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, En
     debugModel->setDrawSectionTimeData("7", glfwGetTime() - tempTimestamp);
     tempTimestamp = glfwGetTime();
 
+    RenderUtils::checkForGLError();
     loadCustomRenderData(object, camera);
+    RenderUtils::checkForGLError();
 
     debugModel->setDrawSectionTimeData("8", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
+}
 
-    // #PIF Remove this entirely
-    for(const GLuint arrayIndex : m_usedAttribArrays)
+void Shader::swapToProgramm()
+{
+    if(CURRENT_PROGRAMM != m_shaderIdentifier.second)
     {
-        glDisableVertexAttribArray(arrayIndex);
+        glUseProgram(m_shaderIdentifier.second);
+        CURRENT_PROGRAMM = m_shaderIdentifier.second;
     }
-    m_usedAttribArrays.clear();
-    debugModel->setDrawSectionTimeData("9", glfwGetTime() - tempTimestamp);
 }
 
 GLint Shader::getActiveUniform(const std::string& uniform) const
@@ -160,13 +154,19 @@ GLint Shader::getActiveUniform(const std::string& uniform) const
         return -1;
     }
 
+    RenderUtils::checkForGLError();
     return index;
 }
 
 void Shader::bindUbo(const std::shared_ptr<UboBlock>& ubo)
 {
-    unsigned int index = glGetUniformBlockIndex(m_shaderIdentifier.second, ubo->getBindingPoint().first);
+    if(std::find(m_boundUbos.begin(), m_boundUbos.end(), ubo) != m_boundUbos.end())
+    {
+        fprintf(stderr, "ubo skip");
+        return;
+    }
 
+    unsigned int index = glGetUniformBlockIndex(m_shaderIdentifier.second, ubo->getBindingPoint().first);
     if(index == GL_INVALID_INDEX)
     {
         fprintf(stderr, "Ubo index not found!");
@@ -203,6 +203,10 @@ void Shader::bindVertexData(
 )
 {
     glEnableVertexAttribArray(attribId);
+    RenderUtils::checkForGLError();
     glBindBuffer(targetType, bufferId);
+    RenderUtils::checkForGLError();
     glVertexAttribPointer(attribId, size, dataType, normalized, stride, (void*)nullptr);
+
+    RenderUtils::checkForGLError();
 }

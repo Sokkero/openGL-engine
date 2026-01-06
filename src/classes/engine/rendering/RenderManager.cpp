@@ -26,6 +26,7 @@ namespace Engine
 
         m_ambientLightUbo = std::make_shared<UBOs::AmbientLightUbo>();
         m_diffuseLightUbo = std::make_shared<UBOs::DiffuseLightUbo>();
+        m_vpUbo = std::make_shared<UBOs::ViewProjectionUbo>();
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)

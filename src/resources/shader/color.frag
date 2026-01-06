@@ -11,6 +11,7 @@ layout(std140) uniform AmbientLightBlock
 {
     vec4 ambientLightColorAndIntensity;
 };
+
 layout(std140) uniform DiffuseLightBlock
 {
     vec4 diffuseLightColorAndIntensity;

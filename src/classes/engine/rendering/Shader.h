@@ -63,8 +63,11 @@ namespace Engine
 
             void setVisualPassStyle(passVisual passType) { m_passVisual = passType; }
 
+            void swapToProgramm();
+
         private:
-            std::vector<GLuint> m_usedAttribArrays;
+            static GLuint CURRENT_PROGRAMM;
+
             passVisual m_passVisual;
 
             std::pair<std::string, GLuint> m_shaderIdentifier;

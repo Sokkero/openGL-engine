@@ -14,11 +14,6 @@ namespace Engine
     class GeometryComponent;
     class GridShader;
 
-    namespace UBOs
-    {
-        class ViewProjectionUbo;
-    }
-
     namespace Ui
     {
         class UiDebugWindow;
@@ -93,8 +88,6 @@ namespace Engine
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
             std::shared_ptr<GridShader> m_gridShader;
-
-            std::shared_ptr<UBOs::ViewProjectionUbo> m_vpUbo;
 
             bool m_showGrid;
             double m_deltaTime;

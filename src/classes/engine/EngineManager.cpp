@@ -4,7 +4,6 @@
 #include "../../customCode/testScene/TestSceneOrigin.h"
 #include "../../resources/shader/GridShader.h"
 #include "../nodeComponents/UiDebugWindow.h"
-#include "rendering/ubos/ViewProjectionUbo.h"
 #include "rendering/RenderManager.h"
 
 #include <iostream>
@@ -50,9 +49,9 @@ namespace Engine
 
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
 
-        m_lastFrameTimestamp = glfwGetTime();
+        RenderUtils::checkForGLError();
 
-        m_vpUbo = std::make_shared<UBOs::ViewProjectionUbo>();
+        m_lastFrameTimestamp = glfwGetTime();
 
         m_sceneNode->start();
 
@@ -77,7 +76,7 @@ namespace Engine
     {
         if(m_camera)
         {
-            m_vpUbo->updateUbo(m_camera->getViewMatrix(), m_camera->getProjectionMatrix());
+            m_renderManager->getVpUbo()->updateUbo(m_camera->getViewMatrix(), m_camera->getProjectionMatrix());
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -99,6 +98,8 @@ namespace Engine
 
             drawUiNodes();
             glDisable(GL_BLEND);
+
+            RenderUtils::checkForGLError();
         }
         else
         {

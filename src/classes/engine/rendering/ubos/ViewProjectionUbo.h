@@ -11,7 +11,7 @@ namespace Engine::UBOs
             ViewProjectionUbo();
             ~ViewProjectionUbo() = default;
 
-            void updateUbo() override { };
+            void updateUbo() override;
             void updateUbo(glm::mat4 view, glm::mat4 projection);
     };
 } // namespace Engine::UBOs

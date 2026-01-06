@@ -3,6 +3,7 @@
 #include "../../helper/ObjectData.h"
 #include "ubos/AmbientLightUbo.h"
 #include "ubos/DiffuseLightUbo.h"
+#include "ubos/ViewProjectionUbo.h"
 
 #include <map>
 #include <string>
@@ -50,6 +51,8 @@ namespace Engine
 
             std::shared_ptr<UBOs::DiffuseLightUbo>& getDiffuseLightUbo() { return m_diffuseLightUbo; };
 
+            std::shared_ptr<UBOs::ViewProjectionUbo>& getVpUbo() { return m_vpUbo; };
+
             bool getWireframeMode() const { return m_showWireframe; };
 
             void setWireframeMode(bool toggle);
@@ -74,6 +77,8 @@ namespace Engine
         private:
             std::shared_ptr<UBOs::AmbientLightUbo> m_ambientLightUbo;
             std::shared_ptr<UBOs::DiffuseLightUbo> m_diffuseLightUbo;
+            std::shared_ptr<UBOs::ViewProjectionUbo> m_vpUbo;
+
             std::map<std::string, GLuint> m_shaderList;
             std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;

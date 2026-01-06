@@ -164,6 +164,8 @@ namespace Engine
             }
         }
 
+        RenderUtils::checkForGLError();
+
         return true;
     }
 
@@ -276,6 +278,8 @@ namespace Engine
 
         free(buffer);
 
+        RenderUtils::checkForGLError();
+
         return textureID;
     }
 
@@ -383,6 +387,8 @@ namespace Engine
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         // ... which requires mipmaps. Generate them automatically.
         glGenerateMipmap(GL_TEXTURE_2D);
+
+        RenderUtils::checkForGLError();
 
         // Return the ID of the texture we just created
         return textureID;

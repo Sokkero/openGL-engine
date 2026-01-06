@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../../helper/RenderUtils.h"
+
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -45,6 +47,8 @@ namespace Engine
                 glBufferData(GL_UNIFORM_BUFFER, m_size, nullptr, GL_STATIC_DRAW);
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
                 glBindBufferBase(GL_UNIFORM_BUFFER, m_bindingPoint.second, m_uboId);
+
+                RenderUtils::checkForGLError();
 
                 printf("Created UBO, ID: %u, size: %u, binding point: %u, name: %s\n",
                        m_uboId, m_size, m_bindingPoint.second, m_bindingPoint.first);
@@ -106,12 +110,9 @@ namespace Engine
 
                 glBindBuffer(GL_UNIFORM_BUFFER, m_uboId);
                 glBufferSubData(GL_UNIFORM_BUFFER, byteOffset, sizeof(T), &data);
-                GLenum err = glGetError();
-                if (err != GL_NO_ERROR) {
-                    fprintf(stderr, "glBufferSubData error: %d at offset %d\n", err, byteOffset);
-                    assert(false);
-                }
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+                RenderUtils::checkForGLError();
             }
 
             template<typename T>
@@ -131,11 +132,9 @@ namespace Engine
 
                 glBindBuffer(GL_UNIFORM_BUFFER, m_uboId);
                 glBufferSubData(GL_UNIFORM_BUFFER, byteOffset, sizeof(T), glm::value_ptr(data));
-                GLenum err = glGetError();
-                if (err != GL_NO_ERROR) {
-                    fprintf(stderr, "glBufferSubData error: %d at offset %d\n", err, byteOffset);
-                }
                 glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+                RenderUtils::checkForGLError();
             }
 
             void setBindingPoint(std::pair<const char*, GLuint> point) { m_bindingPoint = point; }

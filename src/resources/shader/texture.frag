@@ -9,6 +9,7 @@ out vec4 color;
 // Values that stay constant for the whole mesh
 uniform sampler2D textureSampler;
 uniform vec4 tintColor;
+
 layout(std140) uniform AmbientLightBlock
 {
     vec4 ambientLightColorAndIntensity;

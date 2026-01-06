@@ -13,7 +13,7 @@ GridShader::GridShader(const std::shared_ptr<RenderManager>& renderManager)
 
 void GridShader::renderVertices(std::nullptr_t object, CameraComponent* camera)
 {
-    glUseProgram(getShaderIdentifier().second);
+    swapToProgramm();
 
     glUniform1f(getActiveUniform("mainGridScale"), m_gridScale);
     glUniform1f(getActiveUniform("secondaryGridScale"), m_gridScale * 0.1f);

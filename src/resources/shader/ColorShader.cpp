@@ -9,6 +9,7 @@ ColorShader::ColorShader(const std::shared_ptr<RenderManager>& renderManager)
 
     bindUbo(renderManager->getAmbientLightUbo());
     bindUbo(renderManager->getDiffuseLightUbo());
+    bindUbo(renderManager->getVpUbo());
 
     setVisualPassStyle(Shader::PASS_COLOR);
 }
