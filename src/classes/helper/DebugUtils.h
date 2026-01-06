@@ -1,7 +1,7 @@
 
 #include <iostream>
 
-namespace DebugUtils
+namespace Engine::DebugUtils
 {
     /**
      * @brief Prints a double time value in human readable format to the console

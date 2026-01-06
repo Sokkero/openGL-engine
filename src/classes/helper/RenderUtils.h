@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdio.h>
 
-namespace RenderUtils
+namespace Engine::RenderUtils
 {
     static void checkForGLError()
     {

@@ -2,65 +2,64 @@
 #include <iostream>
 #include <numeric>
 
-class MathUtils
+namespace Engine::MathUtils
 {
-    public:
-        template<typename T>
-        static T GetAverage(const std::vector<T>& numbers)
+    template<typename T>
+    static T GetAverage(const std::vector<T>& numbers)
+    {
+        static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
+
+        if(numbers.empty())
         {
-            static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
-
-            if(numbers.empty())
-            {
-                return 0.0; // Return 0 if the vector is empty
-            }
-
-            T sum = std::accumulate(numbers.begin(), numbers.end(), T(0));
-            return static_cast<double>(sum) / numbers.size();
+            return 0.0; // Return 0 if the vector is empty
         }
 
-        template<typename T>
-        static T GetSum(const std::vector<T>& numbers)
+        T sum = std::accumulate(numbers.begin(), numbers.end(), T(0));
+        return static_cast<double>(sum) / numbers.size();
+    }
+
+    template<typename T>
+    static T GetSum(const std::vector<T>& numbers)
+    {
+        static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
+
+        if(numbers.empty())
         {
-            static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
-
-            if(numbers.empty())
-            {
-                return 0.0; // Return 0 if the vector is empty
-            }
-
-            return static_cast<double>(std::accumulate(numbers.begin(), numbers.end(), T(0)));
+            return 0.0; // Return 0 if the vector is empty
         }
 
-        template<typename T>
-        static T GetMax(const std::vector<T>& numbers)
+        return static_cast<double>(std::accumulate(numbers.begin(), numbers.end(), T(0)));
+    }
+
+    template<typename T>
+    static T GetMax(const std::vector<T>& numbers)
+    {
+        static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
+
+        T max = 0;
+        for(const auto& number : numbers)
         {
-            static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
-
-            T max = 0;
-            for(const auto& number : numbers)
+            if(number > max)
             {
-                if(number > max)
-                {
-                    max = number;
-                }
+                max = number;
             }
-            return static_cast<double>(max);
         }
+        return static_cast<double>(max);
+    }
 
-        template<typename T>
-        static T GetMin(const std::vector<T>& numbers)
+    template<typename T>
+    static T GetMin(const std::vector<T>& numbers)
+    {
+        static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
+
+        T min = std::numeric_limits<T>::max();
+        for(const auto& number : numbers)
         {
-            static_assert(std::is_arithmetic<T>::value, "Template type must be a numeric type.");
-
-            T min = std::numeric_limits<T>::max();
-            for(const auto& number : numbers)
+            if(number < min)
             {
-                if(number < min)
-                {
-                    min = number;
-                }
+                min = number;
             }
-            return static_cast<double>(min);
         }
-};
+        return static_cast<double>(min);
+    }
+}

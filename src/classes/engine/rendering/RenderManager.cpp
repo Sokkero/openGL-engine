@@ -1,8 +1,8 @@
 
 #include "RenderManager.h"
 
-#include "../../helper/FileLoading.h"
-#include "../../helper/VertexIndexingHelper.h"
+#include "../../helper/FileLoadingUtils.h"
+#include "../../helper/VertexIndexingUtils.h"
 #include "ShaderLoader.h"
 
 #include <iostream>
@@ -42,14 +42,14 @@ namespace Engine
         std::vector<glm::vec3> vertexData, vertexNormals;
         std::vector<glm::vec2> uvData;
 
-        if(!loadFileOBJ(filePath, vertexData, uvData, vertexNormals))
+        if(!FileLoadingUtils::loadFileOBJ(filePath, vertexData, uvData, vertexNormals))
         {
             return nullptr;
         }
 
         std::vector<triData> triIndexData;
 
-        indexVBO(vertexData, uvData, vertexNormals, triIndexData);
+        VertexIndexingUtils::indexVBO(vertexData, uvData, vertexNormals, triIndexData);
 
         GLuint vertexBuffer = !vertexData.empty() ? createBuffer(vertexData) : -1;
         GLuint uvBuffer = !uvData.empty() ? createBuffer(uvData) : -1;
@@ -121,13 +121,13 @@ namespace Engine
         std::string fileExtension = filePathString.substr(dotIndex + 1);
         if(fileExtension == "bmp" || fileExtension == "BMP")
         {
-            GLuint textureId = loadFileBMP(filePath);
+            GLuint textureId = FileLoadingUtils::loadFileBMP(filePath);
             m_textureList[filePath] = textureId;
             return textureId;
         }
         else if(fileExtension == "dds" || fileExtension == "DDS")
         {
-            GLuint textureId = loadFileDDS(filePath);
+            GLuint textureId = FileLoadingUtils::loadFileDDS(filePath);
             m_textureList[filePath] = textureId;
             return textureId;
         }
