@@ -43,7 +43,7 @@ void IslandGenerator::setFieldCallback(const std::shared_ptr<Field>& field, cons
 
     std::shared_ptr<Engine::GeometryComponent> planeObj = std::make_shared<Engine::GeometryComponent>();
     planeObj->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
-    planeObj->setShader(std::make_shared<ColorShader>(renderManager));
+    planeObj->setShader(std::make_shared<Engine::ColorShader>(renderManager));
     planeObj->setRotation(glm::vec3(-90.f, 0.f, 0.f));
     planeObj->setPosition(glm::vec3(posX, 0.f, posY));
 

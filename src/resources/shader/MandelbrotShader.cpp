@@ -11,3 +11,8 @@ MandelbrotShader::MandelbrotShader(const std::shared_ptr<RenderManager>& renderM
 {
     registerShader(renderManager, "resources/shader/mandelbrot", "mandelbrot");
 }
+
+void MandelbrotShader::renderObject(const std::shared_ptr<GeometryComponent>& object, Engine::CameraComponent* camera)
+{
+    // WIP ?
+}

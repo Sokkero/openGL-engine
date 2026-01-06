@@ -8,9 +8,7 @@
 
 namespace Engine
 {
-    inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXPOSITION = 0;
-    inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXCOLOR = 1;
-    inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXNORMAL = 2;
+    class DebugModel;
 
     class Shader
     {
@@ -18,24 +16,13 @@ namespace Engine
             Shader();
             ~Shader();
 
-            enum passVisual
-            {
-                PASS_NONE = 0,
-                PASS_TEXTURE = 1,
-                PASS_COLOR = 2
-            };
-
             void registerShader(
                     const std::shared_ptr<RenderManager>& renderManager,
                     const std::string& shaderPath,
                     const std::string& shaderName
             );
 
-            virtual void renderVertices(std::nullptr_t object, CameraComponent* camera);
-            virtual void renderVertices(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera);
-            virtual void loadCustomRenderData(CameraComponent* camera) {};
-            virtual void loadCustomRenderData(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) {
-            };
+            virtual void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) = 0;
 
             std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 
@@ -59,17 +46,25 @@ namespace Engine
                     int stride
             );
 
-            passVisual getVisualPassStyle() const { return m_passVisual; }
+            void swapToProgramm() const;
 
-            void setVisualPassStyle(passVisual passType) { m_passVisual = passType; }
+            void loadModelMatrix(const std::shared_ptr<GeometryComponent>& object) const;
+            void loadTint(const std::shared_ptr<GeometryComponent>& object) const;
+            void loadVertexBuffer(const std::shared_ptr<GeometryComponent>& object) const;
+            void loadNormalBuffer(const std::shared_ptr<GeometryComponent>& object) const;
+            void loadTextureBuffer(const std::shared_ptr<GeometryComponent>& object) const;
+            void loadColorBuffer(const std::shared_ptr<GeometryComponent>& object) const;
 
-            void swapToProgramm();
+            void drawElements(const std::shared_ptr<GeometryComponent>& object) const;
 
         private:
+            static inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXPOSITION = 0;
+            static inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXCOLOR = 1;
+            static inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXNORMAL = 2;
+
             static GLuint CURRENT_PROGRAMM;
 
-            passVisual m_passVisual;
-
+            std::shared_ptr<DebugModel> m_debugModel;
             std::pair<std::string, GLuint> m_shaderIdentifier;
             std::vector<std::shared_ptr<UboBlock>> m_boundUbos;
     };

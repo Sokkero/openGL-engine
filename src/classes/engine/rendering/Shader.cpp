@@ -6,7 +6,7 @@ using namespace Engine;
 
 GLuint Shader::CURRENT_PROGRAMM = -1;
 
-Shader::Shader() : m_passVisual(PASS_NONE) {}
+Shader::Shader() : m_debugModel(SingletonManager::get<DebugModel>()) {}
 
 Shader::~Shader()
 {
@@ -44,93 +44,85 @@ void Shader::registerShader(
     m_shaderIdentifier = renderManager->registerShader(shaderPath, shaderName);
 }
 
-void Shader::renderVertices(std::nullptr_t object, Engine::CameraComponent* camera)
+void Shader::loadModelMatrix(const std::shared_ptr<GeometryComponent>& object) const
 {
-    loadCustomRenderData(camera);
-}
+    double startTime = glfwGetTime();
 
-void Shader::renderVertices(const std::shared_ptr<GeometryComponent>& object, Engine::CameraComponent* camera)
-{
-    const std::shared_ptr<DebugModel>& debugModel = SingletonManager::get<DebugModel>();
-
-    double tempTimestamp = glfwGetTime();
-
-    const std::shared_ptr<ObjectData>& objectData = object->getObjectData();
     const glm::mat4& modelMatrix = object->getGlobalModelMatrix();
-
-    debugModel->setDrawSectionTimeData("1", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
-
-    swapToProgramm();
-
-    debugModel->setDrawSectionTimeData("2", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
-
     glUniformMatrix4fv(getActiveUniform("modelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
 
-    debugModel->setDrawSectionTimeData("3", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
+    m_debugModel->setDrawSectionTimeData("loadModelMatrix", glfwGetTime() - startTime);
+}
+
+void Shader::loadTint(const std::shared_ptr<GeometryComponent>& object) const
+{
+    double startTime = glfwGetTime();
 
     const glm::vec4 tint = object->getTint();
     GLuint uniformId = getActiveUniform("tintColor");
-    glUniform4f(uniformId, tint.x, tint.y, tint.z, tint.w);
+    glUniform4f((GLint)uniformId, tint.x, tint.y, tint.z, tint.w);
 
-    debugModel->setDrawSectionTimeData("4", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
-
-    if(objectData->m_vertexBuffer != -1)
-    {
-        bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION, GL_ARRAY_BUFFER, objectData->m_vertexBuffer, 3, GL_FLOAT, false, 0);
-    }
-
-    if(objectData->m_normalBuffer != -1)
-    {
-        bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL, GL_ARRAY_BUFFER, objectData->m_normalBuffer, 3, GL_FLOAT, false, 0);
-    }
-
-    if(object->getTextureBuffer() != -1)
-    {
-        if(m_passVisual == PASS_COLOR)
-        {
-            bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
-        }
-        else if(m_passVisual == PASS_TEXTURE)
-        {
-            bindTexture(
-                    GLOBAL_ATTRIB_INDEX_VERTEXCOLOR,
-                    objectData->m_uvBuffer,
-                    object->getTextureBuffer(),
-                    getActiveUniform("textureSampler")
-            );
-        }
-    }
-
-    debugModel->setDrawSectionTimeData("5", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
-
-    debugModel->setDrawSectionTimeData("6", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
-
-    glDrawElements(
-            GL_TRIANGLES,                 // mode
-            objectData->getVertexCount(), // count
-            GL_UNSIGNED_SHORT,            // type
-            nullptr                       // element array buffer offset
-    );
-
-    debugModel->setDrawSectionTimeData("7", glfwGetTime() - tempTimestamp);
-    tempTimestamp = glfwGetTime();
-
-    RenderUtils::checkForGLError();
-    loadCustomRenderData(object, camera);
-    RenderUtils::checkForGLError();
-
-    debugModel->setDrawSectionTimeData("8", glfwGetTime() - tempTimestamp);
+    m_debugModel->setDrawSectionTimeData("loadTint", glfwGetTime() - startTime);
 }
 
-void Shader::swapToProgramm()
+void Shader::loadVertexBuffer(const std::shared_ptr<GeometryComponent>& object) const
+{
+    double startTime = glfwGetTime();
+
+    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION, GL_ARRAY_BUFFER, object->getObjectData()->m_vertexBuffer, 3, GL_FLOAT, false, 0);
+
+    m_debugModel->setDrawSectionTimeData("loadVertexBuffer", glfwGetTime() - startTime);
+}
+
+void Shader::loadNormalBuffer(const std::shared_ptr<GeometryComponent>& object) const
+{
+    double startTime = glfwGetTime();
+
+    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL, GL_ARRAY_BUFFER, object->getObjectData()->m_normalBuffer, 3, GL_FLOAT, false, 0);
+
+    m_debugModel->setDrawSectionTimeData("loadNormalBuffer", glfwGetTime() - startTime);
+}
+
+void Shader::loadTextureBuffer(const std::shared_ptr<GeometryComponent>& object) const
+{
+    double startTime = glfwGetTime();
+
+    bindTexture(
+            GLOBAL_ATTRIB_INDEX_VERTEXCOLOR,
+            object->getObjectData()->m_uvBuffer,
+            object->getTextureBuffer(),
+            getActiveUniform("textureSampler")
+    );
+
+    m_debugModel->setDrawSectionTimeData("loadTextureBuffer", glfwGetTime() - startTime);
+}
+
+void Shader::loadColorBuffer(const std::shared_ptr<GeometryComponent>& object) const
+{
+    double startTime = glfwGetTime();
+
+    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
+
+    m_debugModel->setDrawSectionTimeData("loadColorBuffer", glfwGetTime() - startTime);
+}
+
+void Shader::drawElements(const std::shared_ptr<GeometryComponent>& object) const
+{
+    double startTime = glfwGetTime();
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
+    glDrawElements(
+            GL_TRIANGLES,                               // mode
+            object->getObjectData()->getVertexCount(),  // count
+            GL_UNSIGNED_SHORT,                          // type
+            nullptr                                     // element array buffer offset
+    );
+
+    m_debugModel->setDrawSectionTimeData("drawElements", glfwGetTime() - startTime);
+}
+
+
+void Shader::swapToProgramm() const
 {
     if(CURRENT_PROGRAMM != m_shaderIdentifier.second)
     {

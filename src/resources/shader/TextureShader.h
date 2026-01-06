@@ -2,9 +2,14 @@
 
 #include "../../classes/engine/rendering/Shader.h"
 
-class TextureShader : public Engine::Shader
+namespace Engine
 {
-    public:
-        explicit TextureShader(const std::shared_ptr<Engine::RenderManager>& renderManager);
-        ~TextureShader() = default;
-};
+    class TextureShader : public Shader
+    {
+        public:
+            explicit TextureShader(const std::shared_ptr<RenderManager>& renderManager);
+            ~TextureShader() = default;
+
+            void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) override;
+    };
+}

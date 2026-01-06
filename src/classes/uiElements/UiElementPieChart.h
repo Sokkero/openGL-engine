@@ -14,16 +14,11 @@ namespace Engine::Ui
     class UiElementPieChart : public UiElement
     {
         public:
-            UiElementPieChart(std::string title, const std::vector<const char*>& fieldLabels, const int maxValues = 10)
+            UiElementPieChart(std::string title, const int maxValues = 10)
                 : m_maxValues(maxValues)
                 , m_colorScheme(ImPlotColormap_Pastel)
                 , m_chartTitle(std::move(title))
-                , m_labels(fieldLabels)
             {
-                for(int i = 0; i < m_labels.size(); i++)
-                {
-                    m_averageValues.push_back(0);
-                }
             };
 
             ~UiElementPieChart() = default;
@@ -36,9 +31,9 @@ namespace Engine::Ui
                     ImPlot::SetupAxes(nullptr, nullptr, ImPlotAxisFlags_NoDecorations, ImPlotAxisFlags_NoDecorations);
                     ImPlot::SetupAxesLimits(0, 1, 0, 1);
                     ImPlot::PlotPieChart(
-                            m_labels.data(),
-                            m_averageValues.data(),
-                            (int)m_labels.size(),
+                            getLabelVector().data(),
+                            getAverageVector().data(),
+                            (int)m_averageMap.size(),
                             0.5,
                             0.5,
                             0.4,
@@ -54,34 +49,15 @@ namespace Engine::Ui
             void addValue(const char* label, double value)
             {
                 std::vector<double>& values = m_valueMap[label];
-
                 values.emplace_back(value);
-                if(values.size() > m_maxValues)
-                {
-                    values.erase(values.begin());
-                }
 
-                const auto elemPos = find(m_labels.begin(), m_labels.end(), label) - m_labels.begin();
-                if(elemPos < m_labels.size())
-                {
-                    m_averageValues[elemPos] = MathUtils::GetAverage(values);
-                }
-                else
-                {
-                    // Tried adding a value to a field that does not exist
-                    assert(false);
-                }
+                m_averageMap[label] = MathUtils::GetAverage(values);
             };
 
             void clearValues()
             {
-                assert(m_labels.size() == m_averageValues.size());
-
-                for(int i = 0; i < m_labels.size(); i++)
-                {
-                    m_averageValues[i] = 0;
-                    m_valueMap[m_labels[i]].clear();
-                }
+                m_averageMap.clear();
+                m_valueMap.clear();
             };
 
             void setMaxValues(int values) { m_maxValues = values; };
@@ -89,10 +65,29 @@ namespace Engine::Ui
             void setColorSchema(ImPlotColormap_ schema) { m_colorScheme = schema; };
 
         private:
+            std::vector<const char*> getLabelVector()
+            {
+                std::vector<const char*> labels;
+                for(const auto& pair : m_valueMap)
+                {
+                    labels.emplace_back(pair.first);
+                }
+                return labels;
+            }
+
+            std::vector<double> getAverageVector()
+            {
+                std::vector<double> averages;
+                for(const auto& pair : m_averageMap)
+                {
+                    averages.emplace_back(pair.second);
+                }
+                return averages;
+            }
+
             ImPlotColormap_ m_colorScheme;
             std::map<const char*, std::vector<double>> m_valueMap;
-            std::vector<const char*> m_labels;
-            std::vector<double> m_averageValues;
+            std::map<const char*, double> m_averageMap;
             std::string m_chartTitle;
             int m_maxValues;
     };

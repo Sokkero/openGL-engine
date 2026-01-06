@@ -10,6 +10,16 @@ TextureShader::TextureShader(const std::shared_ptr<RenderManager>& renderManager
     bindUbo(renderManager->getAmbientLightUbo());
     bindUbo(renderManager->getDiffuseLightUbo());
     bindUbo(renderManager->getVpUbo());
+}
 
-    setVisualPassStyle(Shader::PASS_TEXTURE);
+void TextureShader::renderObject(const std::shared_ptr<GeometryComponent>& object, Engine::CameraComponent* camera)
+{
+    swapToProgramm();
+
+    loadModelMatrix(object);
+    loadTint(object);
+    loadVertexBuffer(object);
+    loadNormalBuffer(object);
+    loadTextureBuffer(object);
+    drawElements(object);
 }

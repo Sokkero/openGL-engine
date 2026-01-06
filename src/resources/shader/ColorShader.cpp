@@ -10,6 +10,16 @@ ColorShader::ColorShader(const std::shared_ptr<RenderManager>& renderManager)
     bindUbo(renderManager->getAmbientLightUbo());
     bindUbo(renderManager->getDiffuseLightUbo());
     bindUbo(renderManager->getVpUbo());
+}
 
-    setVisualPassStyle(Shader::PASS_COLOR);
+void ColorShader::renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent*)
+{
+    swapToProgramm();
+
+    loadModelMatrix(object);
+    loadTint(object);
+    loadVertexBuffer(object);
+    loadNormalBuffer(object);
+    loadColorBuffer(object);
+    drawElements(object);
 }

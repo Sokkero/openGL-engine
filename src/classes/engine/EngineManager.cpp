@@ -93,7 +93,7 @@ namespace Engine
 
             if(m_showGrid)
             {
-                m_gridShader->renderVertices(nullptr, m_camera.get());
+                m_gridShader->renderObject(nullptr, m_camera.get());
             }
 
             drawUiNodes();
@@ -185,7 +185,7 @@ namespace Engine
     {
         if(node)
         {
-            node->getShader()->renderVertices(node, m_camera.get());
+            node->getShader()->renderObject(node, m_camera.get());
             return;
         }
 
