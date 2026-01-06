@@ -3,7 +3,11 @@
 
 using namespace Engine::UBOs;
 
-AmbientLightUbo::AmbientLightUbo() : m_intensity(.2f), m_useAmbient(true), m_color(glm::vec3(1.f)), m_data(glm::vec4(1.f))
+AmbientLightUbo::AmbientLightUbo()
+    : m_intensity(.2f)
+    , m_useAmbient(true)
+    , m_color(glm::vec3(1.f))
+    , m_data(glm::vec4(1.f))
 {
     setSize(16);
     setBindingPoint(AMBIENT_LIGHT_POINT);

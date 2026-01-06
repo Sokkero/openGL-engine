@@ -2,7 +2,6 @@
 #include "WafeFunctionCollapseSceneOrigin.h"
 
 #include "../../classes/engine/EngineManager.h"
-#include "../../classes/engine/UserEventManager.h"
 #include "../../classes/engine/WindowManager.h"
 #include "../../classes/helper/DebugUtils.h"
 #include "../../classes/primitives/DebugManagerWindow.h"

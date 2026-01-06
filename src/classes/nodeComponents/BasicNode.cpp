@@ -232,23 +232,11 @@ namespace Engine
         return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 0.f, 1.f));
     }
 
-    glm::vec3 BasicNode::getLeft()
-    {
-        return glm::normalize(getGlobalRotation() * glm::vec3(-1.f, 0.f, 0.f));
-    }
+    glm::vec3 BasicNode::getLeft() { return glm::normalize(getGlobalRotation() * glm::vec3(-1.f, 0.f, 0.f)); }
 
-    glm::vec3 BasicNode::getRight()
-    {
-        return glm::normalize(getGlobalRotation() * glm::vec3(1.f, 0.f, 0.f));
-    }
+    glm::vec3 BasicNode::getRight() { return glm::normalize(getGlobalRotation() * glm::vec3(1.f, 0.f, 0.f)); }
 
-    glm::vec3 BasicNode::getDown()
-    {
-        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, -1.f, 0.f));
-    }
+    glm::vec3 BasicNode::getDown() { return glm::normalize(getGlobalRotation() * glm::vec3(0.f, -1.f, 0.f)); }
 
-    glm::vec3 BasicNode::getUp()
-    {
-        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 1.f, 0.f));
-    }
+    glm::vec3 BasicNode::getUp() { return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 1.f, 0.f)); }
 } // namespace Engine

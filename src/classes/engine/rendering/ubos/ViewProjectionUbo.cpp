@@ -11,10 +11,7 @@ ViewProjectionUbo::ViewProjectionUbo()
     setupUbo();
 }
 
-void ViewProjectionUbo::updateUbo()
-{
-    updateUbo(glm::mat4(0.f), glm::mat4(0.f));
-}
+void ViewProjectionUbo::updateUbo() { updateUbo(glm::mat4(0.f), glm::mat4(0.f)); }
 
 void ViewProjectionUbo::updateUbo(glm::mat4 view, glm::mat4 projection)
 {

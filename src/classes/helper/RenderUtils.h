@@ -10,10 +10,11 @@ namespace RenderUtils
     {
 #ifdef DEBUG
         GLenum err = glGetError();
-        if (err != GL_NO_ERROR) {
+        if(err != GL_NO_ERROR)
+        {
             fprintf(stderr, "openGL error occured, code: %d\n", err);
             assert(false);
         }
 #endif
     }
-}
+} // namespace RenderUtils

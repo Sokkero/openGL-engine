@@ -1,7 +1,11 @@
 
 #include "MandelbrotUbo.h"
 
-MandelbrotUbo::MandelbrotUbo() : m_iterations(300), m_zoom(400), m_screenSize(glm::vec2(1200, 600)), m_offset(glm::vec2(0, 0))
+MandelbrotUbo::MandelbrotUbo()
+    : m_iterations(300)
+    , m_zoom(400)
+    , m_screenSize(glm::vec2(1200, 600))
+    , m_offset(glm::vec2(0, 0))
 {
     setSize(24);
     setBindingPoint({ "MandelbrotBlock", 5 });

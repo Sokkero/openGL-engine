@@ -57,11 +57,8 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     );
     m_detailsSection->addContent(m_timeDistributionGraph);
 
-    const std::vector<const char*> names = {"0.5", "1", "2", "3", "4", "5", "6", "7", "8", "9"};
-    m_testGraph = std::make_shared<UiElementPieChart>(
-            "Shader sections",
-            names
-    );
+    const std::vector<const char*> names = { "1", "2", "3", "4", "5", "6", "7", "8" };
+    m_testGraph = std::make_shared<UiElementPieChart>("Shader sections", names);
     m_detailsSection->addContent(m_testGraph);
 }
 

@@ -15,21 +15,14 @@ namespace Engine
     {
         public:
             template<typename T>
-            static constexpr bool is_glm_type =
-                    std::is_same_v<T, glm::vec2> ||
-                    std::is_same_v<T, glm::vec3> ||
-                    std::is_same_v<T, glm::vec4> ||
-                    std::is_same_v<T, glm::ivec2> ||
-                    std::is_same_v<T, glm::ivec3> ||
-                    std::is_same_v<T, glm::ivec4> ||
-                    std::is_same_v<T, glm::mat2> ||
-                    std::is_same_v<T, glm::mat3> ||
-                    std::is_same_v<T, glm::mat4>;
+            static constexpr bool is_glm_type = std::is_same_v<T, glm::vec2> ||
+                    std::is_same_v<T, glm::vec3> || std::is_same_v<T, glm::vec4> ||
+                    std::is_same_v<T, glm::ivec2> || std::is_same_v<T, glm::ivec3> ||
+                    std::is_same_v<T, glm::ivec4> || std::is_same_v<T, glm::mat2> ||
+                    std::is_same_v<T, glm::mat3> || std::is_same_v<T, glm::mat4>;
 
             template<typename T>
-            static constexpr bool is_vec3_type =
-                    std::is_same_v<T, glm::vec3> ||
-                    std::is_same_v<T, glm::ivec3>;
+            static constexpr bool is_vec3_type = std::is_same_v<T, glm::vec3> || std::is_same_v<T, glm::ivec3>;
 
             UboBlock() = default;
             ~UboBlock() = default;
@@ -51,7 +44,10 @@ namespace Engine
                 RenderUtils::checkForGLError();
 
                 printf("Created UBO, ID: %u, size: %u, binding point: %u, name: %s\n",
-                       m_uboId, m_size, m_bindingPoint.second, m_bindingPoint.first);
+                       m_uboId,
+                       m_size,
+                       m_bindingPoint.second,
+                       m_bindingPoint.first);
 
                 updateUbo();
             }
@@ -59,6 +55,7 @@ namespace Engine
             virtual void updateUbo() = 0;
 
             void setSize(GLuint size) { m_size = size; }
+
             GLuint getSize() const { return m_size; }
 
             /*
@@ -96,13 +93,13 @@ namespace Engine
             template<typename T>
             void LoadBasicVariable(T data, int byteOffset)
             {
-                if constexpr (std::is_same_v<T, bool>)
+                if constexpr(std::is_same_v<T, bool>)
                 {
                     static_assert(false, "Use int instead of bool!");
                     return;
                 }
 
-                if constexpr (is_glm_type<T>)
+                if constexpr(is_glm_type<T>)
                 {
                     static_assert(false, "Use LoadGlmVariable for glm types!");
                     return;
@@ -118,13 +115,13 @@ namespace Engine
             template<typename T>
             void LoadGlmVariable(T data, int byteOffset)
             {
-                if constexpr (!is_glm_type<T>)
+                if constexpr(!is_glm_type<T>)
                 {
                     static_assert(false, "Use LoadBasicVariable for basic types!");
                     return;
                 }
 
-                if constexpr (is_vec3_type<T>)
+                if constexpr(is_vec3_type<T>)
                 {
                     static_assert(false, "Never use vec3 types in std140 layouts, use vec4 with padding data instead!");
                     return;

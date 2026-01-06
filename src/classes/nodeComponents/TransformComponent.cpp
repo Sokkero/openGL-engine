@@ -9,7 +9,8 @@ TransformComponent::TransformComponent()
     , m_position(glm::vec3(0.f))
     , m_rotation(glm::mat4(1.f)) // Quaternions have to be initialized with 1.f!!!
     , m_isDirty(true)
-{}
+{
+}
 
 void TransformComponent::moveObj(glm::vec3 dirVec)
 {
