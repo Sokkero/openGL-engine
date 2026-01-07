@@ -3,10 +3,16 @@
 // Input vertex data, different for all executions of this shader
 layout(location = 0) in vec3 vertexPosition_modelspace;
 
-// Values that stay constant for the whole mesh.
-uniform mat4 MVP;
+layout(std140) uniform ViewProjectionBlock
+{
+    mat4 viewMat;
+    mat4 projMat;
+};
+
+uniform mat4 modelMatrix;
 
 void main()
 {
-    gl_Position = MVP * vec4(vertexPosition_modelspace, 1);
+    mat4 mvp = projMat * viewMat * modelMatrix;
+    gl_Position = mvp * vec4(vertexPosition_modelspace, 1);
 }

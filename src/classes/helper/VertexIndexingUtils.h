@@ -21,7 +21,8 @@ namespace Engine::VertexIndexingUtils
                 std::get<2>(tuple) = value;
                 break;
             default:
-                fprintf(stderr, "Vertex indexing failed!");
+                fprintf(stderr, "Vertex indexing failed!\n");
+                assert(false);
         }
     }
 

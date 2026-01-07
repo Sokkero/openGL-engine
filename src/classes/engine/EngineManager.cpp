@@ -104,6 +104,7 @@ namespace Engine
         else
         {
             fprintf(stderr, "No camera...\n");
+            assert(false);
         }
     }
 

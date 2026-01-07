@@ -31,7 +31,8 @@ namespace Engine
             {
                 if(m_size == 0)
                 {
-                    fprintf(stderr, "Ubo is missing values!");
+                    fprintf(stderr, "Ubo is missing values!\n");
+                    assert(false);
                     return;
                 }
 

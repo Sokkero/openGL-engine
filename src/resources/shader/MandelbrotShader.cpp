@@ -10,9 +10,15 @@ MandelbrotShader::MandelbrotShader(const std::shared_ptr<RenderManager>& renderM
     : m_mandelbrotUbo(std::move(ubo))
 {
     registerShader(renderManager, "resources/shader/mandelbrot", "mandelbrot");
+
+    bindUbo(renderManager->getVpUbo());
 }
 
 void MandelbrotShader::renderObject(const std::shared_ptr<GeometryComponent>& object, Engine::CameraComponent* camera)
 {
-    // WIP ?
+    swapToProgramm();
+
+    loadModelMatrix(object);
+    loadVertexBuffer(object);
+    drawElements(object);
 }

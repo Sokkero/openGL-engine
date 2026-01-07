@@ -188,7 +188,8 @@ namespace Engine
     {
         if(shaderName.empty() && shaderId == -1)
         {
-            fprintf(stderr, "Deregistering shader failed. No shader specified");
+            fprintf(stderr, "Deregistering shader failed. No shader specified\n");
+            assert(false);
         }
 
         std::erase_if(

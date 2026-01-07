@@ -57,6 +57,9 @@ namespace Engine
 
             void drawElements(const std::shared_ptr<GeometryComponent>& object) const;
 
+        protected:
+            std::shared_ptr<DebugModel> m_debugModel;
+
         private:
             static inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXPOSITION = 0;
             static inline const GLuint GLOBAL_ATTRIB_INDEX_VERTEXCOLOR = 1;
@@ -64,7 +67,6 @@ namespace Engine
 
             static GLuint CURRENT_PROGRAMM;
 
-            std::shared_ptr<DebugModel> m_debugModel;
             std::pair<std::string, GLuint> m_shaderIdentifier;
             std::vector<std::shared_ptr<UboBlock>> m_boundUbos;
     };

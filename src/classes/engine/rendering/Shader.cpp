@@ -137,12 +137,14 @@ GLint Shader::getActiveUniform(const std::string& uniform) const
 
     if(index == GL_INVALID_VALUE)
     {
-        fprintf(stderr, "Uniform index not found! Shader invalid");
+        fprintf(stderr, "Uniform index not found! Shader invalid\n");
+        assert(false);
         return -1;
     }
     else if(index == GL_INVALID_OPERATION)
     {
-        fprintf(stderr, "Uniform index not found! Linking failed");
+        fprintf(stderr, "Uniform index not found! Linking failed\n");
+        assert(false);
         return -1;
     }
 
@@ -154,14 +156,14 @@ void Shader::bindUbo(const std::shared_ptr<UboBlock>& ubo)
 {
     if(std::find(m_boundUbos.begin(), m_boundUbos.end(), ubo) != m_boundUbos.end())
     {
-        fprintf(stderr, "ubo skip");
         return;
     }
 
     unsigned int index = glGetUniformBlockIndex(m_shaderIdentifier.second, ubo->getBindingPoint().first);
     if(index == GL_INVALID_INDEX)
     {
-        fprintf(stderr, "Ubo index not found!");
+        fprintf(stderr, "Ubo index not found!\n");
+        assert(false);
         return;
     }
 
