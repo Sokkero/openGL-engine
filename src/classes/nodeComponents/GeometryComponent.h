@@ -104,12 +104,12 @@ namespace Engine
             {
                 if(m_customVertexIndices.empty())
                 {
-                    m_customVertexIndices = m_objectData->m_vertexIndices;
+                    m_customVertexIndices = m_objectData->vertexIndices;
                 }
 
                 const auto& cameraPos = SingletonManager::get<EngineManager>()->getCamera()->getGlobalPosition();
                 const auto& nodePos = getGlobalPosition();
-                const auto& vertices = m_objectData->m_vertexData;
+                const auto& vertices = m_objectData->vertexData;
 
                 std::sort(
                         m_customVertexIndices.begin(),
@@ -148,7 +148,7 @@ namespace Engine
                     return m_customIndexBuffer;
                 }
 
-                return m_objectData ? m_objectData->m_indexBuffer : 0;
+                return m_objectData ? m_objectData->indexBuffer : 0;
             };
 
         private:

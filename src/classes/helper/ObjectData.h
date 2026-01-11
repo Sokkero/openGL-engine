@@ -23,29 +23,54 @@ namespace Engine
                     std::vector<glm::vec3> vertexNormals,
                     std::vector<triData> vertexIndices
             )
-                : m_vertexBuffer(vertexBuffer)
-                , m_uvBuffer(uvBuffer)
-                , m_normalBuffer(normalBuffer)
-                , m_indexBuffer(indexBuffer)
-                , m_vertexData(std::move(vertexData))
-                , m_vertexUvs(std::move(vertexUvs))
-                , m_vertexNormals(std::move(vertexNormals))
-                , m_filePath(std::move(filePath))
-                , m_vertexIndices(std::move(vertexIndices))
+                : vertexBuffer(vertexBuffer)
+                , uvBuffer(uvBuffer)
+                , normalBuffer(normalBuffer)
+                , indexBuffer(indexBuffer)
+                , vertexData(std::move(vertexData))
+                , vertexUvs(std::move(vertexUvs))
+                , vertexNormals(std::move(vertexNormals))
+                , filePath(std::move(filePath))
+                , vertexIndices(std::move(vertexIndices))
             {
+                objectId = ID_COUNTER.fetch_add(1);
             }
 
-            std::string m_filePath;
-            GLuint m_vertexBuffer;
-            GLuint m_uvBuffer;
-            GLuint m_normalBuffer;
-            GLuint m_indexBuffer;
-            std::vector<glm::vec3> m_vertexData;
-            std::vector<glm::vec2> m_vertexUvs;
-            std::vector<glm::vec3> m_vertexNormals;
+            bool operator==(const ObjectData& other) const
+            {
+                return objectId == other.objectId;
+            }
 
-            std::vector<triData> m_vertexIndices;
+            bool operator!=(const ObjectData& other) const
+            {
+                return !(*this == other);
+            }
 
-            int getVertexCount() const { return int(m_vertexIndices.size() * 3); };
+            std::vector<GLuint> getActiveBuffers()
+            {
+                std::vector<GLuint> activeBuffers;
+                if(vertexBuffer != -1) activeBuffers.emplace_back(vertexBuffer);
+                if(uvBuffer != -1) activeBuffers.emplace_back(uvBuffer);
+                if(normalBuffer != -1) activeBuffers.emplace_back(normalBuffer);
+                if(indexBuffer != -1) activeBuffers.emplace_back(indexBuffer);
+
+                return activeBuffers;
+            }
+
+            uint32_t objectId;
+            std::string filePath;
+            GLuint vertexBuffer;
+            GLuint uvBuffer;
+            GLuint normalBuffer;
+            GLuint indexBuffer;
+            std::vector<glm::vec3> vertexData;
+            std::vector<glm::vec2> vertexUvs;
+            std::vector<glm::vec3> vertexNormals;
+
+            std::vector<triData> vertexIndices;
+
+            int getVertexCount() const { return int(vertexIndices.size() * 3); };
+
+            static std::atomic<uint32_t> ID_COUNTER;
     };
 } // namespace Engine

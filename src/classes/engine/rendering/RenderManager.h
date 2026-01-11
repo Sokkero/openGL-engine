@@ -24,7 +24,8 @@ namespace Engine
             RenderManager();
             ~RenderManager() = default;
 
-            std::shared_ptr<ObjectData> registerObject(const char* filePath);
+            // A custom object will bypass the check if the given file has already been loaded, assuming the code will change the data and make it unique
+            std::shared_ptr<ObjectData> registerObject(const char* filePath, bool isCustomObject = false);
             void deregisterObject(std::shared_ptr<ObjectData>& obj);
             void clearObjects();
 
@@ -44,8 +45,6 @@ namespace Engine
             void deregisterShader(std::string shaderName = std::string(), GLuint shaderId = -1);
 
             std::map<std::string, GLuint> getShader() const { return m_shaderList; }
-
-            std::map<std::string, std::shared_ptr<ObjectData>> getObjects() { return m_objectList; };
 
             std::shared_ptr<UBOs::AmbientLightUbo>& getAmbientLightUbo() { return m_ambientLightUbo; };
 
@@ -80,7 +79,7 @@ namespace Engine
             std::shared_ptr<UBOs::ViewProjectionUbo> m_vpUbo;
 
             std::map<std::string, GLuint> m_shaderList;
-            std::map<std::string, std::shared_ptr<ObjectData>> m_objectList;
+            std::vector<std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;
             bool m_showWireframe;
     };

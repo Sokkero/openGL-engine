@@ -11,12 +11,10 @@
 
 namespace Engine
 {
+    std::atomic<uint32_t> ObjectData::ID_COUNTER = 0;
 
     RenderManager::RenderManager()
-        : m_objectList(std::map<std::string, std::shared_ptr<ObjectData>>())
-        , m_shaderList(std::map<std::string, GLuint>())
-        , m_textureList(std::map<std::string, GLuint>())
-        , m_ambientLightUbo(nullptr)
+        : m_ambientLightUbo(nullptr)
         , m_diffuseLightUbo(nullptr)
         , m_showWireframe(false)
     {
@@ -29,13 +27,16 @@ namespace Engine
         m_vpUbo = std::make_shared<UBOs::ViewProjectionUbo>();
     }
 
-    std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath)
+    std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath, bool isCustomObject /* = false */)
     {
-        for(auto& object : m_objectList)
+        if(!isCustomObject)
         {
-            if(object.first == filePath)
+            for(const auto& object : m_objectList)
             {
-                return object.second;
+                if(object->filePath == filePath)
+                {
+                    return object;
+                }
             }
         }
 
@@ -68,8 +69,7 @@ namespace Engine
                 triIndexData
         );
 
-        m_objectList[filePath] = newObject;
-
+        m_objectList.emplace_back(newObject);
         return newObject;
     }
 
@@ -79,11 +79,11 @@ namespace Engine
                 m_objectList,
                 [&obj](const auto& elem)
                 {
-                    const bool shouldRemove = elem.second == obj;
+                    const bool shouldRemove = elem == obj;
                     if(shouldRemove)
                     {
-                        GLuint buffer[1] = { obj->m_vertexBuffer };
-                        glDeleteBuffers(1, buffer);
+                        const std::vector<GLuint> buffers = obj->getActiveBuffers();
+                        glDeleteBuffers((int)buffers.size(), &buffers[0]);
                     }
                     return shouldRemove;
                 }
@@ -94,8 +94,8 @@ namespace Engine
     {
         for(auto& obj : m_objectList)
         {
-            GLuint buffer[1] = { obj.second->m_vertexBuffer };
-            glDeleteBuffers(1, buffer);
+            const std::vector<GLuint> buffers = obj->getActiveBuffers();
+            glDeleteBuffers((int)buffers.size(), &buffers[0]);
         }
         m_objectList.clear();
     }
@@ -164,7 +164,6 @@ namespace Engine
             GLuint buffer[1] = { obj.second };
             glDeleteBuffers(1, buffer);
         }
-        m_objectList.clear();
     }
 
     std::pair<std::string, GLuint> RenderManager::registerShader(const std::string& shaderPath, std::string shaderName)
