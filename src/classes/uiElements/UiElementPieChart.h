@@ -17,9 +17,7 @@ namespace Engine::Ui
             UiElementPieChart(std::string title, const int maxValues = 10)
                 : m_maxValues(maxValues)
                 , m_colorScheme(ImPlotColormap_Pastel)
-                , m_chartTitle(std::move(title))
-            {
-            };
+                , m_chartTitle(std::move(title)) {};
 
             ~UiElementPieChart() = default;
 

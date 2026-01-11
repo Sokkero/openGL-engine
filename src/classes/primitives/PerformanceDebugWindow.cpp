@@ -51,9 +51,7 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     );
     addContent(m_detailsSection);
 
-    m_timeDistributionGraph = std::make_shared<UiElementPieChart>(
-            "Frame time distribution (ms)"
-    );
+    m_timeDistributionGraph = std::make_shared<UiElementPieChart>("Frame time distribution (ms)");
     m_detailsSection->addContent(m_timeDistributionGraph);
 
     m_testGraph = std::make_shared<UiElementPieChart>("Shader sections");

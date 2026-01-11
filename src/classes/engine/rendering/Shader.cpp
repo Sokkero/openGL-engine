@@ -69,7 +69,15 @@ void Shader::loadVertexBuffer(const std::shared_ptr<GeometryComponent>& object) 
 {
     double startTime = glfwGetTime();
 
-    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXPOSITION, GL_ARRAY_BUFFER, object->getObjectData()->vertexBuffer, 3, GL_FLOAT, false, 0);
+    bindVertexData(
+            GLOBAL_ATTRIB_INDEX_VERTEXPOSITION,
+            GL_ARRAY_BUFFER,
+            object->getObjectData()->vertexBuffer,
+            3,
+            GL_FLOAT,
+            false,
+            0
+    );
 
     m_debugModel->setDrawSectionTimeData("loadVertexBuffer", glfwGetTime() - startTime);
 }
@@ -78,7 +86,15 @@ void Shader::loadNormalBuffer(const std::shared_ptr<GeometryComponent>& object) 
 {
     double startTime = glfwGetTime();
 
-    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXNORMAL, GL_ARRAY_BUFFER, object->getObjectData()->normalBuffer, 3, GL_FLOAT, false, 0);
+    bindVertexData(
+            GLOBAL_ATTRIB_INDEX_VERTEXNORMAL,
+            GL_ARRAY_BUFFER,
+            object->getObjectData()->normalBuffer,
+            3,
+            GL_FLOAT,
+            false,
+            0
+    );
 
     m_debugModel->setDrawSectionTimeData("loadNormalBuffer", glfwGetTime() - startTime);
 }
@@ -112,15 +128,14 @@ void Shader::drawElements(const std::shared_ptr<GeometryComponent>& object) cons
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
     glDrawElements(
-            GL_TRIANGLES,                               // mode
-            object->getObjectData()->getVertexCount(),  // count
-            GL_UNSIGNED_SHORT,                          // type
-            nullptr                                     // element array buffer offset
+            GL_TRIANGLES,                              // mode
+            object->getObjectData()->getVertexCount(), // count
+            GL_UNSIGNED_SHORT,                         // type
+            nullptr                                    // element array buffer offset
     );
 
     m_debugModel->setDrawSectionTimeData("drawElements", glfwGetTime() - startTime);
 }
-
 
 void Shader::swapToProgramm() const
 {

@@ -8,9 +8,9 @@
 
 namespace Engine
 {
-    unsigned int BasicNode::LASTID = 0;
+    std::atomic<uint32_t> BasicNode::NODE_ID = 0;
 
-    BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()) { m_nodeId = getNewUniqueId(); }
+    BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()), m_nodeId(NODE_ID.fetch_add(1)) {}
 
     BasicNode::~BasicNode()
     {

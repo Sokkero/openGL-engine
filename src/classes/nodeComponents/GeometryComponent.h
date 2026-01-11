@@ -28,8 +28,8 @@ namespace Engine
                 , m_textureBuffer(0)
                 , m_tint(glm::vec4(1.f, 1.f, 1.f, 1.f))
                 , m_isTranslucent(false)
-                , m_customIndexBuffer(0)
-                , m_customVertexIndices(std::vector<triData>())
+                , m_depthSortIndexBuffer(0)
+                , m_depthSortedVertexIndices(std::vector<triData>())
             {
                 setIsTranslucent(m_tint.w < 1.f);
             }
@@ -102,9 +102,9 @@ namespace Engine
 
             void depthSortTriangles()
             {
-                if(m_customVertexIndices.empty())
+                if(m_depthSortedVertexIndices.empty())
                 {
-                    m_customVertexIndices = m_objectData->vertexIndices;
+                    m_depthSortedVertexIndices = m_objectData->vertexIndices;
                 }
 
                 const auto& cameraPos = SingletonManager::get<EngineManager>()->getCamera()->getGlobalPosition();
@@ -112,27 +112,27 @@ namespace Engine
                 const auto& vertices = m_objectData->vertexData;
 
                 std::sort(
-                        m_customVertexIndices.begin(),
-                        m_customVertexIndices.end(),
+                        m_depthSortedVertexIndices.begin(),
+                        m_depthSortedVertexIndices.end(),
                         [cameraPos, nodePos, vertices](const auto& a, const auto& b)
                         { return depthSortTrianglesAlgorithm(cameraPos, nodePos, vertices, a, b); }
                 );
 
-                unsigned int dataSize = m_customVertexIndices.size() * sizeof(triData);
-                if(m_customIndexBuffer == 0)
+                unsigned int dataSize = m_depthSortedVertexIndices.size() * sizeof(triData);
+                if(m_depthSortIndexBuffer == 0)
                 {
                     // Generate a buffer with our identifier
-                    glGenBuffers(1, &m_customIndexBuffer);
-                    glBindBuffer(GL_ARRAY_BUFFER, m_customIndexBuffer);
+                    glGenBuffers(1, &m_depthSortIndexBuffer);
+                    glBindBuffer(GL_ARRAY_BUFFER, m_depthSortIndexBuffer);
 
                     // Give vertices to OpenGL
-                    glBufferData(GL_ARRAY_BUFFER, dataSize, &m_customVertexIndices[0], GL_STATIC_DRAW);
+                    glBufferData(GL_ARRAY_BUFFER, dataSize, &m_depthSortedVertexIndices[0], GL_STATIC_DRAW);
                 }
                 else
                 {
-                    glBindBuffer(GL_ARRAY_BUFFER, m_customIndexBuffer);
+                    glBindBuffer(GL_ARRAY_BUFFER, m_depthSortIndexBuffer);
                     // Give vertices to OpenGL
-                    glBufferData(GL_ARRAY_BUFFER, dataSize, &m_customVertexIndices[0], GL_STATIC_DRAW);
+                    glBufferData(GL_ARRAY_BUFFER, dataSize, &m_depthSortedVertexIndices[0], GL_STATIC_DRAW);
                 }
                 // glFinish();
             }
@@ -145,7 +145,7 @@ namespace Engine
             {
                 if(m_isTranslucent)
                 {
-                    return m_customIndexBuffer;
+                    return m_depthSortIndexBuffer;
                 }
 
                 return m_objectData ? m_objectData->indexBuffer : 0;
@@ -158,8 +158,8 @@ namespace Engine
             glm::vec4 m_tint;
             bool m_isTranslucent;
 
-            GLuint m_customIndexBuffer;
-            std::vector<triData> m_customVertexIndices;
+            GLuint m_depthSortIndexBuffer;
+            std::vector<triData> m_depthSortedVertexIndices;
     };
 
 } // namespace Engine

@@ -62,4 +62,4 @@ namespace Engine::MathUtils
         }
         return static_cast<double>(min);
     }
-}
+} // namespace Engine::MathUtils

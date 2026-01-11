@@ -30,4 +30,4 @@ namespace Engine::DebugUtils
                       << std::endl;
         }
     }
-} // namespace DebugUtils
+} // namespace Engine::DebugUtils

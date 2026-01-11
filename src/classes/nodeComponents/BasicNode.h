@@ -282,8 +282,6 @@ namespace Engine
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
             unsigned int m_nodeId;
 
-            static unsigned int LASTID;
-
-            static unsigned int getNewUniqueId() { return ++LASTID; }
+            static std::atomic<uint32_t> NODE_ID;
     };
 } // namespace Engine

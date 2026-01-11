@@ -103,4 +103,4 @@ namespace Engine::VertexIndexingUtils
         in_normals.swap(out_normals);
         in_indices.swap(out_indices);
     }
-}
+} // namespace Engine::VertexIndexingUtils

@@ -17,4 +17,4 @@ namespace Engine::RenderUtils
         }
 #endif
     }
-} // namespace RenderUtils
+} // namespace Engine::RenderUtils

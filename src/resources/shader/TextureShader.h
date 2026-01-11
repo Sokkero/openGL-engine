@@ -12,4 +12,4 @@ namespace Engine
 
             void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) override;
     };
-}
+} // namespace Engine

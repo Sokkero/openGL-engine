@@ -393,4 +393,4 @@ namespace Engine::FileLoadingUtils
         // Return the ID of the texture we just created
         return textureID;
     }
-} // namespace Engine
+} // namespace Engine::FileLoadingUtils

@@ -36,15 +36,9 @@ namespace Engine
                 objectId = ID_COUNTER.fetch_add(1);
             }
 
-            bool operator==(const ObjectData& other) const
-            {
-                return objectId == other.objectId;
-            }
+            bool operator==(const ObjectData& other) const { return objectId == other.objectId; }
 
-            bool operator!=(const ObjectData& other) const
-            {
-                return !(*this == other);
-            }
+            bool operator!=(const ObjectData& other) const { return !(*this == other); }
 
             std::vector<GLuint> getActiveBuffers()
             {
