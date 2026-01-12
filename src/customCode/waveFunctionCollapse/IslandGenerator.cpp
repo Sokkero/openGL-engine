@@ -2,6 +2,7 @@
 #include "IslandGenerator.h"
 
 #include "../../classes/engine/UserEventManager.h"
+#include "../../classes/helper/RenderUtils.h"
 #include "../../classes/nodeComponents/GeometryComponent.h"
 #include "../../resources/shader/ColorShader.h"
 #include "CustomFieldTypeData.h"
@@ -54,7 +55,7 @@ void IslandGenerator::setFieldCallback(const std::shared_ptr<Field>& field, cons
         g_color_buffer_data.emplace_back(color, 1.f);
     }
 
-    planeObj->setTextureBuffer(renderManager->createBuffer(g_color_buffer_data));
+    planeObj->setTextureBuffer(Engine::RenderUtils::createVertexBufferObject(g_color_buffer_data));
 
     addChild(planeObj);
 }

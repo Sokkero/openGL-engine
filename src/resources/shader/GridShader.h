@@ -7,7 +7,7 @@ namespace Engine
     class GridShader : public Shader
     {
         public:
-            GridShader(const std::shared_ptr<RenderManager>& renderManager);
+            GridShader();
             ~GridShader() = default;
 
             void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) override;

@@ -56,7 +56,7 @@ void TestSceneOrigin::start()
         g_color_buffer_data.emplace_back(1.f, 1.f, 1.f, 1.f);
     }
 
-    m_ape->setTextureBuffer(renderManager->createBuffer(g_color_buffer_data));
+    m_ape->setTextureBuffer(RenderUtils::createVertexBufferObject(g_color_buffer_data));
     m_ape->setName("suzanne");
     addChild(m_ape);
 }

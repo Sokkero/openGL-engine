@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../SingletonManager.h"
 #include "../../helper/ObjectData.h"
 #include "ubos/AmbientLightUbo.h"
 #include "ubos/DiffuseLightUbo.h"
@@ -15,14 +16,24 @@ namespace Engine
 {
     class GeometryComponent;
     class Shader;
+    class GridShader;
+    class CameraComponent;
 
-    inline const glm::vec3 WORLD_UP = glm::vec3(0.f, 1.f, 0.f);
+    namespace Ui
+    {
+        class UiDebugWindow;
+    }
 
-    class RenderManager
+    class RenderManager : public SingletonBase
     {
         public:
             RenderManager();
             ~RenderManager() = default;
+
+            void init();
+
+            void drawScene(const std::shared_ptr<CameraComponent>& camera);
+            void drawNode(const std::shared_ptr<GeometryComponent>& node, const std::shared_ptr<CameraComponent>& camera);
 
             // A custom object will bypass the check if the given file has already been loaded, assuming the code will change the data and make it unique
             std::shared_ptr<ObjectData> registerObject(const char* filePath, bool isCustomObject = false);
@@ -33,18 +44,8 @@ namespace Engine
             void deregisterTexture(GLuint tex);
             void clearTextures();
 
-            /**
-             * Shader has to consist of one .frag & one .vert shader files
-             *
-             * @param shaderPath full file path, without extension
-             * @param shaderName The name the shader should be given
-             * @return std::pair<std::string, GLuint> the loaded shaders name & ID
-             */
             std::pair<std::string, GLuint> registerShader(const std::string& shaderPath, std::string shaderName);
-
             void deregisterShader(std::string shaderName = std::string(), GLuint shaderId = -1);
-
-            std::map<std::string, GLuint> getShader() const { return m_shaderList; }
 
             std::shared_ptr<UBOs::AmbientLightUbo>& getAmbientLightUbo() { return m_ambientLightUbo; };
 
@@ -52,28 +53,34 @@ namespace Engine
 
             std::shared_ptr<UBOs::ViewProjectionUbo>& getVpUbo() { return m_vpUbo; };
 
-            bool getWireframeMode() const { return m_showWireframe; };
-
             void setWireframeMode(bool toggle);
 
-            template<typename T>
-            static GLuint createBuffer(std::vector<T>& data)
-            {
-                int dataSize = data.size() * sizeof(T);
+            bool getWireframeMode() const { return m_showWireframe; };
 
-                // Identify the vertex buffer
-                GLuint vbo;
-                // Generate a buffer with our identifier
-                glGenBuffers(1, &vbo);
-                glBindBuffer(GL_ARRAY_BUFFER, vbo);
+            bool isGridVisible() const { return m_showGrid; };
 
-                // Give vertices to OpenGL
-                glBufferData(GL_ARRAY_BUFFER, dataSize, &data[0], GL_STATIC_DRAW);
+            void setGridVisibility(bool showGrid) { m_showGrid = showGrid; };
 
-                return vbo;
-            };
+            void setClearColor(const float color[4]);
+
+            float* getClearColor() { return m_clearColor; };
+
+            void addGeometryToScene(std::shared_ptr<GeometryComponent>& node);
+            void removeGeometryFromScene(const unsigned int& nodeId);
+
+            void addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node);
+            void removeDebugUiFromScene(const unsigned int& nodeId);
 
         private:
+            void drawOpaqueNodes(const std::shared_ptr<CameraComponent>& camera);
+            void drawTranslucentNodes(const std::shared_ptr<CameraComponent>& camera);
+            void drawUiNodes();
+
+            void depthSortNodes(const std::shared_ptr<CameraComponent>& camera);
+
+            std::vector<std::shared_ptr<GeometryComponent>> m_sceneGeometry;
+            std::vector<std::shared_ptr<Ui::UiDebugWindow>> m_sceneDebugUi;
+
             std::shared_ptr<UBOs::AmbientLightUbo> m_ambientLightUbo;
             std::shared_ptr<UBOs::DiffuseLightUbo> m_diffuseLightUbo;
             std::shared_ptr<UBOs::ViewProjectionUbo> m_vpUbo;
@@ -81,7 +88,13 @@ namespace Engine
             std::map<std::string, GLuint> m_shaderList;
             std::vector<std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;
+
+            std::shared_ptr<GridShader> m_gridShader;
+
             bool m_showWireframe;
+            bool m_showGrid;
+
+            float m_clearColor[4];
     };
 
 } // namespace Engine

@@ -22,7 +22,7 @@ namespace Engine
     glm::mat4 CameraComponent::getViewMatrix()
     {
         const glm::vec3 pos = getGlobalPosition();
-        return glm::lookAt(pos, pos + getForward(), WORLD_UP);
+        return glm::lookAt(pos, pos + getForward(), RenderUtils::WORLD_UP);
     }
 
     void CameraComponent::updateProjectionMatrix()

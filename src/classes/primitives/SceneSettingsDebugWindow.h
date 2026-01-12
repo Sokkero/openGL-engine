@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-    class EngineManager;
+    class RenderManager;
 
     namespace Ui
     {
@@ -23,7 +23,7 @@ namespace Engine
                 void onWireframeToggle(bool value) const;
                 void onGridToggle(bool value) const;
 
-                std::shared_ptr<EngineManager> m_engineManager;
+                std::shared_ptr<RenderManager> m_renderManager;
         };
     } // namespace Ui
 } // namespace Engine

@@ -27,11 +27,11 @@ namespace Engine
         const auto& thisNode = shared_from_this();
         if(const auto geometry = std::dynamic_pointer_cast<GeometryComponent>(thisNode))
         {
-            SingletonManager::get<EngineManager>()->removeGeometryFromScene(geometry->getNodeId());
+            SingletonManager::get<RenderManager>()->removeGeometryFromScene(geometry->getNodeId());
         }
         else if(const auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(thisNode))
         {
-            SingletonManager::get<EngineManager>()->removeDebugUiFromScene(debugUi->getNodeId());
+            SingletonManager::get<RenderManager>()->removeDebugUiFromScene(debugUi->getNodeId());
         }
     }
 
@@ -51,11 +51,11 @@ namespace Engine
 
         if(auto geometry = std::dynamic_pointer_cast<GeometryComponent>(node))
         {
-            SingletonManager::get<EngineManager>()->addGeometryToScene(geometry);
+            SingletonManager::get<RenderManager>()->addGeometryToScene(geometry);
         }
         else if(auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(node))
         {
-            SingletonManager::get<EngineManager>()->addDebugUiToScene(debugUi);
+            SingletonManager::get<RenderManager>()->addDebugUiToScene(debugUi);
         }
 
         node->start();
@@ -95,9 +95,10 @@ namespace Engine
     {
         for(const auto& child : m_childNodes)
         {
-            const auto& engineManager = SingletonManager::get<EngineManager>();
+            const auto& renderManager = SingletonManager::get<RenderManager>();
             child->callOnAllChildrenRecursiveAndSelf(
-                    [engineManager](BasicNode* node) -> void { engineManager->removeGeometryFromScene(node); }
+                    [renderManager](BasicNode* node) -> void
+                    { renderManager->removeGeometryFromScene(node->getNodeId()); }
             );
             child->cleanupNode();
             child->setParent(nullptr);
@@ -110,9 +111,10 @@ namespace Engine
 
     void BasicNode::detatchFromParent()
     {
-        const auto& engineManager = SingletonManager::get<EngineManager>();
+        const auto& renderManager = SingletonManager::get<RenderManager>();
         callOnAllChildrenRecursiveAndSelf(
-                [engineManager](BasicNode* node) -> void { engineManager->removeGeometryFromScene(node); }
+                [renderManager](BasicNode* node) -> void
+                { renderManager->removeGeometryFromScene(node->getNodeId()); }
         );
         setParent(nullptr);
     }

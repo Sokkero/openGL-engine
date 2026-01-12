@@ -5,13 +5,11 @@
 
 using namespace Engine;
 
-GridShader::GridShader(const std::shared_ptr<RenderManager>& renderManager)
-    : m_gridScale(1.f)
-    , m_gridNear(0.01f)
-    , m_gridFar(20.f)
+GridShader::GridShader() : m_gridScale(1.f), m_gridNear(0.01f), m_gridFar(20.f)
 {
-    registerShader(renderManager, "resources/shader/grid", "grid");
+    std::shared_ptr<RenderManager> renderManager = SingletonManager::get<RenderManager>();
 
+    registerShader(renderManager, "resources/shader/grid", "grid");
     bindUbo(renderManager->getVpUbo());
 }
 
