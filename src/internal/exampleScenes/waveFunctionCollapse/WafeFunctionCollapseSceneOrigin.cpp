@@ -3,8 +3,8 @@
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/WindowManager.h"
 #include "classes/helper/DebugUtils.h"
-#include "classes/primitives/DebugManagerWindow.h"
-#include "exampleScenes/testScene/CameraActor.h"
+#include "classes/primitives/actors/CameraActor.h"
+#include "classes/primitives/ui/DebugManagerWindow.h"
 #include "exampleScenes/waveFunctionCollapse/IslandGenerator.h"
 #include "resources/shader/ColorShader.h"
 

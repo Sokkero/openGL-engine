@@ -4,7 +4,7 @@
 #include "classes/engine/UserEventManager.h"
 #include "classes/engine/WindowManager.h"
 #include "classes/nodeComponents/CameraComponent.h"
-#include "classes/primitives/DebugManagerWindow.h"
+#include "classes/primitives/ui/DebugManagerWindow.h"
 #include "exampleScenes/mandelbrotScene/MandelbrotDebugWindow.h"
 #include "exampleScenes/mandelbrotScene/MandelbrotUbo.h"
 #include "resources/shader/MandelbrotShader.h"

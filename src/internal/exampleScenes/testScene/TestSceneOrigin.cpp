@@ -2,8 +2,8 @@
 
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/WindowManager.h"
-#include "classes/primitives/DebugManagerWindow.h"
-#include "exampleScenes/testScene/CameraActor.h"
+#include "classes/primitives/actors/CameraActor.h"
+#include "classes/primitives/ui/DebugManagerWindow.h"
 #include "exampleScenes/testScene/TestObject.h"
 #include "resources/shader/ColorShader.h"
 #include "resources/shader/TextureShader.h"
