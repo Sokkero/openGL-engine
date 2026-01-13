@@ -13,39 +13,38 @@ project(${PROJECT_NAME})
 
 find_package(OpenGL REQUIRED)
 
-if(EXISTS ${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
-    include(${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
-    conan_basic_setup()
-else()
+if(NOT EXISTS ${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
     message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run ./build.sh first")
 endif()
 
-include_directories(
-        external/imgui/
-        external/imgui/backends/
-        external/implot/
-)
-
 FILE(GLOB IMGUI
-        external/implot/*.cpp
-        external/implot/*.h
-        external/imgui/*.cpp
-        external/imgui/*.h
-        external/imgui/backends/imgui_impl_glfw.h
-        external/imgui/backends/imgui_impl_glfw.cpp
-        external/imgui/backends/imgui_impl_opengl3.h
-        external/imgui/backends/imgui_impl_opengl3.cpp
-        external/imgui/misc/cpp/imgui_stdlib.*
+        src/external/implot/*.cpp
+        src/external/implot/*.h
+        src/external/imgui/*.cpp
+        src/external/imgui/*.h
+        src/external/imgui/backends/imgui_impl_glfw.h
+        src/external/imgui/backends/imgui_impl_glfw.cpp
+        src/external/imgui/backends/imgui_impl_opengl3.h
+        src/external/imgui/backends/imgui_impl_opengl3.cpp
+        src/external/imgui/misc/cpp/imgui_stdlib.*
 )
+FILE(GLOB_RECURSE SOURCE_FILES src/internal/*.cpp src/internal/*.h)
 
-add_subdirectory(tests)
-
-FILE(GLOB_RECURSE SOURCE_FILES src/*.cpp src/*.h)
 add_executable(${PROJECT_NAME} ${IMGUI} ${SOURCE_FILES} ${RES_FILES} src/main.cpp)
+
+include(${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
+conan_basic_setup()
+
+target_include_directories(${PROJECT_NAME} PRIVATE
+        src/external/imgui/
+        src/external/imgui/backends/
+        src/external/implot/
+        src/internal
+)
 
 file(REMOVE_RECURSE ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 # Copy src/resources -> bin/resources
-file(COPY ${CMAKE_SOURCE_DIR}/src/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
+file(COPY ${CMAKE_SOURCE_DIR}/src/internal/resources DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/bin)
 
 target_link_libraries(${PROJECT_NAME} ${CONAN_LIBS})
