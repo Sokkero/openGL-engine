@@ -7,7 +7,7 @@
 #include "classes/primitives/ui/DebugManagerWindow.h"
 #include "exampleScenes/mandelbrotScene/MandelbrotDebugWindow.h"
 #include "exampleScenes/mandelbrotScene/MandelbrotUbo.h"
-#include "resources/shader/MandelbrotShader.h"
+#include "resources/shader/mandelbrotShader/MandelbrotShader.h"
 
 MandelbrotSceneOrigin::MandelbrotSceneOrigin() : m_mandelbrotUbo(nullptr) {}
 

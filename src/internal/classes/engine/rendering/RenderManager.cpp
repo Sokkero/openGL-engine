@@ -4,7 +4,7 @@
 #include "classes/helper/FileLoadingUtils.h"
 #include "classes/helper/VertexIndexingUtils.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
-#include "resources/shader/GridShader.h"
+#include "resources/shader/gridShader/GridShader.h"
 
 #include <iostream>
 #include <string>

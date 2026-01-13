@@ -9,7 +9,7 @@ using namespace Engine;
 MandelbrotShader::MandelbrotShader(const std::shared_ptr<RenderManager>& renderManager, std::shared_ptr<MandelbrotUbo> ubo)
     : m_mandelbrotUbo(std::move(ubo))
 {
-    registerShader(renderManager, "resources/shader/mandelbrot", "mandelbrot");
+    registerShader(renderManager, "resources/shader/mandelbrotShader/mandelbrot", "mandelbrot");
 
     bindUbo(renderManager->getVpUbo());
 }

@@ -9,7 +9,7 @@ GridShader::GridShader() : m_gridScale(1.f), m_gridNear(0.01f), m_gridFar(20.f)
 {
     std::shared_ptr<RenderManager> renderManager = SingletonManager::get<RenderManager>();
 
-    registerShader(renderManager, "resources/shader/grid", "grid");
+    registerShader(renderManager, "resources/shader/gridShader/grid", "grid");
     bindUbo(renderManager->getVpUbo());
 }
 
