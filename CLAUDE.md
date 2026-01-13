@@ -20,21 +20,22 @@ It is your job to guide the developer and hint them in a good direction.
 ### Setup the project (only needs to be run once when setting up the project)
 - `./buildDeps.sh` (executed in project root)
 
-### Format code (Formats all code in project)
+### Format code (Formats all project internal code)
 - `./format.sh` (executed in project root)
   - Should be run once after implementing changes
 
 ## Code Architecture
 
 ### Key Directories
-- `src/classes/` - Main C++ source code
+- `src/internal/classes/` - Main C++ source code of the engine and all its components
     - `engine/` - Classes and code, relevent for the main loop and lifecycle of the engine (Render pipeline, render logic, shader and geometry handling, update logic, window and engine setup, etc.)
     - `helper/` - Utils, Enums and Data Containers
     - `nodeComponents/` - Basic components for game objects
     - `primitives/` - Default primitive game objects ready for use
     - `uiElements/` - Elements that can be used in debug windows within the game engine
-- `resources/` - For storing Shaders, textures and geometry objects
-- `customCode/` - Code, classes and assets that are not part of the engine iteself but instead are utilising the engine to create scenes and games
+- `src/internal/resources/` - For storing Shaders, textures and geometry objects
+- `src/internal/exampleScenes/` - Code, classes and assets that are not part of the engine iteself but instead are utilising the engine to create example scenes and games
+- `src/external/` - External code (i.e. libraries)
 
 ### Core Components
 - **SingletonManager**: Manages the creation and storing of all engine components that are only allowed to exist once
