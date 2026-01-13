@@ -1,10 +1,10 @@
 #include "SceneSettingsDebugWindow.h"
 
-#include "../engine/EngineManager.h"
-#include "../engine/WindowManager.h"
-#include "../engine/rendering/RenderManager.h"
-#include "../uiElements/UiElementColorEdit.h"
-#include "../uiElements/UiElementRadio.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/engine/rendering/RenderManager.h"
+#include "classes/uiElements/UiElementColorEdit.h"
+#include "classes/uiElements/UiElementRadio.h"
 
 using namespace Engine::Ui;
 

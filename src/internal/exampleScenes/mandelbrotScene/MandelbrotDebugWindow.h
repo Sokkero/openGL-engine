@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../classes/nodeComponents/UiDebugWindow.h"
+#include "classes/nodeComponents/UiDebugWindow.h"
 
 class MandelbrotUbo;
 

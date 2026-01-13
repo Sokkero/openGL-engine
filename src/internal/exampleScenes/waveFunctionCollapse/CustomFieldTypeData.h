@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Field.h"
-#include "FieldTypeUtils.h"
+#include "exampleScenes/waveFunctionCollapse/Field.h"
+#include "exampleScenes/waveFunctionCollapse/FieldTypeUtils.h"
 
 enum FieldTypeEnum
 {

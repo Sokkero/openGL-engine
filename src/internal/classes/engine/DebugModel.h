@@ -1,14 +1,13 @@
 #pragma once
 
-#include "../SingletonManager.h"
-#include "../helper/enums/EngineDrawEventsEnum.h"
-#include "../helper/enums/LifecycleEventsEnum.h"
-
-#include <map>
+#include "classes/SingletonManager.h"
+#include "classes/helper/enums/EngineDrawEventsEnum.h"
+#include "classes/helper/enums/LifecycleEventsEnum.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
+#include <map>
 
 namespace Engine
 {

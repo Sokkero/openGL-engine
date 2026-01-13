@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../uiElements/UiElement.h"
-#include "BasicNode.h"
+#include "classes/nodeComponents/BasicNode.h"
+#include "classes/uiElements/UiElement.h"
+
 #include <memory>
 #include <string>
 #include <utility>

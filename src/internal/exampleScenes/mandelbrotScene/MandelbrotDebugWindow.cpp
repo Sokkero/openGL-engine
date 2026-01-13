@@ -1,11 +1,11 @@
 #include "MandelbrotDebugWindow.h"
 
-#include "../../classes/engine/EngineManager.h"
-#include "../../classes/engine/WindowManager.h"
-#include "../../classes/engine/rendering/RenderManager.h"
-#include "../../classes/uiElements/UiElementSlider.h"
-#include "../../classes/uiElements/UiElementText.h"
-#include "MandelbrotUbo.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/engine/rendering/RenderManager.h"
+#include "classes/uiElements/UiElementSlider.h"
+#include "classes/uiElements/UiElementText.h"
+#include "exampleScenes/mandelbrotScene/MandelbrotUbo.h"
 
 using namespace Engine::Ui;
 

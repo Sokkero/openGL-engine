@@ -1,8 +1,8 @@
 #pragma once
 
-#include "../../classes/nodeComponents/BasicNode.h"
-#include "FieldTypeUtils.h"
-#include "WafeFunctionCollapseGenerator.h"
+#include "classes/nodeComponents/BasicNode.h"
+#include "exampleScenes/waveFunctionCollapse/FieldTypeUtils.h"
+#include "exampleScenes/waveFunctionCollapse/WafeFunctionCollapseGenerator.h"
 
 class IslandGenerator
     : public Engine::BasicNode

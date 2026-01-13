@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../../classes/nodeComponents/BasicNode.h"
-#include "../../classes/nodeComponents/CameraComponent.h"
+#include "classes/nodeComponents/BasicNode.h"
+#include "classes/nodeComponents/CameraComponent.h"
 
 namespace Engine
 {

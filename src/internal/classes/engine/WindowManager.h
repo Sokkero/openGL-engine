@@ -1,13 +1,12 @@
 #pragma once
 
-#include "../SingletonManager.h"
-
-#include <string>
-#include <utility>
+#include "classes/SingletonManager.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <glm/vec2.hpp>
+#include <string>
+#include <utility>
 
 namespace Engine
 {

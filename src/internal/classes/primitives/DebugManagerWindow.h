@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../nodeComponents/UiDebugWindow.h"
+#include "classes/nodeComponents/UiDebugWindow.h"
 
 namespace Engine::Ui
 {

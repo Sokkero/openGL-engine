@@ -1,14 +1,12 @@
-
 #include "EngineManager.h"
 
-#include "../../customCode/testScene/TestSceneOrigin.h"
-#include "../nodeComponents/UiDebugWindow.h"
-#include "rendering/RenderManager.h"
-
-#include <iostream>
-#include <utility>
+#include "classes/engine/rendering/RenderManager.h"
+#include "classes/nodeComponents/UiDebugWindow.h"
+#include "exampleScenes/testScene/TestSceneOrigin.h"
 
 #include <GLFW/glfw3.h>
+#include <iostream>
+#include <utility>
 
 namespace Engine
 {

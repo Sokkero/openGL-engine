@@ -17,6 +17,9 @@ if(NOT EXISTS ${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
     message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run ./build.sh first")
 endif()
 
+include(${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
+conan_basic_setup()
+
 FILE(GLOB IMGUI
         src/external/implot/*.cpp
         src/external/implot/*.h
@@ -32,14 +35,11 @@ FILE(GLOB_RECURSE SOURCE_FILES src/internal/*.cpp src/internal/*.h)
 
 add_executable(${PROJECT_NAME} ${IMGUI} ${SOURCE_FILES} ${RES_FILES} src/main.cpp)
 
-include(${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
-conan_basic_setup()
-
 target_include_directories(${PROJECT_NAME} PRIVATE
         src/external/imgui/
         src/external/imgui/backends/
         src/external/implot/
-        src/internal
+        src/internal/
 )
 
 file(REMOVE_RECURSE ${CMAKE_CURRENT_BINARY_DIR}/bin)

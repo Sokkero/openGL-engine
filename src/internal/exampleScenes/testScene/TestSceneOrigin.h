@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../classes/nodeComponents/BasicNode.h"
+#include "classes/nodeComponents/BasicNode.h"
 
 namespace Engine
 {

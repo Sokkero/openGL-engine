@@ -1,8 +1,8 @@
 #include "BasicNode.h"
 
-#include "../engine/EngineManager.h"
-#include "GeometryComponent.h"
-#include "UiDebugWindow.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/nodeComponents/GeometryComponent.h"
+#include "classes/nodeComponents/UiDebugWindow.h"
 
 #include <iostream>
 

@@ -1,7 +1,6 @@
-
 #include "RenderUtils.h"
 
-#include "../engine/rendering/Shader.h"
+#include "classes/engine/rendering/Shader.h"
 
 #include <GL/glew.h>
 #include <assert.h>

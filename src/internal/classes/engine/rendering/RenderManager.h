@@ -1,16 +1,15 @@
 #pragma once
 
-#include "../../SingletonManager.h"
-#include "../../helper/ObjectData.h"
-#include "ubos/AmbientLightUbo.h"
-#include "ubos/DiffuseLightUbo.h"
-#include "ubos/ViewProjectionUbo.h"
+#include "classes/SingletonManager.h"
+#include "classes/engine/rendering/ubos/AmbientLightUbo.h"
+#include "classes/engine/rendering/ubos/DiffuseLightUbo.h"
+#include "classes/engine/rendering/ubos/ViewProjectionUbo.h"
+#include "classes/helper/ObjectData.h"
 
+#include <glm/gtc/matrix_transform.hpp>
 #include <map>
 #include <string>
 #include <vector>
-
-#include <glm/gtc/matrix_transform.hpp>
 
 namespace Engine
 {

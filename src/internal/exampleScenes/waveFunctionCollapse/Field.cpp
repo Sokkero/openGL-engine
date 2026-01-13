@@ -1,7 +1,6 @@
-
 #include "Field.h"
 
-#include "WafeFunctionCollapseGenerator.h"
+#include "exampleScenes/waveFunctionCollapse/WafeFunctionCollapseGenerator.h"
 
 Field::Field(const std::vector<BasicFieldDataStruct>& fieldTypes)
     : m_fieldSet(false)

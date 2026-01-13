@@ -1,13 +1,12 @@
-
 #include "TestSceneOrigin.h"
 
-#include "../../classes/engine/EngineManager.h"
-#include "../../classes/engine/WindowManager.h"
-#include "../../classes/primitives/DebugManagerWindow.h"
-#include "../../resources/shader/ColorShader.h"
-#include "../../resources/shader/TextureShader.h"
-#include "CameraActor.h"
-#include "TestObject.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/primitives/DebugManagerWindow.h"
+#include "exampleScenes/testScene/CameraActor.h"
+#include "exampleScenes/testScene/TestObject.h"
+#include "resources/shader/ColorShader.h"
+#include "resources/shader/TextureShader.h"
 
 void TestSceneOrigin::start()
 {

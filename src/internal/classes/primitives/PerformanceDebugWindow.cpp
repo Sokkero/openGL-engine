@@ -1,15 +1,15 @@
 #include "PerformanceDebugWindow.h"
 
-#include "../engine/DebugModel.h"
-#include "../engine/EngineManager.h"
-#include "../engine/WindowManager.h"
-#include "../engine/rendering/RenderManager.h"
-#include "../uiElements/UiElementButton.h"
-#include "../uiElements/UiElementCollapsableSection.h"
-#include "../uiElements/UiElementPieChart.h"
-#include "../uiElements/UiElementPlot.h"
-#include "../uiElements/UiElementRadio.h"
-#include "../uiElements/UiElementText.h"
+#include "classes/engine/DebugModel.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/engine/rendering/RenderManager.h"
+#include "classes/uiElements/UiElementButton.h"
+#include "classes/uiElements/UiElementCollapsableSection.h"
+#include "classes/uiElements/UiElementPieChart.h"
+#include "classes/uiElements/UiElementPlot.h"
+#include "classes/uiElements/UiElementRadio.h"
+#include "classes/uiElements/UiElementText.h"
 
 using namespace Engine::Ui;
 

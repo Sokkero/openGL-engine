@@ -1,9 +1,10 @@
 #pragma once
 
-#include "../../nodeComponents/CameraComponent.h"
-#include "../../nodeComponents/GeometryComponent.h"
-#include "RenderManager.h"
-#include "ubos/UboBlock.h"
+#include "classes/engine/rendering/RenderManager.h"
+#include "classes/engine/rendering/ubos/UboBlock.h"
+#include "classes/nodeComponents/CameraComponent.h"
+#include "classes/nodeComponents/GeometryComponent.h"
+
 #include <utility>
 
 namespace Engine

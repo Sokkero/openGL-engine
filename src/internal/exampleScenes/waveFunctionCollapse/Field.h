@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FieldTypeUtils.h"
+#include "exampleScenes/waveFunctionCollapse/FieldTypeUtils.h"
 
 #include <glm/ext/vector_int2.hpp>
 #include <glm/vec2.hpp>

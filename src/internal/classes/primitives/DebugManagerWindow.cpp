@@ -1,13 +1,13 @@
 #include "DebugManagerWindow.h"
 
-#include "../engine/EngineManager.h"
-#include "../engine/WindowManager.h"
-#include "../engine/rendering/RenderManager.h"
-#include "../uiElements/UiElementPlot.h"
-#include "../uiElements/UiElementRadio.h"
-#include "../uiElements/UiElementText.h"
 #include "PerformanceDebugWindow.h"
 #include "SceneSettingsDebugWindow.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/engine/rendering/RenderManager.h"
+#include "classes/uiElements/UiElementPlot.h"
+#include "classes/uiElements/UiElementRadio.h"
+#include "classes/uiElements/UiElementText.h"
 
 using namespace Engine::Ui;
 

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../helper/MathUtils.h"
 #include "UiElement.h"
+
+#include "classes/helper/MathUtils.h"
 
 #include <implot.h>
 #include <map>

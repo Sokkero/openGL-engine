@@ -1,6 +1,6 @@
-
 #include "MandelbrotShader.h"
-#include "../../customCode/mandelbrotScene/MandelbrotUbo.h"
+
+#include "exampleScenes/mandelbrotScene/MandelbrotUbo.h"
 
 #include <utility>
 

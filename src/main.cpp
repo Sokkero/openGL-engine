@@ -1,10 +1,9 @@
-
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/GameInterface.h"
 #include "classes/engine/rendering/RenderManager.h"
-#include "customCode/mandelbrotScene/MandelbrotSceneOrigin.h"
-#include "customCode/testScene/TestSceneOrigin.h"
-#include "customCode/waveFunctionCollapse/WafeFunctionCollapseSceneOrigin.h"
+#include "exampleScenes/mandelbrotScene/MandelbrotSceneOrigin.h"
+#include "exampleScenes/testScene/TestSceneOrigin.h"
+#include "exampleScenes/waveFunctionCollapse/WafeFunctionCollapseSceneOrigin.h"
 
 using namespace Engine;
 

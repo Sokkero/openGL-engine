@@ -1,9 +1,8 @@
-
 #include "WafeFunctionCollapseGenerator.h"
 
-#include "../../classes/helper/DebugUtils.h"
-#include "../../classes/helper/MathUtils.h"
-#include "Field.h"
+#include "classes/helper/DebugUtils.h"
+#include "classes/helper/MathUtils.h"
+#include "exampleScenes/waveFunctionCollapse/Field.h"
 
 #include <GLFW/glfw3.h>
 #include <iostream>

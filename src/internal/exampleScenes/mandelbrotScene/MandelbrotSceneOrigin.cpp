@@ -1,14 +1,13 @@
-
 #include "MandelbrotSceneOrigin.h"
 
-#include "../../classes/engine/EngineManager.h"
-#include "../../classes/engine/UserEventManager.h"
-#include "../../classes/engine/WindowManager.h"
-#include "../../classes/nodeComponents/CameraComponent.h"
-#include "../../classes/primitives/DebugManagerWindow.h"
-#include "../../resources/shader/MandelbrotShader.h"
-#include "MandelbrotDebugWindow.h"
-#include "MandelbrotUbo.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/engine/UserEventManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/nodeComponents/CameraComponent.h"
+#include "classes/primitives/DebugManagerWindow.h"
+#include "exampleScenes/mandelbrotScene/MandelbrotDebugWindow.h"
+#include "exampleScenes/mandelbrotScene/MandelbrotUbo.h"
+#include "resources/shader/MandelbrotShader.h"
 
 MandelbrotSceneOrigin::MandelbrotSceneOrigin() : m_mandelbrotUbo(nullptr) {}
 

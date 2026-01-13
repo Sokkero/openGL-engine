@@ -1,5 +1,5 @@
-#include "../../classes/engine/rendering/ubos/UboBindingPoints.h"
-#include "../../classes/engine/rendering/ubos/UboBlock.h"
+#include "classes/engine/rendering/ubos/UboBindingPoints.h"
+#include "classes/engine/rendering/ubos/UboBlock.h"
 
 #include <glm/vec2.hpp>
 

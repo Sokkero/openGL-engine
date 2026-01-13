@@ -1,4 +1,3 @@
-
 #include "CustomFieldTypeData.h"
 
 template<typename T>

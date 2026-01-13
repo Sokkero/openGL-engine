@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../helper/RenderUtils.h"
+#include "classes/helper/RenderUtils.h"
 
 #include <GL/glew.h>
 #include <glm/glm.hpp>

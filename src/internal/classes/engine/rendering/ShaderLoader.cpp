@@ -1,13 +1,12 @@
 #include "ShaderLoader.h"
 
-#include "../../helper/RenderUtils.h"
+#include "classes/helper/RenderUtils.h"
 
+#include <GL/glew.h>
 #include <cstdio>
 #include <fstream>
 #include <sstream>
 #include <vector>
-
-#include <GL/glew.h>
 
 using namespace std;
 

@@ -1,12 +1,11 @@
-
 #include "IslandGenerator.h"
 
-#include "../../classes/engine/UserEventManager.h"
-#include "../../classes/helper/RenderUtils.h"
-#include "../../classes/nodeComponents/GeometryComponent.h"
-#include "../../resources/shader/ColorShader.h"
-#include "CustomFieldTypeData.h"
-#include "Field.h"
+#include "classes/engine/UserEventManager.h"
+#include "classes/helper/RenderUtils.h"
+#include "classes/nodeComponents/GeometryComponent.h"
+#include "exampleScenes/waveFunctionCollapse/CustomFieldTypeData.h"
+#include "exampleScenes/waveFunctionCollapse/Field.h"
+#include "resources/shader/ColorShader.h"
 
 IslandGenerator::IslandGenerator(const glm::ivec2& gridDimensions, const double& seed)
     : WafeFunctionCollapseGenerator(gridDimensions, seed, true)

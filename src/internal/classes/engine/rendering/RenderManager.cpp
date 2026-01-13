@@ -1,11 +1,10 @@
-
 #include "RenderManager.h"
 
-#include "../../../resources/shader/GridShader.h"
-#include "../../helper/FileLoadingUtils.h"
-#include "../../helper/VertexIndexingUtils.h"
-#include "../../nodeComponents/UiDebugWindow.h"
-#include "ShaderLoader.h"
+#include "classes/engine/rendering/ShaderLoader.h"
+#include "classes/helper/FileLoadingUtils.h"
+#include "classes/helper/VertexIndexingUtils.h"
+#include "classes/nodeComponents/UiDebugWindow.h"
+#include "resources/shader/GridShader.h"
 
 #include <iostream>
 #include <string>

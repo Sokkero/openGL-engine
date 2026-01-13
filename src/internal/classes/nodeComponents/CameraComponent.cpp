@@ -1,9 +1,9 @@
 #include "CameraComponent.h"
 
-#include "../engine/WindowManager.h"
-#include "../engine/rendering/RenderManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/engine/rendering/RenderManager.h"
 
-#include "glm/ext/matrix_clip_space.hpp"
+#include <glm/ext/matrix_clip_space.hpp>
 
 namespace Engine
 {

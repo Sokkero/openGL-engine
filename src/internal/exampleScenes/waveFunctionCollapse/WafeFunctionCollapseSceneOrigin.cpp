@@ -1,13 +1,12 @@
-
 #include "WafeFunctionCollapseSceneOrigin.h"
 
-#include "../../classes/engine/EngineManager.h"
-#include "../../classes/engine/WindowManager.h"
-#include "../../classes/helper/DebugUtils.h"
-#include "../../classes/primitives/DebugManagerWindow.h"
-#include "../../resources/shader/ColorShader.h"
-#include "../testScene/CameraActor.h"
-#include "IslandGenerator.h"
+#include "classes/engine/EngineManager.h"
+#include "classes/engine/WindowManager.h"
+#include "classes/helper/DebugUtils.h"
+#include "classes/primitives/DebugManagerWindow.h"
+#include "exampleScenes/testScene/CameraActor.h"
+#include "exampleScenes/waveFunctionCollapse/IslandGenerator.h"
+#include "resources/shader/ColorShader.h"
 
 WafeFunctionCollapseSceneOrigin::WafeFunctionCollapseSceneOrigin() {}
 

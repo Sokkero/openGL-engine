@@ -1,7 +1,7 @@
 
 #include "GridShader.h"
 
-#include "../../classes/engine/DebugModel.h"
+#include "classes/engine/DebugModel.h"
 
 using namespace Engine;
 
