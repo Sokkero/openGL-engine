@@ -15,14 +15,11 @@ namespace Engine
     class Shader;
     class ObjectData;
 
-    /**
-     * @brief The GeometryComponent class represents a component that handles geometry-related operations for a node.
-     */
-    class GeometryComponent : virtual public BasicNode
+    class RenderComponent : virtual public BasicNode
     {
         public:
-            GeometryComponent();
-            ~GeometryComponent() = default;
+            RenderComponent();
+            ~RenderComponent() = default;
 
             glm::vec4 getTint() const { return m_tint; };
             void setTint(glm::vec4 tint);

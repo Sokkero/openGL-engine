@@ -13,7 +13,7 @@
 
 namespace Engine
 {
-    class GeometryComponent;
+    class RenderComponent;
     class Shader;
     class GridShader;
     class CameraComponent;
@@ -32,7 +32,7 @@ namespace Engine
             void init();
 
             void drawScene(const std::shared_ptr<CameraComponent>& camera);
-            void drawNode(const std::shared_ptr<GeometryComponent>& node, const std::shared_ptr<CameraComponent>& camera);
+            void drawNode(const std::shared_ptr<RenderComponent>& node, const std::shared_ptr<CameraComponent>& camera);
 
             // A custom object will bypass the check if the given file has already been loaded, assuming the code will change the data and make it unique
             std::shared_ptr<ObjectData> registerObject(const char* filePath, bool isCustomObject = false);
@@ -59,7 +59,7 @@ namespace Engine
             void setClearColor(const float color[4]);
             float* getClearColor() { return m_clearColor; };
 
-            void addGeometryToScene(std::shared_ptr<GeometryComponent>& node);
+            void addGeometryToScene(std::shared_ptr<RenderComponent>& node);
             void removeGeometryFromScene(const unsigned int& nodeId);
 
             void addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node);
@@ -74,7 +74,7 @@ namespace Engine
 
             void depthSortNodes(const std::shared_ptr<CameraComponent>& camera);
 
-            std::vector<std::shared_ptr<GeometryComponent>> m_sceneGeometry;
+            std::vector<std::shared_ptr<RenderComponent>> m_sceneGeometry;
             std::vector<std::shared_ptr<Ui::UiDebugWindow>> m_sceneDebugUi;
 
             std::shared_ptr<UBOs::AmbientLightUbo> m_ambientLightUbo;

@@ -11,7 +11,7 @@ namespace Engine
     class BasicNode;
     class RenderManager;
     class CameraComponent;
-    class GeometryComponent;
+    class RenderComponent;
 
     namespace Ui
     {

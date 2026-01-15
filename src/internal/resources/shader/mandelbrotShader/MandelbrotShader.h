@@ -6,7 +6,7 @@ class MandelbrotUbo;
 
 namespace Engine
 {
-    class GeometryComponent;
+    class RenderComponent;
 
     class MandelbrotShader : public Shader
     {
@@ -14,7 +14,7 @@ namespace Engine
             MandelbrotShader(const std::shared_ptr<RenderManager>& renderManager, std::shared_ptr<MandelbrotUbo> ubo);
             ~MandelbrotShader() = default;
 
-            void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) override;
+            void renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent* camera) override;
 
         private:
             std::shared_ptr<MandelbrotUbo> m_mandelbrotUbo;

@@ -13,7 +13,7 @@ GridShader::GridShader() : m_gridScale(1.f), m_gridNear(0.01f), m_gridFar(20.f)
     bindUbo(renderManager->getVpUbo());
 }
 
-void GridShader::renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera)
+void GridShader::renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent* camera)
 {
     swapToProgramm();
 

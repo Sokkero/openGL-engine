@@ -12,7 +12,7 @@ ColorShader::ColorShader(const std::shared_ptr<RenderManager>& renderManager)
     bindUbo(renderManager->getVpUbo());
 }
 
-void ColorShader::renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent*)
+void ColorShader::renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent*)
 {
     swapToProgramm();
 

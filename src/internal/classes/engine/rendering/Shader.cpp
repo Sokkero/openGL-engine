@@ -49,7 +49,7 @@ void Shader::registerShader(
     m_requiresTexture = requiresTexture;
 }
 
-void Shader::loadModelMatrix(const std::shared_ptr<GeometryComponent>& object) const
+void Shader::loadModelMatrix(const std::shared_ptr<RenderComponent>& object) const
 {
     double startTime = glfwGetTime();
 
@@ -59,7 +59,7 @@ void Shader::loadModelMatrix(const std::shared_ptr<GeometryComponent>& object) c
     m_debugModel->setDrawSectionTimeData("loadModelMatrix", glfwGetTime() - startTime);
 }
 
-void Shader::loadTint(const std::shared_ptr<GeometryComponent>& object) const
+void Shader::loadTint(const std::shared_ptr<RenderComponent>& object) const
 {
     double startTime = glfwGetTime();
 
@@ -121,7 +121,7 @@ void Shader::loadNormalBuffer(const std::shared_ptr<ObjectData>& object) const
     m_debugModel->setDrawSectionTimeData("loadNormalBuffer", glfwGetTime() - startTime);
 }
 
-void Shader::loadTextureBuffer(const std::shared_ptr<GeometryComponent>& object) const
+void Shader::loadTextureBuffer(const std::shared_ptr<RenderComponent>& object) const
 {
     double startTime = glfwGetTime();
 
@@ -135,7 +135,7 @@ void Shader::loadTextureBuffer(const std::shared_ptr<GeometryComponent>& object)
     m_debugModel->setDrawSectionTimeData("loadTextureBuffer", glfwGetTime() - startTime);
 }
 
-void Shader::loadColorBuffer(const std::shared_ptr<GeometryComponent>& object) const
+void Shader::loadColorBuffer(const std::shared_ptr<RenderComponent>& object) const
 {
     double startTime = glfwGetTime();
 
@@ -144,7 +144,7 @@ void Shader::loadColorBuffer(const std::shared_ptr<GeometryComponent>& object) c
     m_debugModel->setDrawSectionTimeData("loadColorBuffer", glfwGetTime() - startTime);
 }
 
-void Shader::drawElements(const std::shared_ptr<GeometryComponent>& object) const
+void Shader::drawElements(const std::shared_ptr<RenderComponent>& object) const
 {
     double startTime = glfwGetTime();
 

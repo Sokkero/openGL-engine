@@ -12,7 +12,7 @@ TextureShader::TextureShader(const std::shared_ptr<RenderManager>& renderManager
     bindUbo(renderManager->getVpUbo());
 }
 
-void TextureShader::renderObject(const std::shared_ptr<GeometryComponent>& object, Engine::CameraComponent* camera)
+void TextureShader::renderObject(const std::shared_ptr<RenderComponent>& object, Engine::CameraComponent* camera)
 {
     swapToProgramm();
 

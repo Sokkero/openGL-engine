@@ -1,10 +1,10 @@
 #pragma once
 
-#include "classes/nodeComponents/GeometryComponent.h"
+#include "classes/nodeComponents/RenderComponent.h"
 
 using namespace Engine;
 
-class TestObject : public GeometryComponent
+class TestObject : public RenderComponent
 {
     public:
         TestObject() = default;

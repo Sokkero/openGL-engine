@@ -5,7 +5,7 @@
 namespace Engine
 {
     class EngineManager;
-    class GeometryComponent;
+    class RenderComponent;
 } // namespace Engine
 
 class TestObject;
@@ -19,7 +19,7 @@ class TestSceneOrigin : public Engine::BasicNode
     private:
         std::shared_ptr<Engine::EngineManager> m_engineManager;
 
-        std::shared_ptr<Engine::GeometryComponent> m_tree;
+        std::shared_ptr<Engine::RenderComponent> m_tree;
         std::shared_ptr<TestObject> m_ape;
 
         void start() override;

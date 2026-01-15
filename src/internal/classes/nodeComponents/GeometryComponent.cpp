@@ -1,4 +1,4 @@
-#include "GeometryComponent.h"
+#include "RenderComponent.h"
 
 #include "classes/engine/EngineManager.h"
 #include "classes/nodeComponents/CameraComponent.h"
@@ -7,7 +7,7 @@
 
 using namespace Engine;
 
-GeometryComponent::GeometryComponent()
+RenderComponent::RenderComponent()
     : m_objectData(nullptr)
     , m_shader(nullptr)
     , m_textureBuffer(0)
@@ -20,18 +20,18 @@ GeometryComponent::GeometryComponent()
     setIsTranslucent(m_tint.w < 1.f);
 }
 
-void GeometryComponent::setTint(glm::vec4 tint)
+void RenderComponent::setTint(glm::vec4 tint)
 {
     m_tint = tint;
     setIsTranslucent(m_tint.w < 1.f);
 };
 
-void GeometryComponent::setShaderData(std::unique_ptr<AdditionalShaderDataBase> shaderData)
+void RenderComponent::setShaderData(std::unique_ptr<AdditionalShaderDataBase> shaderData)
 {
     m_additionalShaderData = std::move(shaderData);
 }
 
-void GeometryComponent::depthSortTriangles()
+void RenderComponent::depthSortTriangles()
 {
     if(m_depthSortedVertexIndices.empty())
     {
@@ -72,7 +72,7 @@ void GeometryComponent::depthSortTriangles()
              * @brief Gets the bufferId for Object.
              * @return GLuint
  */
-GLuint GeometryComponent::getIndexBuffer() const
+GLuint RenderComponent::getIndexBuffer() const
 {
     if(m_isTranslucent)
     {

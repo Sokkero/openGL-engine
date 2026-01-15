@@ -3,7 +3,7 @@
 #include "classes/engine/rendering/RenderManager.h"
 #include "classes/engine/rendering/ubos/UboBlock.h"
 #include "classes/nodeComponents/CameraComponent.h"
-#include "classes/nodeComponents/GeometryComponent.h"
+#include "classes/nodeComponents/RenderComponent.h"
 
 #include <utility>
 
@@ -25,7 +25,7 @@ namespace Engine
                     bool requiresTexture
             );
 
-            virtual void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) = 0;
+            virtual void renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent* camera) = 0;
 
             std::pair<std::string, GLuint> getShaderIdentifier() { return m_shaderIdentifier; }
 
@@ -53,12 +53,12 @@ namespace Engine
             void loadNormalBuffer(const std::shared_ptr<ObjectData>& object) const;
             void loadUVBuffer(const std::shared_ptr<ObjectData>& object) const;
 
-            void loadModelMatrix(const std::shared_ptr<GeometryComponent>& object) const;
-            void loadTint(const std::shared_ptr<GeometryComponent>& object) const;
-            void loadTextureBuffer(const std::shared_ptr<GeometryComponent>& object) const;
-            void loadColorBuffer(const std::shared_ptr<GeometryComponent>& object) const;
+            void loadModelMatrix(const std::shared_ptr<RenderComponent>& object) const;
+            void loadTint(const std::shared_ptr<RenderComponent>& object) const;
+            void loadTextureBuffer(const std::shared_ptr<RenderComponent>& object) const;
+            void loadColorBuffer(const std::shared_ptr<RenderComponent>& object) const;
 
-            void drawElements(const std::shared_ptr<GeometryComponent>& object) const;
+            void drawElements(const std::shared_ptr<RenderComponent>& object) const;
 
             bool requiresAdditionalData() const { return m_requiresAdditionalData; }
             bool requiresTexture() const { return m_requiresTexture; }

@@ -82,7 +82,7 @@ RenderInstanceGroup::~RenderInstanceGroup()
     glDeleteVertexArrays(1, &m_objectVao);
 }
 
-bool RenderInstanceGroup::fitsIntoGroup(std::shared_ptr<GeometryComponent>& node)
+bool RenderInstanceGroup::fitsIntoGroup(std::shared_ptr<RenderComponent>& node)
 {
     if(node->getObjectData()->objectId != m_objectData->objectId)
     {
@@ -156,7 +156,7 @@ void RenderInstanceGroup::setupVao()
     RenderUtils::checkForGLError();
 }
 
-void RenderInstanceGroup::addToGroup(const std::shared_ptr<GeometryComponent>& node)
+void RenderInstanceGroup::addToGroup(const std::shared_ptr<RenderComponent>& node)
 {
     m_nodes.push_back(node);
     m_nodeIdToIndex[node->getNodeId()] = m_nodes.size() - 1;
@@ -276,7 +276,7 @@ void RenderInstanceGroup::refreshDirtyNodes()
     }
 }
 
-void RenderInstanceGroup::refreshNode(const std::shared_ptr<GeometryComponent>& node)
+void RenderInstanceGroup::refreshNode(const std::shared_ptr<RenderComponent>& node)
 {
     int nodePos = m_nodeIdToIndex[node->getNodeId()];
 

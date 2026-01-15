@@ -10,7 +10,7 @@ namespace Engine
             GridShader();
             ~GridShader() = default;
 
-            void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) override;
+            void renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent* camera) override;
 
             float getGridScale() const { return m_gridScale; };
 

@@ -2,7 +2,7 @@
 
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/rendering/RenderManager.h"
-#include "classes/nodeComponents/GeometryComponent.h"
+#include "classes/nodeComponents/RenderComponent.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 
 #include <iostream>
@@ -26,7 +26,7 @@ namespace Engine
         setParent(nullptr);
 
         const auto& thisNode = shared_from_this();
-        if(const auto geometry = std::dynamic_pointer_cast<GeometryComponent>(thisNode))
+        if(const auto geometry = std::dynamic_pointer_cast<RenderComponent>(thisNode))
         {
             SingletonManager::get<RenderManager>()->removeGeometryFromScene(geometry->getNodeId());
         }
@@ -50,7 +50,7 @@ namespace Engine
         m_childNodes.emplace_back(node);
         node->setParent(shared_from_this());
 
-        if(auto geometry = std::dynamic_pointer_cast<GeometryComponent>(node))
+        if(auto geometry = std::dynamic_pointer_cast<RenderComponent>(node))
         {
             SingletonManager::get<RenderManager>()->addGeometryToScene(geometry);
         }

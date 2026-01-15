@@ -2,7 +2,7 @@
 
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/UserEventManager.h"
-#include "classes/nodeComponents/GeometryComponent.h"
+#include "classes/nodeComponents/RenderComponent.h"
 #include "classes/utils/RenderUtils.h"
 #include "exampleScenes/waveFunctionCollapse/CustomFieldTypeData.h"
 #include "exampleScenes/waveFunctionCollapse/Field.h"
@@ -42,7 +42,7 @@ void IslandGenerator::setFieldCallback(const std::shared_ptr<Field>& field, cons
     const auto& engineManager = SingletonManager::get<Engine::EngineManager>();
     const auto& renderManager = engineManager->getRenderManager();
 
-    std::shared_ptr<Engine::GeometryComponent> planeObj = std::make_shared<Engine::GeometryComponent>();
+    std::shared_ptr<Engine::RenderComponent> planeObj = std::make_shared<Engine::RenderComponent>();
     planeObj->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
     planeObj->setShader(std::make_shared<Engine::ColorShader>(renderManager));
     planeObj->setRotation(glm::vec3(-90.f, 0.f, 0.f));

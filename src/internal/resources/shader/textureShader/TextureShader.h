@@ -10,6 +10,6 @@ namespace Engine
             explicit TextureShader(const std::shared_ptr<RenderManager>& renderManager);
             ~TextureShader() = default;
 
-            void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent* camera) override;
+            void renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent* camera) override;
     };
 } // namespace Engine

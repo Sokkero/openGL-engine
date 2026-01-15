@@ -6,7 +6,7 @@
 
 namespace Engine
 {
-    class GeometryComponent;
+    class RenderComponent;
 
     struct RenderUtils
     {
@@ -42,8 +42,8 @@ namespace Engine
             }
 
             static bool nodeDistanceSortingAlgorithm(
-                    const std::shared_ptr<GeometryComponent>& a,
-                    const std::shared_ptr<GeometryComponent>& b,
+                    const std::shared_ptr<RenderComponent>& a,
+                    const std::shared_ptr<RenderComponent>& b,
                     const glm::vec3& cameraPosition
             );
     };

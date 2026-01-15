@@ -8,7 +8,7 @@
 
 namespace Engine
 {
-    class GeometryComponent;
+    class RenderComponent;
     class ObjectData;
     class Shader;
     class RenderManager;
@@ -20,7 +20,7 @@ namespace Engine
             RenderInstanceGroup(const std::shared_ptr<ObjectData>& objectData, const std::shared_ptr<Shader>& shader, RenderTypeEnum renderType, const std::shared_ptr<AdditionalShaderDataBase>& additionalDataExample = nullptr, GLuint textureId = 0);
             ~RenderInstanceGroup();
 
-            void addToGroup(const std::shared_ptr<GeometryComponent>& node);
+            void addToGroup(const std::shared_ptr<RenderComponent>& node);
             void removeFromGroup(uint32_t nodeId); // Use Swap & Pop!!!!
 
             void refreshAllNodes();
@@ -30,10 +30,10 @@ namespace Engine
 
             int getActiveCount() const { return m_nodes.size(); }
 
-            bool fitsIntoGroup(std::shared_ptr<GeometryComponent>& node);
+            bool fitsIntoGroup(std::shared_ptr<RenderComponent>& node);
 
         private:
-            void refreshNode(const std::shared_ptr<GeometryComponent>& node);
+            void refreshNode(const std::shared_ptr<RenderComponent>& node);
             void setupVao();
             void growCapacity();
 
@@ -44,7 +44,7 @@ namespace Engine
             int m_capacity; // = 32;
             float m_growthFactor; // = 2;
 
-            std::vector<std::shared_ptr<GeometryComponent>> m_nodes;
+            std::vector<std::shared_ptr<RenderComponent>> m_nodes;
             std::shared_ptr<ObjectData> m_objectData;
             std::shared_ptr<Shader> m_shader;
             std::unordered_map<uint32_t, int> m_nodeIdToIndex;

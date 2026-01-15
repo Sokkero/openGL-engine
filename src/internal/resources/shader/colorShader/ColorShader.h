@@ -4,7 +4,7 @@
 
 namespace Engine
 {
-    class GeometryComponent;
+    class RenderComponent;
 
     class ColorShader : public Shader
     {
@@ -12,6 +12,6 @@ namespace Engine
             explicit ColorShader(const std::shared_ptr<Engine::RenderManager>& renderManager);
             ~ColorShader() = default;
 
-            void renderObject(const std::shared_ptr<GeometryComponent>& object, CameraComponent*) override;
+            void renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent*) override;
     };
 } // namespace Engine

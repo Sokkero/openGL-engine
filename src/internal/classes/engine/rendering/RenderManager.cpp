@@ -132,7 +132,7 @@ namespace Engine
     }
 
     void RenderManager::drawNode(
-            const std::shared_ptr<GeometryComponent>& node,
+            const std::shared_ptr<RenderComponent>& node,
             const std::shared_ptr<CameraComponent>& camera
     )
     {
@@ -159,7 +159,7 @@ namespace Engine
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
     }
 
-    void RenderManager::addGeometryToScene(std::shared_ptr<GeometryComponent>& node)
+    void RenderManager::addGeometryToScene(std::shared_ptr<RenderComponent>& node)
     {
         node->awake();
         m_sceneGeometry.emplace_back(node);

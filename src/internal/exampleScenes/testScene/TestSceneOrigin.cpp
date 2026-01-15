@@ -31,7 +31,7 @@ void TestSceneOrigin::start()
     const auto& renderManager = m_engineManager->getRenderManager();
 
     // Tree models normals are broken, causing the model to look bad with translucency
-    m_tree = std::make_shared<GeometryComponent>();
+    m_tree = std::make_shared<RenderComponent>();
     m_tree->setObjectData(renderManager->registerObject("resources/objects/tree.obj"));
     m_tree->setShader(std::make_shared<TextureShader>(renderManager));
     m_tree->setPosition(glm::vec3(0.f, 3.f, 0.f));
