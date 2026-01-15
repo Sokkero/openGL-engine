@@ -10,13 +10,13 @@ using namespace Engine;
 RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<ObjectData>& objectData, const std::shared_ptr<Shader>& shader, RenderTypeEnum renderType, const std::shared_ptr<AdditionalShaderDataBase>& additionalDataExample, GLuint textureId)
     : m_capacity(32)
     , m_growthFactor(2)
-    , m_activeCount(0)
     , m_objectData(objectData)
     , m_shader(shader)
     , m_renderType(renderType)
     , m_requiresAdditionalData(shader->requiresAdditionalData())
     , m_requiresTexture(shader->requiresTexture())
     , m_renderManager(SingletonManager::get<RenderManager>())
+    , m_dataVbo(0)
 {
     if(m_renderType == RenderTypeEnum::Loose)
     {
@@ -25,7 +25,7 @@ RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<ObjectData>& obje
         return;
     }
 
-    m_nodes.resize(m_capacity);
+    m_nodes.reserve(m_capacity);
 
     glGenBuffers(1, &m_matrixVbo);
     glBindBuffer(GL_ARRAY_BUFFER, m_matrixVbo);
@@ -38,7 +38,7 @@ RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<ObjectData>& obje
     {
         if(!additionalDataExample)
         {
-            fprintf(stderr, "Requiering example of addional data!");
+            fprintf(stderr, "Requiring example of additional data!");
             assert(false);
             return;
         }
@@ -57,12 +57,29 @@ RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<ObjectData>& obje
 
     if(m_requiresTexture)
     {
+        if(textureId == 0)
+        {
+            fprintf(stderr, "Texture required but invalid textureId provided!");
+            assert(false);
+            return;
+        }
         m_textureId = textureId;
     }
 
     RenderUtils::checkForGLError();
 
     setupVao();
+}
+
+RenderInstanceGroup::~RenderInstanceGroup()
+{
+    glDeleteBuffers(1, &m_matrixVbo);
+    if (m_requiresAdditionalData)
+    {
+        glDeleteBuffers(1, &m_dataVbo);
+    }
+
+    glDeleteVertexArrays(1, &m_objectVao);
 }
 
 bool RenderInstanceGroup::fitsIntoGroup(std::shared_ptr<GeometryComponent>& node)
@@ -130,13 +147,6 @@ void RenderInstanceGroup::setupVao()
         glVertexAttribDivisor(attribArrayId, 1);
     }
 
-    if(m_requiresTexture)
-    {
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, m_textureId);
-        glUniform1i(m_shader->getActiveUniform("textureSampler"), 0);
-    }
-
     // Bind vertex index VBO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_objectData->indexBuffer);
 
@@ -148,11 +158,10 @@ void RenderInstanceGroup::setupVao()
 
 void RenderInstanceGroup::addToGroup(const std::shared_ptr<GeometryComponent>& node)
 {
-    m_nodes.at(m_activeCount) = node;
-    m_nodeIdToIndex[node->getNodeId()] = m_activeCount;
+    m_nodes.push_back(node);
+    m_nodeIdToIndex[node->getNodeId()] = m_nodes.size() - 1;
 
-    m_activeCount++;
-    if(m_capacity < m_activeCount)
+    if(m_capacity <= m_nodes.size())
     {
         growCapacity();
         return;
@@ -170,14 +179,25 @@ void RenderInstanceGroup::removeFromGroup(uint32_t nodeId)
         return;
     }
 
+    if(m_nodes.size() == 1)
+    {
+        m_nodes.clear();
+        m_nodeIdToIndex.clear();
+        return;
+    }
+
     const int nodePos = m_nodeIdToIndex[nodeId];
-    m_nodes.at(nodePos) = m_nodes.at(m_activeCount - 1);
-    m_nodes.at(m_activeCount - 1) = nullptr;
+    if(nodePos == m_nodes.size() - 1)
+    {
+        m_nodes.pop_back();
+        m_nodeIdToIndex.erase(nodeId);
+        return;
+    }
 
+    m_nodes.at(nodePos) = m_nodes.back();
     m_nodeIdToIndex[m_nodes.at(nodePos)->getNodeId()] = nodePos;
+    m_nodes.pop_back();
     m_nodeIdToIndex.erase(nodeId);
-
-    m_activeCount--;
 
     refreshNode(m_nodes.at(nodePos));
 }
@@ -192,11 +212,14 @@ void RenderInstanceGroup::growCapacity()
                  nullptr,
                  m_renderType == RenderTypeEnum::Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
 
-    glBindBuffer(GL_ARRAY_BUFFER, m_dataVbo);
-    glBufferData(GL_ARRAY_BUFFER,
-                 m_capacity * m_additionalDataSize,
-                 nullptr,
-                 m_renderType == RenderTypeEnum::Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    if(m_requiresAdditionalData)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, m_dataVbo);
+        glBufferData(GL_ARRAY_BUFFER,
+                     m_capacity * m_additionalDataSize,
+                     nullptr,
+                     m_renderType == RenderTypeEnum::Dynamic ? GL_DYNAMIC_DRAW : GL_STATIC_DRAW);
+    }
 
     RenderUtils::checkForGLError();
 
@@ -222,20 +245,21 @@ void RenderInstanceGroup::refreshAllNodes()
 
     if (m_requiresAdditionalData)
     {
-        std::vector<void*> dataVec;
-        dataVec.reserve(m_nodes.size());
+        std::vector<char> dataBuffer;
+        dataBuffer.reserve(m_nodes.size() * m_additionalDataSize);
         for (const auto& node : m_nodes)
         {
             void* data = node->getShaderData()->getData();
-            dataVec.push_back(data);
+            const char* byteData = static_cast<const char*>(data);
+            dataBuffer.insert(dataBuffer.end(), byteData, byteData + m_additionalDataSize);
         }
 
         // Upload data to GPU
         glBindBuffer(GL_ARRAY_BUFFER, m_dataVbo);
         glBufferSubData(GL_ARRAY_BUFFER,
                         0,
-                        dataVec.size() * m_additionalDataSize,
-                        dataVec.data());
+                        dataBuffer.size(),
+                        dataBuffer.data());
     }
 
     RenderUtils::checkForGLError();
@@ -271,7 +295,7 @@ void RenderInstanceGroup::refreshNode(const std::shared_ptr<GeometryComponent>& 
         return;
     }
 
-    void* data = node->getShaderData();
+    void* data = node->getShaderData()->getData();
     GLuint dataOffset = nodePos * m_additionalDataSize;
     glBindBuffer(GL_ARRAY_BUFFER, m_dataVbo);
     glBufferSubData(GL_ARRAY_BUFFER,
@@ -286,10 +310,18 @@ void RenderInstanceGroup::renderGroup()
 {
     m_shader->swapToProgramm();
 
+    if(m_requiresTexture)
+    {
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, m_textureId);
+        glUniform1i(m_shader->getActiveUniform("textureSampler"), 0);
+    }
+
     glBindVertexArray(m_objectVao);
     glDrawElementsInstanced(GL_TRIANGLES,
                             m_objectData->getVertexCount(),
                             GL_UNSIGNED_INT,
                             0,
                             m_nodes.size());
+    glBindVertexArray(m_renderManager->getDefaultVao());
 }

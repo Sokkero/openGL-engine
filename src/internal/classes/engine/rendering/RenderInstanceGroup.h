@@ -18,7 +18,7 @@ namespace Engine
     {
         public:
             RenderInstanceGroup(const std::shared_ptr<ObjectData>& objectData, const std::shared_ptr<Shader>& shader, RenderTypeEnum renderType, const std::shared_ptr<AdditionalShaderDataBase>& additionalDataExample = nullptr, GLuint textureId = 0);
-            ~RenderInstanceGroup() = default;
+            ~RenderInstanceGroup();
 
             void addToGroup(const std::shared_ptr<GeometryComponent>& node);
             void removeFromGroup(uint32_t nodeId); // Use Swap & Pop!!!!
@@ -28,7 +28,7 @@ namespace Engine
 
             void renderGroup();
 
-            int getActiveCount() const { return m_activeCount; }
+            int getActiveCount() const { return m_nodes.size(); }
 
             bool fitsIntoGroup(std::shared_ptr<GeometryComponent>& node);
 
@@ -42,7 +42,6 @@ namespace Engine
             GLuint m_dataVbo;
 
             int m_capacity; // = 32;
-            int m_activeCount; // = 0;
             float m_growthFactor; // = 2;
 
             std::vector<std::shared_ptr<GeometryComponent>> m_nodes;
