@@ -14,10 +14,10 @@ ColorShader::ColorShader(const std::shared_ptr<RenderManager>& renderManager)
 
 void ColorShader::renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent*)
 {
+    fprintf(stderr, "No");
     swapToProgramm();
 
     loadModelMatrix(object);
-    loadTint(object);
     loadVertexBuffer(object->getObjectData());
     loadNormalBuffer(object->getObjectData());
     loadColorBuffer(object);

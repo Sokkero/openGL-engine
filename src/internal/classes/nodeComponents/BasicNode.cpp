@@ -28,7 +28,7 @@ namespace Engine
         const auto& thisNode = shared_from_this();
         if(const auto geometry = std::dynamic_pointer_cast<RenderComponent>(thisNode))
         {
-            SingletonManager::get<RenderManager>()->removeGeometryFromScene(geometry->getNodeId());
+            SingletonManager::get<RenderManager>()->removeRenderObject(geometry->getNodeId());
         }
         else if(const auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(thisNode))
         {
@@ -52,7 +52,7 @@ namespace Engine
 
         if(auto geometry = std::dynamic_pointer_cast<RenderComponent>(node))
         {
-            SingletonManager::get<RenderManager>()->addGeometryToScene(geometry);
+            SingletonManager::get<RenderManager>()->addRenderObject(geometry);
         }
         else if(auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(node))
         {
@@ -99,7 +99,7 @@ namespace Engine
             const auto& renderManager = SingletonManager::get<RenderManager>();
             child->callOnAllChildrenRecursiveAndSelf(
                     [renderManager](BasicNode* node) -> void
-                    { renderManager->removeGeometryFromScene(node->getNodeId()); }
+                    { renderManager->removeRenderObject(node->getNodeId()); }
             );
             child->cleanupNode();
             child->setParent(nullptr);
@@ -115,7 +115,7 @@ namespace Engine
         const auto& renderManager = SingletonManager::get<RenderManager>();
         callOnAllChildrenRecursiveAndSelf(
                 [renderManager](BasicNode* node) -> void
-                { renderManager->removeGeometryFromScene(node->getNodeId()); }
+                { renderManager->removeRenderObject(node->getNodeId()); }
         );
         setParent(nullptr);
     }

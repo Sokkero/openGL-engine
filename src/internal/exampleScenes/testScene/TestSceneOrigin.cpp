@@ -7,6 +7,7 @@
 #include "exampleScenes/testScene/TestObject.h"
 #include "resources/shader/colorShader/ColorShader.h"
 #include "resources/shader/textureShader/TextureShader.h"
+#include "resources/shader/colorShader/ColorShaderAdditionalData.h"
 
 void TestSceneOrigin::start()
 {
@@ -39,24 +40,17 @@ void TestSceneOrigin::start()
     m_tree->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     m_tree->setName("tree");
     m_tree->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
+    m_tree->setRenderType(RenderTypeEnum::Dynamic);
     addChild(m_tree);
 
     m_ape = std::make_shared<TestObject>();
     m_ape->setObjectData(renderManager->registerObject("resources/objects/suzanne.obj"));
     m_ape->setShader(std::make_shared<ColorShader>(renderManager));
-    m_ape->getShader()->bindUbo(renderManager->getAmbientLightUbo());
     m_ape->setPosition(glm::vec3(3.f, 3.f, 0.f));
     m_ape->setScale(glm::vec3(1.f));
-    m_ape->setTint(glm::vec4(1.f, 1.f, 1.f, 1.f));
-
-    std::vector<glm::vec4> g_color_buffer_data;
-    for(int v = 0; v < m_ape->getObjectData()->getVertexCount(); v++)
-    {
-        g_color_buffer_data.emplace_back(1.f, 1.f, 1.f, 1.f);
-    }
-
-    m_ape->setTextureBuffer(RenderUtils::createVertexBufferObject(g_color_buffer_data));
     m_ape->setName("suzanne");
+    m_ape->setRenderType(RenderTypeEnum::Static);
+    m_ape->setShaderData(std::make_unique<ColorShaderAdditionalData>(glm::vec4(1.f, 1.f, 1.f, 1.f)));
     addChild(m_ape);
 }
 

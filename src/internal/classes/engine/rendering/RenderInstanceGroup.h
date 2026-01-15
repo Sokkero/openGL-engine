@@ -17,10 +17,10 @@ namespace Engine
     class RenderInstanceGroup
     {
         public:
-            RenderInstanceGroup(const std::shared_ptr<ObjectData>& objectData, const std::shared_ptr<Shader>& shader, RenderTypeEnum renderType, const std::shared_ptr<AdditionalShaderDataBase>& additionalDataExample = nullptr, GLuint textureId = 0);
+            RenderInstanceGroup(const std::shared_ptr<RenderComponent>& node);
             ~RenderInstanceGroup();
 
-            void addToGroup(const std::shared_ptr<RenderComponent>& node);
+            bool addToGroup(const std::shared_ptr<RenderComponent>& node);
             void removeFromGroup(uint32_t nodeId); // Use Swap & Pop!!!!
 
             void refreshAllNodes();
@@ -30,9 +30,8 @@ namespace Engine
 
             int getActiveCount() const { return m_nodes.size(); }
 
-            bool fitsIntoGroup(std::shared_ptr<RenderComponent>& node);
-
         private:
+            bool fitsIntoGroup(const std::shared_ptr<RenderComponent>& node);
             void refreshNode(const std::shared_ptr<RenderComponent>& node);
             void setupVao();
             void growCapacity();

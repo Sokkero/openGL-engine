@@ -5,6 +5,8 @@
 #include "classes/utils/VertexIndexingUtils.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 #include "resources/shader/gridShader/GridShader.h"
+#include "classes/nodeComponents/RenderComponent.h"
+#include "classes/engine/rendering/RenderInstanceGroup.h"
 
 #include <iostream>
 #include <string>
@@ -61,39 +63,51 @@ namespace Engine
         // TODO: Investigate multithreading
         // Multithread tri sorting here
 
-        depthSortNodes(camera);
-
-        drawOpaqueNodes(camera);
-
-        // Wait for threads to finish here
-
-        drawTranslucentNodes(camera);
+        renderGroupList(m_staticInstanceGroups);
+        renderGroupList(m_dynamicInstanceGroups);
+        
+        depthSortLooseRenderObjects(camera);
+        renderLooseObjects(camera);
 
         if(m_showGrid)
         {
             m_gridShader->renderObject(nullptr, camera.get());
         }
 
-        drawUiNodes();
+        renderUiNodes();
         glDisable(GL_BLEND);
 
         RenderUtils::checkForGLError();
     }
 
-    void RenderManager::depthSortNodes(const std::shared_ptr<CameraComponent>& camera)
+    void RenderManager::depthSortLooseRenderObjects(const std::shared_ptr<CameraComponent>& camera)
     {
         const auto& cameraPos = camera->getGlobalPosition();
         std::sort(
-                m_sceneGeometry.begin(),
-                m_sceneGeometry.end(),
+                m_looseRenderObjects.begin(),
+                m_looseRenderObjects.end(),
                 [cameraPos](const auto& a, const auto& b)
                 { return RenderUtils::nodeDistanceSortingAlgorithm(a, b, cameraPos); }
         );
     }
 
-    void RenderManager::drawOpaqueNodes(const std::shared_ptr<CameraComponent>& camera)
+    void RenderManager::renderGroupList(const std::vector<std::shared_ptr<RenderInstanceGroup>>& groups)
     {
-        for(auto& node : m_sceneGeometry)
+        for(const auto& group : groups)
+        {
+            group->renderGroup();
+        }
+    }
+
+    void RenderManager::renderLooseObjects(std::shared_ptr<CameraComponent> camera) 
+    {
+        renderOpaqueNodes(camera);
+        renderTranslucentNodes(camera);
+    }
+
+    void RenderManager::renderOpaqueNodes(const std::shared_ptr<CameraComponent>& camera)
+    {
+        for(auto& node : m_looseRenderObjects)
         {
             if(node->getIsTranslucent())
             {
@@ -104,10 +118,10 @@ namespace Engine
         }
     }
 
-    void RenderManager::drawTranslucentNodes(const std::shared_ptr<CameraComponent>& camera)
+    void RenderManager::renderTranslucentNodes(const std::shared_ptr<CameraComponent>& camera)
     {
         glEnable(GL_BLEND);
-        for(auto& node : m_sceneGeometry)
+        for(auto& node : m_looseRenderObjects)
         {
             if(!node->getIsTranslucent())
             {
@@ -120,7 +134,7 @@ namespace Engine
         }
     }
 
-    void RenderManager::drawUiNodes()
+    void RenderManager::renderUiNodes()
     {
         for(int i = 0; i < m_sceneDebugUi.size(); i++)
         {
@@ -159,22 +173,61 @@ namespace Engine
         glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
     }
 
-    void RenderManager::addGeometryToScene(std::shared_ptr<RenderComponent>& node)
+    void RenderManager::addRenderObject(std::shared_ptr<RenderComponent>& node)
     {
-        node->awake();
-        m_sceneGeometry.emplace_back(node);
+        const auto funcAddToType = [this, node](std::vector<std::shared_ptr<RenderInstanceGroup>>& groups)
+        {
+            for(const auto& group : groups)
+            {
+                if(group->addToGroup(node))
+                {
+                    m_nodeIdToGroupMap[node->getNodeId()] = group;
+                    return;
+                }
+            }
+
+            std::shared_ptr<RenderInstanceGroup> newGroup = std::make_shared<RenderInstanceGroup>(node);
+            groups.push_back(newGroup);
+        };
+
+        RenderTypeEnum renderType = node->getRenderType();
+        if(renderType == RenderTypeEnum::Loose)
+        {
+            m_looseRenderObjects.push_back(node);
+        }
+        else if(renderType == RenderTypeEnum::Dynamic)
+        {
+            funcAddToType(m_dynamicInstanceGroups);
+        }
+        else if(renderType == RenderTypeEnum::Static)
+        {
+            funcAddToType(m_staticInstanceGroups);
+        }
+        
+        node->awake(); // At the end
     }
 
-    void RenderManager::removeGeometryFromScene(const unsigned int& nodeId)
+    void RenderManager::removeRenderObject(const uint32_t& nodeId)
     {
-        m_sceneGeometry.erase(
-                std::remove_if(
-                        m_sceneGeometry.begin(),
-                        m_sceneGeometry.end(),
-                        [nodeId](const auto& childNode) -> bool { return childNode->getNodeId() == nodeId; }
-                ),
-                m_sceneGeometry.end()
-        );
+        auto it = m_nodeIdToGroupMap.find(nodeId);
+        if(it == m_nodeIdToGroupMap.end())
+        {
+            m_looseRenderObjects.erase(
+                    std::remove_if(
+                            m_looseRenderObjects.begin(),
+                            m_looseRenderObjects.end(),
+                            [nodeId](auto& obj) -> bool
+                            {
+                                return obj->getNodeId() == nodeId;
+                            }
+                    ),
+                    m_looseRenderObjects.end()
+            );
+            return;
+        }
+
+        it->second->removeFromGroup(nodeId);
+        m_nodeIdToGroupMap.erase(nodeId);
     }
 
     void RenderManager::addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node)

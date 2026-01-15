@@ -17,6 +17,7 @@ namespace Engine
     class Shader;
     class GridShader;
     class CameraComponent;
+    class RenderInstanceGroup;
 
     namespace Ui
     {
@@ -39,6 +40,9 @@ namespace Engine
             void deregisterObject(std::shared_ptr<ObjectData>& obj);
             void clearObjects();
 
+            void addRenderObject(std::shared_ptr<RenderComponent>& node);
+            void removeRenderObject(const uint32_t& nodeId);
+
             GLuint registerTexture(const char* filePath);
             void deregisterTexture(GLuint tex);
             void clearTextures();
@@ -59,22 +63,30 @@ namespace Engine
             void setClearColor(const float color[4]);
             float* getClearColor() { return m_clearColor; };
 
-            void addGeometryToScene(std::shared_ptr<RenderComponent>& node);
-            void removeGeometryFromScene(const unsigned int& nodeId);
-
             void addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node);
             void removeDebugUiFromScene(const unsigned int& nodeId);
 
             GLuint getDefaultVao() const { return m_defaultVao; }
 
         private:
-            void drawOpaqueNodes(const std::shared_ptr<CameraComponent>& camera);
-            void drawTranslucentNodes(const std::shared_ptr<CameraComponent>& camera);
-            void drawUiNodes();
+            void renderOpaqueNodes(const std::shared_ptr<CameraComponent>& camera);
+            void renderTranslucentNodes(const std::shared_ptr<CameraComponent>& camera);
 
-            void depthSortNodes(const std::shared_ptr<CameraComponent>& camera);
+            void renderGroupList(const std::vector<std::shared_ptr<RenderInstanceGroup>>& groups);
+            void renderLooseObjects(std::shared_ptr<CameraComponent> camera);
 
-            std::vector<std::shared_ptr<RenderComponent>> m_sceneGeometry;
+            void renderUiNodes();
+
+            void depthSortLooseRenderObjects(const std::shared_ptr<CameraComponent>& camera);
+
+            // Render objects that cant be put into instance groups (e.g. translucent, unique, etc)
+            std::vector<std::shared_ptr<RenderComponent>>m_looseRenderObjects;
+            // Render objects that wont have their data altered often, if at all
+            std::vector<std::shared_ptr<RenderInstanceGroup>> m_staticInstanceGroups;
+            // Render objects that will have their data altered often
+            std::vector<std::shared_ptr<RenderInstanceGroup>> m_dynamicInstanceGroups;
+            std::unordered_map<uint32_t, std::shared_ptr<RenderInstanceGroup>> m_nodeIdToGroupMap;
+
             std::vector<std::shared_ptr<Ui::UiDebugWindow>> m_sceneDebugUi;
 
             std::shared_ptr<UBOs::AmbientLightUbo> m_ambientLightUbo;

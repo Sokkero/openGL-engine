@@ -16,6 +16,8 @@ RenderComponent::RenderComponent()
     , m_depthSortIndexBuffer(0)
     , m_depthSortedVertexIndices(std::vector<triData>())
     , m_additionalShaderData(nullptr)
+    , m_renderType(RenderTypeEnum::Static)
+    , m_isRenderDataDirty(false)
 {
     setIsTranslucent(m_tint.w < 1.f);
 }

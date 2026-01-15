@@ -8,11 +8,13 @@
 class ColorShaderAdditionalData : public Engine::AdditionalShaderDataBase
 {
     public:
-        ColorShaderAdditionalData();
+        ColorShaderAdditionalData(const glm::vec4& color) : m_color(color) {};
         ~ColorShaderAdditionalData() = default;
 
         void* getData() override { return &m_color; }
-        GLuint getDataSize() override { return sizeof(glm::vec4); }
+        size_t getDataTypeSize() override { return sizeof(glm::vec4); }
+        GLenum getGlDataType() override { return GL_FLOAT; };
+        GLuint getGlTypeAmount() override { return 4; };
 
         void setColor(glm::vec4 color) { m_color = color; }
         glm::vec4 getColor() const { return m_color; }

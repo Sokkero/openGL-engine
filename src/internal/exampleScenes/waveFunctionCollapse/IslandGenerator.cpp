@@ -4,8 +4,10 @@
 #include "classes/engine/UserEventManager.h"
 #include "classes/nodeComponents/RenderComponent.h"
 #include "classes/utils/RenderUtils.h"
+#include "classes/utils/enums/RenderTypeEnum.h"
 #include "exampleScenes/waveFunctionCollapse/CustomFieldTypeData.h"
 #include "exampleScenes/waveFunctionCollapse/Field.h"
+#include "resources/shader/colorShader/ColorShaderAdditionalData.h"
 #include "resources/shader/colorShader/ColorShader.h"
 
 IslandGenerator::IslandGenerator(const glm::ivec2& gridDimensions, const double& seed)
@@ -45,17 +47,12 @@ void IslandGenerator::setFieldCallback(const std::shared_ptr<Field>& field, cons
     std::shared_ptr<Engine::RenderComponent> planeObj = std::make_shared<Engine::RenderComponent>();
     planeObj->setObjectData(renderManager->registerObject("resources/objects/plane.obj"));
     planeObj->setShader(std::make_shared<Engine::ColorShader>(renderManager));
+    planeObj->setRenderType(Engine::RenderTypeEnum::Static);
     planeObj->setRotation(glm::vec3(-90.f, 0.f, 0.f));
     planeObj->setPosition(glm::vec3(posX, 0.f, posY));
 
-    std::vector<glm::vec4> g_color_buffer_data;
-    const glm::vec3 color = EnumToColorValue(tileType.uniqueTileTypeId);
-    for(int v = 0; v < planeObj->getObjectData()->getVertexCount(); v++)
-    {
-        g_color_buffer_data.emplace_back(color, 1.f);
-    }
-
-    planeObj->setTextureBuffer(Engine::RenderUtils::createVertexBufferObject(g_color_buffer_data));
+    const glm::vec4 color = glm::vec4(EnumToColorValue(tileType.uniqueTileTypeId), 1.f);
+    planeObj->setShaderData(std::make_unique<ColorShaderAdditionalData>(color));
 
     addChild(planeObj);
 }

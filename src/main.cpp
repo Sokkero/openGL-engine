@@ -29,8 +29,8 @@ int main()
     diffuseLight->setDir(glm::vec3(1.f, 0.25f, 1.f));
     diffuseLight->setColor(glm::vec3(1.0f, 0.7f, 0.7f));
 
-    std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
-    // std::shared_ptr<WafeFunctionCollapseSceneOrigin> startNode = std::make_shared<WafeFunctionCollapseSceneOrigin>();
+    // std::shared_ptr<TestSceneOrigin> startNode = std::make_shared<TestSceneOrigin>();
+    std::shared_ptr<WafeFunctionCollapseSceneOrigin> startNode = std::make_shared<WafeFunctionCollapseSceneOrigin>();
     // std::shared_ptr<MandelbrotSceneOrigin> startNode = std::make_shared<MandelbrotSceneOrigin>();
 
     startNode->setName("Scene Origin");

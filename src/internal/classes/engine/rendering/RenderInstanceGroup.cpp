@@ -7,14 +7,14 @@
 
 using namespace Engine;
 
-RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<ObjectData>& objectData, const std::shared_ptr<Shader>& shader, RenderTypeEnum renderType, const std::shared_ptr<AdditionalShaderDataBase>& additionalDataExample, GLuint textureId)
+RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<RenderComponent>& node)
     : m_capacity(32)
     , m_growthFactor(2)
-    , m_objectData(objectData)
-    , m_shader(shader)
-    , m_renderType(renderType)
-    , m_requiresAdditionalData(shader->requiresAdditionalData())
-    , m_requiresTexture(shader->requiresTexture())
+    , m_objectData(node->getObjectData())
+    , m_shader(node->getShader())
+    , m_renderType(node->getRenderType())
+    , m_requiresAdditionalData(node->getShader()->requiresAdditionalData())
+    , m_requiresTexture(node->getShader()->requiresTexture())
     , m_renderManager(SingletonManager::get<RenderManager>())
     , m_dataVbo(0)
 {
@@ -36,16 +36,9 @@ RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<ObjectData>& obje
 
     if(m_requiresAdditionalData)
     {
-        if(!additionalDataExample)
-        {
-            fprintf(stderr, "Requiring example of additional data!");
-            assert(false);
-            return;
-        }
-
-        m_additionalDataSize = additionalDataExample->getDataTypeSize();
-        m_additionalDataBaseType = additionalDataExample->getGlDataType();
-        m_additionalDataBaseTypeAmount = additionalDataExample->getGlTypeAmount();
+        m_additionalDataSize = node->getShaderData()->getDataTypeSize();
+        m_additionalDataBaseType = node->getShaderData()->getGlDataType();
+        m_additionalDataBaseTypeAmount = node->getShaderData()->getGlTypeAmount();
 
         glGenBuffers(1, &m_dataVbo);
         glBindBuffer(GL_ARRAY_BUFFER, m_dataVbo);
@@ -57,18 +50,20 @@ RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<ObjectData>& obje
 
     if(m_requiresTexture)
     {
-        if(textureId == 0)
+        if(node->getTextureBuffer() == 0)
         {
             fprintf(stderr, "Texture required but invalid textureId provided!");
             assert(false);
             return;
         }
-        m_textureId = textureId;
+        m_textureId = node->getTextureBuffer();
     }
 
     RenderUtils::checkForGLError();
 
     setupVao();
+
+    addToGroup(node);
 }
 
 RenderInstanceGroup::~RenderInstanceGroup()
@@ -82,7 +77,7 @@ RenderInstanceGroup::~RenderInstanceGroup()
     glDeleteVertexArrays(1, &m_objectVao);
 }
 
-bool RenderInstanceGroup::fitsIntoGroup(std::shared_ptr<RenderComponent>& node)
+bool RenderInstanceGroup::fitsIntoGroup(const std::shared_ptr<RenderComponent>& node)
 {
     if(node->getObjectData()->objectId != m_objectData->objectId)
     {
@@ -156,18 +151,24 @@ void RenderInstanceGroup::setupVao()
     RenderUtils::checkForGLError();
 }
 
-void RenderInstanceGroup::addToGroup(const std::shared_ptr<RenderComponent>& node)
+bool RenderInstanceGroup::addToGroup(const std::shared_ptr<RenderComponent>& node)
 {
+    if(!fitsIntoGroup(node))
+    {
+        return false;
+    }
+
     m_nodes.push_back(node);
     m_nodeIdToIndex[node->getNodeId()] = m_nodes.size() - 1;
 
     if(m_capacity <= m_nodes.size())
     {
         growCapacity();
-        return;
+        return true;
     }
 
     refreshNode(node);
+    return true;
 }
 
 void RenderInstanceGroup::removeFromGroup(uint32_t nodeId)
@@ -320,7 +321,7 @@ void RenderInstanceGroup::renderGroup()
     glBindVertexArray(m_objectVao);
     glDrawElementsInstanced(GL_TRIANGLES,
                             m_objectData->getVertexCount(),
-                            GL_UNSIGNED_INT,
+                            GL_UNSIGNED_SHORT,
                             0,
                             m_nodes.size());
     glBindVertexArray(m_renderManager->getDefaultVao());
