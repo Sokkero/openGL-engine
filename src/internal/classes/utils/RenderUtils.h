@@ -12,7 +12,7 @@ namespace Engine
     {
             static inline const glm::vec3 WORLD_UP = glm::vec3(0.f, 1.f, 0.f);
 
-            /* The following attrib ids are reserved:
+            /* The following attrib ids are engine-reserved:
                 - 0-2 for shaders using meshes
                 - 3-10 for shaders of render type static or dynamic (used for instancing)
              */
