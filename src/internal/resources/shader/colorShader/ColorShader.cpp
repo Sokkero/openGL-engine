@@ -18,8 +18,8 @@ void ColorShader::renderObject(const std::shared_ptr<GeometryComponent>& object,
 
     loadModelMatrix(object);
     loadTint(object);
-    loadVertexBuffer(object);
-    loadNormalBuffer(object);
+    loadVertexBuffer(object->getObjectData());
+    loadNormalBuffer(object->getObjectData());
     loadColorBuffer(object);
     drawElements(object);
 }

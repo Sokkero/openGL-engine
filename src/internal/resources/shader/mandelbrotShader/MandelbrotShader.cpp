@@ -19,6 +19,6 @@ void MandelbrotShader::renderObject(const std::shared_ptr<GeometryComponent>& ob
     swapToProgramm();
 
     loadModelMatrix(object);
-    loadVertexBuffer(object);
+    loadVertexBuffer(object->getObjectData());
     drawElements(object);
 }
