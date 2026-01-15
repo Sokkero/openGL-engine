@@ -1,3 +1,5 @@
+#pragma once
+
 #include "classes/engine/rendering/ubos/UboBindingPoints.h"
 #include "classes/engine/rendering/ubos/UboBlock.h"
 

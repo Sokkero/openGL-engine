@@ -1,6 +1,7 @@
 #include "BasicNode.h"
 
 #include "classes/engine/EngineManager.h"
+#include "classes/engine/rendering/RenderManager.h"
 #include "classes/nodeComponents/GeometryComponent.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 

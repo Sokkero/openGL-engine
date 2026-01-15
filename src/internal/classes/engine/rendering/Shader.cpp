@@ -1,6 +1,7 @@
 #include "Shader.h"
 
 #include "classes/engine/DebugModel.h"
+#include "classes/utils/RenderUtils.h"
 
 using namespace Engine;
 
@@ -38,10 +39,14 @@ Shader::~Shader()
 void Shader::registerShader(
         const std::shared_ptr<RenderManager>& renderManager,
         const std::string& shaderPath,
-        const std::string& shaderName
+        const std::string& shaderName,
+        bool requiresAdditionalData,
+        bool requiresTexture
 )
 {
     m_shaderIdentifier = renderManager->registerShader(shaderPath, shaderName);
+    m_requiresAdditionalData = requiresAdditionalData;
+    m_requiresTexture = requiresTexture;
 }
 
 void Shader::loadModelMatrix(const std::shared_ptr<GeometryComponent>& object) const
@@ -65,14 +70,14 @@ void Shader::loadTint(const std::shared_ptr<GeometryComponent>& object) const
     m_debugModel->setDrawSectionTimeData("loadTint", glfwGetTime() - startTime);
 }
 
-void Shader::loadVertexBuffer(const std::shared_ptr<GeometryComponent>& object) const
+void Shader::loadVertexBuffer(const std::shared_ptr<ObjectData>& object) const
 {
     double startTime = glfwGetTime();
 
     bindVertexData(
-            GLOBAL_ATTRIB_INDEX_VERTEXPOSITION,
+            RenderUtils::GLOBAL_ATTRIB_ID_VERTEXPOSITION,
             GL_ARRAY_BUFFER,
-            object->getObjectData()->vertexBuffer,
+            object->vertexBuffer,
             3,
             GL_FLOAT,
             false,
@@ -82,14 +87,31 @@ void Shader::loadVertexBuffer(const std::shared_ptr<GeometryComponent>& object) 
     m_debugModel->setDrawSectionTimeData("loadVertexBuffer", glfwGetTime() - startTime);
 }
 
-void Shader::loadNormalBuffer(const std::shared_ptr<GeometryComponent>& object) const
+void Shader::loadUVBuffer(const std::shared_ptr<ObjectData>& object) const
 {
     double startTime = glfwGetTime();
 
     bindVertexData(
-            GLOBAL_ATTRIB_INDEX_VERTEXNORMAL,
+            RenderUtils::GLOBAL_ATTRIB_ID_VERTEXUV,
             GL_ARRAY_BUFFER,
-            object->getObjectData()->normalBuffer,
+            object->uvBuffer,
+            2,
+            GL_FLOAT,
+            false,
+            0
+    );
+
+    m_debugModel->setDrawSectionTimeData("loadNormalBuffer", glfwGetTime() - startTime);
+}
+
+void Shader::loadNormalBuffer(const std::shared_ptr<ObjectData>& object) const
+{
+    double startTime = glfwGetTime();
+
+    bindVertexData(
+            RenderUtils::GLOBAL_ATTRIB_ID_VERTEXNORMAL,
+            GL_ARRAY_BUFFER,
+            object->normalBuffer,
             3,
             GL_FLOAT,
             false,
@@ -104,7 +126,7 @@ void Shader::loadTextureBuffer(const std::shared_ptr<GeometryComponent>& object)
     double startTime = glfwGetTime();
 
     bindTexture(
-            GLOBAL_ATTRIB_INDEX_VERTEXCOLOR,
+            RenderUtils::GLOBAL_ATTRIB_ID_VERTEXUV,
             object->getObjectData()->uvBuffer,
             object->getTextureBuffer(),
             getActiveUniform("textureSampler")
@@ -117,7 +139,7 @@ void Shader::loadColorBuffer(const std::shared_ptr<GeometryComponent>& object) c
 {
     double startTime = glfwGetTime();
 
-    bindVertexData(GLOBAL_ATTRIB_INDEX_VERTEXCOLOR, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
+    bindVertexData(RenderUtils::GLOBAL_ATTRIB_ID_VERTEXUV, GL_ARRAY_BUFFER, object->getTextureBuffer(), 4, GL_FLOAT, false, 0);
 
     m_debugModel->setDrawSectionTimeData("loadColorBuffer", glfwGetTime() - startTime);
 }

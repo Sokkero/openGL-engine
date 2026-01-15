@@ -4,7 +4,7 @@
 #include "classes/engine/rendering/ubos/AmbientLightUbo.h"
 #include "classes/engine/rendering/ubos/DiffuseLightUbo.h"
 #include "classes/engine/rendering/ubos/ViewProjectionUbo.h"
-#include "classes/helper/ObjectData.h"
+#include "classes/utils/dataContainer/ObjectData.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <map>
@@ -47,21 +47,16 @@ namespace Engine
             void deregisterShader(std::string shaderName = std::string(), GLuint shaderId = -1);
 
             std::shared_ptr<UBOs::AmbientLightUbo>& getAmbientLightUbo() { return m_ambientLightUbo; };
-
             std::shared_ptr<UBOs::DiffuseLightUbo>& getDiffuseLightUbo() { return m_diffuseLightUbo; };
-
             std::shared_ptr<UBOs::ViewProjectionUbo>& getVpUbo() { return m_vpUbo; };
 
             void setWireframeMode(bool toggle);
-
             bool getWireframeMode() const { return m_showWireframe; };
 
             bool isGridVisible() const { return m_showGrid; };
-
             void setGridVisibility(bool showGrid) { m_showGrid = showGrid; };
 
             void setClearColor(const float color[4]);
-
             float* getClearColor() { return m_clearColor; };
 
             void addGeometryToScene(std::shared_ptr<GeometryComponent>& node);
@@ -69,6 +64,8 @@ namespace Engine
 
             void addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node);
             void removeDebugUiFromScene(const unsigned int& nodeId);
+
+            GLuint getDefaultVao() const { return m_defaultVao; }
 
         private:
             void drawOpaqueNodes(const std::shared_ptr<CameraComponent>& camera);
@@ -94,6 +91,7 @@ namespace Engine
             bool m_showGrid;
 
             float m_clearColor[4];
+            GLuint m_defaultVao;
     };
 
 } // namespace Engine

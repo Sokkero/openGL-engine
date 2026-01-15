@@ -5,7 +5,7 @@ using namespace Engine;
 
 TextureShader::TextureShader(const std::shared_ptr<RenderManager>& renderManager)
 {
-    registerShader(renderManager, "resources/shader/textureShader/texture", "texture");
+    registerShader(renderManager, "resources/shader/textureShader/texture", "texture", true, true);
 
     bindUbo(renderManager->getAmbientLightUbo());
     bindUbo(renderManager->getDiffuseLightUbo());

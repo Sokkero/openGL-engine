@@ -5,7 +5,7 @@ using namespace Engine;
 
 ColorShader::ColorShader(const std::shared_ptr<RenderManager>& renderManager)
 {
-    registerShader(renderManager, "resources/shader/colorShader/color", "color");
+    registerShader(renderManager, "resources/shader/colorShader/color", "color", true, false);
 
     bindUbo(renderManager->getAmbientLightUbo());
     bindUbo(renderManager->getDiffuseLightUbo());

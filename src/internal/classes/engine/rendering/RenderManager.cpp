@@ -1,8 +1,8 @@
 #include "RenderManager.h"
 
 #include "classes/engine/rendering/ShaderLoader.h"
-#include "classes/helper/FileLoadingUtils.h"
-#include "classes/helper/VertexIndexingUtils.h"
+#include "classes/utils/FileLoadingUtils.h"
+#include "classes/utils/VertexIndexingUtils.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 #include "resources/shader/gridShader/GridShader.h"
 
@@ -31,9 +31,12 @@ namespace Engine
         glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &maxBindingPoints);
         std::cout << "Max UBO binding points: " << maxBindingPoints << std::endl;
 
-        GLuint VertexArrayID;
-        glGenVertexArrays(1, &VertexArrayID);
-        glBindVertexArray(VertexArrayID);
+        GLint maxAttribs;
+        glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxAttribs);
+        std::cout << "Max vertex attributes: " << maxAttribs << std::endl;
+
+        glGenVertexArrays(1, &m_defaultVao);
+        glBindVertexArray(m_defaultVao);
 
         glEnable(GL_DEPTH_TEST);
         glDepthFunc(GL_LESS);

@@ -1,8 +1,9 @@
 #include "IslandGenerator.h"
 
+#include "classes/engine/EngineManager.h"
 #include "classes/engine/UserEventManager.h"
-#include "classes/helper/RenderUtils.h"
 #include "classes/nodeComponents/GeometryComponent.h"
+#include "classes/utils/RenderUtils.h"
 #include "exampleScenes/waveFunctionCollapse/CustomFieldTypeData.h"
 #include "exampleScenes/waveFunctionCollapse/Field.h"
 #include "resources/shader/colorShader/ColorShader.h"

@@ -10,8 +10,6 @@
 
 using namespace Engine;
 
-const glm::vec3 RenderUtils::WORLD_UP = glm::vec3(0.f, 1.f, 0.f);
-
 void RenderUtils::checkForGLError()
 {
 #ifdef DEBUG

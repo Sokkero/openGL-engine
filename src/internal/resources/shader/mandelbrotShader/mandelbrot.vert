@@ -1,7 +1,7 @@
 #version 410
 
 // Input vertex data, different for all executions of this shader
-layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 4) in vec3 vertexPosition_modelspace;
 
 layout(std140) uniform ViewProjectionBlock
 {
