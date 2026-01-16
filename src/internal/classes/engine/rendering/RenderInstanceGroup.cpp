@@ -10,7 +10,7 @@ using namespace Engine;
 RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<RenderComponent>& node)
     : m_capacity(32)
     , m_growthFactor(2)
-    , m_objectData(node->getObjectData())
+    , m_objectData(std::make_shared<ObjectData>(*node->getObjectData()))
     , m_shader(node->getShader())
     , m_renderType(node->getRenderType())
     , m_requiresAdditionalData(node->getShader()->requiresAdditionalData())
@@ -270,7 +270,7 @@ void RenderInstanceGroup::refreshDirtyNodes()
 {
     for(const auto& node : m_nodes)
     {
-        if(node->getIsRenderDataDirty())
+        if(node->getIsDirty())
         {
             refreshNode(node);
         }
@@ -304,12 +304,24 @@ void RenderInstanceGroup::refreshNode(const std::shared_ptr<RenderComponent>& no
                     m_additionalDataSize,
                     data);
 
+    node->setIsDirty(false);
     RenderUtils::checkForGLError();
 }
 
 void RenderInstanceGroup::renderGroup()
 {
+    if(m_renderType == RenderTypeEnum::Dynamic)
+    {
+        refreshAllNodes();
+    }
+    else
+    {
+        refreshDirtyNodes();
+    }
+
     m_shader->swapToProgramm();
+
+    glUniform1i(m_shader->getActiveUniform("isInstanced"), true);
 
     if(m_requiresTexture)
     {

@@ -8,7 +8,6 @@ out vec4 color;
 
 // Values that stay constant for the whole mesh
 uniform sampler2D textureSampler;
-uniform vec4 tintColor;
 
 layout(std140) uniform AmbientLightBlock
 {
@@ -22,7 +21,7 @@ layout(std140) uniform DiffuseLightBlock
 
 void main()
 {
-    vec4 textureColor = vec4(texture(textureSampler, UV).rgb, 1) * tintColor;
+    vec4 textureColor = vec4(texture(textureSampler, UV).rgb, 1);
 
     vec3 ambientColor = textureColor.xyz * vec3(ambientLightColorAndIntensity.xyz * ambientLightColorAndIntensity.w);
 

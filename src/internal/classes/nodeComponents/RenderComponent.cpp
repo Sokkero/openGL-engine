@@ -1,6 +1,7 @@
 #include "RenderComponent.h"
 
 #include "classes/engine/EngineManager.h"
+#include "classes/engine/rendering/RenderManager.h"
 #include "classes/nodeComponents/CameraComponent.h"
 #include "classes/utils/dataContainer/AdditionalShaderDataBase.h"
 #include "classes/utils/dataContainer/ObjectData.h"
@@ -11,26 +12,54 @@ RenderComponent::RenderComponent()
     : m_objectData(nullptr)
     , m_shader(nullptr)
     , m_textureBuffer(0)
-    , m_tint(glm::vec4(1.f, 1.f, 1.f, 1.f))
     , m_isTranslucent(false)
     , m_depthSortIndexBuffer(0)
     , m_depthSortedVertexIndices(std::vector<triData>())
     , m_additionalShaderData(nullptr)
     , m_renderType(RenderTypeEnum::Static)
-    , m_isRenderDataDirty(false)
 {
-    setIsTranslucent(m_tint.w < 1.f);
 }
 
-void RenderComponent::setTint(glm::vec4 tint)
+void RenderComponent::resortInRenderManager()
 {
-    m_tint = tint;
-    setIsTranslucent(m_tint.w < 1.f);
-};
+    if(m_activeInScene)
+    {
+        const std::shared_ptr<RenderManager>& renderManager = SingletonManager::get<RenderManager>();
+        renderManager->removeRenderObject(m_nodeId);
+
+        auto thisPtr = shared_from_base<RenderComponent>();
+        renderManager->addRenderObject(thisPtr);
+    }
+}
+
+void RenderComponent::setObjectData(const std::shared_ptr<ObjectData>& objData)
+{
+    m_objectData = objData;
+    resortInRenderManager();
+}
+
+void RenderComponent::setShader(const std::shared_ptr<Shader>& shader)
+{
+    m_shader = shader;
+    resortInRenderManager();
+}
+
+void RenderComponent::setTextureBuffer(GLuint buffer)
+{
+    m_textureBuffer = buffer;
+    resortInRenderManager();
+}
+
+void RenderComponent::setRenderType(Engine::RenderTypeEnum renderType)
+{
+    m_renderType = renderType;
+    resortInRenderManager();
+}
 
 void RenderComponent::setShaderData(std::unique_ptr<AdditionalShaderDataBase> shaderData)
 {
     m_additionalShaderData = std::move(shaderData);
+    setIsDirty(true);
 }
 
 void RenderComponent::depthSortTriangles()

@@ -17,7 +17,7 @@ namespace Engine
     class RenderInstanceGroup
     {
         public:
-            RenderInstanceGroup(const std::shared_ptr<RenderComponent>& node);
+            explicit RenderInstanceGroup(const std::shared_ptr<RenderComponent>& node);
             ~RenderInstanceGroup();
 
             bool addToGroup(const std::shared_ptr<RenderComponent>& node);

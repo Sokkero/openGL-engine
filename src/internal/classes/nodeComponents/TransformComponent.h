@@ -83,6 +83,9 @@ namespace Engine
              */
             void setScale(glm::vec3 scale);
 
+            bool getIsDirty() const { return m_isDirty; }
+            void setIsDirty(bool isDirty) { m_isDirty = isDirty; }
+
         protected:
             /**
              * @brief Marks transform data as dirty.
@@ -100,10 +103,6 @@ namespace Engine
              * @return The model matrix of the object.
              */
             glm::mat4 getLocalModelMatrix() const;
-
-            bool getIsDirty() const { return m_isDirty; }
-
-            void setIsDirty(bool isDirty) { m_isDirty = isDirty; }
 
         private:
             glm::mat4 m_globalModelMatrix;

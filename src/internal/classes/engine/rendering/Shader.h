@@ -54,7 +54,6 @@ namespace Engine
             void loadUVBuffer(const std::shared_ptr<ObjectData>& object) const;
 
             void loadModelMatrix(const std::shared_ptr<RenderComponent>& object) const;
-            void loadTint(const std::shared_ptr<RenderComponent>& object) const;
             void loadTextureBuffer(const std::shared_ptr<RenderComponent>& object) const;
             void loadColorBuffer(const std::shared_ptr<RenderComponent>& object) const;
 

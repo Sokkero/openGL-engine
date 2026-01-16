@@ -15,32 +15,27 @@ namespace Engine
     class Shader;
     class ObjectData;
 
-    class RenderComponent : virtual public BasicNode
+    class RenderComponent : virtual public BasicNode, public std::enable_shared_from_this<RenderComponent>
     {
         public:
             RenderComponent();
             ~RenderComponent() = default;
 
-            glm::vec4 getTint() const { return m_tint; };
-            void setTint(glm::vec4 tint);
-
             std::shared_ptr<ObjectData> getObjectData() const { return m_objectData; };
-            void setObjectData(std::shared_ptr<ObjectData> objData) { m_objectData = std::move(objData); };
+            void setObjectData(const std::shared_ptr<ObjectData>& objData);
 
             GLuint getTextureBuffer() const { return m_textureBuffer; };
-            void setTextureBuffer(GLuint buffer) { m_textureBuffer = buffer; };
+            void setTextureBuffer(GLuint buffer);
 
             std::shared_ptr<Shader> getShader() const { return m_shader; };
-            void setShader(std::shared_ptr<Shader> shader) { m_shader = std::move(shader); }
+            void setShader(const std::shared_ptr<Shader>& shader);
 
+            // Needs resorting in render manager? Idk how Ill handle it yet...
             bool getIsTranslucent() const { return m_isTranslucent; };
             void setIsTranslucent(bool isTranslucent) { m_isTranslucent = isTranslucent; }
 
-            bool getIsRenderDataDirty() const { return m_isRenderDataDirty; };
-            void setIsRenderDataDirty(bool dirty) { m_isRenderDataDirty = dirty; }
-
             RenderTypeEnum getRenderType() const { return m_renderType; };
-            void setRenderType(RenderTypeEnum renderType) { m_renderType = renderType; }
+            void setRenderType(RenderTypeEnum renderType);
 
             AdditionalShaderDataBase* getShaderData() { return m_additionalShaderData.get(); };
             void setShaderData(std::unique_ptr<AdditionalShaderDataBase> shaderData);
@@ -49,15 +44,19 @@ namespace Engine
 
             GLuint getIndexBuffer() const;
 
+            void setIsActiveInScene(bool active) { m_activeInScene = active; }
+
         private:
+            void resortInRenderManager();
+
+            bool m_activeInScene;
+
             std::shared_ptr<ObjectData> m_objectData;
             std::shared_ptr<Shader> m_shader;
             std::unique_ptr<AdditionalShaderDataBase> m_additionalShaderData;
             RenderTypeEnum m_renderType;
-            bool m_isRenderDataDirty;
 
             GLuint m_textureBuffer;
-            glm::vec4 m_tint;
             bool m_isTranslucent;
 
             GLuint m_depthSortIndexBuffer;

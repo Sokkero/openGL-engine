@@ -1,6 +1,7 @@
 #pragma once
 
 #include "TransformComponent.h"
+#include "classes/utils/EnableSharedFromBase.h"
 
 #include <string>
 #include <utility>
@@ -16,7 +17,7 @@ namespace Engine
      */
     class BasicNode
         : virtual public TransformComponent
-        , public std::enable_shared_from_this<BasicNode>
+        , public enable_shared_from_base<BasicNode>
     {
         public:
             BasicNode();
@@ -57,14 +58,14 @@ namespace Engine
              *
              * @param name The name of the node.
              */
-            void setName(std::string name) { m_name = std::move(name); };
+            void setName(std::string name) { m_nodeName = std::move(name); };
 
             /**
              * @brief Gets the name of the node.
              *
              * @return The name of the node.
              */
-            std::string getName() const { return m_name; };
+            std::string getName() const { return m_nodeName; };
 
             /**
              * @brief Sets the parent node of this node.
@@ -263,7 +264,7 @@ namespace Engine
             template<typename T>
             std::shared_ptr<T> getComponent()
             {
-                return std::dynamic_pointer_cast<T>(shared_from_this());
+                return std::static_pointer_cast<T>(shared_from_base<T>());
             };
 
             /**
@@ -273,15 +274,16 @@ namespace Engine
             unsigned int getNodeId() const { return m_nodeId; }
 
             void markAsDirty();
-
-        private:
+        
+        protected:
             void updateGlobalModelMatrix();
 
-            std::string m_name;
+            std::string m_nodeName;
             std::weak_ptr<BasicNode> m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
             unsigned int m_nodeId;
 
+        private:
             static std::atomic<uint32_t> NODE_ID;
     };
 } // namespace Engine

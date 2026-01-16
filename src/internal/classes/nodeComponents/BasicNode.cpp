@@ -25,7 +25,7 @@ namespace Engine
     {
         setParent(nullptr);
 
-        const auto& thisNode = shared_from_this();
+        const auto& thisNode = shared_from_base<BasicNode>();
         if(const auto geometry = std::dynamic_pointer_cast<RenderComponent>(thisNode))
         {
             SingletonManager::get<RenderManager>()->removeRenderObject(geometry->getNodeId());
@@ -48,7 +48,7 @@ namespace Engine
     void BasicNode::addChild(const std::shared_ptr<BasicNode>& node)
     {
         m_childNodes.emplace_back(node);
-        node->setParent(shared_from_this());
+        node->setParent(shared_from_base<BasicNode>());
 
         if(auto geometry = std::dynamic_pointer_cast<RenderComponent>(node))
         {

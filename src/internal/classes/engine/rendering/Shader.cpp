@@ -54,20 +54,9 @@ void Shader::loadModelMatrix(const std::shared_ptr<RenderComponent>& object) con
     double startTime = glfwGetTime();
 
     const glm::mat4& modelMatrix = object->getGlobalModelMatrix();
-    glUniformMatrix4fv(getActiveUniform("modelMatrix"), 1, GL_FALSE, &modelMatrix[0][0]);
+    glUniformMatrix4fv(getActiveUniform("modelMatrixUni"), 1, GL_FALSE, &modelMatrix[0][0]);
 
     m_debugModel->setDrawSectionTimeData("loadModelMatrix", glfwGetTime() - startTime);
-}
-
-void Shader::loadTint(const std::shared_ptr<RenderComponent>& object) const
-{
-    double startTime = glfwGetTime();
-
-    const glm::vec4 tint = object->getTint();
-    GLuint uniformId = getActiveUniform("tintColor");
-    glUniform4f((GLint)uniformId, tint.x, tint.y, tint.z, tint.w);
-
-    m_debugModel->setDrawSectionTimeData("loadTint", glfwGetTime() - startTime);
 }
 
 void Shader::loadVertexBuffer(const std::shared_ptr<ObjectData>& object) const
@@ -147,6 +136,8 @@ void Shader::loadColorBuffer(const std::shared_ptr<RenderComponent>& object) con
 void Shader::drawElements(const std::shared_ptr<RenderComponent>& object) const
 {
     double startTime = glfwGetTime();
+
+    glUniform1i(getActiveUniform("isInstanced"), false);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
     glDrawElements(

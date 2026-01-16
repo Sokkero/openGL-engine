@@ -17,9 +17,9 @@ void TextureShader::renderObject(const std::shared_ptr<RenderComponent>& object,
     swapToProgramm();
 
     loadModelMatrix(object);
-    loadTint(object);
     loadVertexBuffer(object->getObjectData());
     loadNormalBuffer(object->getObjectData());
     loadTextureBuffer(object);
+
     drawElements(object);
 }
