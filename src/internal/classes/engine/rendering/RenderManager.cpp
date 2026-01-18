@@ -7,6 +7,7 @@
 #include "resources/shader/gridShader/GridShader.h"
 #include "classes/nodeComponents/RenderComponent.h"
 #include "classes/engine/rendering/RenderInstanceGroup.h"
+#include "classes/engine/WindowManager.h"
 
 #include <iostream>
 #include <string>

@@ -12,11 +12,17 @@ namespace Engine
         , m_fov(45.f)
         , m_zNear(.1f)
         , m_zFar(100.f)
+        , m_aspectRatio(0.f)
     {
-        const glm::vec2 dim = SingletonManager::get<WindowManager>()->getWindowDimensions();
-        m_aspectRatio = dim.x / dim.y;
+        const auto& windowManager = SingletonManager::get<WindowManager>();
 
-        updateProjectionMatrix();
+        updateProjectionMatrix(windowManager->getWindowDimensions());
+        WindowManager::Callback callback = ([this](GLFWwindow*, int width, int height)
+                                            {
+                                                updateProjectionMatrix(glm::ivec2(width, height));
+                                            });
+        WindowManager::AddFramebufferResizeCallback("camera", callback);
+
     }
 
     glm::mat4 CameraComponent::getViewMatrix()
@@ -25,32 +31,27 @@ namespace Engine
         return glm::lookAt(pos, pos + getForward(), RenderUtils::WORLD_UP);
     }
 
-    void CameraComponent::updateProjectionMatrix()
+    void CameraComponent::updateProjectionMatrix(glm::ivec2 windowSize)
     {
+        m_aspectRatio = (float)windowSize.x / (float)windowSize.y;
         m_projectionMatrix = glm::perspective(glm::radians(m_fov), m_aspectRatio, m_zNear, m_zFar);
     }
 
     void CameraComponent::setFov(float fov)
     {
         m_fov = fov;
-        updateProjectionMatrix();
-    }
-
-    void CameraComponent::setAspectRatio(float aspectRatio)
-    {
-        m_aspectRatio = aspectRatio;
-        updateProjectionMatrix();
+        updateProjectionMatrix(SingletonManager::get<WindowManager>()->getWindowDimensions());
     }
 
     void CameraComponent::setZNear(float zNear)
     {
         m_zNear = zNear;
-        updateProjectionMatrix();
+        updateProjectionMatrix(SingletonManager::get<WindowManager>()->getWindowDimensions());
     }
 
     void CameraComponent::setZFar(float zFar)
     {
         m_zFar = zFar;
-        updateProjectionMatrix();
+        updateProjectionMatrix(SingletonManager::get<WindowManager>()->getWindowDimensions());
     }
 } // namespace Engine

@@ -3,7 +3,6 @@
 #include "classes/engine/DebugModel.h"
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/UserEventManager.h"
-#include "classes/engine/WindowEventCallbackHelper.h"
 #include "classes/engine/WindowManager.h"
 #include "classes/nodeComponents/BasicNode.h"
 

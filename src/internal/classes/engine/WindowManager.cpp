@@ -1,7 +1,6 @@
 #include "WindowManager.h"
 
 #include "EngineManager.h"
-#include "WindowEventCallbackHelper.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -12,9 +11,11 @@
 
 namespace Engine
 {
+    std::vector<std::pair<std::string, WindowManager::Callback>> WindowManager::FRAME_BUFFER_RESIZE_CALLBACKS;
+
     WindowManager::WindowManager()
         : m_gameWindow(nullptr)
-        , m_windowDimensions(glm::vec2(1200, 600))
+        , m_windowDimensions(glm::ivec2(1200, 600))
         , m_textureSamples(4)
         , m_windowTitle("My little Engine")
         , m_vsync(false)
@@ -23,7 +24,7 @@ namespace Engine
 
     void WindowManager::setWindowDimensions(int width, int height)
     {
-        m_windowDimensions = glm::vec2(width, height);
+        m_windowDimensions = glm::ivec2(width, height);
         glfwSetWindowSize(m_gameWindow, width, height);
     }
 
@@ -48,42 +49,38 @@ namespace Engine
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        // glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE); This breaks stuff on resize, find out why
 
         m_gameWindow = glfwCreateWindow(
-                (int)m_windowDimensions.x,
-                (int)m_windowDimensions.y,
+                m_windowDimensions.x,
+                m_windowDimensions.y,
                 m_windowTitle.c_str(),
                 nullptr,
                 nullptr
         );
-        if(m_gameWindow == nullptr)
+        if(!m_gameWindow)
         {
             fprintf(stderr, "Failed to open GLFW window...\n");
             glfwTerminate();
             return false;
         }
 
+        glViewport(0, 0, m_windowDimensions.x, m_windowDimensions.y);
+
         glfwMakeContextCurrent(m_gameWindow); // Initiate GLEW
         glewExperimental = true;              // Needed in the core profile
         if(glewInit() != GLEW_OK)
         {
             fprintf(stderr, "Failed to initialize GLEW...\n");
+            glfwTerminate();
             return false;
         }
 
-        glfwSetWindowContentScaleCallback(m_gameWindow,
-                                          [](GLFWwindow* win, float xscale, float yscale)
-                                          {
-                                              std::cout << "Content scale: " << xscale << "x" << yscale << std::endl;
-                                          });
+        glfwSetFramebufferSizeCallback(m_gameWindow, ExecuteFramebufferSizeCallbacks);
 
         glfwSwapInterval(m_vsync);
 
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
         // glfwSetInputMode(m_gameWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-
-        glfwSetWindowSizeCallback(m_gameWindow, WindowEventCallbackHelper::executeWindowResizeCallbacks);
 
         std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
 
@@ -105,6 +102,42 @@ namespace Engine
         ImGui_ImplOpenGL3_Init("#version 150");
 
         return true;
+    }
+
+    void WindowManager::AddFramebufferResizeCallback(const std::string& callbackId, const Callback& callback)
+    {
+        for(const auto& func : FRAME_BUFFER_RESIZE_CALLBACKS)
+        {
+            if(func.first == callbackId)
+            {
+                printf("Callback with ID %s already added!\n", callbackId.c_str());
+                return;
+            }
+        }
+        FRAME_BUFFER_RESIZE_CALLBACKS.push_back({ callbackId, callback });
+    }
+
+    void WindowManager::RemoveFramebufferResizeCallback(const std::string& callbackId)
+    {
+        FRAME_BUFFER_RESIZE_CALLBACKS
+                .erase(std::remove_if(
+                               FRAME_BUFFER_RESIZE_CALLBACKS.begin(),
+                               FRAME_BUFFER_RESIZE_CALLBACKS.end(),
+                               [callbackId](const std::pair<std::string, Callback>& data)
+                               { return data.first == callbackId; }
+                       ),
+                       FRAME_BUFFER_RESIZE_CALLBACKS.end());
+    }
+
+    void WindowManager::ExecuteFramebufferSizeCallbacks(GLFWwindow* window, int width, int height)
+    {
+        std::cout << "Framebuffer resized to: " << width << "x" << height << std::endl;
+        glViewport(0, 0, width, height);
+
+        for(const auto& callback : FRAME_BUFFER_RESIZE_CALLBACKS)
+        {
+            callback.second(window, width, height);
+        }
     }
 
     void WindowManager::setWindowInputMode(int mode, int value)

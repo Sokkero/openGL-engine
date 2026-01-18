@@ -80,7 +80,7 @@ namespace Engine
             /**
              * @brief Updates the projection matrix of the camera.
              */
-            void updateProjectionMatrix();
+            void updateProjectionMatrix(glm::ivec2 windowSize);
 
             glm::mat4 m_projectionMatrix;
             float m_fov;
