@@ -39,7 +39,7 @@ void TestSceneOrigin::start()
     // m_tree->setRotation(glm::vec3(70.f, 0.f, 0.f));
     m_tree->setTextureBuffer(renderManager->registerTexture("resources/textures/treeTexture.bmp"));
     m_tree->setName("tree");
-    m_tree->setRenderType(RenderTypeEnum::Loose);
+    m_tree->setRenderType(RenderTypeEnum::Static);
     addChild(m_tree);
 
     m_ape = std::make_shared<TestObject>();

@@ -102,9 +102,9 @@ void RenderInstanceGroup::setupVao()
     glBindVertexArray(m_objectVao);
 
     // Bind mesh specific data
-    m_shader->loadVertexBuffer(m_objectData);
-    m_shader->loadNormalBuffer(m_objectData);
-    m_shader->loadUVBuffer(m_objectData);
+    m_shader->loadVertexBuffer(m_objectData->vertexBuffer);
+    m_shader->loadNormalBuffer(m_objectData->normalBuffer);
+    m_shader->loadUVBuffer(m_objectData->uvBuffer);
 
     // Create & bind matrix VBO, setup with instancing dividers
     // Instance matrices (locations 3-6, mat4 = 4x vec4)
@@ -188,10 +188,12 @@ void RenderInstanceGroup::removeFromGroup(uint32_t nodeId)
     }
 
     const int nodePos = m_nodeIdToIndex[nodeId];
+    std::shared_ptr<RenderComponent> node = m_nodes.at(nodePos);
     if(nodePos == m_nodes.size() - 1)
     {
         m_nodes.pop_back();
         m_nodeIdToIndex.erase(nodeId);
+        node->setIsActiveInScene(false);
         return;
     }
 
@@ -199,6 +201,7 @@ void RenderInstanceGroup::removeFromGroup(uint32_t nodeId)
     m_nodeIdToIndex[m_nodes.at(nodePos)->getNodeId()] = nodePos;
     m_nodes.pop_back();
     m_nodeIdToIndex.erase(nodeId);
+    node->setIsActiveInScene(false);
 
     refreshNode(m_nodes.at(nodePos));
 }

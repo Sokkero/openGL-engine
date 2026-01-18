@@ -44,3 +44,4 @@ It is your job to guide the developer and hint them in a good direction.
 - **WindowManager**: Manages the GLFW window
 - **EngineManager**: Manages the core engine loop, i.e. handling objects, scenes and update calls
 - **RenderManager**: Manages loaded objects and textures
+- **RenderInstanceGroup**: Manages groups for instanced rendering (Storing data, syncing group data between GPU & CPU, managing VAO, etc)

@@ -190,6 +190,12 @@ namespace Engine
             groups.push_back(newGroup);
         };
 
+        if(node->getIsTranslucent() && node->getRenderType() != RenderTypeEnum::Loose)
+        {
+            fprintf(stderr, "Translucent nodes have to be of render type loose!");
+            node->setRenderType(RenderTypeEnum::Loose);
+        }
+
         RenderTypeEnum renderType = node->getRenderType();
         if(renderType == RenderTypeEnum::Loose)
         {
@@ -203,7 +209,8 @@ namespace Engine
         {
             funcAddToType(m_staticInstanceGroups);
         }
-        
+
+        node->setIsActiveInScene(true);
         node->awake(); // At the end
     }
 
@@ -218,7 +225,12 @@ namespace Engine
                             m_looseRenderObjects.end(),
                             [nodeId](auto& obj) -> bool
                             {
-                                return obj->getNodeId() == nodeId;
+                                if(obj->getNodeId() == nodeId)
+                                {
+                                    obj->setIsActiveInScene(false);
+                                    return true;
+                                }
+                                return false;
                             }
                     ),
                     m_looseRenderObjects.end()

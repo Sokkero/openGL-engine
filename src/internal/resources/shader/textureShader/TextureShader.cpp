@@ -16,10 +16,11 @@ void TextureShader::renderObject(const std::shared_ptr<RenderComponent>& object,
 {
     swapToProgramm();
 
-    loadModelMatrix(object);
-    loadVertexBuffer(object->getObjectData());
-    loadNormalBuffer(object->getObjectData());
-    loadTextureBuffer(object);
+    loadModelMatrix(object->getGlobalModelMatrix());
+    loadVertexBuffer(object->getObjectData()->vertexBuffer);
+    loadUVBuffer(object->getObjectData()->uvBuffer);
+    loadNormalBuffer(object->getObjectData()->normalBuffer);
+    loadTextureBuffer(object->getTextureBuffer());
 
     drawElements(object);
 }

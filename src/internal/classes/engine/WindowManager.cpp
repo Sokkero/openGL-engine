@@ -48,6 +48,7 @@ namespace Engine
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        // glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE); This breaks stuff on resize, find out why
 
         m_gameWindow = glfwCreateWindow(
                 (int)m_windowDimensions.x,
@@ -70,6 +71,12 @@ namespace Engine
             fprintf(stderr, "Failed to initialize GLEW...\n");
             return false;
         }
+
+        glfwSetWindowContentScaleCallback(m_gameWindow,
+                                          [](GLFWwindow* win, float xscale, float yscale)
+                                          {
+                                              std::cout << "Content scale: " << xscale << "x" << yscale << std::endl;
+                                          });
 
         glfwSwapInterval(m_vsync);
 

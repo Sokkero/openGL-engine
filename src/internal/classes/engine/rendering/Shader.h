@@ -35,8 +35,6 @@ namespace Engine
             void bindUbo(const std::shared_ptr<UboBlock>& ubo);
             void removeBoundUbo(const std::shared_ptr<UboBlock>& ubo);
 
-            static void bindTexture(GLuint attribId, GLuint bufferId, GLuint textureBufferId, GLint textureSamplerUniformId);
-
             static void bindVertexData(
                     GLuint attribId,
                     GLenum targetType,
@@ -49,13 +47,12 @@ namespace Engine
 
             void swapToProgramm() const;
 
-            void loadVertexBuffer(const std::shared_ptr<ObjectData>& object) const;
-            void loadNormalBuffer(const std::shared_ptr<ObjectData>& object) const;
-            void loadUVBuffer(const std::shared_ptr<ObjectData>& object) const;
+            void loadVertexBuffer(GLuint buffer) const;
+            void loadNormalBuffer(GLuint buffer) const;
+            void loadUVBuffer(GLuint buffer) const;
 
-            void loadModelMatrix(const std::shared_ptr<RenderComponent>& object) const;
-            void loadTextureBuffer(const std::shared_ptr<RenderComponent>& object) const;
-            void loadColorBuffer(const std::shared_ptr<RenderComponent>& object) const;
+            void loadModelMatrix(const glm::mat4& modelMatrix) const;
+            void loadTextureBuffer(GLuint buffer) const;
 
             void drawElements(const std::shared_ptr<RenderComponent>& object) const;
 

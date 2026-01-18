@@ -30,7 +30,6 @@ namespace Engine
             std::shared_ptr<Shader> getShader() const { return m_shader; };
             void setShader(const std::shared_ptr<Shader>& shader);
 
-            // Needs resorting in render manager? Idk how Ill handle it yet...
             bool getIsTranslucent() const { return m_isTranslucent; };
             void setIsTranslucent(bool isTranslucent) { m_isTranslucent = isTranslucent; }
 
