@@ -20,8 +20,7 @@ RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<RenderComponent>&
 {
     if(m_renderType == RenderTypeEnum::Loose)
     {
-        fprintf(stderr, "Cannot use instanced rendering on type 'loose' objects");
-        assert(false);
+        ENGINE_ASSERT(false, "Cannot use instanced rendering on type 'loose' objects");
         return;
     }
 
@@ -52,8 +51,7 @@ RenderInstanceGroup::RenderInstanceGroup(const std::shared_ptr<RenderComponent>&
     {
         if(node->getTextureBuffer() == 0)
         {
-            fprintf(stderr, "Texture required but invalid textureId provided!");
-            assert(false);
+            ENGINE_ASSERT(false, "Texture required but invalid textureId provided!");
             return;
         }
         m_textureId = node->getTextureBuffer();
@@ -175,8 +173,7 @@ void RenderInstanceGroup::removeFromGroup(uint32_t nodeId)
 {
     if(!m_nodeIdToIndex.count(nodeId))
     {
-        fprintf(stderr, "Cant remove node which does not exist in this group");
-        assert(false);
+        ENGINE_ASSERT(false, "Cant remove node which does not exist in this group");
         return;
     }
 

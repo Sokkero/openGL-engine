@@ -31,8 +31,7 @@ namespace Engine
             {
                 if(m_size == 0)
                 {
-                    fprintf(stderr, "Ubo is missing values!\n");
-                    assert(false);
+                    ENGINE_ASSERT(false, "Ubo is missing values!")
                     return;
                 }
 
@@ -44,11 +43,12 @@ namespace Engine
 
                 RenderUtils::checkForGLError();
 
-                printf("Created UBO, ID: %u, size: %u, binding point: %u, name: %s\n",
-                       m_uboId,
-                       m_size,
-                       m_bindingPoint.second,
-                       m_bindingPoint.first);
+                LOG_DEBUG("UboBlock",
+                          stringf("Created UBO, ID: %u, size: %u, binding point: %u, name: %s",
+                                  m_uboId,
+                                  m_size,
+                                  m_bindingPoint.second,
+                                  m_bindingPoint.first));
 
                 updateUbo();
             }

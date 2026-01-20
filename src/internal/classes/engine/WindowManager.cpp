@@ -32,7 +32,7 @@ namespace Engine
     {
         m_vsync = vsync;
         glfwSwapInterval(m_vsync);
-        std::cout << "Vsync " << (m_vsync ? "on" : "off") << std::endl;
+        LOG_DEBUG("WindowManager", stringf("Vsync %s", m_vsync ? "on" : "off"));
     }
 
     bool WindowManager::startWindow()
@@ -40,7 +40,7 @@ namespace Engine
         // Initialise GLFW
         if(!glfwInit())
         {
-            fprintf(stderr, "Failed to initialize GLFW!\n");
+            ENGINE_ASSERT(false, "Failed to initialize GLFW!")
             return false;
         }
 
@@ -49,6 +49,7 @@ namespace Engine
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+        glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
 
         m_gameWindow = glfwCreateWindow(
                 m_windowDimensions.x,
@@ -59,21 +60,28 @@ namespace Engine
         );
         if(!m_gameWindow)
         {
-            fprintf(stderr, "Failed to open GLFW window...\n");
+            ENGINE_ASSERT(false, "Failed to open GLFW window...");
             glfwTerminate();
             return false;
         }
 
-        glViewport(0, 0, m_windowDimensions.x, m_windowDimensions.y);
+        glfwPollEvents();
 
         glfwMakeContextCurrent(m_gameWindow); // Initiate GLEW
         glewExperimental = true;              // Needed in the core profile
         if(glewInit() != GLEW_OK)
         {
-            fprintf(stderr, "Failed to initialize GLEW...\n");
+            ENGINE_ASSERT(false, "Failed to initialize GLEW...");
             glfwTerminate();
             return false;
         }
+
+        int framebufferWidth, framebufferHeight;
+        glfwGetFramebufferSize(m_gameWindow, &framebufferWidth, &framebufferHeight);
+        glViewport(0, 0, framebufferWidth, framebufferHeight);
+
+        LOG_DEBUG("WindowManager", stringf("Window size: %ix%i", m_windowDimensions.x, m_windowDimensions.y));
+        LOG_DEBUG("WindowManager", stringf("Framebuffer size: %ix%i", framebufferWidth, framebufferHeight));
 
         glfwSetFramebufferSizeCallback(m_gameWindow, ExecuteFramebufferSizeCallbacks);
 
@@ -82,7 +90,9 @@ namespace Engine
         glfwSetInputMode(m_gameWindow, GLFW_STICKY_KEYS, GL_TRUE);
         // glfwSetInputMode(m_gameWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-        std::cout << "Using OpenGL " << glGetString(GL_VERSION) << std::endl;
+        const unsigned char* raw = glGetString(GL_VERSION);
+        std::string str = reinterpret_cast<const char*>(raw);
+        LOG_DEBUG("WindowManager", stringf("Using OpenGL %s", str));
 
         // Setup Dear ImGui context
         IMGUI_CHECKVERSION();
@@ -110,7 +120,7 @@ namespace Engine
         {
             if(func.first == callbackId)
             {
-                printf("Callback with ID %s already added!\n", callbackId.c_str());
+                LOG_WARN("WindowManager", stringf("Callback with ID %s already added!", callbackId));
                 return;
             }
         }
@@ -131,7 +141,7 @@ namespace Engine
 
     void WindowManager::ExecuteFramebufferSizeCallbacks(GLFWwindow* window, int width, int height)
     {
-        std::cout << "Framebuffer resized to: " << width << "x" << height << std::endl;
+        LOG_DEBUG("WindowManager", stringf("Framebuffer resized to: %sx%s", width, height));
         glViewport(0, 0, width, height);
 
         for(const auto& callback : FRAME_BUFFER_RESIZE_CALLBACKS)

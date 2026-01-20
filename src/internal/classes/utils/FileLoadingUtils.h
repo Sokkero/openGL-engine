@@ -36,7 +36,7 @@ namespace Engine::FileLoadingUtils
         FILE* file = fopen(filePath, "r");
         if(file == nullptr)
         {
-            std::cout << "Couldn't open file [" << filePath << "]" << std::endl;
+            LOG_ERROR("FileLoadingUtils", stringf("Couldn't open file [%s]", filePath));
             return false;
         }
 
@@ -186,9 +186,7 @@ namespace Engine::FileLoadingUtils
         fp = fopen(filePath, "rb");
         if(fp == nullptr)
         {
-            printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n",
-                   filePath);
-            getchar();
+            ENGINE_ASSERT(false, stringf("File [%s] could not be opened", filePath));
             return -1;
         }
 
@@ -303,7 +301,7 @@ namespace Engine::FileLoadingUtils
         FILE* file = fopen(filePath, "rb");
         if(!file)
         {
-            std::cout << "Couldn't open file [" << filePath << "]" << std::endl;
+            LOG_ERROR("FileLoadingUtils", stringf("Couldn't open file [%s]", filePath));
             return -1;
         }
 
@@ -312,27 +310,27 @@ namespace Engine::FileLoadingUtils
         // If less than 54 bytes are read, problem
         if(fread(header, 1, 54, file) != 54)
         {
-            std::cout << "BMP file is not correct [" << filePath << "]" << std::endl;
+            LOG_ERROR("FileLoadingUtils", stringf("BMP file is not correct [%s]", filePath));
             fclose(file);
             return -1;
         }
         // A BMP files always begins with "BM"
         if(header[0] != 'B' || header[1] != 'M')
         {
-            std::cout << "BMP file is not correct [" << filePath << "]" << std::endl;
+            LOG_ERROR("FileLoadingUtils", stringf("BMP file is not correct [%s]", filePath));
             fclose(file);
             return -1;
         }
         // Make sure this is a 24bpp file
         if(*(int*)&(header[0x1E]) != 0)
         {
-            std::cout << "BMP file is not correct [" << filePath << "]" << std::endl;
+            LOG_ERROR("FileLoadingUtils", stringf("BMP file is not correct [%s]", filePath));
             fclose(file);
             return -1;
         }
         if(*(int*)&(header[0x1C]) != 24)
         {
-            std::cout << "BMP file is not correct [" << filePath << "]" << std::endl;
+            LOG_ERROR("FileLoadingUtils", stringf("BMP file is not correct [%s]", filePath));
             fclose(file);
             return -1;
         }

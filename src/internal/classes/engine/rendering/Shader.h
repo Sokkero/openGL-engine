@@ -31,7 +31,7 @@ namespace Engine
 
             GLint getActiveUniform(const std::string& uniform) const;
 
-            std::vector<std::shared_ptr<UboBlock>> getBoundUbos() { return m_boundUbos; }
+            const std::vector<std::shared_ptr<UboBlock>>& getBoundUbos() { return m_boundUbos; }
             void bindUbo(const std::shared_ptr<UboBlock>& ubo);
             void removeBoundUbo(const std::shared_ptr<UboBlock>& ubo);
 

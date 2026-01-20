@@ -84,7 +84,7 @@ void IslandGenerator::addDefaultTiles(const bool waterOnEdges, const bool landIn
             const glm::ivec2 tilePos = getFieldForFieldType(landTile);
             if(tilePos == glm::ivec2(-1.f, -1.f))
             {
-                std::cout << "Cant add more land tiles!" << std::endl;
+                LOG_WARN("IslandGenerator", "Cant add more land tiles!");
                 break;
             }
 

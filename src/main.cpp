@@ -12,7 +12,7 @@ int main()
     // This file is for showcasing how the engine can be used and is in no way optimized
 
 #ifdef DEBUG
-    std::cout << "DEBUG MODE" << std::endl;
+    LOG_DEBUG("", "DEBUG MODE");
 #else
     std::cout << "PROD MODE" << std::endl;
 #endif

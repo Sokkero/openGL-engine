@@ -11,13 +11,17 @@ namespace Engine
 {
     std::atomic<uint32_t> BasicNode::NODE_ID = 0;
 
-    BasicNode::BasicNode() : m_parentNode(std::weak_ptr<BasicNode>()), m_nodeId(NODE_ID.fetch_add(1)) {}
+    BasicNode::BasicNode()
+        : m_parentNode(std::weak_ptr<BasicNode>()),
+        m_nodeId(NODE_ID.fetch_add(1))
+    {
+    }
 
     BasicNode::~BasicNode()
     {
         if(!getName().empty())
         {
-            std::cout << "Object [" << getName() << "] deconstructed" << std::endl;
+            LOG_DEBUG("BasicNode", stringf("Object [%s] Id %i deconstructed", getName(), getNodeId()));
         }
     }
 
@@ -63,7 +67,7 @@ namespace Engine
 
         if(!node->getName().empty())
         {
-            std::cout << "Object [" << node->getName() << "] initialised" << std::endl;
+            LOG_DEBUG("BasicNode", stringf("Object [%s] Id %i initialised", node->getName(), node->getNodeId()));
         }
     }
 

@@ -28,9 +28,7 @@ GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path)
     }
     else
     {
-        printf("Impossible to open %s. Are you in the right directory ? Don't forget to read the FAQ !\n",
-               vertex_file_path);
-        getchar();
+        ENGINE_ASSERT(false, stringf("Impossible to open %s", vertex_file_path));
         return 0;
     }
 
@@ -49,7 +47,7 @@ GLuint LoadShaders(const char* vertex_file_path, const char* fragment_file_path)
     int InfoLogLength;
 
     // Compile Vertex Shader
-    printf("Compiling and linking shader: %s\n", vertex_file_path);
+    LOG_DEBUG("ShaderLoader", stringf("Compiling and linking shader: %s", vertex_file_path));
     const char* VertexSourcePointer = VertexShaderCode.c_str();
     glShaderSource(VertexShaderID, 1, &VertexSourcePointer, nullptr);
     glCompileShader(VertexShaderID);

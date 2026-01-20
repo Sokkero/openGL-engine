@@ -1,6 +1,6 @@
 #include "WafeFunctionCollapseGenerator.h"
 
-#include "classes/utils/DebugUtils.h"
+#include "classes/utils/TimeUtils.h"
 #include "classes/utils/MathUtils.h"
 #include "exampleScenes/waveFunctionCollapse/Field.h"
 
@@ -27,7 +27,7 @@ WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& d
     }
 
     std::srand(m_seed);
-    if(m_debugMode) std::cout << "WFCA | Using seed " << m_seed << std::endl;
+    if(m_debugMode) LOG_DEBUG("WFCA", stringf("Using seed %s", m_seed));
     GRID_SIZE = dimensions;
 }
 
@@ -35,13 +35,13 @@ void WafeFunctionCollapseGenerator::initializeGrid()
 {
     if(m_initialized)
     {
-        std::cout << "WFCA | Failed to initialize grid: Grid already initialized!" << std::endl;
+        LOG_DEBUG("WFCA", "Failed to initialize grid: Grid already initialized!");
         return;
     }
 
     if(m_allFieldTypes.empty())
     {
-        std::cout << "WFCA | Failed to initialize grid: No field types added!" << std::endl;
+        LOG_DEBUG("WFCA", "Failed to initialize grid: No field types added!");
         return;
     }
 
@@ -58,7 +58,8 @@ void WafeFunctionCollapseGenerator::initializeGrid()
     m_initialized = true;
     if(m_debugMode)
     {
-        DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid initialized in: ");
+        const std::string duration = TimeUtils::GetHumanReadableTimeDuration(glfwGetTime() - startTime);
+        LOG_DEBUG("WFCA", stringf("Grid initialized in: %s", duration));
     }
 }
 
@@ -77,13 +78,13 @@ void WafeFunctionCollapseGenerator::generateGrid()
 {
     if(m_generated)
     {
-        std::cout << "WFCA | Failed to generate grid: Grid already generated!" << std::endl;
+        LOG_DEBUG("WFCA", "Failed to generate grid: Grid already generated!");
         return;
     }
 
     if(!m_initialized)
     {
-        std::cout << "WFCA | Failed to generate grid: Grid not yet initialized!" << std::endl;
+        LOG_DEBUG("WFCA", "Failed to generate grid: Grid not yet initialized!");
         return;
     }
 
@@ -99,15 +100,13 @@ void WafeFunctionCollapseGenerator::generateGrid()
     m_generated = true;
     if(m_debugMode)
     {
-        DebugUtils::PrintHumanReadableTimeDuration(glfwGetTime() - startTime, "WFCA | Grid generated in: ");
-        DebugUtils::PrintHumanReadableTimeDuration(
-                MathUtils::GetSum(m_timeSpentPickingFields),
-                "WFCA | Time spent picking fields: "
-        );
-        DebugUtils::PrintHumanReadableTimeDuration(
-                MathUtils::GetSum(m_timeSpentSettingFields),
-                "WFCA | Time spent setting fields: "
-        );
+        const std::string gridTime = TimeUtils::GetHumanReadableTimeDuration(glfwGetTime() - startTime);
+        const std::string pickTime = TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields));
+        const std::string setTime = TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields));
+
+        LOG_DEBUG("WFCA", stringf("Grid generated in: %s", gridTime));
+        LOG_DEBUG("WFCA", stringf("Time spent picking fields: %s", pickTime));
+        LOG_DEBUG("WFCA", stringf("Time spent setting fields: %s", setTime));
     }
 }
 
@@ -145,19 +144,19 @@ void WafeFunctionCollapseGenerator::setField(const std::shared_ptr<Field>& field
 {
     if(m_generated)
     {
-        std::cout << "WFCA | Failed to set field: Grid already generated!" << std::endl;
+        LOG_WARN("WFCA", "Failed to set field: Grid already generated!");
         return;
     }
 
     if(!m_initialized)
     {
-        std::cout << "WFCA | Failed to set field: Grid not yet initialized!" << std::endl;
+        LOG_WARN("WFCA", "Failed to set field: Grid not yet initialized!");
         return;
     }
 
     if(field->getIsFieldSet())
     {
-        std::cout << "WFCA | Failed to set field: Field already set!" << std::endl;
+        LOG_WARN("WFCA", "Failed to set field: Field already set!");
         return;
     }
 
@@ -169,13 +168,13 @@ bool WafeFunctionCollapseGenerator::presetField(const glm::ivec2& pos, const Bas
 {
     if(m_generated)
     {
-        std::cout << "WFCA | Failed to preset field: Grid already generated!" << std::endl;
+        LOG_WARN("WFCA", "Failed to preset field: Grid already generated!");
         return false;
     }
 
     if(!m_initialized)
     {
-        std::cout << "WFCA | Failed to preset field: Grid not yet initialized!" << std::endl;
+        LOG_WARN("WFCA", "Failed to preset field: Grid not yet initialized!");
         return false;
     }
 
@@ -248,7 +247,7 @@ const glm::ivec2 WafeFunctionCollapseGenerator::getFieldForFieldType(const Basic
 {
     if(!m_initialized)
     {
-        std::cout << "WFCA | Failed to get field for type: Grid not yet initialized!" << std::endl;
+        LOG_WARN("WFCA", "Failed to get field for type: Grid not yet initialized!");
         return glm::ivec2(-1.f, -1.f);
     }
 

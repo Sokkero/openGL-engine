@@ -18,6 +18,7 @@ namespace Engine
     class GridShader;
     class CameraComponent;
     class RenderInstanceGroup;
+    class DebugModel;
 
     namespace Ui
     {
@@ -104,6 +105,8 @@ namespace Engine
 
             float m_clearColor[4];
             GLuint m_defaultVao;
+
+            std::shared_ptr<DebugModel> m_debugModel;
     };
 
 } // namespace Engine

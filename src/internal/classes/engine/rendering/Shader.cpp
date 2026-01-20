@@ -51,17 +51,11 @@ void Shader::registerShader(
 
 void Shader::loadModelMatrix(const glm::mat4& modelMatrix) const
 {
-    double startTime = glfwGetTime();
-
     glUniformMatrix4fv(getActiveUniform("modelMatrixUni"), 1, GL_FALSE, &modelMatrix[0][0]);
-
-    m_debugModel->setDrawSectionTimeData("loadModelMatrix", glfwGetTime() - startTime);
 }
 
 void Shader::loadVertexBuffer(GLuint buffer) const
 {
-    double startTime = glfwGetTime();
-
     bindVertexData(
             RenderUtils::GLOBAL_ATTRIB_ID_VERTEXPOSITION,
             GL_ARRAY_BUFFER,
@@ -71,14 +65,10 @@ void Shader::loadVertexBuffer(GLuint buffer) const
             false,
             0
     );
-
-    m_debugModel->setDrawSectionTimeData("loadVertexBuffer", glfwGetTime() - startTime);
 }
 
 void Shader::loadUVBuffer(GLuint buffer) const
 {
-    double startTime = glfwGetTime();
-
     bindVertexData(
             RenderUtils::GLOBAL_ATTRIB_ID_VERTEXUV,
             GL_ARRAY_BUFFER,
@@ -88,14 +78,10 @@ void Shader::loadUVBuffer(GLuint buffer) const
             false,
             0
     );
-
-    m_debugModel->setDrawSectionTimeData("loadNormalBuffer", glfwGetTime() - startTime);
 }
 
 void Shader::loadNormalBuffer(GLuint buffer) const
 {
-    double startTime = glfwGetTime();
-
     bindVertexData(
             RenderUtils::GLOBAL_ATTRIB_ID_VERTEXNORMAL,
             GL_ARRAY_BUFFER,
@@ -105,25 +91,19 @@ void Shader::loadNormalBuffer(GLuint buffer) const
             false,
             0
     );
-
-    m_debugModel->setDrawSectionTimeData("loadNormalBuffer", glfwGetTime() - startTime);
 }
 
 void Shader::loadTextureBuffer(GLuint buffer) const
 {
-    double startTime = glfwGetTime();
-
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, buffer);
     glUniform1i(getActiveUniform("textureSampler"), 0);
 
-    m_debugModel->setDrawSectionTimeData("loadTextureBuffer", glfwGetTime() - startTime);
+    RenderUtils::checkForGLError();
 }
 
 void Shader::drawElements(const std::shared_ptr<RenderComponent>& object) const
 {
-    double startTime = glfwGetTime();
-
     glUniform1i(getActiveUniform("isInstanced"), false);
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
@@ -133,8 +113,7 @@ void Shader::drawElements(const std::shared_ptr<RenderComponent>& object) const
             GL_UNSIGNED_SHORT,                         // type
             nullptr                                    // element array buffer offset
     );
-
-    m_debugModel->setDrawSectionTimeData("drawElements", glfwGetTime() - startTime);
+    RenderUtils::checkForGLError();
 }
 
 void Shader::swapToProgramm() const
@@ -143,6 +122,7 @@ void Shader::swapToProgramm() const
     {
         glUseProgram(m_shaderIdentifier.second);
         CURRENT_PROGRAMM = m_shaderIdentifier.second;
+        RenderUtils::checkForGLError();
     }
 }
 
@@ -152,14 +132,12 @@ GLint Shader::getActiveUniform(const std::string& uniform) const
 
     if(index == GL_INVALID_VALUE)
     {
-        fprintf(stderr, "Uniform index not found! Shader invalid\n");
-        assert(false);
+        ENGINE_ASSERT(false, "Uniform index not found! Shader invalid");
         return -1;
     }
     else if(index == GL_INVALID_OPERATION)
     {
-        fprintf(stderr, "Uniform index not found! Linking failed\n");
-        assert(false);
+        ENGINE_ASSERT(false, "Uniform index not found! Linking failed");
         return -1;
     }
 
@@ -177,19 +155,20 @@ void Shader::bindUbo(const std::shared_ptr<UboBlock>& ubo)
     unsigned int index = glGetUniformBlockIndex(m_shaderIdentifier.second, ubo->getBindingPoint().first);
     if(index == GL_INVALID_INDEX)
     {
-        fprintf(stderr, "Ubo index not found!\n");
-        assert(false);
+        ENGINE_ASSERT(false, "Ubo index not found!");
         return;
     }
 
     glUniformBlockBinding(m_shaderIdentifier.second, index, ubo->getBindingPoint().second);
 
     m_boundUbos.push_back(ubo);
+    RenderUtils::checkForGLError();
 }
 
 void Shader::removeBoundUbo(const std::shared_ptr<UboBlock>& ubo)
 {
     m_boundUbos.erase(std::remove(m_boundUbos.begin(), m_boundUbos.end(), ubo), m_boundUbos.end());
+    RenderUtils::checkForGLError();
 }
 
 void Shader::bindVertexData(
@@ -203,9 +182,7 @@ void Shader::bindVertexData(
 )
 {
     glEnableVertexAttribArray(attribId);
-    RenderUtils::checkForGLError();
     glBindBuffer(targetType, bufferId);
-    RenderUtils::checkForGLError();
     glVertexAttribPointer(attribId, size, dataType, normalized, stride, (void*)nullptr);
 
     RenderUtils::checkForGLError();

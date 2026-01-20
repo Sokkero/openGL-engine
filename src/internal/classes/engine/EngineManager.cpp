@@ -29,7 +29,7 @@ namespace Engine
     {
         if(!getScene())
         {
-            std::cout << "No scene origin node" << std::endl;
+            LOG_ERROR("EngineManager", "No scene origin node");
             return false;
         }
 
@@ -58,8 +58,7 @@ namespace Engine
     {
         if(!m_camera)
         {
-            fprintf(stderr, "No camera...\n");
-            assert(false);
+            ENGINE_ASSERT(false, "No camera");
             return;
         }
 

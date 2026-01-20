@@ -14,11 +14,7 @@ void RenderUtils::checkForGLError()
 {
 #ifdef DEBUG
     GLenum err = glGetError();
-    if(err != GL_NO_ERROR)
-    {
-        fprintf(stderr, "openGL error occured, code: %d\n", err);
-        assert(false);
-    }
+    ENGINE_ASSERT(err == GL_NO_ERROR, stringf("openGL error occured, code: %d", err))
 #endif
 }
 

@@ -7,7 +7,7 @@
 #include "resources/shader/gridShader/GridShader.h"
 #include "classes/nodeComponents/RenderComponent.h"
 #include "classes/engine/rendering/RenderInstanceGroup.h"
-#include "classes/engine/WindowManager.h"
+#include "classes/engine/DebugModel.h"
 
 #include <iostream>
 #include <string>
@@ -25,6 +25,7 @@ namespace Engine
         , m_clearColor { 0.f, 0.f, 0.f, 1.f }
         , m_showGrid(true)
         , m_gridShader(nullptr)
+        , m_debugModel(SingletonManager::get<DebugModel>())
     {
     }
 
@@ -32,11 +33,11 @@ namespace Engine
     {
         GLint maxBindingPoints;
         glGetIntegerv(GL_MAX_UNIFORM_BUFFER_BINDINGS, &maxBindingPoints);
-        std::cout << "Max UBO binding points: " << maxBindingPoints << std::endl;
+        LOG_DEBUG("RenderManager", stringf("Max UBO binding points: %i", maxBindingPoints));
 
         GLint maxAttribs;
         glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &maxAttribs);
-        std::cout << "Max vertex attributes: " << maxAttribs << std::endl;
+        LOG_DEBUG("RenderManager", stringf("Max vertex attributes: %i", maxAttribs));
 
         glGenVertexArrays(1, &m_defaultVao);
         glBindVertexArray(m_defaultVao);
@@ -64,19 +65,41 @@ namespace Engine
         // TODO: Investigate multithreading
         // Multithread tri sorting here
 
+        double startTimeStamp = glfwGetTime();
         renderGroupList(m_staticInstanceGroups);
+        double endTimeStamp = glfwGetTime();
+        m_debugModel->setDrawSectionTimeData("renderStaticObjects", endTimeStamp - startTimeStamp);
+
+        startTimeStamp = glfwGetTime();
         renderGroupList(m_dynamicInstanceGroups);
-        
+        endTimeStamp = glfwGetTime();
+        m_debugModel->setDrawSectionTimeData("renderDynamicObjects", endTimeStamp - startTimeStamp);
+
+        startTimeStamp = glfwGetTime();
         depthSortLooseRenderObjects(camera);
+        endTimeStamp = glfwGetTime();
+        m_debugModel->setDrawSectionTimeData("sortLooseObjects", endTimeStamp - startTimeStamp);
+
+        startTimeStamp = glfwGetTime();
         renderLooseObjects(camera);
+        endTimeStamp = glfwGetTime();
+        m_debugModel->setDrawSectionTimeData("renderLooseObjects", endTimeStamp - startTimeStamp);
 
         if(m_showGrid)
         {
+            startTimeStamp = glfwGetTime();
             m_gridShader->renderObject(nullptr, camera.get());
+            endTimeStamp = glfwGetTime();
+            m_debugModel->setDrawSectionTimeData("renderGrid", endTimeStamp - startTimeStamp);
         }
+
+        startTimeStamp = glfwGetTime();
 
         renderUiNodes();
         glDisable(GL_BLEND);
+
+        endTimeStamp = glfwGetTime();
+        m_debugModel->setDrawSectionTimeData("renderUi", endTimeStamp - startTimeStamp);
 
         RenderUtils::checkForGLError();
     }
@@ -193,7 +216,7 @@ namespace Engine
 
         if(node->getIsTranslucent() && node->getRenderType() != RenderTypeEnum::Loose)
         {
-            fprintf(stderr, "Translucent nodes have to be of render type loose!");
+            LOG_WARN("RenderManager", "Translucent nodes have to be of render type loose!");
             node->setRenderType(RenderTypeEnum::Loose);
         }
 
@@ -339,7 +362,7 @@ namespace Engine
         size_t dotIndex = filePathString.find_last_of('.');
         if(dotIndex == std::string::npos)
         {
-            std::cout << "Texture path " << filePath << " broken" << std::endl;
+            LOG_ERROR("RenderManager", stringf("Texture path { %s } is broken", filePath));
             return -1;
         }
 
@@ -369,7 +392,7 @@ namespace Engine
             // TODO: make it possible to use TGA texture files
         }
 
-        std::cout << "Texture extension of " << filePath << " not valid" << std::endl;
+        LOG_ERROR("RenderManager", stringf("Texture extension of { %s } not valid", filePath));
         return -1;
     }
 
@@ -418,12 +441,6 @@ namespace Engine
 
     void RenderManager::deregisterShader(std::string shaderName /* = "" */, GLuint shaderId /* = -1 */)
     {
-        if(shaderName.empty() && shaderId == -1)
-        {
-            fprintf(stderr, "Deregistering shader failed. No shader specified\n");
-            assert(false);
-        }
-
         std::erase_if(
                 m_shaderList,
                 [&shaderName, &shaderId](const auto& elem)
