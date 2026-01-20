@@ -6,8 +6,8 @@
 #include "classes/primitives/ui/DebugManagerWindow.h"
 #include "exampleScenes/testScene/TestObject.h"
 #include "resources/shader/colorShader/ColorShader.h"
-#include "resources/shader/textureShader/TextureShader.h"
 #include "resources/shader/colorShader/ColorShaderAdditionalData.h"
+#include "resources/shader/textureShader/TextureShader.h"
 
 void TestSceneOrigin::start()
 {

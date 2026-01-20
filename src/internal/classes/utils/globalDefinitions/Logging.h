@@ -2,8 +2,8 @@
 
 #include "classes/utils/StringFormat.h"
 
-#include <iostream>
 #include <cassert>
+#include <iostream>
 
 #define ESC "\033["
 #define ERROR_TEXT_COLOR "91m"
@@ -64,7 +64,7 @@ namespace Logger
             assert(false);
         }
     }
-}
+} // namespace Logger
 
 #define LOG_DEBUG(tag, msg) Logger::LOG(Logger::LOG_TYPE::LOG_TYPE_DEBUG, tag, msg)
 #define LOG_WARN(tag, msg) Logger::LOG(Logger::LOG_TYPE::LOG_TYPE_WARNING, tag, msg)

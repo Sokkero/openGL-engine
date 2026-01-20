@@ -56,41 +56,17 @@ void Shader::loadModelMatrix(const glm::mat4& modelMatrix) const
 
 void Shader::loadVertexBuffer(GLuint buffer) const
 {
-    bindVertexData(
-            RenderUtils::GLOBAL_ATTRIB_ID_VERTEXPOSITION,
-            GL_ARRAY_BUFFER,
-            buffer,
-            3,
-            GL_FLOAT,
-            false,
-            0
-    );
+    bindVertexData(RenderUtils::GLOBAL_ATTRIB_ID_VERTEXPOSITION, GL_ARRAY_BUFFER, buffer, 3, GL_FLOAT, false, 0);
 }
 
 void Shader::loadUVBuffer(GLuint buffer) const
 {
-    bindVertexData(
-            RenderUtils::GLOBAL_ATTRIB_ID_VERTEXUV,
-            GL_ARRAY_BUFFER,
-            buffer,
-            2,
-            GL_FLOAT,
-            false,
-            0
-    );
+    bindVertexData(RenderUtils::GLOBAL_ATTRIB_ID_VERTEXUV, GL_ARRAY_BUFFER, buffer, 2, GL_FLOAT, false, 0);
 }
 
 void Shader::loadNormalBuffer(GLuint buffer) const
 {
-    bindVertexData(
-            RenderUtils::GLOBAL_ATTRIB_ID_VERTEXNORMAL,
-            GL_ARRAY_BUFFER,
-            buffer,
-            3,
-            GL_FLOAT,
-            false,
-            0
-    );
+    bindVertexData(RenderUtils::GLOBAL_ATTRIB_ID_VERTEXNORMAL, GL_ARRAY_BUFFER, buffer, 3, GL_FLOAT, false, 0);
 }
 
 void Shader::loadTextureBuffer(GLuint buffer) const

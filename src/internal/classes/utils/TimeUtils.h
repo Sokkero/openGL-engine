@@ -15,15 +15,17 @@ namespace Engine::TimeUtils
         const std::string hours = std::to_string(static_cast<int>(time) / 3600) + "h ";
         const std::string minutes = std::to_string(static_cast<int>(time) % 3600 / 60) + "m ";
         const std::string seconds = std::to_string(static_cast<int>(time) % 60) + "s ";
-        const std::string milliseconds = std::to_string(static_cast<int>((time - static_cast<int>(time)) * 1000)) + "ms ";
+        const std::string milliseconds =
+                std::to_string(static_cast<int>((time - static_cast<int>(time)) * 1000)) + "ms ";
 
         std::string timeString = hours + minutes + seconds + milliseconds;
         if(includeNanoSeconds)
         {
-            const std::string nanoseconds = std::to_string(static_cast<int>((time - static_cast<int>(time)) * 1e9) % 1000);
+            const std::string nanoseconds =
+                    std::to_string(static_cast<int>((time - static_cast<int>(time)) * 1e9) % 1000);
             timeString += nanoseconds + "ns";
         }
 
         return timeString;
     }
-} // namespace Engine::DebugUtils
+} // namespace Engine::TimeUtils

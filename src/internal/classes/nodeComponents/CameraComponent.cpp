@@ -18,11 +18,8 @@ namespace Engine
 
         updateProjectionMatrix(windowManager->getWindowDimensions());
         WindowManager::Callback callback = ([this](GLFWwindow*, int width, int height)
-                                            {
-                                                updateProjectionMatrix(glm::ivec2(width, height));
-                                            });
+                                            { updateProjectionMatrix(glm::ivec2(width, height)); });
         WindowManager::AddFramebufferResizeCallback("camera", callback);
-
     }
 
     glm::mat4 CameraComponent::getViewMatrix()

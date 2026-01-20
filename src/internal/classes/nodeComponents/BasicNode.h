@@ -274,7 +274,7 @@ namespace Engine
             unsigned int getNodeId() const { return m_nodeId; }
 
             void markAsDirty();
-        
+
         protected:
             void updateGlobalModelMatrix();
 

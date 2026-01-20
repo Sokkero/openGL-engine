@@ -1,13 +1,13 @@
 #include "RenderManager.h"
 
+#include "classes/engine/DebugModel.h"
+#include "classes/engine/rendering/RenderInstanceGroup.h"
 #include "classes/engine/rendering/ShaderLoader.h"
+#include "classes/nodeComponents/RenderComponent.h"
+#include "classes/nodeComponents/UiDebugWindow.h"
 #include "classes/utils/FileLoadingUtils.h"
 #include "classes/utils/VertexIndexingUtils.h"
-#include "classes/nodeComponents/UiDebugWindow.h"
 #include "resources/shader/gridShader/GridShader.h"
-#include "classes/nodeComponents/RenderComponent.h"
-#include "classes/engine/rendering/RenderInstanceGroup.h"
-#include "classes/engine/DebugModel.h"
 
 #include <iostream>
 #include <string>
@@ -123,7 +123,7 @@ namespace Engine
         }
     }
 
-    void RenderManager::renderLooseObjects(std::shared_ptr<CameraComponent> camera) 
+    void RenderManager::renderLooseObjects(std::shared_ptr<CameraComponent> camera)
     {
         renderOpaqueNodes(camera);
         renderTranslucentNodes(camera);
@@ -243,22 +243,21 @@ namespace Engine
         auto it = m_nodeIdToGroupMap.find(nodeId);
         if(it == m_nodeIdToGroupMap.end())
         {
-            m_looseRenderObjects.erase(
-                    std::remove_if(
-                            m_looseRenderObjects.begin(),
-                            m_looseRenderObjects.end(),
-                            [nodeId](auto& obj) -> bool
-                            {
-                                if(obj->getNodeId() == nodeId)
-                                {
-                                    obj->setIsActiveInScene(false);
-                                    return true;
-                                }
-                                return false;
-                            }
-                    ),
-                    m_looseRenderObjects.end()
-            );
+            m_looseRenderObjects
+                    .erase(std::remove_if(
+                                   m_looseRenderObjects.begin(),
+                                   m_looseRenderObjects.end(),
+                                   [nodeId](auto& obj) -> bool
+                                   {
+                                       if(obj->getNodeId() == nodeId)
+                                       {
+                                           obj->setIsActiveInScene(false);
+                                           return true;
+                                       }
+                                       return false;
+                                   }
+                           ),
+                           m_looseRenderObjects.end());
             return;
         }
 

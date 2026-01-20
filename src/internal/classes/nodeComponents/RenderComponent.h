@@ -1,9 +1,9 @@
 #pragma once
 
 #include "classes/nodeComponents/BasicNode.h"
+#include "classes/utils/dataContainer/AdditionalShaderDataBase.h"
 #include "classes/utils/dataContainer/TriDataDef.h"
 #include "classes/utils/enums/RenderTypeEnum.h"
-#include "classes/utils/dataContainer/AdditionalShaderDataBase.h"
 
 #include <GL/glew.h>
 #include <glm/vec4.hpp>
@@ -15,7 +15,9 @@ namespace Engine
     class Shader;
     class ObjectData;
 
-    class RenderComponent : virtual public BasicNode, public std::enable_shared_from_this<RenderComponent>
+    class RenderComponent
+        : virtual public BasicNode
+        , public std::enable_shared_from_this<RenderComponent>
     {
         public:
             RenderComponent();

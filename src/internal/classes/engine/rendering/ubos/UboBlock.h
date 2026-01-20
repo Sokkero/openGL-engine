@@ -43,12 +43,14 @@ namespace Engine
 
                 RenderUtils::checkForGLError();
 
-                LOG_DEBUG("UboBlock",
-                          stringf("Created UBO, ID: %u, size: %u, binding point: %u, name: %s",
-                                  m_uboId,
-                                  m_size,
-                                  m_bindingPoint.second,
-                                  m_bindingPoint.first));
+                LOG_DEBUG(
+                        "UboBlock",
+                        stringf("Created UBO, ID: %u, size: %u, binding point: %u, name: %s",
+                                m_uboId,
+                                m_size,
+                                m_bindingPoint.second,
+                                m_bindingPoint.first)
+                );
 
                 updateUbo();
             }

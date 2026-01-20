@@ -81,7 +81,7 @@ namespace Engine
             void depthSortLooseRenderObjects(const std::shared_ptr<CameraComponent>& camera);
 
             // Render objects that cant be put into instance groups (e.g. translucent, unique, etc)
-            std::vector<std::shared_ptr<RenderComponent>>m_looseRenderObjects;
+            std::vector<std::shared_ptr<RenderComponent>> m_looseRenderObjects;
             // Render objects that wont have their data altered often, if at all
             std::vector<std::shared_ptr<RenderInstanceGroup>> m_staticInstanceGroups;
             // Render objects that will have their data altered often

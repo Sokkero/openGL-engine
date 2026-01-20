@@ -100,8 +100,8 @@ void RenderComponent::depthSortTriangles()
 }
 
 /**
-             * @brief Gets the bufferId for Object.
-             * @return GLuint
+ * @brief Gets the bufferId for Object.
+ * @return GLuint
  */
 GLuint RenderComponent::getIndexBuffer() const
 {

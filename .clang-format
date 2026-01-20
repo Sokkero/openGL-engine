@@ -109,7 +109,7 @@ PPIndentWidth:   -1
 ReferenceAlignment: Left
 ReflowComments:  true
 RemoveBracesLLVM: false
-SeparateDefinitionBlocks: Always
+SeparateDefinitionBlocks: Leave
 ShortNamespaceLines: 1
 SortIncludes:    CaseSensitive
 SortUsingDeclarations: true

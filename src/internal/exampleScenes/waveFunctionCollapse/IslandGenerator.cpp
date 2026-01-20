@@ -7,8 +7,8 @@
 #include "classes/utils/enums/RenderTypeEnum.h"
 #include "exampleScenes/waveFunctionCollapse/CustomFieldTypeData.h"
 #include "exampleScenes/waveFunctionCollapse/Field.h"
-#include "resources/shader/colorShader/ColorShaderAdditionalData.h"
 #include "resources/shader/colorShader/ColorShader.h"
+#include "resources/shader/colorShader/ColorShaderAdditionalData.h"
 
 IslandGenerator::IslandGenerator(const glm::ivec2& gridDimensions, const double& seed)
     : WafeFunctionCollapseGenerator(gridDimensions, seed, true)

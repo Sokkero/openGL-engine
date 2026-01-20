@@ -40,7 +40,10 @@ namespace Engine
 
             void setWindowInputMode(int mode, int value);
 
-            static void AddFramebufferResizeCallback(const std::string& callbackId, const Engine::WindowManager::Callback& callback);
+            static void AddFramebufferResizeCallback(
+                    const std::string& callbackId,
+                    const Engine::WindowManager::Callback& callback
+            );
             static void RemoveFramebufferResizeCallback(const std::string& callbackId);
 
         private:

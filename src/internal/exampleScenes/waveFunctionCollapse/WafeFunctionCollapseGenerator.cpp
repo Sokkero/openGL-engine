@@ -1,7 +1,7 @@
 #include "WafeFunctionCollapseGenerator.h"
 
-#include "classes/utils/TimeUtils.h"
 #include "classes/utils/MathUtils.h"
+#include "classes/utils/TimeUtils.h"
 #include "exampleScenes/waveFunctionCollapse/Field.h"
 
 #include <GLFW/glfw3.h>
@@ -101,8 +101,10 @@ void WafeFunctionCollapseGenerator::generateGrid()
     if(m_debugMode)
     {
         const std::string gridTime = TimeUtils::GetHumanReadableTimeDuration(glfwGetTime() - startTime);
-        const std::string pickTime = TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields));
-        const std::string setTime = TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields));
+        const std::string pickTime =
+                TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields));
+        const std::string setTime =
+                TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields));
 
         LOG_DEBUG("WFCA", stringf("Grid generated in: %s", gridTime));
         LOG_DEBUG("WFCA", stringf("Time spent picking fields: %s", pickTime));

@@ -10,4 +10,4 @@ namespace Engine
         Dynamic,
         Loose
     };
-} // namespace DebugUtils
+} // namespace Engine

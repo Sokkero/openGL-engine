@@ -2,9 +2,9 @@
 
 #include "classes/utils/enums/RenderTypeEnum.h"
 
-#include <unordered_map>
 #include <GL/glew.h>
 #include <memory>
+#include <unordered_map>
 
 namespace Engine
 {
@@ -40,7 +40,7 @@ namespace Engine
             GLuint m_matrixVbo;
             GLuint m_dataVbo;
 
-            int m_capacity; // = 32;
+            int m_capacity;       // = 32;
             float m_growthFactor; // = 2;
 
             std::vector<std::shared_ptr<RenderComponent>> m_nodes;
@@ -59,4 +59,4 @@ namespace Engine
 
             std::shared_ptr<RenderManager> m_renderManager;
     };
-}
+} // namespace Engine
