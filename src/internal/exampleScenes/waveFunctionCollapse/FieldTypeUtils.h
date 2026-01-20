@@ -72,7 +72,8 @@ struct BasicFieldDataStruct
         /**
          * @param uniqueTileTypeId The unique id of the tile
          * @param weight The wighting youd like to add to the tile (changes probability of picking this tile)
-         * @param placementRules Vector of rules that have to pass in order to place this tile. All rules have to pass.
+         * @param placementRules Vector of rules that have to pass in order to place this tile. All rules have
+         * to pass.
          */
         BasicFieldDataStruct(const int uniqueTileTypeId, const int weight, const std::vector<ruleFunction>& placementRules)
             : weight(weight)

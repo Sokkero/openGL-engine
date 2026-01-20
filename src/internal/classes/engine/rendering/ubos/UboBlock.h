@@ -126,7 +126,10 @@ namespace Engine
 
                 if constexpr(is_vec3_type<T>)
                 {
-                    static_assert(false, "Never use vec3 types in std140 layouts, use vec4 with padding data instead!");
+                    static_assert(
+                            false,
+                            "Never use vec3 types in std140 layouts, use vec4 with padding data instead!"
+                    );
                     return;
                 }
 

@@ -34,7 +34,8 @@ namespace Engine::Ui
 
             /**
              * @brief Draws the radio button UI element.
-             * @details Calls the callback function if the value has changed, then renders the radio button using ImGui.
+             * @details Calls the callback function if the value has changed, then renders the radio button
+             * using ImGui.
              */
             void drawUi() override
             {

@@ -34,9 +34,13 @@ namespace Engine
             void init();
 
             void drawScene(const std::shared_ptr<CameraComponent>& camera);
-            void drawNode(const std::shared_ptr<RenderComponent>& node, const std::shared_ptr<CameraComponent>& camera);
+            void drawNode(
+                    const std::shared_ptr<RenderComponent>& node,
+                    const std::shared_ptr<CameraComponent>& camera
+            );
 
-            // A custom object will bypass the check if the given file has already been loaded, assuming the code will change the data and make it unique
+            // A custom object will bypass the check if the given file has already been loaded, assuming the
+            // code will change the data and make it unique
             std::shared_ptr<ObjectData> registerObject(const char* filePath, bool isCustomObject = false);
             void deregisterObject(std::shared_ptr<ObjectData>& obj);
             void clearObjects();

@@ -14,7 +14,8 @@ namespace Engine
     class BasicNode;
 
     /**
-     * @brief The TransformComponent class represents a component that handles the transformation of a node in the engine.
+     * @brief The TransformComponent class represents a component that handles the transformation of a node in
+     * the engine.
      */
     class TransformComponent
     {

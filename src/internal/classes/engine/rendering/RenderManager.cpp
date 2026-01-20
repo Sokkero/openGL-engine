@@ -309,7 +309,8 @@ namespace Engine
 
         GLuint vertexBuffer = !vertexData.empty() ? RenderUtils::createVertexBufferObject(vertexData) : -1;
         GLuint uvBuffer = !uvData.empty() ? RenderUtils::createVertexBufferObject(uvData) : -1;
-        GLuint normalBuffer = !vertexNormals.empty() ? RenderUtils::createVertexBufferObject(vertexNormals) : -1;
+        GLuint normalBuffer = !vertexNormals.empty() ? RenderUtils::createVertexBufferObject(vertexNormals)
+                                                     : -1;
         GLuint indexBuffer = !triIndexData.empty() ? RenderUtils::createVertexBufferObject(triIndexData) : -1;
 
         std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(

@@ -64,7 +64,8 @@ namespace StringFormat
     template<class T>
     inline std::string toString(const T* val)
     {
-        // 19 because on 64 bits we have 8 bytes ^= 16 chars for hex representation of the address + "0x" = 2 chars and final \0 termination 1 char
+        // 19 because on 64 bits we have 8 bytes ^= 16 chars for hex representation of the address + "0x" = 2
+        // chars and final \0 termination 1 char
         char buffer[19] { 0 };
         snprintf(buffer, 19, "0x%x", val);
         return buffer;
@@ -73,7 +74,8 @@ namespace StringFormat
     template<class T>
     inline std::string toString(T* val)
     {
-        // 19 because on 64 bits we have 8 bytes ^= 16 chars for hex representation of the address + "0x" = 2 chars and final \0 termination 1 char
+        // 19 because on 64 bits we have 8 bytes ^= 16 chars for hex representation of the address + "0x" = 2
+        // chars and final \0 termination 1 char
         char buffer[19] { 0 };
         snprintf(buffer, 19, "0x%llx", (unsigned long long)val);
         return buffer;

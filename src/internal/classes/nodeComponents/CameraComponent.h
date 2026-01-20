@@ -8,7 +8,8 @@
 namespace Engine
 {
     /**
-     * @brief The CameraComponent class represents a camera component that can be attached to a node in the engine.
+     * @brief The CameraComponent class represents a camera component that can be attached to a node in the
+     * engine.
      */
     class CameraComponent : virtual public BasicNode
     {

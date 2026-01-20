@@ -12,8 +12,9 @@ namespace Engine
     /**
      * @brief The BasicNode class represents a basic node in the engine's scene graph.
      *
-     * This class is a subclass of TransformComponent and provides basic functionality for managing a node's hierarchy,
-     * including parent-child relationships, adding and removing child nodes, and accessing global transformation properties.
+     * This class is a subclass of TransformComponent and provides basic functionality for managing a node's
+     * hierarchy, including parent-child relationships, adding and removing child nodes, and accessing global
+     * transformation properties.
      */
     class BasicNode
         : virtual public TransformComponent
@@ -35,7 +36,8 @@ namespace Engine
             /**
              * @brief Called when the node is started.
              *
-             * This function can be overridden by derived classes to perform any necessary initialization when the node is started.
+             * This function can be overridden by derived classes to perform any necessary initialization when
+             * the node is started.
              */
             virtual void start() {};
 

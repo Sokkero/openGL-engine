@@ -10,7 +10,11 @@
 
 using namespace Engine;
 
-WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed, const bool debugOutput)
+WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(
+        const glm::ivec2& dimensions,
+        const long& seed,
+        const bool debugOutput
+)
     : m_seed(0)
     , m_generated(false)
     , m_initialized(false)
