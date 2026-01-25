@@ -36,7 +36,7 @@ namespace StringFormat
     }
 
     template<typename T>
-    std::string toString(const T& val)
+    inline std::string toString(const T& val)
     {
         if(std::is_floating_point<T>::value)
         {

@@ -432,7 +432,7 @@ namespace Engine
 
         std::pair<std::string, GLuint> newShader;
         newShader.first = std::move(shaderName);
-        newShader.second = LoadShaders((shaderPath + ".vert").c_str(), (shaderPath + ".frag").c_str());
+        newShader.second = ShaderLoader::LoadShader((shaderPath + ".vert").c_str(), (shaderPath + ".frag").c_str());
 
         m_shaderList.emplace(newShader);
 

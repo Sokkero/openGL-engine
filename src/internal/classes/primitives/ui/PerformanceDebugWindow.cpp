@@ -33,10 +33,10 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     );
     addContent(vsyncRadio);
 
-    m_fpsCounter = std::make_shared<UiElementPlot>("FPS: inf");
+    m_fpsCounter = std::make_shared<UiElementPlot>("FPS: -1");
     addContent(m_fpsCounter);
 
-    m_frameTimer = std::make_shared<UiElementText>("ms/frame: inf");
+    m_frameTimer = std::make_shared<UiElementText>("Average ms/frame: -1");
     addContent(m_frameTimer);
 
     m_detailsSection = std::make_shared<UiElementCollapsableSection>("Details");
@@ -54,7 +54,7 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     m_timeDistributionGraph = std::make_shared<UiElementPieChart>("Frame time distribution (ms)");
     m_detailsSection->addContent(m_timeDistributionGraph);
 
-    m_testGraph = std::make_shared<UiElementPieChart>("Shader sections");
+    m_testGraph = std::make_shared<UiElementPieChart>("Render time distribution (ms)");
     m_detailsSection->addContent(m_testGraph);
 }
 
