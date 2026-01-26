@@ -48,7 +48,7 @@ void TestSceneOrigin::start()
     m_ape->setPosition(glm::vec3(3.f, 3.f, 0.f));
     m_ape->setScale(glm::vec3(1.f));
     m_ape->setName("suzanne");
-    m_ape->setRenderType(RenderTypeEnum::Static);
+    m_ape->setRenderType(RenderTypeEnum::Loose);
     m_ape->setShaderData(std::make_unique<ColorShaderAdditionalData>(glm::vec4(1.f, 1.f, 1.f, 1.f)));
     addChild(m_ape);
 }

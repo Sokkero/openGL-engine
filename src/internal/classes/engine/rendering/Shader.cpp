@@ -82,6 +82,11 @@ void Shader::drawElements(const std::shared_ptr<RenderComponent>& object) const
 {
     glUniform1i(getActiveUniform("isInstanced"), false);
 
+    if(m_requiresAdditionalData)
+    {
+        object->getShaderData()->loadDataAsUniform(getActiveUniform("additionalDataUni"));
+    }
+
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
     glDrawElements(
             GL_TRIANGLES,                              // mode
@@ -111,7 +116,7 @@ GLint Shader::getActiveUniform(const std::string& uniform) const
         ENGINE_ASSERT(false, "Uniform index not found! Shader invalid");
         return -1;
     }
-    else if(index == GL_INVALID_OPERATION)
+    else if(index == -1)
     {
         ENGINE_ASSERT(false, "Uniform index not found! Linking failed");
         return -1;
