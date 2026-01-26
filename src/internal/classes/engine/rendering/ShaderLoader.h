@@ -10,7 +10,8 @@ class ShaderLoader
         static GLuint LoadShader(const char* vertex_file_path, const char* fragment_file_path);
 
     private:
-        struct IncludeDirective {
+        struct IncludeDirective
+        {
                 std::string fullMatch;              // The entire #include statement
                 std::string filePath;               // Path inside <>
                 std::vector<std::string> arguments; // Parsed arguments
@@ -24,4 +25,3 @@ class ShaderLoader
 
         static std::vector<std::string> INCLUDED_FILES;
 };
-

@@ -101,7 +101,7 @@ PenaltyBreakFirstLessLess: 100
 PenaltyBreakOpenParenthesis: 100
 PenaltyBreakString: 100000
 PenaltyBreakTemplateDeclaration: 100000
-PenaltyExcessCharacter: 10
+PenaltyExcessCharacter: 5
 PenaltyReturnTypeOnItsOwnLine: 100000
 PenaltyIndentedWhitespace: 0 
 PointerAlignment: Left

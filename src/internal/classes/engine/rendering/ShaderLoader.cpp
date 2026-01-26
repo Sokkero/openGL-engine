@@ -5,9 +5,9 @@
 
 #include <GL/glew.h>
 #include <fstream>
+#include <regex>
 #include <sstream>
 #include <vector>
-#include <regex>
 
 std::vector<std::string> ShaderLoader::INCLUDED_FILES;
 
@@ -69,7 +69,12 @@ std::string ShaderLoader::loadFile(const char* path, std::vector<std::string> ar
     {
         if(std::find(INCLUDED_FILES.begin(), INCLUDED_FILES.end(), include.filePath) != INCLUDED_FILES.end())
         {
-            LOG_WARN("ShaderLoader", stringf("Duplicate pragma once include will be skipped. \"%s\" includes \"%s\"", path, include.filePath));
+            LOG_WARN(
+                    "ShaderLoader",
+                    stringf("Duplicate pragma once include will be skipped. \"%s\" includes \"%s\"",
+                            path,
+                            include.filePath)
+            );
             StringFormat::replaceAll(glslCode, include.fullMatch, "");
             continue;
         }
@@ -92,15 +97,17 @@ std::vector<ShaderLoader::IncludeDirective> ShaderLoader::getIncludes(std::strin
     auto begin = std::sregex_iterator(glslCode.begin(), glslCode.end(), includePattern);
     auto end = std::sregex_iterator();
 
-    for (auto it = begin; it != end; ++it) {
+    for(auto it = begin; it != end; ++it)
+    {
         std::smatch match = *it;
 
         IncludeDirective directive;
-        directive.fullMatch = match[0].str();          // Full #include statement
-        directive.filePath = match[1].str();           // Path between < >
+        directive.fullMatch = match[0].str(); // Full #include statement
+        directive.filePath = match[1].str();  // Path between < >
 
         // Parse arguments if they exist
-        if (match[2].matched) {
+        if(match[2].matched)
+        {
             directive.arguments = getArguments(match[2].str());
         }
 
@@ -114,8 +121,9 @@ std::vector<std::string> ShaderLoader::getArguments(std::string argsString)
 {
     std::vector<std::string> args;
 
-    if (argsString.empty()) {
-        return args;  // No arguments
+    if(argsString.empty())
+    {
+        return args; // No arguments
     }
 
     // Match quoted strings: "something"
@@ -124,9 +132,9 @@ std::vector<std::string> ShaderLoader::getArguments(std::string argsString)
     auto begin = std::sregex_iterator(argsString.begin(), argsString.end(), argPattern);
     auto end = std::sregex_iterator();
 
-    for (auto it = begin; it != end; ++it)
+    for(auto it = begin; it != end; ++it)
     {
-        args.push_back((*it)[1].str());  // Capture group 1 is content inside quotes
+        args.push_back((*it)[1].str()); // Capture group 1 is content inside quotes
     }
 
     return args;
