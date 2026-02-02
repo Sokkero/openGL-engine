@@ -18,12 +18,12 @@ SceneSettingsDebugWindow::SceneSettingsDebugWindow()
 
     setWindowTitle("Scene Settings");
 
-    auto gridRadio = std::make_shared<UiElementRadio>(
-            m_renderManager->isGridVisible(),
-            "Grid",
-            std::bind(&SceneSettingsDebugWindow::onGridToggle, this, std::placeholders::_1)
+    auto debugUiRadio = std::make_shared<UiElementRadio>(
+            m_renderManager->isDebugUiVisible(),
+            "Debug UI",
+            std::bind(&SceneSettingsDebugWindow::onDebugUiToggle, this, std::placeholders::_1)
     );
-    addContent(gridRadio);
+    addContent(debugUiRadio);
 
     auto wireframeRadio = std::make_shared<UiElementRadio>(
             m_renderManager->getWireframeMode(),
@@ -44,6 +44,6 @@ void SceneSettingsDebugWindow::onWireframeToggle(bool value) const
     m_renderManager->setWireframeMode(value);
 }
 
-void SceneSettingsDebugWindow::onGridToggle(bool value) const { m_renderManager->setGridVisibility(value); }
+void SceneSettingsDebugWindow::onDebugUiToggle(bool value) const { m_renderManager->setDebugUiVisibility(value); }
 
 void SceneSettingsDebugWindow::update() {}

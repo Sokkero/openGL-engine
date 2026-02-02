@@ -62,8 +62,8 @@ namespace Engine
             void setWireframeMode(bool toggle);
             bool getWireframeMode() const { return m_showWireframe; };
 
-            bool isGridVisible() const { return m_showGrid; };
-            void setGridVisibility(bool showGrid) { m_showGrid = showGrid; };
+            bool isDebugUiVisible() const { return m_showDebugUi; };
+            void setDebugUiVisibility(bool showGrid) { m_showDebugUi = showGrid; };
 
             void setClearColor(const float color[4]);
             float* getClearColor() { return m_clearColor; };
@@ -105,7 +105,7 @@ namespace Engine
             std::shared_ptr<GridShader> m_gridShader;
 
             bool m_showWireframe;
-            bool m_showGrid;
+            bool m_showDebugUi;
 
             float m_clearColor[4];
             GLuint m_defaultVao;

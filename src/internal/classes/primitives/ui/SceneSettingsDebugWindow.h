@@ -21,7 +21,7 @@ namespace Engine
 
             private:
                 void onWireframeToggle(bool value) const;
-                void onGridToggle(bool value) const;
+                void onDebugUiToggle(bool value) const;
 
                 std::shared_ptr<RenderManager> m_renderManager;
         };

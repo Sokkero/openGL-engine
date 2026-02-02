@@ -23,7 +23,7 @@ namespace Engine
         , m_vpUbo(nullptr)
         , m_showWireframe(false)
         , m_clearColor { 0.f, 0.f, 0.f, 1.f }
-        , m_showGrid(true)
+        , m_showDebugUi(true)
         , m_gridShader(nullptr)
         , m_debugModel(SingletonManager::get<DebugModel>())
     {
@@ -85,7 +85,7 @@ namespace Engine
         endTimeStamp = glfwGetTime();
         m_debugModel->setDrawSectionTimeData("renderLooseObjects", endTimeStamp - startTimeStamp);
 
-        if(m_showGrid)
+        if(m_showDebugUi)
         {
             startTimeStamp = glfwGetTime();
             m_gridShader->renderObject(nullptr, camera.get());
