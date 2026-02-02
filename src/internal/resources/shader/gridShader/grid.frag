@@ -9,11 +9,11 @@ in vec3 farPoint;
 in mat4 fragView;
 in mat4 fragProj;
 
-uniform float mainGridScale;
-uniform float secondaryGridScale;
+float mainGridScale = 1.0;
+float secondaryGridScale = 0.1;
 
-uniform float near;
-uniform float far;
+float near = 0.01;
+float far = 20.0;
 
 out vec4 color;
 
