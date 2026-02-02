@@ -63,7 +63,7 @@ namespace Engine
             bool getWireframeMode() const { return m_showWireframe; };
 
             bool isDebugUiVisible() const { return m_showDebugUi; };
-            void setDebugUiVisibility(bool showGrid) { m_showDebugUi = showGrid; };
+            void setDebugUiVisibility(bool showDebugUi) { m_showDebugUi = showDebugUi; };
 
             void setClearColor(const float color[4]);
             float* getClearColor() { return m_clearColor; };
