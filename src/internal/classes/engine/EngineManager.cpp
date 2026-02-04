@@ -1,7 +1,7 @@
 #include "EngineManager.h"
 
 #include "classes/engine/rendering/RenderManager.h"
-#include "classes/nodeComponents/UiDebugWindow.h"
+#include "utils/TimeUtils.h"
 #include "exampleScenes/testScene/TestSceneOrigin.h"
 
 #include <GLFW/glfw3.h>
@@ -21,6 +21,8 @@ namespace Engine
         , m_fpsCount(0)
         , m_renderManager(nullptr)
     {
+        TimeUtils::CheckClockAccuracy();
+
         m_renderManager = SingletonManager::get<RenderManager>();
         m_renderManager->init();
     }

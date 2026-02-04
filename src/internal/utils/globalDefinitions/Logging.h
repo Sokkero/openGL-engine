@@ -24,6 +24,7 @@ namespace Logger
 
     static void LOG(LOG_TYPE logType, const std::string& tag, const std::string& msg)
     {
+        std::string processedMsg = msg;
         std::string logText = ESC;
         switch(logType)
         {
@@ -51,9 +52,13 @@ namespace Logger
             }
 
             logText += tagText + " || ";
+
+            std::string indent(MIN_TAG_LENGTH + 4, ' ');
+            StringFormat::replaceAll(processedMsg, "\n", "\n" + indent);
+            StringFormat::replaceAll(processedMsg, "<br>", "\n" + indent);
         }
 
-        std::cout << logText << msg << RESET << std::endl;
+        std::cout << logText << processedMsg << RESET << std::endl;
     }
 
     static void ASSERT(bool condition, const std::string& msg)
