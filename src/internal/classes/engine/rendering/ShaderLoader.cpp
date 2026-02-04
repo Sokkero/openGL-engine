@@ -1,7 +1,7 @@
 #include "ShaderLoader.h"
 
-#include "classes/utils/RenderUtils.h"
-#include "classes/utils/StringFormat.h"
+#include "utils/RenderUtils.h"
+#include "utils/StringFormat.h"
 
 #include <GL/glew.h>
 #include <fstream>

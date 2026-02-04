@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <map>
 
-#include "classes/utils/dataContainer/TriDataDef.h"
+#include "utils/dataContainer/TriDataDef.h"
 
 namespace Engine::VertexIndexingUtils
 {

@@ -1,9 +1,9 @@
 #pragma once
 
 #include "classes/nodeComponents/BasicNode.h"
-#include "classes/utils/dataContainer/AdditionalShaderDataBase.h"
-#include "classes/utils/dataContainer/TriDataDef.h"
-#include "classes/utils/enums/RenderTypeEnum.h"
+#include "utils/dataContainer/AdditionalShaderDataBase.h"
+#include "utils/dataContainer/TriDataDef.h"
+#include "utils/enums/RenderTypeEnum.h"
 
 #include <GL/glew.h>
 #include <glm/vec4.hpp>

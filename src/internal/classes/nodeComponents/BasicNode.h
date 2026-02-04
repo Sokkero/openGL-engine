@@ -1,7 +1,7 @@
 #pragma once
 
 #include "TransformComponent.h"
-#include "classes/utils/EnableSharedFromBase.h"
+#include "utils/EnableSharedFromBase.h"
 
 #include <string>
 #include <utility>

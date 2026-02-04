@@ -42,7 +42,7 @@ target_include_directories(${PROJECT_NAME} PRIVATE
         src/internal/
 )
 
-FILE(GLOB GLOBAL_DEFINITIONS src/internal/classes/utils/globalDefinitions/*.h)
+FILE(GLOB GLOBAL_DEFINITIONS src/internal/utils/globalDefinitions/*.h)
 target_precompile_headers(${PROJECT_NAME} PRIVATE ${GLOBAL_DEFINITIONS})
 
 file(REMOVE_RECURSE ${CMAKE_CURRENT_BINARY_DIR}/bin)

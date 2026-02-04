@@ -1,6 +1,6 @@
 #pragma once
 
-#include "classes/utils/enums/RenderTypeEnum.h"
+#include "utils/enums/RenderTypeEnum.h"
 
 #include <GL/glew.h>
 #include <memory>

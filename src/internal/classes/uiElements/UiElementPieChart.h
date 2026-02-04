@@ -2,7 +2,7 @@
 
 #include "UiElement.h"
 
-#include "classes/utils/MathUtils.h"
+#include "utils/MathUtils.h"
 
 #include <implot.h>
 #include <map>

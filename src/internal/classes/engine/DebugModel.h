@@ -1,7 +1,7 @@
 #pragma once
 
 #include "classes/SingletonManager.h"
-#include "classes/utils/enums/LifecycleEventsEnum.h"
+#include "utils/enums/LifecycleEventsEnum.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>

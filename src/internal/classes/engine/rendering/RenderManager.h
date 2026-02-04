@@ -4,7 +4,7 @@
 #include "classes/engine/rendering/ubos/AmbientLightUbo.h"
 #include "classes/engine/rendering/ubos/DiffuseLightUbo.h"
 #include "classes/engine/rendering/ubos/ViewProjectionUbo.h"
-#include "classes/utils/dataContainer/ObjectData.h"
+#include "utils/dataContainer/ObjectData.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <map>

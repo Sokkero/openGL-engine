@@ -1,6 +1,6 @@
 #pragma once
 
-#include "classes/utils/dataContainer/AdditionalShaderDataBase.h"
+#include "utils/dataContainer/AdditionalShaderDataBase.h"
 
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>

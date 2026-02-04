@@ -1,7 +1,7 @@
 #include "WafeFunctionCollapseGenerator.h"
 
-#include "classes/utils/MathUtils.h"
-#include "classes/utils/TimeUtils.h"
+#include "utils/MathUtils.h"
+#include "utils/TimeUtils.h"
 #include "exampleScenes/waveFunctionCollapse/Field.h"
 
 #include <GLFW/glfw3.h>

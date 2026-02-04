@@ -1,7 +1,7 @@
 #include "Shader.h"
 
 #include "classes/engine/DebugModel.h"
-#include "classes/utils/RenderUtils.h"
+#include "utils/RenderUtils.h"
 
 using namespace Engine;
 

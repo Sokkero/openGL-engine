@@ -1,6 +1,6 @@
 #pragma once
 
-#include "classes/utils/StringFormat.h"
+#include "utils/StringFormat.h"
 
 #include <cassert>
 #include <iostream>

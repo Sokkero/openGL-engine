@@ -8,8 +8,8 @@
 #include "classes/nodeComponents/CameraComponent.h"
 #include "classes/nodeComponents/RenderComponent.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
-#include "classes/utils/FileLoadingUtils.h"
-#include "classes/utils/VertexIndexingUtils.h"
+#include "utils/FileLoadingUtils.h"
+#include "utils/VertexIndexingUtils.h"
 
 #include <string>
 #include <utility>

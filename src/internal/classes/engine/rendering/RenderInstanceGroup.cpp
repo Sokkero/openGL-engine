@@ -2,8 +2,8 @@
 
 #include "classes/engine/rendering/RenderManager.h"
 #include "classes/engine/rendering/Shader.h"
-#include "classes/utils/RenderUtils.h"
-#include "classes/utils/dataContainer/ObjectData.h"
+#include "utils/RenderUtils.h"
+#include "utils/dataContainer/ObjectData.h"
 
 using namespace Engine;
 

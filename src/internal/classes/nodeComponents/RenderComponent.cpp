@@ -3,8 +3,8 @@
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/rendering/RenderManager.h"
 #include "classes/nodeComponents/CameraComponent.h"
-#include "classes/utils/dataContainer/AdditionalShaderDataBase.h"
-#include "classes/utils/dataContainer/ObjectData.h"
+#include "utils/dataContainer/AdditionalShaderDataBase.h"
+#include "utils/dataContainer/ObjectData.h"
 
 using namespace Engine;
 
