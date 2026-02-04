@@ -77,20 +77,19 @@ namespace Engine
 
     void DebugDrawManager::checkTimes()
     {
-        double currTimestamp = glfwGetTime();
         bool wasInvalidated = false;
         m_lines
                 .erase(std::remove_if(
                                m_lines.begin(),
                                m_lines.end(),
-                               [currTimestamp, &wasInvalidated](auto& obj) -> bool
+                               [&wasInvalidated](auto& obj) -> bool
                                {
                                    if(obj.duration < 0)
                                    {
                                        return false;
                                    }
 
-                                   double lifeTime = currTimestamp - obj.startTime;
+                                   int64_t lifeTime = TimeUtils::GetDurationSince(obj.startTime);
                                    if(obj.duration <= lifeTime || obj.duration == 0)
                                    {
                                        wasInvalidated = true;
@@ -126,13 +125,13 @@ namespace Engine
         m_areLinesDirty = false;
     }
 
-    void DebugDrawManager::drawDebugLine(const glm::vec3& startPoint, const glm::vec3& endPoint, double duration)
+    void DebugDrawManager::drawDebugLine(const glm::vec3& startPoint, const glm::vec3& endPoint, int64_t duration)
     {
         Line line;
         line.startPoint = startPoint;
         line.endPoint = endPoint;
         line.duration = duration;
-        line.startTime = glfwGetTime();
+        line.startTime = TimeUtils::GetSystemsTimestamp();
 
         m_lines.push_back(line);
 

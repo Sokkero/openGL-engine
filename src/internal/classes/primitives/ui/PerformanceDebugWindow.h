@@ -1,6 +1,7 @@
 #pragma once
 
 #include "classes/nodeComponents/UiDebugWindow.h"
+#include "utils/TimeUtils.h"
 
 namespace Engine
 {
@@ -39,7 +40,7 @@ namespace Engine
                 std::shared_ptr<UiElementPieChart> m_testGraph;
                 std::shared_ptr<UiElementCollapsableSection> m_detailsSection;
 
-                double m_lastTimeStamp;
+                TimeUtils::SysTimestamp m_lastTimeStamp;
         };
     } // namespace Ui
 } // namespace Engine

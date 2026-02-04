@@ -19,7 +19,7 @@ PerformanceDebugWindow::PerformanceDebugWindow()
 
     setIsWindowClosable(false);
 
-    m_lastTimeStamp = glfwGetTime();
+    m_lastTimeStamp = TimeUtils::GetSystemsTimestamp();
     m_engineManager = SingletonManager::get<EngineManager>();
     m_windowManager = SingletonManager::get<WindowManager>();
     m_debugModel = SingletonManager::get<DebugModel>();
@@ -60,7 +60,7 @@ PerformanceDebugWindow::PerformanceDebugWindow()
 
 void PerformanceDebugWindow::update()
 {
-    if(glfwGetTime() - m_lastTimeStamp < 0.1)
+    if(TimeUtils::GetDurationSince(m_lastTimeStamp) < 100)
     {
         return;
     }
@@ -89,7 +89,7 @@ void PerformanceDebugWindow::updateFrameCounter()
     fpsText = "Average ms/frame: " + std::to_string(msTime);
     m_frameTimer->setText(fpsText);
 
-    m_lastTimeStamp = glfwGetTime();
+    m_lastTimeStamp = TimeUtils::GetSystemsTimestamp();
 }
 
 void PerformanceDebugWindow::updateTimeDistributionGraph()

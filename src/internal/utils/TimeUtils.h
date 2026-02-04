@@ -107,6 +107,15 @@ namespace Engine::TimeUtils
     }
 
     /**
+     * @brief Returns the amount of time passed between start and now in ms
+     */
+    static int64_t GetDurationSince(SysTimestamp start)
+    {
+        auto duration = high_resolution_clock::now() - start;
+        return duration_cast<milliseconds>(duration).count();
+    }
+
+    /**
      * @brief Returns the amount of time passed in fractured seconds (e.g. 2.7168 seconds)
      */
     static double GetFracturedDuration(SysTimestamp start, SysTimestamp end)

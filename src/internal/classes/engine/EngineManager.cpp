@@ -13,10 +13,7 @@ namespace Engine
     EngineManager::EngineManager()
         : m_sceneNode(nullptr)
         , m_camera(nullptr)
-        , m_lastFrameTimestamp(0)
         , m_deltaTime(0)
-        , m_lastFpsCalc(0)
-        , m_currentFrameTimestamp(0)
         , m_frames(0)
         , m_fpsCount(0)
         , m_renderManager(nullptr)
@@ -35,7 +32,7 @@ namespace Engine
             return false;
         }
 
-        m_lastFrameTimestamp = glfwGetTime();
+        m_lastFrameTimestamp = TimeUtils::GetSystemsTimestamp();
 
         m_sceneNode->start();
 
@@ -78,8 +75,8 @@ namespace Engine
 
     void EngineManager::setDeltaTime()
     {
-        m_currentFrameTimestamp = glfwGetTime();
-        m_deltaTime = m_currentFrameTimestamp - m_lastFrameTimestamp;
+        m_currentFrameTimestamp = TimeUtils::GetSystemsTimestamp();
+        m_deltaTime = TimeUtils::GetFracturedDuration(m_lastFrameTimestamp, m_currentFrameTimestamp);
         m_lastFrameTimestamp = m_currentFrameTimestamp;
 
         updateFps();
@@ -93,11 +90,13 @@ namespace Engine
     void EngineManager::updateFps()
     {
         m_frames++;
-        if(m_currentFrameTimestamp - m_lastFpsCalc >= 1)
+
+        const int64_t diff = TimeUtils::GetDuration(m_lastFpsCalcTimestamp, m_currentFrameTimestamp, TimeUtils::TimeUnit::Seconds);
+        if(diff >= 1)
         {
             m_fpsCount = m_frames;
             m_frames = 0;
-            m_lastFpsCalc = m_currentFrameTimestamp;
+            m_lastFpsCalcTimestamp = m_currentFrameTimestamp;
         }
     }
 } // namespace Engine

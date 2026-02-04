@@ -1,6 +1,7 @@
 #pragma once
 
 #include "classes/SingletonManager.h"
+#include "utils/TimeUtils.h"
 
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -51,10 +52,11 @@ namespace Engine
             std::shared_ptr<BasicNode> m_sceneNode;
             std::shared_ptr<CameraComponent> m_camera;
 
-            double m_deltaTime;
-            double m_currentFrameTimestamp;
-            double m_lastFrameTimestamp;
-            double m_lastFpsCalc;
+            double m_deltaTime; // Needs to be in seconds
+            TimeUtils::SysTimestamp m_currentFrameTimestamp;
+            TimeUtils::SysTimestamp m_lastFrameTimestamp;
+            TimeUtils::SysTimestamp m_lastFpsCalcTimestamp;
+
             int m_fpsCount;
             int m_frames;
     };

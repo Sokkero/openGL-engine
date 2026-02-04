@@ -65,42 +65,36 @@ namespace Engine
         // TODO: Investigate multithreading
         // Multithread tri sorting here
 
-        double startTimeStamp = glfwGetTime();
+        TimeUtils::SysTimestamp start = TimeUtils::GetSystemsTimestamp();
         renderGroupList(m_staticInstanceGroups);
-        double endTimeStamp = glfwGetTime();
-        m_debugModel->setDrawSectionTimeData("renderStaticObjects", endTimeStamp - startTimeStamp);
+        m_debugModel->setDrawSectionTimeData("renderStaticObjects", TimeUtils::GetDurationSince(start));
 
-        startTimeStamp = glfwGetTime();
+        start = TimeUtils::GetSystemsTimestamp();
         renderGroupList(m_dynamicInstanceGroups);
-        endTimeStamp = glfwGetTime();
-        m_debugModel->setDrawSectionTimeData("renderDynamicObjects", endTimeStamp - startTimeStamp);
+        m_debugModel->setDrawSectionTimeData("renderDynamicObjects", TimeUtils::GetDurationSince(start));
 
-        startTimeStamp = glfwGetTime();
+        start = TimeUtils::GetSystemsTimestamp();
         depthSortLooseRenderObjects(camera);
-        endTimeStamp = glfwGetTime();
-        m_debugModel->setDrawSectionTimeData("sortLooseObjects", endTimeStamp - startTimeStamp);
+        m_debugModel->setDrawSectionTimeData("sortLooseObjects", TimeUtils::GetDurationSince(start));
 
-        startTimeStamp = glfwGetTime();
+        start = TimeUtils::GetSystemsTimestamp();
         renderLooseObjects(camera);
-        endTimeStamp = glfwGetTime();
-        m_debugModel->setDrawSectionTimeData("renderLooseObjects", endTimeStamp - startTimeStamp);
+        m_debugModel->setDrawSectionTimeData("renderLooseObjects", TimeUtils::GetDurationSince(start));
 
         if(m_showDebugUi)
         {
-            startTimeStamp = glfwGetTime();
+            start = TimeUtils::GetSystemsTimestamp();
             m_debugDrawManager->drawLines();
-            endTimeStamp = glfwGetTime();
-            m_debugModel->setDrawSectionTimeData("renderDebugLines", endTimeStamp - startTimeStamp);
-            startTimeStamp = glfwGetTime();
+            m_debugModel->setDrawSectionTimeData("renderDebugLines", TimeUtils::GetDurationSince(start));
+
+            start = TimeUtils::GetSystemsTimestamp();
             m_debugDrawManager->drawGrid();
-            endTimeStamp = glfwGetTime();
-            m_debugModel->setDrawSectionTimeData("renderGrid", endTimeStamp - startTimeStamp);
+            m_debugModel->setDrawSectionTimeData("renderGrid", TimeUtils::GetDurationSince(start));
         }
 
-        startTimeStamp = glfwGetTime();
+        start = TimeUtils::GetSystemsTimestamp();
         m_debugDrawManager->drawDebugUiWindows();
-        endTimeStamp = glfwGetTime();
-        m_debugModel->setDrawSectionTimeData("renderUiWindows", endTimeStamp - startTimeStamp);
+        m_debugModel->setDrawSectionTimeData("renderUiWindows", TimeUtils::GetDurationSince(start));
 
         glDisable(GL_BLEND);
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "classes/SingletonManager.h"
+#include "utils/TimeUtils.h"
 
 #include <GL/glew.h>
 #include <glm/vec3.hpp>
@@ -22,8 +23,8 @@ namespace Engine
             {
                     glm::vec3 startPoint;
                     glm::vec3 endPoint;
-                    double startTime;
-                    double duration; // In ms
+                    TimeUtils::SysTimestamp startTime;
+                    int64_t duration; // In ms
             };
 
         public:
@@ -34,7 +35,7 @@ namespace Engine
             void drawDebugUiWindows();
 
             // Time in ms, 0 = 1frame, -1 = infinite, points in global space
-            void drawDebugLine(const glm::vec3& startPoint, const glm::vec3& endPoint, double duration);
+            void drawDebugLine(const glm::vec3& startPoint, const glm::vec3& endPoint, int64_t duration);
 
             void drawLines();
 

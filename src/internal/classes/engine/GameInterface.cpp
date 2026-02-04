@@ -5,6 +5,7 @@
 #include "classes/engine/UserEventManager.h"
 #include "classes/engine/WindowManager.h"
 #include "classes/nodeComponents/BasicNode.h"
+#include "utils/TimeUtils.h"
 
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
@@ -31,40 +32,40 @@ namespace Engine
 
         do
         {
-            double tempTimestamp = glfwGetTime();
+            TimeUtils::SysTimestamp tempTimestamp = TimeUtils::GetSystemsTimestamp();
             ImGui_ImplOpenGL3_NewFrame();
             ImGui_ImplGlfw_NewFrame();
             ImGui::NewFrame();
-            debugModel->setCalculationTimeData(DebugUtils::ImGuiNewFrame, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::ImGuiNewFrame, TimeUtils::GetDurationSince(tempTimestamp));
 
-            tempTimestamp = glfwGetTime();
+            tempTimestamp = TimeUtils::GetSystemsTimestamp();
             userEventManager->updateEvents(windowManager->getWindow());
-            debugModel->setCalculationTimeData(DebugUtils::UserEventsUpdate, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::UserEventsUpdate, TimeUtils::GetDurationSince(tempTimestamp));
 
-            tempTimestamp = glfwGetTime();
+            tempTimestamp = TimeUtils::GetSystemsTimestamp();
             engineManager->engineUpdate();
-            debugModel->setCalculationTimeData(DebugUtils::EngineUpdate, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::EngineUpdate, TimeUtils::GetDurationSince(tempTimestamp));
 
-            tempTimestamp = glfwGetTime();
+            tempTimestamp = TimeUtils::GetSystemsTimestamp();
             engineManager->engineDraw();
-            debugModel->setCalculationTimeData(DebugUtils::EngineDraw, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::EngineDraw, TimeUtils::GetDurationSince(tempTimestamp));
 
-            tempTimestamp = glfwGetTime();
+            tempTimestamp = TimeUtils::GetSystemsTimestamp();
             ImGui::Render();
             ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-            debugModel->setCalculationTimeData(DebugUtils::ImGuiDraw, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::ImGuiDraw, TimeUtils::GetDurationSince(tempTimestamp));
 
-            tempTimestamp = glfwGetTime();
+            tempTimestamp = TimeUtils::GetSystemsTimestamp();
             glfwSwapBuffers(windowManager->getWindow());
-            debugModel->setCalculationTimeData(DebugUtils::BufferSwap, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::BufferSwap, TimeUtils::GetDurationSince(tempTimestamp));
 
-            tempTimestamp = glfwGetTime();
+            tempTimestamp = TimeUtils::GetSystemsTimestamp();
             engineManager->engineLateUpdate();
-            debugModel->setCalculationTimeData(DebugUtils::EngineLateUpdate, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::EngineLateUpdate, TimeUtils::GetDurationSince(tempTimestamp));
 
-            tempTimestamp = glfwGetTime();
+            tempTimestamp = TimeUtils::GetSystemsTimestamp();
             glfwPollEvents();
-            debugModel->setCalculationTimeData(DebugUtils::glfwPoll, glfwGetTime() - tempTimestamp);
+            debugModel->setCalculationTimeData(DebugUtils::glfwPoll, TimeUtils::GetDurationSince(tempTimestamp));
 
             engineManager->setDeltaTime();
         } while(userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS
