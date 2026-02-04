@@ -12,7 +12,10 @@
 
 namespace Engine
 {
-    GameInterface::GameInterface() { SingletonManager::get<WindowManager>()->startWindow(); }
+    GameInterface::GameInterface()
+    {
+        SingletonManager::get<WindowManager>()->startWindow();
+    }
 
     int GameInterface::startGame()
     {
@@ -64,8 +67,8 @@ namespace Engine
             debugModel->setCalculationTimeData(DebugUtils::glfwPoll, glfwGetTime() - tempTimestamp);
 
             engineManager->setDeltaTime();
-        } while(userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-                glfwWindowShouldClose(windowManager->getWindow()) == 0);
+        } while(userEventManager->getUserEvent(GLFW_KEY_ESCAPE) != GLFW_PRESS
+                && glfwWindowShouldClose(windowManager->getWindow()) == 0);
 
         return 0;
     }

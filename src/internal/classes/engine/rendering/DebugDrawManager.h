@@ -2,8 +2,8 @@
 
 #include "classes/SingletonManager.h"
 
-#include <glm/vec3.hpp>
 #include <GL/glew.h>
+#include <glm/vec3.hpp>
 
 namespace Engine
 {
@@ -18,13 +18,13 @@ namespace Engine
 
     class DebugDrawManager : public SingletonBase
     {
-        struct Line
-        {
-                glm::vec3 startPoint;
-                glm::vec3 endPoint;
-                double startTime;
-                double duration; // In ms
-        };
+            struct Line
+            {
+                    glm::vec3 startPoint;
+                    glm::vec3 endPoint;
+                    double startTime;
+                    double duration; // In ms
+            };
 
         public:
             DebugDrawManager();
@@ -56,4 +56,4 @@ namespace Engine
 
             std::map<uint, std::shared_ptr<Ui::UiDebugWindow>> m_debugWindows;
     };
-}
+} // namespace Engine

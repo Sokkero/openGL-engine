@@ -34,8 +34,11 @@ SceneSettingsDebugWindow::SceneSettingsDebugWindow()
 
     float* currClearColor = m_renderManager->getClearColor();
     const auto& clearColorCallback = ([this](float value[4]) { m_renderManager->setClearColor(value); });
-    std::shared_ptr<UiElementColorEdit> clearColorEdit =
-            std::make_shared<UiElementColorEdit>(currClearColor, "Clear Color", clearColorCallback);
+    std::shared_ptr<UiElementColorEdit> clearColorEdit = std::make_shared<UiElementColorEdit>(
+            currClearColor,
+            "Clear Color",
+            clearColorCallback
+    );
     addContent(clearColorEdit);
 }
 
@@ -44,6 +47,9 @@ void SceneSettingsDebugWindow::onWireframeToggle(bool value) const
     m_renderManager->setWireframeMode(value);
 }
 
-void SceneSettingsDebugWindow::onDebugUiToggle(bool value) const { m_renderManager->setDebugUiVisibility(value); }
+void SceneSettingsDebugWindow::onDebugUiToggle(bool value) const
+{
+    m_renderManager->setDebugUiVisibility(value);
+}
 
 void SceneSettingsDebugWindow::update() {}

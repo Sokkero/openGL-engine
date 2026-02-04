@@ -68,9 +68,15 @@ namespace StringFormat
         return std::string(val);
     }
 
-    inline std::string toString(char val) { return std::string(1, val); }
+    inline std::string toString(char val)
+    {
+        return std::string(1, val);
+    }
 
-    inline const std::string& toString(const std::string& val) { return val; }
+    inline const std::string& toString(const std::string& val)
+    {
+        return val;
+    }
 
     template<class T>
     inline std::string toString(const T* val)
@@ -92,7 +98,10 @@ namespace StringFormat
         return buffer;
     }
 
-    inline std::string formatString(const std::string& finalString, const size_t) { return finalString; }
+    inline std::string formatString(const std::string& finalString, const size_t)
+    {
+        return finalString;
+    }
 
     template<typename T, typename... Args>
     inline std::string formatString(std::string& format, const size_t idx, T&& val, Args&&... args)

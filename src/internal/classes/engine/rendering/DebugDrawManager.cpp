@@ -1,23 +1,21 @@
 #include "DebugDrawManager.h"
 
-#include "resources/shader/gridShader/GridShader.h"
-#include "resources/shader/debugLineShader/DebugLineShader.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
+#include "resources/shader/debugLineShader/DebugLineShader.h"
+#include "resources/shader/gridShader/GridShader.h"
 
 #include <GLFW/glfw3.h>
 
 namespace Engine
 {
-    DebugDrawManager::DebugDrawManager() : m_gridShader(nullptr), m_lineShader(nullptr), m_areLinesDirty(false)
+    DebugDrawManager::DebugDrawManager()
+        : m_gridShader(nullptr)
+        , m_lineShader(nullptr)
+        , m_areLinesDirty(false)
     {
         glGenBuffers(1, &m_linesVbo);
         glBindBuffer(GL_ARRAY_BUFFER, m_linesVbo);
-        glBufferData(
-                GL_ARRAY_BUFFER,
-                0,
-                nullptr,
-                GL_DYNAMIC_DRAW
-        );
+        glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
 
         RenderUtils::checkForGLError();
     }
@@ -39,7 +37,7 @@ namespace Engine
 
     void DebugDrawManager::drawDebugUiWindows()
     {
-        for (auto& window : m_debugWindows)
+        for(auto& window : m_debugWindows)
         {
             window.second->drawUi();
         }
@@ -81,23 +79,27 @@ namespace Engine
     {
         double currTimestamp = glfwGetTime();
         bool wasInvalidated = false;
-        m_lines.erase(std::remove_if(m_lines.begin(), m_lines.end(),
-                                     [currTimestamp, &wasInvalidated](auto& obj) -> bool
-                                     {
-                                         if(obj.duration < 0)
-                                         {
-                                             return false;
-                                         }
+        m_lines
+                .erase(std::remove_if(
+                               m_lines.begin(),
+                               m_lines.end(),
+                               [currTimestamp, &wasInvalidated](auto& obj) -> bool
+                               {
+                                   if(obj.duration < 0)
+                                   {
+                                       return false;
+                                   }
 
-                                         double lifeTime = currTimestamp - obj.startTime;
-                                         if(obj.duration <= lifeTime || obj.duration == 0)
-                                         {
-                                             wasInvalidated = true;
-                                             return true;
-                                         }
-                                         return false;
-                                     }
-                      ), m_lines.end());
+                                   double lifeTime = currTimestamp - obj.startTime;
+                                   if(obj.duration <= lifeTime || obj.duration == 0)
+                                   {
+                                       wasInvalidated = true;
+                                       return true;
+                                   }
+                                   return false;
+                               }
+                       ),
+                       m_lines.end());
 
         m_areLinesDirty = m_areLinesDirty || wasInvalidated;
     }
@@ -136,4 +138,4 @@ namespace Engine
 
         m_areLinesDirty = true;
     }
-}
+} // namespace Engine

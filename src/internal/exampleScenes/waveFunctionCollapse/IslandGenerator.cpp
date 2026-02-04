@@ -29,7 +29,8 @@ void IslandGenerator::start()
     addDefaultTiles(true, true, (int)(((float)GRID_SIZE.x * (float)GRID_SIZE.y) * 0.005f));
     generateGrid();
 
-    // getUserEventManager()->addListener(std::pair<int, int>(GLFW_KEY_SPACE, GLFW_PRESS), ([this]() { generateNextField(); }));
+    // getUserEventManager()->addListener(std::pair<int, int>(GLFW_KEY_SPACE, GLFW_PRESS), ([this]() {
+    // generateNextField(); }));
 }
 
 void IslandGenerator::setFieldCallback(const std::shared_ptr<Field>& field, const BasicFieldDataStruct& tileType)

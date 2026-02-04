@@ -11,6 +11,5 @@ namespace Engine
             ~GridShader() = default;
 
             void renderObject(const std::shared_ptr<RenderComponent>& object, CameraComponent* camera) override;
-
     };
 } // namespace Engine

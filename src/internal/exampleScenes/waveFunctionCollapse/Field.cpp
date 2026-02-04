@@ -15,8 +15,8 @@ void Field::updateNeighboringFields(const std::vector<std::vector<std::shared_pt
     {
         offset += m_fieldPos;
 
-        if(offset.x < 0 || offset.x >= WafeFunctionCollapseGenerator::GRID_SIZE.x || offset.y < 0 ||
-           offset.y >= WafeFunctionCollapseGenerator::GRID_SIZE.y)
+        if(offset.x < 0 || offset.x >= WafeFunctionCollapseGenerator::GRID_SIZE.x || offset.y < 0
+           || offset.y >= WafeFunctionCollapseGenerator::GRID_SIZE.y)
         {
             continue; // Out of bounds
         }

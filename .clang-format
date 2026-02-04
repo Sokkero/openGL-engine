@@ -17,7 +17,7 @@ AllowAllParametersOfDeclarationOnNextLine: false
 AllowShortEnumsOnASingleLine: true
 AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
-AllowShortFunctionsOnASingleLine: All
+AllowShortFunctionsOnASingleLine: Inline
 AllowShortIfStatementsOnASingleLine: WithoutElse
 AllowShortLambdasOnASingleLine: All
 AllowShortLoopsOnASingleLine: false
@@ -46,7 +46,7 @@ BraceWrapping:
   SplitEmptyFunction: false
   SplitEmptyRecord: true
   SplitEmptyNamespace: true
-BreakBeforeBinaryOperators: None
+BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeConceptDeclarations: true
 BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeComma
@@ -94,12 +94,12 @@ NamespaceIndentation: All
 ObjCBreakBeforeNestedBlockParam: false 
 ObjCSpaceAfterProperty: false
 ObjCSpaceBeforeProtocolList: true
-PenaltyBreakAssignment: 100
+PenaltyBreakAssignment: 500
 PenaltyBreakBeforeFirstCallParameter: 100 
 PenaltyBreakComment: 100
 PenaltyBreakFirstLessLess: 100
 PenaltyBreakOpenParenthesis: 100
-PenaltyBreakString: 100000
+PenaltyBreakString: 5000
 PenaltyBreakTemplateDeclaration: 100000
 PenaltyExcessCharacter: 5
 PenaltyReturnTypeOnItsOwnLine: 100000

@@ -1,12 +1,12 @@
 #include "RenderManager.h"
 
 #include "classes/engine/DebugModel.h"
-#include "classes/engine/rendering/RenderInstanceGroup.h"
-#include "classes/engine/rendering/ShaderLoader.h"
-#include "classes/engine/rendering/Shader.h"
 #include "classes/engine/rendering/DebugDrawManager.h"
-#include "classes/nodeComponents/RenderComponent.h"
+#include "classes/engine/rendering/RenderInstanceGroup.h"
+#include "classes/engine/rendering/Shader.h"
+#include "classes/engine/rendering/ShaderLoader.h"
 #include "classes/nodeComponents/CameraComponent.h"
+#include "classes/nodeComponents/RenderComponent.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 #include "classes/utils/FileLoadingUtils.h"
 #include "classes/utils/VertexIndexingUtils.h"
@@ -284,8 +284,7 @@ namespace Engine
 
         GLuint vertexBuffer = !vertexData.empty() ? RenderUtils::createVertexBufferObject(vertexData) : -1;
         GLuint uvBuffer = !uvData.empty() ? RenderUtils::createVertexBufferObject(uvData) : -1;
-        GLuint normalBuffer = !vertexNormals.empty() ? RenderUtils::createVertexBufferObject(vertexNormals)
-                                                     : -1;
+        GLuint normalBuffer = !vertexNormals.empty() ? RenderUtils::createVertexBufferObject(vertexNormals) : -1;
         GLuint indexBuffer = !triIndexData.empty() ? RenderUtils::createVertexBufferObject(triIndexData) : -1;
 
         std::shared_ptr<ObjectData> newObject = std::make_shared<ObjectData>(

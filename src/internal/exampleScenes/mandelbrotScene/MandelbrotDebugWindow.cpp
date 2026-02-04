@@ -19,8 +19,8 @@ MandelbrotDebugWindow::MandelbrotDebugWindow(const std::shared_ptr<MandelbrotUbo
 
     int iterations = m_mandelbrotUbo->getIterations();
     const auto& iterationsCallback = ([this](int value) { m_mandelbrotUbo->setIterations(value); });
-    std::shared_ptr<UiElementSlider<int>> iterationsEdit =
-            std::make_shared<UiElementSlider<int>>(iterations, 0, 500, "x", iterationsCallback);
+    std::shared_ptr<UiElementSlider<int>>
+            iterationsEdit = std::make_shared<UiElementSlider<int>>(iterations, 0, 500, "x", iterationsCallback);
     iterationsEdit->setSameLine(true);
     addContent(iterationsEdit);
 }

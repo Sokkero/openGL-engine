@@ -1,8 +1,8 @@
 #include "BasicNode.h"
 
 #include "classes/engine/EngineManager.h"
-#include "classes/engine/rendering/RenderManager.h"
 #include "classes/engine/rendering/DebugDrawManager.h"
+#include "classes/engine/rendering/RenderManager.h"
 #include "classes/nodeComponents/RenderComponent.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 
@@ -89,9 +89,15 @@ namespace Engine
         return nullptr;
     }
 
-    void BasicNode::deleteChild(const std::shared_ptr<BasicNode>& node) { detatchChild(node->getNodeId()); }
+    void BasicNode::deleteChild(const std::shared_ptr<BasicNode>& node)
+    {
+        detatchChild(node->getNodeId());
+    }
 
-    void BasicNode::deleteChild(const unsigned int& nodeId) { detatchChild(nodeId); }
+    void BasicNode::deleteChild(const unsigned int& nodeId)
+    {
+        detatchChild(nodeId);
+    }
 
     std::vector<std::shared_ptr<BasicNode>> BasicNode::detatchAllChildren()
     {
@@ -109,7 +115,10 @@ namespace Engine
         return std::move(m_childNodes);
     }
 
-    void BasicNode::deleteAllChildren() { detatchAllChildren(); }
+    void BasicNode::deleteAllChildren()
+    {
+        detatchAllChildren();
+    }
 
     void BasicNode::detatchFromParent()
     {
@@ -121,7 +130,10 @@ namespace Engine
         setParent(nullptr);
     }
 
-    void BasicNode::deleteNode() { detatchFromParent(); }
+    void BasicNode::deleteNode()
+    {
+        detatchFromParent();
+    }
 
     void BasicNode::callOnAllChildren(const std::function<void(BasicNode*)>& func)
     {
@@ -236,11 +248,23 @@ namespace Engine
         return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 0.f, 1.f));
     }
 
-    glm::vec3 BasicNode::getLeft() { return glm::normalize(getGlobalRotation() * glm::vec3(-1.f, 0.f, 0.f)); }
+    glm::vec3 BasicNode::getLeft()
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(-1.f, 0.f, 0.f));
+    }
 
-    glm::vec3 BasicNode::getRight() { return glm::normalize(getGlobalRotation() * glm::vec3(1.f, 0.f, 0.f)); }
+    glm::vec3 BasicNode::getRight()
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(1.f, 0.f, 0.f));
+    }
 
-    glm::vec3 BasicNode::getDown() { return glm::normalize(getGlobalRotation() * glm::vec3(0.f, -1.f, 0.f)); }
+    glm::vec3 BasicNode::getDown()
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, -1.f, 0.f));
+    }
 
-    glm::vec3 BasicNode::getUp() { return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 1.f, 0.f)); }
+    glm::vec3 BasicNode::getUp()
+    {
+        return glm::normalize(getGlobalRotation() * glm::vec3(0.f, 1.f, 0.f));
+    }
 } // namespace Engine

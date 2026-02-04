@@ -15,11 +15,11 @@ namespace Engine
     {
         public:
             template<typename T>
-            static constexpr bool is_glm_type = std::is_same_v<T, glm::vec2> ||
-                    std::is_same_v<T, glm::vec3> || std::is_same_v<T, glm::vec4> ||
-                    std::is_same_v<T, glm::ivec2> || std::is_same_v<T, glm::ivec3> ||
-                    std::is_same_v<T, glm::ivec4> || std::is_same_v<T, glm::mat2> ||
-                    std::is_same_v<T, glm::mat3> || std::is_same_v<T, glm::mat4>;
+            static constexpr bool is_glm_type = std::is_same_v<T, glm::vec2> || std::is_same_v<T, glm::vec3>
+                    || std::is_same_v<T, glm::vec4> || std::is_same_v<T, glm::ivec2>
+                    || std::is_same_v<T, glm::ivec3> || std::is_same_v<T, glm::ivec4>
+                    || std::is_same_v<T, glm::mat2> || std::is_same_v<T, glm::mat3>
+                    || std::is_same_v<T, glm::mat4>;
 
             template<typename T>
             static constexpr bool is_vec3_type = std::is_same_v<T, glm::vec3> || std::is_same_v<T, glm::ivec3>;
@@ -126,10 +126,7 @@ namespace Engine
 
                 if constexpr(is_vec3_type<T>)
                 {
-                    static_assert(
-                            false,
-                            "Never use vec3 types in std140 layouts, use vec4 with padding data instead!"
-                    );
+                    static_assert(false, "Never use vec3 types in std140 layouts, use vec4 with padding data instead!");
                     return;
                 }
 

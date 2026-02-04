@@ -84,20 +84,20 @@ void MandelbrotSceneOrigin::moveCam(glm::vec2 movement)
 
 void MandelbrotSceneOrigin::update()
 {
-    if(m_userEventManager->getUserEvent(GLFW_KEY_E) == GLFW_PRESS ||
-       m_userEventManager->getUserEvent(GLFW_KEY_E) == GLFW_REPEAT)
+    if(m_userEventManager->getUserEvent(GLFW_KEY_E) == GLFW_PRESS
+       || m_userEventManager->getUserEvent(GLFW_KEY_E) == GLFW_REPEAT)
     {
         increaseZoom();
     }
 
-    if(m_userEventManager->getUserEvent(GLFW_KEY_Q) == GLFW_PRESS ||
-       m_userEventManager->getUserEvent(GLFW_KEY_Q) == GLFW_REPEAT)
+    if(m_userEventManager->getUserEvent(GLFW_KEY_Q) == GLFW_PRESS
+       || m_userEventManager->getUserEvent(GLFW_KEY_Q) == GLFW_REPEAT)
     {
         decreaseZoom();
     }
 
-    if(m_userEventManager->getUserEvent(GLFW_KEY_R) == GLFW_PRESS ||
-       m_userEventManager->getUserEvent(GLFW_KEY_R) == GLFW_REPEAT)
+    if(m_userEventManager->getUserEvent(GLFW_KEY_R) == GLFW_PRESS
+       || m_userEventManager->getUserEvent(GLFW_KEY_R) == GLFW_REPEAT)
     {
         m_mandelbrotUbo->resetData();
     }

@@ -8,9 +8,15 @@ namespace Engine
 {
     static std::map<std::string, int> ShaderPoints = std::map<std::string, int>();
 
-    static void AddShaderPoint(const std::string& name, GLuint point) { ShaderPoints.emplace(name, point); }
+    static void AddShaderPoint(const std::string& name, GLuint point)
+    {
+        ShaderPoints.emplace(name, point);
+    }
 
-    static int GetShaderPoint(const std::string& name) { return ShaderPoints[name]; }
+    static int GetShaderPoint(const std::string& name)
+    {
+        return ShaderPoints[name];
+    }
 
     static std::string GetShaderPointName(int id)
     {
@@ -24,5 +30,8 @@ namespace Engine
         return "";
     }
 
-    static void RemoveShaderPoint(const std::string& name) { ShaderPoints.erase(name); }
+    static void RemoveShaderPoint(const std::string& name)
+    {
+        ShaderPoints.erase(name);
+    }
 } // namespace Engine

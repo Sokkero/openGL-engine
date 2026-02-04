@@ -51,8 +51,7 @@ namespace Engine
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         glfwWindowHint(GLFW_COCOA_RETINA_FRAMEBUFFER, GLFW_FALSE);
 
-        m_gameWindow =
-                glfwCreateWindow(m_windowDimensions.x, m_windowDimensions.y, m_windowTitle.c_str(), nullptr, nullptr);
+        m_gameWindow = glfwCreateWindow(m_windowDimensions.x, m_windowDimensions.y, m_windowTitle.c_str(), nullptr, nullptr);
         if(!m_gameWindow)
         {
             ENGINE_ASSERT(false, "Failed to open GLFW window...");

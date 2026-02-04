@@ -83,7 +83,10 @@ namespace Engine
         updateFps();
     }
 
-    float EngineManager::getDeltaTime() const { return float(m_deltaTime); }
+    float EngineManager::getDeltaTime() const
+    {
+        return float(m_deltaTime);
+    }
 
     void EngineManager::updateFps()
     {

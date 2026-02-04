@@ -73,7 +73,10 @@ void PerformanceDebugWindow::update()
     }
 }
 
-void PerformanceDebugWindow::onVsyncToggle(bool value) { m_windowManager->setVsync(value); }
+void PerformanceDebugWindow::onVsyncToggle(bool value)
+{
+    m_windowManager->setVsync(value);
+}
 
 void PerformanceDebugWindow::updateFrameCounter()
 {

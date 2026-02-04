@@ -10,11 +10,7 @@
 
 using namespace Engine;
 
-WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(
-        const glm::ivec2& dimensions,
-        const long& seed,
-        const bool debugOutput
-)
+WafeFunctionCollapseGenerator::WafeFunctionCollapseGenerator(const glm::ivec2& dimensions, const long& seed, const bool debugOutput)
     : m_seed(0)
     , m_generated(false)
     , m_initialized(false)
@@ -105,10 +101,10 @@ void WafeFunctionCollapseGenerator::generateGrid()
     if(m_debugMode)
     {
         const std::string gridTime = TimeUtils::GetHumanReadableTimeDuration(glfwGetTime() - startTime);
-        const std::string pickTime =
-                TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields));
-        const std::string setTime =
-                TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields));
+        const std::string pickTime = TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentPickingFields
+        ));
+        const std::string setTime = TimeUtils::GetHumanReadableTimeDuration(MathUtils::GetSum(m_timeSpentSettingFields
+        ));
 
         LOG_DEBUG("WFCA", stringf("Grid generated in: %s", gridTime));
         LOG_DEBUG("WFCA", stringf("Time spent picking fields: %s", pickTime));

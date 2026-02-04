@@ -13,8 +13,8 @@ static inline bool DontSqueezeBetweenT(const glm::ivec2& pos, const grid2d& grid
     {
         const glm::ivec2 cornerPiece = offsetGroup[1] + pos;
 
-        if(cornerPiece.x < 0 || cornerPiece.x >= grid.size() || cornerPiece.y < 0 ||
-           cornerPiece.y >= grid.front().size())
+        if(cornerPiece.x < 0 || cornerPiece.x >= grid.size() || cornerPiece.y < 0
+           || cornerPiece.y >= grid.front().size())
         {
             continue; // At least one out of bounds
         }
@@ -27,8 +27,8 @@ static inline bool DontSqueezeBetweenT(const glm::ivec2& pos, const grid2d& grid
         const glm::ivec2 directNeighbor1 = offsetGroup[0] + pos;
         const glm::ivec2 directNeighbor2 = offsetGroup[2] + pos;
 
-        if(grid[directNeighbor1.x][directNeighbor1.y]->getIsSetAsFieldType(fieldType) &&
-           grid[directNeighbor2.x][directNeighbor2.y]->getIsSetAsFieldType(fieldType))
+        if(grid[directNeighbor1.x][directNeighbor1.y]->getIsSetAsFieldType(fieldType)
+           && grid[directNeighbor2.x][directNeighbor2.y]->getIsSetAsFieldType(fieldType))
         {
             return false;
         }
@@ -50,8 +50,8 @@ static inline bool PreventSingleCornersOfT(const glm::ivec2& pos, const grid2d& 
     {
         const glm::ivec2 cornerPiece = offsetGroup[1] + pos;
 
-        if(cornerPiece.x < 0 || cornerPiece.x >= grid.size() || cornerPiece.y < 0 ||
-           cornerPiece.y >= grid.front().size())
+        if(cornerPiece.x < 0 || cornerPiece.x >= grid.size() || cornerPiece.y < 0
+           || cornerPiece.y >= grid.front().size())
         {
             continue; // Out of bounds
         }
@@ -61,10 +61,10 @@ static inline bool PreventSingleCornersOfT(const glm::ivec2& pos, const grid2d& 
             continue;
         }
 
-        const bool neighbor1CanT =
-                grid[(offsetGroup[0] + pos).x][(offsetGroup[0] + pos).y]->getCanBeFieldType(fieldType);
-        const bool neighbor2CanT =
-                grid[(offsetGroup[2] + pos).x][(offsetGroup[2] + pos).y]->getCanBeFieldType(fieldType);
+        const bool neighbor1CanT = grid[(offsetGroup[0] + pos).x][(offsetGroup[0] + pos).y]->getCanBeFieldType(fieldType
+        );
+        const bool neighbor2CanT = grid[(offsetGroup[2] + pos).x][(offsetGroup[2] + pos).y]->getCanBeFieldType(fieldType
+        );
 
         if(!neighbor1CanT && !neighbor2CanT)
         {
