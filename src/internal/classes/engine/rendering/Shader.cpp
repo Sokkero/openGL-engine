@@ -78,7 +78,7 @@ void Shader::loadTextureBuffer(GLuint buffer) const
     RenderUtils::checkForGLError();
 }
 
-void Shader::drawElements(const std::shared_ptr<RenderComponent>& object) const
+void Shader::drawElements(const std::shared_ptr<RenderComponent>& object, GLenum drawMode /* = GL_TRIANGLES */) const
 {
     glUniform1i(getActiveUniform("isInstanced"), false);
 
@@ -89,11 +89,24 @@ void Shader::drawElements(const std::shared_ptr<RenderComponent>& object) const
 
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, object->getIndexBuffer());
     glDrawElements(
-            GL_TRIANGLES,                              // mode
+            drawMode,                                  // mode
             object->getObjectData()->getVertexCount(), // count
             GL_UNSIGNED_SHORT,                         // type
             nullptr                                    // element array buffer offset
     );
+    RenderUtils::checkForGLError();
+}
+
+void Shader::drawArray(const std::shared_ptr<RenderComponent>& object, int vertexCount, GLenum drawMode /* = GL_TRIANGLES */) const
+{
+    glUniform1i(getActiveUniform("isInstanced"), false);
+
+    if(m_requiresAdditionalData)
+    {
+        object->getShaderData()->loadDataAsUniform(getActiveUniform("additionalDataUni"));
+    }
+
+    glDrawArrays(drawMode, 0, vertexCount);
     RenderUtils::checkForGLError();
 }
 

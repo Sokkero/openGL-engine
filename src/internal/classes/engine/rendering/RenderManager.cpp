@@ -3,13 +3,14 @@
 #include "classes/engine/DebugModel.h"
 #include "classes/engine/rendering/RenderInstanceGroup.h"
 #include "classes/engine/rendering/ShaderLoader.h"
+#include "classes/engine/rendering/Shader.h"
+#include "classes/engine/rendering/DebugDrawManager.h"
 #include "classes/nodeComponents/RenderComponent.h"
+#include "classes/nodeComponents/CameraComponent.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 #include "classes/utils/FileLoadingUtils.h"
 #include "classes/utils/VertexIndexingUtils.h"
-#include "resources/shader/gridShader/GridShader.h"
 
-#include <iostream>
 #include <string>
 #include <utility>
 
@@ -24,8 +25,8 @@ namespace Engine
         , m_showWireframe(false)
         , m_clearColor { 0.f, 0.f, 0.f, 1.f }
         , m_showDebugUi(true)
-        , m_gridShader(nullptr)
         , m_debugModel(SingletonManager::get<DebugModel>())
+        , m_debugDrawManager(SingletonManager::get<DebugDrawManager>())
     {
     }
 
@@ -51,7 +52,6 @@ namespace Engine
         m_ambientLightUbo = std::make_shared<UBOs::AmbientLightUbo>();
         m_diffuseLightUbo = std::make_shared<UBOs::DiffuseLightUbo>();
         m_vpUbo = std::make_shared<UBOs::ViewProjectionUbo>();
-        m_gridShader = std::make_shared<GridShader>();
 
         RenderUtils::checkForGLError();
     }
@@ -88,18 +88,21 @@ namespace Engine
         if(m_showDebugUi)
         {
             startTimeStamp = glfwGetTime();
-            m_gridShader->renderObject(nullptr, camera.get());
+            m_debugDrawManager->drawLines();
+            endTimeStamp = glfwGetTime();
+            m_debugModel->setDrawSectionTimeData("renderDebugLines", endTimeStamp - startTimeStamp);
+            startTimeStamp = glfwGetTime();
+            m_debugDrawManager->drawGrid();
             endTimeStamp = glfwGetTime();
             m_debugModel->setDrawSectionTimeData("renderGrid", endTimeStamp - startTimeStamp);
         }
 
         startTimeStamp = glfwGetTime();
-
-        renderUiNodes();
-        glDisable(GL_BLEND);
-
+        m_debugDrawManager->drawDebugUiWindows();
         endTimeStamp = glfwGetTime();
-        m_debugModel->setDrawSectionTimeData("renderUi", endTimeStamp - startTimeStamp);
+        m_debugModel->setDrawSectionTimeData("renderUiWindows", endTimeStamp - startTimeStamp);
+
+        glDisable(GL_BLEND);
 
         RenderUtils::checkForGLError();
     }
@@ -155,17 +158,6 @@ namespace Engine
             node->depthSortTriangles();
 
             drawNode(node, camera);
-        }
-    }
-
-    void RenderManager::renderUiNodes()
-    {
-        for(int i = 0; i < m_sceneDebugUi.size(); i++)
-        {
-            if(m_sceneDebugUi[i])
-            {
-                m_sceneDebugUi[i]->drawUi();
-            }
         }
     }
 
@@ -263,23 +255,6 @@ namespace Engine
 
         it->second->removeFromGroup(nodeId);
         m_nodeIdToGroupMap.erase(nodeId);
-    }
-
-    void RenderManager::addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node)
-    {
-        m_sceneDebugUi.emplace_back(node);
-    }
-
-    void RenderManager::removeDebugUiFromScene(const unsigned int& nodeId)
-    {
-        m_sceneDebugUi.erase(
-                std::remove_if(
-                        m_sceneDebugUi.begin(),
-                        m_sceneDebugUi.end(),
-                        [nodeId](const auto& childNode) -> bool { return childNode->getNodeId() == nodeId; }
-                ),
-                m_sceneDebugUi.end()
-        );
     }
 
     std::shared_ptr<ObjectData> RenderManager::registerObject(const char* filePath, bool isCustomObject /* = false */)

@@ -54,7 +54,8 @@ namespace Engine
             void loadModelMatrix(const glm::mat4& modelMatrix) const;
             void loadTextureBuffer(GLuint buffer) const;
 
-            void drawElements(const std::shared_ptr<RenderComponent>& object) const;
+            void drawElements(const std::shared_ptr<RenderComponent>& object, GLenum drawMode = GL_TRIANGLES) const;
+            void drawArray(const std::shared_ptr<RenderComponent>& object, int vertexCount, GLenum drawMode = GL_TRIANGLES) const;
 
             bool requiresAdditionalData() const { return m_requiresAdditionalData; }
             bool requiresTexture() const { return m_requiresTexture; }

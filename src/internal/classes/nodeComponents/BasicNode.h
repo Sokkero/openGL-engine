@@ -271,9 +271,9 @@ namespace Engine
 
             /**
              * @brief Returns the unique ID of the node.
-             * @return An unsigned int, the unique ID of the node
+             * @return A uint, the unique ID of the node
              */
-            unsigned int getNodeId() const { return m_nodeId; }
+            uint getNodeId() const { return m_nodeId; }
 
             void markAsDirty();
 
@@ -283,7 +283,7 @@ namespace Engine
             std::string m_nodeName;
             std::weak_ptr<BasicNode> m_parentNode;
             std::vector<std::shared_ptr<BasicNode>> m_childNodes;
-            unsigned int m_nodeId;
+            uint m_nodeId;
 
         private:
             static std::atomic<uint32_t> NODE_ID;

@@ -14,8 +14,8 @@
 namespace Engine
 {
     class RenderComponent;
+    class DebugDrawManager;
     class Shader;
-    class GridShader;
     class CameraComponent;
     class RenderInstanceGroup;
     class DebugModel;
@@ -68,9 +68,6 @@ namespace Engine
             void setClearColor(const float color[4]);
             float* getClearColor() { return m_clearColor; };
 
-            void addDebugUiToScene(std::shared_ptr<Ui::UiDebugWindow>& node);
-            void removeDebugUiFromScene(const unsigned int& nodeId);
-
             GLuint getDefaultVao() const { return m_defaultVao; }
 
         private:
@@ -79,8 +76,6 @@ namespace Engine
 
             void renderGroupList(const std::vector<std::shared_ptr<RenderInstanceGroup>>& groups);
             void renderLooseObjects(std::shared_ptr<CameraComponent> camera);
-
-            void renderUiNodes();
 
             void depthSortLooseRenderObjects(const std::shared_ptr<CameraComponent>& camera);
 
@@ -92,8 +87,6 @@ namespace Engine
             std::vector<std::shared_ptr<RenderInstanceGroup>> m_dynamicInstanceGroups;
             std::unordered_map<uint32_t, std::shared_ptr<RenderInstanceGroup>> m_nodeIdToGroupMap;
 
-            std::vector<std::shared_ptr<Ui::UiDebugWindow>> m_sceneDebugUi;
-
             std::shared_ptr<UBOs::AmbientLightUbo> m_ambientLightUbo;
             std::shared_ptr<UBOs::DiffuseLightUbo> m_diffuseLightUbo;
             std::shared_ptr<UBOs::ViewProjectionUbo> m_vpUbo;
@@ -102,8 +95,6 @@ namespace Engine
             std::vector<std::shared_ptr<ObjectData>> m_objectList;
             std::map<std::string, GLuint> m_textureList;
 
-            std::shared_ptr<GridShader> m_gridShader;
-
             bool m_showWireframe;
             bool m_showDebugUi;
 
@@ -111,6 +102,7 @@ namespace Engine
             GLuint m_defaultVao;
 
             std::shared_ptr<DebugModel> m_debugModel;
+            std::shared_ptr<DebugDrawManager> m_debugDrawManager;
     };
 
 } // namespace Engine

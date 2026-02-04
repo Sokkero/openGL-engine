@@ -1,13 +1,13 @@
 #include "TestSceneOrigin.h"
 
 #include "classes/engine/EngineManager.h"
-#include "classes/engine/WindowManager.h"
 #include "classes/primitives/actors/CameraActor.h"
 #include "classes/primitives/ui/DebugManagerWindow.h"
 #include "exampleScenes/testScene/TestObject.h"
 #include "resources/shader/colorShader/ColorShader.h"
 #include "resources/shader/colorShader/ColorShaderAdditionalData.h"
 #include "resources/shader/textureShader/TextureShader.h"
+#include "classes/engine/rendering/DebugDrawManager.h"
 
 void TestSceneOrigin::start()
 {
@@ -51,6 +51,8 @@ void TestSceneOrigin::start()
     m_ape->setRenderType(RenderTypeEnum::Loose);
     m_ape->setShaderData(std::make_unique<ColorShaderAdditionalData>(glm::vec4(1.f, 1.f, 1.f, 1.f)));
     addChild(m_ape);
+
+    SingletonManager::get<DebugDrawManager>()->drawDebugLine(glm::vec3(0.f), glm::vec3(50.f), 10);
 }
 
 void TestSceneOrigin::update()

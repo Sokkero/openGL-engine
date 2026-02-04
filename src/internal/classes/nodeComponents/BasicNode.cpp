@@ -2,6 +2,7 @@
 
 #include "classes/engine/EngineManager.h"
 #include "classes/engine/rendering/RenderManager.h"
+#include "classes/engine/rendering/DebugDrawManager.h"
 #include "classes/nodeComponents/RenderComponent.h"
 #include "classes/nodeComponents/UiDebugWindow.h"
 
@@ -32,7 +33,7 @@ namespace Engine
         }
         else if(const auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(thisNode))
         {
-            SingletonManager::get<RenderManager>()->removeDebugUiFromScene(debugUi->getNodeId());
+            SingletonManager::get<DebugDrawManager>()->removeDebugWindow(debugUi->getNodeId());
         }
     }
 
@@ -56,7 +57,7 @@ namespace Engine
         }
         else if(auto debugUi = std::dynamic_pointer_cast<Ui::UiDebugWindow>(node))
         {
-            SingletonManager::get<RenderManager>()->addDebugUiToScene(debugUi);
+            SingletonManager::get<DebugDrawManager>()->addDebugWindow(debugUi);
         }
 
         node->start();
