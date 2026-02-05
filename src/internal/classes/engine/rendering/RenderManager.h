@@ -18,7 +18,7 @@ namespace Engine
     class Shader;
     class CameraComponent;
     class RenderInstanceGroup;
-    class DebugModel;
+    class PerformanceModel;
 
     namespace Ui
     {
@@ -98,7 +98,7 @@ namespace Engine
             float m_clearColor[4];
             GLuint m_defaultVao;
 
-            std::shared_ptr<DebugModel> m_debugModel;
+            std::shared_ptr<PerformanceModel> m_debugModel;
             std::shared_ptr<DebugDrawManager> m_debugDrawManager;
     };
 

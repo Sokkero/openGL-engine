@@ -9,7 +9,7 @@
 
 namespace Engine
 {
-    class DebugModel;
+    class PerformanceModel;
 
     class Shader
     {
@@ -65,7 +65,7 @@ namespace Engine
             bool requiresTexture() const { return m_requiresTexture; }
 
         protected:
-            std::shared_ptr<DebugModel> m_debugModel;
+            std::shared_ptr<PerformanceModel> m_debugModel;
 
         private:
             static GLuint CURRENT_PROGRAMM;

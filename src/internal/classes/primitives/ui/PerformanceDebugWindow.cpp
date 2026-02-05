@@ -1,7 +1,7 @@
 #include "PerformanceDebugWindow.h"
 
-#include "classes/engine/DebugModel.h"
 #include "classes/engine/EngineManager.h"
+#include "classes/engine/PerformanceModel.h"
 #include "classes/engine/WindowManager.h"
 #include "classes/engine/rendering/RenderManager.h"
 #include "classes/uiElements/UiElementButton.h"
@@ -22,7 +22,7 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     m_lastTimeStamp = TimeUtils::GetSystemsTimestamp();
     m_engineManager = SingletonManager::get<EngineManager>();
     m_windowManager = SingletonManager::get<WindowManager>();
-    m_debugModel = SingletonManager::get<DebugModel>();
+    m_debugModel = SingletonManager::get<PerformanceModel>();
 
     setWindowTitle("Performance Monitor");
 
@@ -51,16 +51,16 @@ PerformanceDebugWindow::PerformanceDebugWindow()
     );
     addContent(m_detailsSection);
 
-    m_timeDistributionGraph = std::make_shared<UiElementPieChart>("Frame time distribution (ms)");
+    m_timeDistributionGraph = std::make_shared<UiElementPieChart<int64_t>>("Frame time distribution");
     m_detailsSection->addContent(m_timeDistributionGraph);
 
-    m_testGraph = std::make_shared<UiElementPieChart>("Render time distribution (ms)");
-    m_detailsSection->addContent(m_testGraph);
+    m_renderTimeDistributionGraph = std::make_shared<UiElementPieChart<int64_t>>("Render time distribution");
+    m_detailsSection->addContent(m_renderTimeDistributionGraph);
 }
 
 void PerformanceDebugWindow::update()
 {
-    if(TimeUtils::GetDurationSince(m_lastTimeStamp) < 100)
+    if(TimeUtils::GetDurationSince(m_lastTimeStamp, TimeUtils::Unit::ms) < 100)
     {
         return;
     }
@@ -94,15 +94,13 @@ void PerformanceDebugWindow::updateFrameCounter()
 
 void PerformanceDebugWindow::updateTimeDistributionGraph()
 {
-    for(const auto& pair : m_debugModel->getCalculationTimeData())
+    for(const auto& pair : m_debugModel->getEngineEventsTimeData())
     {
-        // *1000 ms -> s
-        m_timeDistributionGraph->addValue(DebugUtils::LifecycleEventsEnumToString(pair.first), pair.second * 1000);
+        m_timeDistributionGraph->addValue(DebugUtils::LifecycleEventsEnumToString(pair.first), pair.second);
     }
 
     for(const auto& pair : m_debugModel->getDrawSectionTimeData())
     {
-        // *1000 ms -> s
-        m_testGraph->addValue(pair.first, pair.second);
+        m_renderTimeDistributionGraph->addValue(pair.first, pair.second);
     }
 }

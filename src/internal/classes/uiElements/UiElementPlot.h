@@ -21,7 +21,7 @@ namespace Engine::Ui
             explicit UiElementPlot(std::string text, std::vector<float> values = std::vector<float>())
                 : m_text(std::move(text))
                 , m_values(std::move(values))
-                , m_maxValues(50) {};
+                , m_maxValues(100) {};
             ~UiElementPlot() = default;
 
             /**

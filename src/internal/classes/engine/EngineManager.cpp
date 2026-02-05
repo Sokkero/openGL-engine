@@ -91,7 +91,7 @@ namespace Engine
     {
         m_frames++;
 
-        const int64_t diff = TimeUtils::GetDuration(m_lastFpsCalcTimestamp, m_currentFrameTimestamp, TimeUtils::TimeUnit::Seconds);
+        const int64_t diff = TimeUtils::GetDuration(m_lastFpsCalcTimestamp, m_currentFrameTimestamp, TimeUtils::Unit::s);
         if(diff >= 1)
         {
             m_fpsCount = m_frames;

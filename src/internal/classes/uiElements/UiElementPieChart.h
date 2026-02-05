@@ -12,6 +12,7 @@
 
 namespace Engine::Ui
 {
+    template<typename T>
     class UiElementPieChart : public UiElement
     {
         public:
@@ -31,8 +32,8 @@ namespace Engine::Ui
                     ImPlot::SetupAxesLimits(0, 1, 0, 1);
                     ImPlot::PlotPieChart(
                             getLabelVector().data(),
-                            getAverageVector().data(),
-                            (int)m_averageMap.size(),
+                            getPercentageVector().data(),
+                            (int)m_percentageMap.size(),
                             0.5,
                             0.5,
                             0.4,
@@ -45,12 +46,28 @@ namespace Engine::Ui
                 ImPlot::PopColormap();
             }
 
-            void addValue(const char* label, double value)
+            void addValue(const char* label, T value)
             {
-                std::vector<double>& values = m_valueMap[label];
+                std::vector<T>& values = m_valueMap[label];
                 values.emplace_back(value);
 
+                if(values.size() > m_maxValues)
+                {
+                    values.erase(values.begin());
+                }
+
                 m_averageMap[label] = MathUtils::GetAverage(values);
+
+                float sum = 0;
+                for(const auto& pair : m_averageMap)
+                {
+                    sum += (float)pair.second;
+                }
+
+                for(const auto& pair : m_averageMap)
+                {
+                    m_percentageMap[pair.first] = (float)pair.second / sum;
+                }
             };
 
             void clearValues()
@@ -74,19 +91,20 @@ namespace Engine::Ui
                 return labels;
             }
 
-            std::vector<double> getAverageVector()
+            std::vector<float> getPercentageVector()
             {
-                std::vector<double> averages;
-                for(const auto& pair : m_averageMap)
+                std::vector<float> percentages;
+                for(const auto& pair : m_percentageMap)
                 {
-                    averages.emplace_back(pair.second);
+                    percentages.emplace_back(pair.second);
                 }
-                return averages;
+                return percentages;
             }
 
             ImPlotColormap_ m_colorScheme;
-            std::map<const char*, std::vector<double>> m_valueMap;
-            std::map<const char*, double> m_averageMap;
+            std::map<const char*, std::vector<T>> m_valueMap;
+            std::map<const char*, T> m_averageMap;
+            std::map<const char*, float> m_percentageMap;
             std::string m_chartTitle;
             int m_maxValues;
     };

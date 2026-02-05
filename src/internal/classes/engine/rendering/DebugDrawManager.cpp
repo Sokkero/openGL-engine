@@ -89,7 +89,7 @@ namespace Engine
                                        return false;
                                    }
 
-                                   int64_t lifeTime = TimeUtils::GetDurationSince(obj.startTime);
+                                   int64_t lifeTime = TimeUtils::GetDurationSince(obj.startTime, TimeUtils::Unit::ms);
                                    if(obj.duration <= lifeTime || obj.duration == 0)
                                    {
                                        wasInvalidated = true;

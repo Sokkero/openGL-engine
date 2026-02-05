@@ -9,11 +9,12 @@ namespace Engine::TimeUtils
 
     using SysTimestamp = time_point<steady_clock, duration<long long, std::ratio<1, 1000000000>>>;
 
-    enum class TimeUnit {
-        Nanoseconds,
-        Microseconds,
-        Milliseconds,
-        Seconds
+    enum class Unit
+    {
+        ns,
+        us,
+        ms,
+        s
     };
 
     /**
@@ -86,33 +87,47 @@ namespace Engine::TimeUtils
     /**
      * @brief Returns the amount of time passed in the given unit
      */
-    static int64_t GetDuration(SysTimestamp start, SysTimestamp end, TimeUnit timeUnit)
+    static int64_t GetDuration(SysTimestamp start, SysTimestamp end, Unit timeUnit)
     {
         auto duration = end - start;
         switch(timeUnit)
         {
-            case TimeUnit::Nanoseconds:
+            case Unit::ns:
                 return duration_cast<nanoseconds>(duration).count();
                 break;
-            case TimeUnit::Microseconds:
+            case Unit::us:
                 return duration_cast<microseconds>(duration).count();
                 break;
-            case TimeUnit::Milliseconds:
+            case Unit::ms:
                 return duration_cast<milliseconds>(duration).count();
                 break;
-            case TimeUnit::Seconds:
+            case Unit::s:
                 return duration_cast<seconds>(duration).count();
                 break;
         }
     }
 
     /**
-     * @brief Returns the amount of time passed between start and now in ms
+     * @brief Returns the amount of time passed between start and now in us
      */
-    static int64_t GetDurationSince(SysTimestamp start)
+    static int64_t GetDurationSince(SysTimestamp start, Unit timeUnit = Unit::ns)
     {
         auto duration = high_resolution_clock::now() - start;
-        return duration_cast<milliseconds>(duration).count();
+        switch(timeUnit)
+        {
+            case Unit::ns:
+                return duration_cast<nanoseconds>(duration).count();
+                break;
+            case Unit::us:
+                return duration_cast<microseconds>(duration).count();
+                break;
+            case Unit::ms:
+                return duration_cast<milliseconds>(duration).count();
+                break;
+            case Unit::s:
+                return duration_cast<seconds>(duration).count();
+                break;
+        }
     }
 
     /**

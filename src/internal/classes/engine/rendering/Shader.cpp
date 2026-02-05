@@ -1,13 +1,13 @@
 #include "Shader.h"
 
-#include "classes/engine/DebugModel.h"
+#include "classes/engine/PerformanceModel.h"
 #include "utils/RenderUtils.h"
 
 using namespace Engine;
 
 GLuint Shader::CURRENT_PROGRAMM = -1;
 
-Shader::Shader() : m_debugModel(SingletonManager::get<DebugModel>()) {}
+Shader::Shader() : m_debugModel(SingletonManager::get<PerformanceModel>()) {}
 
 Shader::~Shader()
 {

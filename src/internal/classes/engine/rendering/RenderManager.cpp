@@ -1,6 +1,6 @@
 #include "RenderManager.h"
 
-#include "classes/engine/DebugModel.h"
+#include "classes/engine/PerformanceModel.h"
 #include "classes/engine/rendering/DebugDrawManager.h"
 #include "classes/engine/rendering/RenderInstanceGroup.h"
 #include "classes/engine/rendering/Shader.h"
@@ -25,7 +25,7 @@ namespace Engine
         , m_showWireframe(false)
         , m_clearColor { 0.f, 0.f, 0.f, 1.f }
         , m_showDebugUi(true)
-        , m_debugModel(SingletonManager::get<DebugModel>())
+        , m_debugModel(SingletonManager::get<PerformanceModel>())
         , m_debugDrawManager(SingletonManager::get<DebugDrawManager>())
     {
     }

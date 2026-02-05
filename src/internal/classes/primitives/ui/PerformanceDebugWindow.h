@@ -1,18 +1,18 @@
 #pragma once
 
 #include "classes/nodeComponents/UiDebugWindow.h"
+#include "classes/uiElements/UiElementPieChart.h"
 #include "utils/TimeUtils.h"
 
 namespace Engine
 {
     class EngineManager;
     class WindowManager;
-    class DebugModel;
+    class PerformanceModel;
 
     namespace Ui
     {
         class UiElementPlot;
-        class UiElementPieChart;
         class UiElementText;
         class UiElementCollapsableSection;
 
@@ -32,12 +32,11 @@ namespace Engine
 
                 std::shared_ptr<EngineManager> m_engineManager;
                 std::shared_ptr<WindowManager> m_windowManager;
-                std::shared_ptr<DebugModel> m_debugModel;
+                std::shared_ptr<PerformanceModel> m_debugModel;
                 std::shared_ptr<UiElementPlot> m_fpsCounter;
                 std::shared_ptr<UiElementText> m_frameTimer;
-                std::shared_ptr<UiElementPieChart> m_timeDistributionGraph;
-                std::shared_ptr<UiElementPieChart> m_renderTimeDistributionGraph;
-                std::shared_ptr<UiElementPieChart> m_testGraph;
+                std::shared_ptr<UiElementPieChart<int64_t>> m_timeDistributionGraph;
+                std::shared_ptr<UiElementPieChart<int64_t>> m_renderTimeDistributionGraph;
                 std::shared_ptr<UiElementCollapsableSection> m_detailsSection;
 
                 TimeUtils::SysTimestamp m_lastTimeStamp;
