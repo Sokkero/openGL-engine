@@ -11,14 +11,18 @@ enable_testing()
 
 project(${PROJECT_NAME})
 
-find_package(OpenGL REQUIRED)
-
 if(NOT EXISTS ${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
     message(FATAL_ERROR "The file conanbuildinfo.cmake doesn't exist, you have to run ./build.sh first")
 endif()
 
+find_package(OpenGL REQUIRED)
+
 include(${CMAKE_BINARY_DIR}/conanBuild/conanbuildinfo.cmake)
 conan_basic_setup()
+
+if(WIN32)
+    target_link_libraries(your_target_name PRIVATE Psapi.lib)
+endif()
 
 FILE(GLOB IMGUI
         src/external/implot/*.cpp

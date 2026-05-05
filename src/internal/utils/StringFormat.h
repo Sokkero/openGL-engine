@@ -3,7 +3,7 @@
 #include <iomanip>
 #include <utility>
 
-namespace StringFormat
+namespace Engine::StringFormat
 {
     inline bool isDataType(char c)
     {
@@ -115,6 +115,6 @@ template<typename... Args>
 static std::string stringf(const std::string& format, Args&&... args)
 {
     std::string result(format);
-    StringFormat::formatString(result, 0, std::forward<Args>(args)...);
+    Engine::StringFormat::formatString(result, 0, std::forward<Args>(args)...);
     return result;
 }
